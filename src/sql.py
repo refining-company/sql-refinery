@@ -1,31 +1,137 @@
 from tree_sitter import Language, Parser, Tree, Node
 import tree_sitter_sql_bigquery
 
-__all__ = ["parse", "find", "Tree", "Node"]
+__all__ = ["Tree", "Node"]
 
-language = Language(tree_sitter_sql_bigquery.language(), "sql-bigquery")
+language = Language(tree_sitter_sql_bigquery.language())
 
 
-def find(node: Tree | Node, type: str | list[str], deep: bool = False) -> list[Node]:
-    if isinstance(node, Tree):
-        return find(node.root_node, type, deep)
-    if isinstance(type, str):
-        type = [type]
+def find_desc(node: Node, types: str | list[str], local: bool = True) -> list[Node]:
+    """Find descendants"""
+    # TODO: migrate to Tree.walk() https://github.com/tree-sitter/py-tree-sitter/blob/master/examples/walk_tree.py
+    # TODO: maybe redo with queries like
+    #       (function_call function: (identifier) @ignore)
+    #       (as_alias alias_name: (identifier) @ignore)
+    #       (identifier) @column
 
     results = []
-    # TODO: migrate to Tree.walk() https://github.com/tree-sitter/py-tree-sitter/blob/master/examples/walk_tree.py
     for child in node.children:
-        if child.type in type:
+        if is_type(child, types):
             results.append(child)
 
-        if deep or child.type not in {"query_expr"}:
-            results += find(child, type, deep)
+        # go outside of scope
+        if local and is_type(child, types="@scope"):
+            continue
+
+        results += find_desc(child, types, local)
 
     return results
 
 
+def find_asc(node: Node, types: str | list[str], local: bool = True) -> Node:
+    """Find first matching ascendant"""
+    if node.parent is None:
+        return None
+
+    # going outside of scope
+    if local and is_type(node, types="@scope"):
+        return None
+
+    if is_type(node.parent, types):
+        return node.parent
+
+    return find_asc(node.parent, types, local)
+
+
+def find_alias(node: Node) -> str:
+    """Find alias name"""
+    if not is_type(node, ["@table", "@column"]):
+        return None
+
+    if node.next_named_sibling:
+        alias_node = find_desc(node.next_named_sibling, "@alias")
+        if len(alias_node):
+            return alias_node[0].text
+
+    return None
+
+
+def is_type(node: Node, types: str | list[str]) -> bool:
+    """Check node type against tree-sitter types and meta types"""
+    types = [types] if isinstance(types, str) else types
+
+    for _type in types:
+        # meta types
+        if (_type == "@scope") and node.type in {"query_expr"}:
+            return True
+
+        if (_type == "@query") and node.type in {"select"}:
+            return True
+
+        if (_type == "@table") and (
+            node.type == "identifier" and node.parent.type in {"from_item"}
+        ):
+            return True
+
+        if (_type == "@expression") and (
+            node.type
+            in {
+                "select_expression",
+                "join_condition",
+                "grouping_item",
+                "order_by_clause_body",
+            }
+        ):
+            return True
+
+        if (_type == "@column") and (
+            node.type == "identifier"
+            and node.parent.type
+            not in {
+                "function_call",
+                "alias",
+                "drop_table_statement",
+                "create_table_statement",
+                "cte",
+            }
+        ):
+            return True
+
+        if (_type == "@alias") and (
+            node.type == "identifier" and node.parent.type == "as_alias"
+        ):
+            return True
+
+        # tree-sitter grammar type
+        if node.type == _type:
+            return True
+
+    return False
+
+
+def is_column_resolved(node: Node) -> bool:
+    """Is column in the format `<table>.<column>`"""
+    return node.text.count(b".") == 2
+
+
 def parse(text: bytes) -> Tree:
     parser = Parser()
-    parser.set_language(language)
+    parser.language = language
     tree = parser.parse(text)
     return tree
+
+
+# Helpers
+
+
+def pprint(node: Tree):
+    print(to_str(node))
+
+
+def to_str(node: Tree, indent: str = 0) -> str:
+    res = " " * indent + "(" + str(node.type)
+    if hasattr(node, "children"):
+        for child in node.children:
+            res += "\n" + to_str(child, indent + 2)
+    res += ")"
+    return res

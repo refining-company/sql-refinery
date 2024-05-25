@@ -1,48 +1,77 @@
+from __future__ import annotations
+from dataclasses import dataclass
 from pathlib import Path
 from . import sql
 
-__all__ = ["Codebase"]
+__all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
 
+@dataclass
+class Query:
+    node: sql.Node
+    sources: list[Table | Query] = None
+    ops: list[Op] = None
+
+
+@dataclass
+class Table:
+    node: sql.Node
+    dataset: str = None
+    table: str = None
+
+
+@dataclass
+class Op:
+    node: sql.Node
+    columns: list[Column] = None
+
+
+@dataclass
+class Column:
+    node: sql.Node
+    dataset: str = None
+    table: str = None
+    column: str = None
+
+
+@dataclass
 class Codebase:
-    files: dict[str : sql.Tree]
-    columns_expr: dict[str : sql.Tree]
+    files: dict[str, sql.Tree]
+    queries: list[Query]
 
-    def __init__(self, path: str):
-        self._load_files(path)
-        self._get_columns_expr()
 
-    def _load_files(self, path: str):
-        """Load all sql files from `path` into dict {file: AST, ...}"""
-        root = Path(path)
-        files = list(root.glob("**/*.sql"))
+def load(path: str) -> Codebase:
+    """Load codebase from `path`"""
+    files = load_files(path)
+    queries = sum([to_queries(t.root_node) for t in files.values()], [])
 
-        self.files = {
-            str(f.relative_to(root)): sql.parse(f.read_bytes()) for f in files
-        }
+    return Codebase(files=files, queries=queries)
 
-    def _get_columns_expr(self):
-        """Get all column expressions"""
-        self.columns_expr = {}
 
-        expressions = {
-            "select_expression",
-            "join_condition",
-            "grouping_item",
-            "order_by_clause_body",
-        }
+def load_files(path: str) -> dict[str, sql.Tree]:
+    """Load all sql files from `path` into dict `{<file name>: <sql tree>, ...}`"""
+    root = Path(path)
+    paths = list(root.glob("**/*.sql"))
+    files = {str(f.relative_to(root)): sql.parse(f.read_bytes()) for f in paths}
 
-        # TODO: move to sql.py as too low-level
-        # TODO: base on queries like
-        #       (function_call function: (identifier) @ignore)
-        #       (as_alias alias_name: (identifier) @ignore)
-        #       (identifier) @column
-        for file, tree in self.files.items():
-            for sel in sql.find(tree, type="select", deep=True):
-                for expr in sql.find(sel, type=expressions, deep=False):
-                    for col in sql.find(expr, type="identifier", deep=False):
-                        if col.parent.type not in {"function_call", "alias"}:
-                            self.columns_expr.setdefault(col.text, set())
-                            self.columns_expr[col.text].add(expr)
+    return files
 
-        pass
+
+def to_queries(node: sql.Node) -> list[Query]:
+    """Create list of queries trees from parse tree"""
+    queries = []
+    for scope in sql.find_desc(node, "@scope"):
+        for select in sql.find_desc(scope, "select"):
+            ops = []
+            for op_n in sql.find_desc(select, "@expression"):
+                op_cols = [Column(node=n) for n in sql.find_desc(op_n, "@column")]
+                op = Op(node=op_n, columns=op_cols)
+                ops.append(op)
+
+            tables = [Table(node=n) for n in sql.find_desc(select, "@table")]
+            subqueries = to_queries(select)
+
+            query = Query(node=select, sources=tables + subqueries, ops=ops)
+            queries.append(query)
+
+    return queries
