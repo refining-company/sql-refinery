@@ -75,12 +75,7 @@ def is_type(node: Node, types: str | list[str]) -> bool:
 
         if (_type == "@expression") and (
             node.type
-            in {
-                "select_expression",
-                "join_condition",
-                "grouping_item",
-                "order_by_clause_body",
-            }
+            in {"select_expression", "join_condition", "grouping_item", "order_by_clause_body"}
         ):
             return True
 
@@ -97,9 +92,7 @@ def is_type(node: Node, types: str | list[str]) -> bool:
         ):
             return True
 
-        if (_type == "@alias") and (
-            node.type == "identifier" and node.parent.type == "as_alias"
-        ):
+        if (_type == "@alias") and (node.type == "identifier" and node.parent.type == "as_alias"):
             return True
 
         # tree-sitter grammar type
@@ -121,10 +114,11 @@ def parse(text: bytes) -> Tree:
     return tree
 
 
-# Helpers
+### HELPERS
 
 
 def pprint(node: Tree):
+    """Pretty print objects in this module"""
     print(to_str(node))
 
 
