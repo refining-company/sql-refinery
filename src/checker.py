@@ -13,4 +13,4 @@ from . import codebase
 # [ ] If they don't match suggest alternatives ordered by how close the Levenstein distaince is and
 #     how frequently they've been used
 
-codebase = codebase.Codebase(".playground/code")
+codebase = codebase.load(".playground/code")
