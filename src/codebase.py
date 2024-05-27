@@ -32,7 +32,7 @@ class Op:
 
 @dataclass
 class Column:
-    node: sql.Node
+    nodes: list[sql.Node]
     dataset: str = None
     table: str = None
     column: str = None
@@ -50,8 +50,6 @@ def load(path: str) -> Codebase:
     queries = sum([to_queries(t.root_node) for t in files.values()], [])
     codebase = Codebase(files=files, queries=queries)
     pprint(codebase)
-    for query in codebase.queries:
-        resolve(query)
 
     return codebase
 
@@ -68,42 +66,62 @@ def load_files(path: str) -> dict[str, sql.Tree]:
 def to_queries(node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
-    for scope in sql.find_desc(node, "@scope"):
-        for select in sql.find_desc(scope, "select"):
-            tables = []
-            for table_node in sql.find_desc(select, "@table"):
-                alias = sql.find_alias(table_node)
-                table = Table(node=table_node, table=table_node.text, alias=alias)
+    for select_node in sql.find_desc(node, "@query"):
+        # Capture tables
+        tables = []
+        for n in sql.find_desc(select_node, "@table"):
+            tables.append(Table(node=n, **sql.get_table_path(n), alias=sql.find_alias(n)))
 
-                tables.append(table)
+        # Capture columns
+        nodes_columns = {n: sql.get_column_path(n) for n in sql.find_desc(select_node, "@column")}
 
-            ops = []
-            for op_n in sql.find_desc(select, "@expression"):
-                op_cols = []
-                for col_n in sql.find_desc(op_n, "@column"):
-                    op_cols.append(Column(node=col_n))
+        # Resolve columns
+        tables_aliases = {t.alias: t for t in tables}
+        for col, path in nodes_columns.items():
+            table = None
+            if path["table"] in tables_aliases:
+                table = tables_aliases[path["table"]]
+            if not path["table"] and len(tables) == 1:
+                table = tables[0]
+            if table:
+                path["table"] = table.table
+                path["dataset"] = table.dataset
+            # TODO: resolve using data model
+            # TODO: resolve when different datasets
+            # TODO: resolve `*` into columns
 
-                op = Op(node=op_n, columns=op_cols)
-                ops.append(op)
+        # Squash multiple nodes into single column
+        columns_nodes = {}
+        for k, v in nodes_columns.items():
+            columns_nodes.setdefault(tuple(v.values()), []).append(k)
 
-            subqueries = to_queries(select)
+        # Create columns
+        columns = []
+        for (d, t, c), n in columns_nodes.items():
+            columns.append(Column(nodes=n, dataset=d, table=t, column=c))
 
-            query = Query(node=select, sources=tables + subqueries, ops=ops)
-            queries.append(query)
+        # Capture ops
+        # BUG: `USING (account_id, date_month)` is captured incorrectly
+        # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
+        # TODO: add tests for this function
+        nodes_columns = {n: col for col in columns for n in col.nodes}
+        ops = []
+        for op_node in sql.find_desc(select_node, "@expression"):
+            op_cols = []
+            for col_node in sql.find_desc(op_node.parent, "@column"):
+                if nodes_columns[col_node] not in op_cols:
+                    op_cols.append(nodes_columns[col_node])
+            ops.append(Op(node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
+
+        subqueries = to_queries(select_node)
+
+        query = Query(node=select_node, sources=tables + subqueries, ops=ops)
+        queries.append(query)
 
     return queries
 
 
-def resolve(query: Query):
-    """Qualify all columns in the query"""
-    for source in query.sources:
-        alias = sql.find_desc(source.node, "@alias")
-        if alias:
-            source.alias = alias[0].text
-            print(source.alias)
-
-        if isinstance(source, Query):
-            resolve(source)
+### HELPERS
 
 
 def pprint(obj):
@@ -135,7 +153,9 @@ def to_str(obj, lvl: int = 0, indent: int = 2):
     if isinstance(obj, sql.Tree):
         return "sql.Tree"
     if isinstance(obj, sql.Node):
-        fields = [obj.type] + [to_str(obj.text, lvl)] if obj.type == "identifier" else []
+        fields = [obj.type]
+        fields += ["{}:{}-{}:{}".format(*obj.start_point, *obj.end_point)]
+        fields += [to_str(obj.text, lvl)] if obj.type == "identifier" else []
         return "sql.Node({fields})".format(fields=" ".join(fields))
     if isinstance(obj, (bytearray, bytes)):
         return obj.decode("utf-8")
