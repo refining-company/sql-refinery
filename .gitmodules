@@ -1,0 +1,7 @@
+[submodule ".submodules/tree-sitter-sql-bigquery"]
+	path = .submodules/tree-sitter-sql-bigquery
+	url = https://github.com/ilyakochik/tree-sitter-sql-bigquery
+[submodule ".submodules/playground-edtech"]
+	path = .submodules/playground-edtech
+	url = https://github.com/refining-company/playground/
+	branch = feature/edtech
