@@ -1,7 +1,5 @@
 .conda
 .venv
-.env
-.playground
 .DS_Store
 .vscode
 .pytest_cache

@@ -12,6 +12,4 @@ from . import codebase
 # [ ] If they don't match suggest alternatives ordered by how close the Levenstein distaince is and
 #     how frequently they've been used
 
-# BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql
-
-codebase = codebase.load(".playground/code")
+codebase = codebase.load(".submodules/playground-edtech/code")

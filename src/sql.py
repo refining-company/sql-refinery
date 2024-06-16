@@ -4,6 +4,7 @@ import tree_sitter_sql_bigquery
 __all__ = ["Tree", "Node"]
 
 language = Language(tree_sitter_sql_bigquery.language())
+# BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql
 
 
 def find_desc(node: Node, types: str | list[str], local: bool = True) -> list[Node]:
