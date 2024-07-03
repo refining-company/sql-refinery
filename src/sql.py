@@ -66,23 +66,16 @@ def is_type(node: Node, types: str | list[str]) -> bool:
         if (_type == "@scope") and node.type in {"query_expr"}:
             return True
 
-        if (
-            (_type == "@query")
-            and node.type in {"query_expr"}
-            and node.named_child(0).type in {"select"}
-        ):
+        if (_type == "@query") and node.type in {"query_expr"} and node.named_child(0).type in {"select"}:
             return True
 
-        if (_type == "@table") and (
-            node.type == "identifier" and node.parent.type in {"from_item"}
-        ):
+        if (_type == "@table") and (node.type == "identifier" and node.parent.type in {"from_item"}):
             return True
 
         if (
             (_type == "@expression")
             and node.type not in {"as_alias", "(", ")"}
-            and node.parent.type
-            in {"select_expression", "join_condition", "grouping_item", "order_by_clause_body"}
+            and node.parent.type in {"select_expression", "join_condition", "grouping_item", "order_by_clause_body"}
         ):
             return True
 
