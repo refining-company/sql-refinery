@@ -1,6 +1,5 @@
-================================================================================
-ANALYTIC FUNCTIOIN:
-================================================================================
+--Test:ANALYTIC FUNCTION:
+--Query:
 
 SELECT book, LAST_VALUE(item) OVER (ORDER BY year) FROM Library;
 SELECT ROW_NUMBER() OVER (PARTITION BY author ORDER BY ts) as seq FROM Library;
@@ -10,11 +9,8 @@ SELECT book, LAST_VALUE(item)
     RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 FROM Library;
 
---------------------------------------------------------------------------------
-
-================================================================================
-ANALYTIC FUNCTIOIN: With WINDOW clause
-================================================================================
+--Test:ANALYTIC FUNCTION: With WINDOW clause
+--Query:
 
 SELECT item, purchases, category, LAST_VALUE(item)
   OVER (
@@ -25,5 +21,3 @@ SELECT item, purchases, category, LAST_VALUE(item)
   WINDOW item_window AS (
       PARTITION BY category1, category2
       ORDER BY purchases)
-
---------------------------------------------------------------------------------
