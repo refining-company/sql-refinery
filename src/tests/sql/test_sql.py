@@ -15,8 +15,5 @@ test_cases = zip(titles, queries, pickled_trees)
 
 @pytest.mark.parametrize("test_name, query, target_tree", test_cases)
 def test_parser(test_name, query, target_tree):
-
     parsed_tree = encoder.default(sql.parse(query.encode("utf-8")))
-    print(parsed_tree)
-    print(type(parsed_tree))
     assert parsed_tree == target_tree, "Test case: " + test_name + " failed!"
