@@ -63,6 +63,19 @@ def load_files(path: str) -> dict[str, sql.Tree]:
     return files
 
 
+### TODO: make sure all identifiers are minimally resolved:
+### it takes sql files, and makes a Database object that contains a tree of queries
+### each query would have columns and tables that have:
+###    - aliases resolved (so e.g. a.id becomes account.id)
+###    - tables resolved if no JOINS (e.g. SELECT id FROM accounts -> accounts.id)
+
+### TODO: capture all expressions and identifiers
+### so in checker.py we can find similar experessions it will creat this
+###  sort of a mapping {<column name> : [all expressions that use it]}
+
+### TODO: think and tell me what about table mapping
+
+
 def to_queries(node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
@@ -86,8 +99,8 @@ def to_queries(node: sql.Node) -> list[Query]:
             if table:
                 path["table"] = table.table
                 path["dataset"] = table.dataset
-            # TODO: resolve using data model
-            # TODO: resolve when different datasets
+            # TODO: resolve using data model (when no table is specified in JOIN but could be inferred)
+            # TODO: resolve when different datasets/catalogs
             # TODO: resolve `*` into columns
 
         # Squash multiple nodes into single column

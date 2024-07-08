@@ -115,9 +115,7 @@ def read_test_file(file_path: str):
     file = open(file_path, "r")
     text = file.read()
 
-    # TODO FIX the query regex do line by line
     title_regex = "(?<=--Test:).*(?=\n)"
-    # title_regex = "<=--Test:[.^\n]*"
     query_regex = "(?<=--Query:)(.*?)(?=--Test:|\Z)"
 
     titles = re.findall(title_regex, text)
@@ -131,38 +129,6 @@ def read_test_file(file_path: str):
     """
 
     return titles, queries
-
-
-# TODO: Maybe this is better to split test cases
-# import re
-# from itertools import groupby
-
-# def split_and_translate_to_dict(array):
-#     result = {}
-#     groups = groupby(array, key=lambda line: re.match(r'-- Test: (.*)', line))
-
-#     for is_key, group in groups:
-#         group_list = list(group)
-#         if is_key:
-#             key = re.match(r'-- Test: (.*)', group_list[0]).group(1)
-#         else:
-#             result[key] = '\n'.join(group_list).strip()
-
-#     return result
-
-# # Example usage:
-# array = [
-#     "-- Test: Example1",
-#     "Line 1 of Example1",
-#     "Line 2 of Example1",
-#     "-- Test: Example2",
-#     "Line 1 of Example2",
-#     "Line 2 of Example2",
-#     "Line 3 of Example2"
-# ]
-
-# result = split_and_translate_to_dict(array)
-# print(result)
 
 
 def save_trees(file_path: str):

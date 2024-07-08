@@ -10,15 +10,6 @@ from src.tests.sql.utils import *  ### TODO: Ask ChatGPT if Google's python code
 ####  Tells Python to treat the directory as a package and set the appropriate context for relative imports
 ####  Input.sql -> TreeSitter.Tree -> Dictionary  ?=   Dictionary <- Output.json
 
-### TODO: review the structure
-### Input folder (for entire tests directory) would have 2 files (later more) from here /.submodules/playground-edtech/code
-### Output folder would have different artifacts that we'd compare against
-### first such artifact is sql-[FILENAME1].json sql-[FILENAME2].json (`sql.parse()` applied to each of the files
-### in the code folder)
-### Once we moved to `codebase.py` file, we'd have a codebase.json that's the output of sql.parse -> codebase.load()
-### pipeline
-
-
 """
 We will take input.sql file, parse it with sql.parse() function and turn the parse tree
 into a dictionary (by using only some of the fields). Then we'll compare it with benchmark that is stored

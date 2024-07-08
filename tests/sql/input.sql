@@ -1,4 +1,4 @@
--- Test: ANALYTIC FUNCTION
+--Test:ANALYTIC FUNCTION:
 
 SELECT book, LAST_VALUE(item) OVER (ORDER BY year) FROM Library;
 SELECT ROW_NUMBER() OVER (PARTITION BY author ORDER BY ts) as seq FROM Library;
@@ -8,7 +8,7 @@ SELECT book, LAST_VALUE(item)
     RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 FROM Library;
 
--- Test: ANALYTIC FUNCTION: With WINDOW clause
+--Test:ANALYTIC FUNCTION: With WINDOW clause
 
 SELECT item, purchases, category, LAST_VALUE(item)
   OVER (
