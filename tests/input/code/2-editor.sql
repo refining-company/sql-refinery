@@ -1,3 +1,5 @@
+--Test: 1
+
 SELECT 
     date(date_month, 'start of year') AS date_year,
     CASE

@@ -1,3 +1,5 @@
+--Test: 1
+
 DROP TABLE IF EXISTS date_ranges;
 CREATE TABLE date_ranges AS
 WITH RECURSIVE date_ranges(date_day) AS (
@@ -15,7 +17,7 @@ SELECT
 FROM date_ranges
 GROUP BY date_day;
 
-
+--Test: 2
 
 DROP TABLE IF EXISTS deals_signed;
 CREATE TABLE deals_signed AS
@@ -40,7 +42,7 @@ FROM (
     GROUP BY d.deal_id, d.account_id, d.contract_start_date, d.contract_end_date
 ) AS t;
 
-
+--Test: 3
 
 DROP TABLE IF EXISTS accounts_revenue;
 CREATE TABLE accounts_revenue AS
@@ -66,6 +68,8 @@ FROM (
         AND dr.date_day <= date(ds.contract_end_date)
     GROUP BY dr.date_day, ds.account_id) t
 GROUP BY account_id, date_month;
+
+--Test: 4
 
 DROP TABLE IF EXISTS accounts_360;
 CREATE TABLE accounts_360 AS

@@ -1,3 +1,5 @@
+--Test: 1
+
 DROP TABLE IF EXISTS revenue;
 CREATE TABLE revenue AS
 SELECT 
