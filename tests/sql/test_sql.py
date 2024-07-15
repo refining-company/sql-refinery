@@ -1,17 +1,13 @@
-import pytest
 import json
-import os
-import logging
+import sys
+import pytest
+from deepdiff import DeepDiff
+from pathlib import Path
 from src import sql
-from tests.utils.utils import TreeSitterJSONEncoder, read_test_file
+from tree_sitter import Node, Tree
 
-
-# TODO dissable pytest input logging
 
 ### check how to make comments copilot fiendly (not coding perspective but business logic perspective)
-
-####  to run manually "python -m tests.sql.test_sql" from project directory (backend folder)
-####  Tells Python to treat the directory as a package and set the appropriate context for relative imports
 
 """
 We will take input.sql file, parse it with sql.parse() function and turn the parse tree
@@ -19,38 +15,63 @@ into a dictionary (by using only some of the fields). Then we'll compare it with
 in the output.json
 """
 
-output_dir = "tests/output/code"
-input_dir = "tests/input/code"
-encoder = TreeSitterJSONEncoder()
-
-test_file = []
-titles = []
-queries = []
-pickled_trees = []
+INPUT_DIR = Path("tests/input/code")
+OUTPUT_DIR = Path("tests/output/code")
 
 
-for root, _, files in os.walk(input_dir):
-    for file in files:
+class TreeSitterJSONEncoder(json.JSONEncoder):
 
-        input_file_path = os.path.join(root, file)
-        output_file_name = file[:-4] + ".json"
-        output_file_path = os.path.join(output_dir, output_file_name)
+    def __init__(self, **kwargs):
+        super(TreeSitterJSONEncoder, self).__init__(**kwargs)
 
-        current_titles, current_queries = read_test_file(input_file_path)
-        current_pickled_trees = json.load(open(output_file_path, "rb"))
-        current_test_file = [file for _ in range(len(current_titles))]
+    def default(self, obj):
+        if isinstance(obj, bytes):
+            return obj.decode()
+        elif isinstance(obj, Node):
+            return self.encode_node(obj)
+        elif isinstance(obj, Tree):
+            return self.encode_tree(obj)
+        else:
+            return super().default(obj)
 
-        test_file.extend(current_test_file)
-        titles.extend(current_titles)
-        queries.extend(current_queries)
-        pickled_trees.extend(current_pickled_trees)
+    def encode_node(self, node: Node):
+        encoded_node = {
+            "type": node.type,
+            # "text": node.text,
+            "children": [self.encode_node(child) for child in node.children],
+        }
+        return encoded_node
+
+    def encode_tree(self, tree: Tree):
+        encoded_tree = {"root": self.encode_node(tree.root_node)}
+        return encoded_tree
 
 
-test_cases = zip(test_file, titles, queries, pickled_trees)
+def prep_output():
+
+    for file, tree in sql.parse_files(INPUT_DIR).items():
+        output_json = json.dumps(tree, cls=TreeSitterJSONEncoder, indent=2)
+        output_file = Path(OUTPUT_DIR) / (file.stem + ".json")
+        output_file.write_text(output_json)
 
 
-@pytest.mark.parametrize("test_file, test_name, query, target_tree", test_cases)
-def test_parser(test_file, test_name, query, target_tree):
+ENCODER = TreeSitterJSONEncoder()
 
-    parsed_tree = encoder.default(sql.parse(query.encode("utf-8")))
-    assert parsed_tree == target_tree, "Test case: " + test_name + " in file " + test_file + " failed!"
+
+def test_parser():
+    for file, tree in sql.parse_files(INPUT_DIR).items():
+        try:
+            input_dict = ENCODER.default(tree)
+        except Exception as _:
+            assert False, "Parsing of {}: failed ".format(file)
+
+        output_file = Path(OUTPUT_DIR) / (file.stem + ".json")
+        target_dict = json.load(open(output_file, "rb"))
+        assert not DeepDiff(input_dict, target_dict), "Test {}: failed ".format(file)
+
+
+if __name__ == "__main__":
+    if "--create-outputs" in sys.argv:
+        prep_output()
+
+    test_parser()

@@ -1,7 +1,7 @@
 --Test: 1
 
 SELECT 
-    date(date_month, 'start of year') AS date_year,
+    date(date_month, 'start of year') AS date_year
     CASE
         WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
         WHEN c.region IN ('Asia') THEN 'Asia'

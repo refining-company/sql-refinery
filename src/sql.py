@@ -1,3 +1,4 @@
+from pathlib import Path
 from tree_sitter import Language, Parser, Tree, Node
 import tree_sitter_sql_bigquery
 
@@ -119,6 +120,15 @@ def parse(text: bytes) -> Tree:
     parser.language = language
     tree = parser.parse(text)
     return tree
+
+
+def parse_files(path: str) -> dict[Path, Tree]:
+    """Load all sql files from `path` into dict `{<file Path>: <sql tree>, ...}`"""
+    root = Path(path)
+    paths = list(root.glob("**/*.sql"))
+    files = {f.relative_to(root): parse(f.read_bytes()) for f in paths}
+
+    return files
 
 
 ### HELPERS

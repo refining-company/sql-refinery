@@ -1,7 +1,6 @@
 from __future__ import annotations
 import dataclasses
 from dataclasses import dataclass
-from pathlib import Path
 from . import sql
 
 __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
@@ -46,21 +45,12 @@ class Codebase:
 
 def load(path: str) -> Codebase:
     """Load codebase from `path`"""
-    files = load_files(path)
+    files = sql.parse_files(path)
     queries = sum([to_queries(t.root_node) for t in files.values()], [])
     codebase = Codebase(files=files, queries=queries)
     pprint(codebase)
 
     return codebase
-
-
-def load_files(path: str) -> dict[str, sql.Tree]:
-    """Load all sql files from `path` into dict `{<file name>: <sql tree>, ...}`"""
-    root = Path(path)
-    paths = list(root.glob("**/*.sql"))
-    files = {str(f.relative_to(root)): sql.parse(f.read_bytes()) for f in paths}
-
-    return files
 
 
 ### TODO: make sure all identifiers are minimally resolved:
