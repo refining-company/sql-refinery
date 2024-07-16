@@ -81,9 +81,10 @@ def is_type(node: Node, types: str | list[str]) -> bool:
             return True
 
         if (_type == "@column") and (
-            node.type == "identifier"
+            node.type in ["identifier", "select_all"]
             and node.parent.type
             not in {
+                "from_item",
                 "function_call",
                 "as_alias",
                 "drop_table_statement",
