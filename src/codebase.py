@@ -106,7 +106,6 @@ def to_queries(node: sql.Node) -> list[Query]:
         # Capture ops
         # BUG: `USING (account_id, date_month)` is captured incorrectly
         # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
-        # XXX add tests for this function
         nodes_columns = {n: col for col in columns for n in col.nodes}
         ops = []
         for op_node in sql.find_desc(select_node, "@expression"):
