@@ -28,7 +28,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "revenue"
           }
         ]
       },
@@ -49,7 +50,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "revenue"
           },
           {
             "type": "AS",
@@ -84,7 +86,8 @@
                                         "type": "DATE",
                                         "children": []
                                       }
-                                    ]
+                                    ],
+                                    "text": "date"
                                   },
                                   {
                                     "type": "(",
@@ -95,7 +98,8 @@
                                     "children": [
                                       {
                                         "type": "identifier",
-                                        "children": []
+                                        "children": [],
+                                        "text": "date_month"
                                       }
                                     ]
                                   },
@@ -108,7 +112,8 @@
                                     "children": [
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'start of year'"
                                       }
                                     ]
                                   },
@@ -127,7 +132,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "date_year"
                                   }
                                 ]
                               }
@@ -164,7 +170,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "c.region"
                                           },
                                           {
                                             "type": "IN",
@@ -179,7 +186,8 @@
                                               },
                                               {
                                                 "type": "string",
-                                                "children": []
+                                                "children": [],
+                                                "text": "'Americas'"
                                               },
                                               {
                                                 "type": ",",
@@ -187,7 +195,8 @@
                                               },
                                               {
                                                 "type": "string",
-                                                "children": []
+                                                "children": [],
+                                                "text": "'Europe'"
                                               },
                                               {
                                                 "type": ")",
@@ -203,7 +212,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'North-West'"
                                       }
                                     ]
                                   },
@@ -224,7 +234,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "c.region"
                                           },
                                           {
                                             "type": "IN",
@@ -239,7 +250,8 @@
                                               },
                                               {
                                                 "type": "string",
-                                                "children": []
+                                                "children": [],
+                                                "text": "'Africa'"
                                               },
                                               {
                                                 "type": ",",
@@ -247,7 +259,8 @@
                                               },
                                               {
                                                 "type": "string",
-                                                "children": []
+                                                "children": [],
+                                                "text": "'Asia'"
                                               },
                                               {
                                                 "type": ")",
@@ -263,7 +276,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'South-East'"
                                       }
                                     ]
                                   },
@@ -300,7 +314,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "region_cluster"
                                   }
                                 ]
                               }
@@ -337,7 +352,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "a.industry"
                                           },
                                           {
                                             "type": "=",
@@ -345,7 +361,8 @@
                                           },
                                           {
                                             "type": "string",
-                                            "children": []
+                                            "children": [],
+                                            "text": "'Information Technology'"
                                           }
                                         ]
                                       },
@@ -355,7 +372,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'Tech'"
                                       }
                                     ]
                                   },
@@ -376,7 +394,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "a.industry"
                                           },
                                           {
                                             "type": "IS",
@@ -417,7 +436,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'Other'"
                                       }
                                     ]
                                   },
@@ -436,7 +456,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "industry_cluster"
                                   }
                                 ]
                               }
@@ -456,7 +477,8 @@
                                     "type": ".",
                                     "children": []
                                   }
-                                ]
+                                ],
+                                "text": "a360.account_size"
                               }
                             ]
                           },
@@ -472,7 +494,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "SUM"
                                   },
                                   {
                                     "type": "(",
@@ -488,7 +511,8 @@
                                             "type": ".",
                                             "children": []
                                           }
-                                        ]
+                                        ],
+                                        "text": "ar.revenue"
                                       }
                                     ]
                                   },
@@ -507,7 +531,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue"
                                   }
                                 ]
                               }
@@ -525,7 +550,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "COUNT"
                                   },
                                   {
                                     "type": "(",
@@ -550,7 +576,8 @@
                                             "type": ".",
                                             "children": []
                                           }
-                                        ]
+                                        ],
+                                        "text": "ar.account_id"
                                       }
                                     ]
                                   },
@@ -569,7 +596,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "accounts"
                                   }
                                 ]
                               }
@@ -590,7 +618,8 @@
                                     "children": [
                                       {
                                         "type": "identifier",
-                                        "children": []
+                                        "children": [],
+                                        "text": "SUM"
                                       },
                                       {
                                         "type": "(",
@@ -606,7 +635,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "a360.revenue_12m"
                                           }
                                         ]
                                       },
@@ -625,7 +655,8 @@
                                     "children": [
                                       {
                                         "type": "identifier",
-                                        "children": []
+                                        "children": [],
+                                        "text": "COUNT"
                                       },
                                       {
                                         "type": "(",
@@ -650,7 +681,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "ar.account_id"
                                           }
                                         ]
                                       },
@@ -671,7 +703,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_12m_p_account"
                                   }
                                 ]
                               }
@@ -709,14 +742,16 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "accounts_revenue"
                                                       },
                                                       {
                                                         "type": "as_alias",
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "ar"
                                                           }
                                                         ]
                                                       }
@@ -740,14 +775,16 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "accounts"
                                                       },
                                                       {
                                                         "type": "as_alias",
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "a"
                                                           }
                                                         ]
                                                       }
@@ -766,7 +803,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "account_id"
                                                       },
                                                       {
                                                         "type": ")",
@@ -796,14 +834,16 @@
                                             "children": [
                                               {
                                                 "type": "identifier",
-                                                "children": []
+                                                "children": [],
+                                                "text": "countries"
                                               },
                                               {
                                                 "type": "as_alias",
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "c"
                                                   }
                                                 ]
                                               }
@@ -822,7 +862,8 @@
                                               },
                                               {
                                                 "type": "identifier",
-                                                "children": []
+                                                "children": [],
+                                                "text": "country"
                                               },
                                               {
                                                 "type": ")",
@@ -852,14 +893,16 @@
                                     "children": [
                                       {
                                         "type": "identifier",
-                                        "children": []
+                                        "children": [],
+                                        "text": "accounts_360"
                                       },
                                       {
                                         "type": "as_alias",
                                         "children": [
                                           {
                                             "type": "identifier",
-                                            "children": []
+                                            "children": [],
+                                            "text": "a360"
                                           }
                                         ]
                                       }
@@ -878,7 +921,8 @@
                                       },
                                       {
                                         "type": "identifier",
-                                        "children": []
+                                        "children": [],
+                                        "text": "account_id"
                                       },
                                       {
                                         "type": ",",
@@ -886,7 +930,8 @@
                                       },
                                       {
                                         "type": "identifier",
-                                        "children": []
+                                        "children": [],
+                                        "text": "date_month"
                                       },
                                       {
                                         "type": ")",
@@ -916,7 +961,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "date_year"
                               }
                             ]
                           },
@@ -929,7 +975,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "region_cluster"
                               }
                             ]
                           },
@@ -942,7 +989,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "industry_cluster"
                               }
                             ]
                           },
@@ -960,7 +1008,8 @@
                                     "type": ".",
                                     "children": []
                                   }
-                                ]
+                                ],
+                                "text": "a360.account_size"
                               }
                             ]
                           }
@@ -984,7 +1033,8 @@
                         "children": [
                           {
                             "type": "identifier",
-                            "children": []
+                            "children": [],
+                            "text": "date_year"
                           },
                           {
                             "type": ",",
@@ -992,7 +1042,8 @@
                           },
                           {
                             "type": "identifier",
-                            "children": []
+                            "children": [],
+                            "text": "region_cluster"
                           },
                           {
                             "type": ",",
@@ -1000,7 +1051,8 @@
                           },
                           {
                             "type": "identifier",
-                            "children": []
+                            "children": [],
+                            "text": "industry_cluster"
                           }
                         ]
                       }
@@ -1060,7 +1112,8 @@
                         "children": [
                           {
                             "type": "identifier",
-                            "children": []
+                            "children": [],
+                            "text": "revenue"
                           }
                         ]
                       }

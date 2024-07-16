@@ -6,9 +6,6 @@ from pathlib import Path
 from src import sql
 from tree_sitter import Node, Tree
 
-
-### check how to make comments copilot fiendly (not coding perspective but business logic perspective)
-
 """
 We will take input.sql file, parse it with sql.parse() function and turn the parse tree
 into a dictionary (by using only some of the fields). Then we'll compare it with benchmark that is stored
@@ -37,9 +34,10 @@ class TreeSitterJSONEncoder(json.JSONEncoder):
     def encode_node(self, node: Node):
         encoded_node = {
             "type": node.type,
-            # "text": node.text,
             "children": [self.encode_node(child) for child in node.children],
         }
+        if node.type in ["identifier", "number", "string"]:
+            encoded_node["text"] = node.text.decode("utf-8")
         return encoded_node
 
     def encode_tree(self, tree: Tree):
@@ -66,12 +64,13 @@ def test_parser():
             assert False, "Parsing of {}: failed ".format(file)
 
         output_file = Path(OUTPUT_DIR) / (file.stem + ".json")
-        target_dict = json.load(open(output_file, "rb"))
-        assert not DeepDiff(input_dict, target_dict), "Test {}: failed ".format(file)
+        target_dict = json.load(output_file.open("r"))
+        diff = DeepDiff(input_dict, target_dict)
+        assert not diff, "Test {}: failed with error {}".format(file, diff)
 
 
 if __name__ == "__main__":
+
     if "--create-outputs" in sys.argv:
         prep_output()
-
     test_parser()

@@ -28,7 +28,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "date_ranges"
           }
         ]
       },
@@ -49,7 +50,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "date_ranges"
           },
           {
             "type": "AS",
@@ -77,7 +79,8 @@
                         "children": [
                           {
                             "type": "identifier",
-                            "children": []
+                            "children": [],
+                            "text": "date_ranges"
                           },
                           {
                             "type": "ERROR",
@@ -132,7 +135,8 @@
                                                             "type": "DATE",
                                                             "children": []
                                                           }
-                                                        ]
+                                                        ],
+                                                        "text": "date"
                                                       },
                                                       {
                                                         "type": "(",
@@ -146,7 +150,8 @@
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "MIN"
                                                               },
                                                               {
                                                                 "type": "(",
@@ -179,7 +184,8 @@
                                                                                     "type": ".",
                                                                                     "children": []
                                                                                   }
-                                                                                ]
+                                                                                ],
+                                                                                "text": "d.stage_date"
                                                                               },
                                                                               {
                                                                                 "type": "<",
@@ -192,7 +198,8 @@
                                                                                     "type": ".",
                                                                                     "children": []
                                                                                   }
-                                                                                ]
+                                                                                ],
+                                                                                "text": "d.contract_start_date"
                                                                               }
                                                                             ]
                                                                           },
@@ -207,7 +214,8 @@
                                                                                 "type": ".",
                                                                                 "children": []
                                                                               }
-                                                                            ]
+                                                                            ],
+                                                                            "text": "d.stage_date"
                                                                           }
                                                                         ]
                                                                       },
@@ -225,7 +233,8 @@
                                                                                 "type": ".",
                                                                                 "children": []
                                                                               }
-                                                                            ]
+                                                                            ],
+                                                                            "text": "d.contract_start_date"
                                                                           }
                                                                         ]
                                                                       },
@@ -260,7 +269,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "date_month"
                                                       }
                                                     ]
                                                   }
@@ -280,14 +290,16 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "deals"
                                                   },
                                                   {
                                                     "type": "as_alias",
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "d"
                                                       }
                                                     ]
                                                   }
@@ -333,7 +345,8 @@
                                                             "type": "DATE",
                                                             "children": []
                                                           }
-                                                        ]
+                                                        ],
+                                                        "text": "date"
                                                       },
                                                       {
                                                         "type": "(",
@@ -344,7 +357,8 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "date_day"
                                                           }
                                                         ]
                                                       },
@@ -357,7 +371,8 @@
                                                         "children": [
                                                           {
                                                             "type": "string",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "'+1 day'"
                                                           }
                                                         ]
                                                       },
@@ -383,7 +398,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "date_ranges"
                                                   }
                                                 ]
                                               }
@@ -401,7 +417,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "date_day"
                                                   },
                                                   {
                                                     "type": "<",
@@ -440,7 +457,8 @@
                                                                                 "type": "DATE",
                                                                                 "children": []
                                                                               }
-                                                                            ]
+                                                                            ],
+                                                                            "text": "date"
                                                                           },
                                                                           {
                                                                             "type": "(",
@@ -454,7 +472,8 @@
                                                                                 "children": [
                                                                                   {
                                                                                     "type": "identifier",
-                                                                                    "children": []
+                                                                                    "children": [],
+                                                                                    "text": "MAX"
                                                                                   },
                                                                                   {
                                                                                     "type": "(",
@@ -487,7 +506,8 @@
                                                                                                         "type": ".",
                                                                                                         "children": []
                                                                                                       }
-                                                                                                    ]
+                                                                                                    ],
+                                                                                                    "text": "d.contract_end_date"
                                                                                                   },
                                                                                                   {
                                                                                                     "type": ">",
@@ -500,7 +520,8 @@
                                                                                                         "type": ".",
                                                                                                         "children": []
                                                                                                       }
-                                                                                                    ]
+                                                                                                    ],
+                                                                                                    "text": "d.stage_date"
                                                                                                   }
                                                                                                 ]
                                                                                               },
@@ -515,7 +536,8 @@
                                                                                                     "type": ".",
                                                                                                     "children": []
                                                                                                   }
-                                                                                                ]
+                                                                                                ],
+                                                                                                "text": "d.contract_end_date"
                                                                                               }
                                                                                             ]
                                                                                           },
@@ -533,7 +555,8 @@
                                                                                                     "type": ".",
                                                                                                     "children": []
                                                                                                   }
-                                                                                                ]
+                                                                                                ],
+                                                                                                "text": "d.stage_date"
                                                                                               }
                                                                                             ]
                                                                                           },
@@ -575,14 +598,16 @@
                                                                     "children": [
                                                                       {
                                                                         "type": "identifier",
-                                                                        "children": []
+                                                                        "children": [],
+                                                                        "text": "deals"
                                                                       },
                                                                       {
                                                                         "type": "as_alias",
                                                                         "children": [
                                                                           {
                                                                             "type": "identifier",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "d"
                                                                           }
                                                                         ]
                                                                       }
@@ -635,7 +660,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "date_day"
                               }
                             ]
                           }
@@ -653,7 +679,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "date_ranges"
                               }
                             ]
                           }
@@ -675,7 +702,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "date_day"
                               }
                             ]
                           }
@@ -719,7 +747,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "deals_signed"
           }
         ]
       },
@@ -740,7 +769,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "deals_signed"
           },
           {
             "type": "AS",
@@ -788,7 +818,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue"
                                   },
                                   {
                                     "type": "/",
@@ -796,7 +827,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "contract_duration_days"
                                   }
                                 ]
                               },
@@ -809,7 +841,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_day"
                                   }
                                 ]
                               }
@@ -827,7 +860,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_core"
                                   },
                                   {
                                     "type": "/",
@@ -835,7 +869,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "contract_duration_days"
                                   }
                                 ]
                               },
@@ -848,7 +883,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_core_day"
                                   }
                                 ]
                               }
@@ -866,7 +902,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_aux"
                                   },
                                   {
                                     "type": "/",
@@ -874,7 +911,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "contract_duration_days"
                                   }
                                 ]
                               },
@@ -887,7 +925,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_aux_day"
                                   }
                                 ]
                               }
@@ -935,7 +974,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.deal_id"
                                                   }
                                                 ]
                                               },
@@ -953,7 +993,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.account_id"
                                                   }
                                                 ]
                                               },
@@ -971,7 +1012,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.contract_start_date"
                                                   }
                                                 ]
                                               },
@@ -989,7 +1031,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.contract_end_date"
                                                   }
                                                 ]
                                               },
@@ -1011,7 +1054,8 @@
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "julianday"
                                                               },
                                                               {
                                                                 "type": "(",
@@ -1027,7 +1071,8 @@
                                                                         "type": ".",
                                                                         "children": []
                                                                       }
-                                                                    ]
+                                                                    ],
+                                                                    "text": "d.contract_end_date"
                                                                   }
                                                                 ]
                                                               },
@@ -1046,7 +1091,8 @@
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "julianday"
                                                               },
                                                               {
                                                                 "type": "(",
@@ -1062,7 +1108,8 @@
                                                                         "type": ".",
                                                                         "children": []
                                                                       }
-                                                                    ]
+                                                                    ],
+                                                                    "text": "d.contract_start_date"
                                                                   }
                                                                 ]
                                                               },
@@ -1080,7 +1127,8 @@
                                                       },
                                                       {
                                                         "type": "number",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "1"
                                                       }
                                                     ]
                                                   },
@@ -1093,7 +1141,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "contract_duration_days"
                                                       }
                                                     ]
                                                   }
@@ -1111,7 +1160,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -1144,7 +1194,8 @@
                                                                             "type": ".",
                                                                             "children": []
                                                                           }
-                                                                        ]
+                                                                        ],
+                                                                        "text": "o.product"
                                                                       },
                                                                       {
                                                                         "type": "IN",
@@ -1159,7 +1210,8 @@
                                                                           },
                                                                           {
                                                                             "type": "string",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "'Subscription Base'"
                                                                           },
                                                                           {
                                                                             "type": ",",
@@ -1167,7 +1219,8 @@
                                                                           },
                                                                           {
                                                                             "type": "string",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "'Subscription Premium'"
                                                                           },
                                                                           {
                                                                             "type": ")",
@@ -1188,7 +1241,8 @@
                                                                         "type": ".",
                                                                         "children": []
                                                                       }
-                                                                    ]
+                                                                    ],
+                                                                    "text": "o.value"
                                                                   }
                                                                 ]
                                                               },
@@ -1201,7 +1255,8 @@
                                                                   },
                                                                   {
                                                                     "type": "number",
-                                                                    "children": []
+                                                                    "children": [],
+                                                                    "text": "0"
                                                                   }
                                                                 ]
                                                               },
@@ -1228,7 +1283,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue_core"
                                                       }
                                                     ]
                                                   }
@@ -1246,7 +1302,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -1279,7 +1336,8 @@
                                                                             "type": ".",
                                                                             "children": []
                                                                           }
-                                                                        ]
+                                                                        ],
+                                                                        "text": "o.product"
                                                                       },
                                                                       {
                                                                         "type": "IN",
@@ -1294,7 +1352,8 @@
                                                                           },
                                                                           {
                                                                             "type": "string",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "'Training'"
                                                                           },
                                                                           {
                                                                             "type": ",",
@@ -1302,7 +1361,8 @@
                                                                           },
                                                                           {
                                                                             "type": "string",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "'Consulting'"
                                                                           },
                                                                           {
                                                                             "type": ")",
@@ -1323,7 +1383,8 @@
                                                                         "type": ".",
                                                                         "children": []
                                                                       }
-                                                                    ]
+                                                                    ],
+                                                                    "text": "o.value"
                                                                   }
                                                                 ]
                                                               },
@@ -1336,7 +1397,8 @@
                                                                   },
                                                                   {
                                                                     "type": "number",
-                                                                    "children": []
+                                                                    "children": [],
+                                                                    "text": "0"
                                                                   }
                                                                 ]
                                                               },
@@ -1363,7 +1425,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue_aux"
                                                       }
                                                     ]
                                                   }
@@ -1381,7 +1444,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -1397,7 +1461,8 @@
                                                                 "type": ".",
                                                                 "children": []
                                                               }
-                                                            ]
+                                                            ],
+                                                            "text": "o.value"
                                                           }
                                                         ]
                                                       },
@@ -1416,7 +1481,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue"
                                                       }
                                                     ]
                                                   }
@@ -1442,14 +1508,16 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "orders"
                                                           },
                                                           {
                                                             "type": "as_alias",
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "o"
                                                               }
                                                             ]
                                                           }
@@ -1464,14 +1532,16 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "deals"
                                                           },
                                                           {
                                                             "type": "as_alias",
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "d"
                                                               }
                                                             ]
                                                           }
@@ -1490,7 +1560,8 @@
                                                           },
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "deal_id"
                                                           },
                                                           {
                                                             "type": ",",
@@ -1498,7 +1569,8 @@
                                                           },
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "order_id"
                                                           },
                                                           {
                                                             "type": ")",
@@ -1529,7 +1601,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.stage"
                                                   },
                                                   {
                                                     "type": "=",
@@ -1537,7 +1610,8 @@
                                                   },
                                                   {
                                                     "type": "number",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "4"
                                                   }
                                                 ]
                                               }
@@ -1564,7 +1638,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.deal_id"
                                                   }
                                                 ]
                                               },
@@ -1582,7 +1657,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.account_id"
                                                   }
                                                 ]
                                               },
@@ -1600,7 +1676,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.contract_start_date"
                                                   }
                                                 ]
                                               },
@@ -1618,7 +1695,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "d.contract_end_date"
                                                   }
                                                 ]
                                               }
@@ -1643,7 +1721,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "t"
                                   }
                                 ]
                               }
@@ -1689,7 +1768,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "accounts_revenue"
           }
         ]
       },
@@ -1710,7 +1790,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "accounts_revenue"
           },
           {
             "type": "AS",
@@ -1742,7 +1823,8 @@
                                     "type": ".",
                                     "children": []
                                   }
-                                ]
+                                ],
+                                "text": "t.date_month"
                               }
                             ]
                           },
@@ -1760,7 +1842,8 @@
                                     "type": ".",
                                     "children": []
                                   }
-                                ]
+                                ],
+                                "text": "t.account_id"
                               }
                             ]
                           },
@@ -1776,7 +1859,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "AVG"
                                   },
                                   {
                                     "type": "(",
@@ -1792,7 +1876,8 @@
                                             "type": ".",
                                             "children": []
                                           }
-                                        ]
+                                        ],
+                                        "text": "t.deals"
                                       }
                                     ]
                                   },
@@ -1811,7 +1896,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "deals"
                                   }
                                 ]
                               }
@@ -1829,7 +1915,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "SUM"
                                   },
                                   {
                                     "type": "(",
@@ -1845,7 +1932,8 @@
                                             "type": ".",
                                             "children": []
                                           }
-                                        ]
+                                        ],
+                                        "text": "t.revenue_core"
                                       }
                                     ]
                                   },
@@ -1864,7 +1952,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_core"
                                   }
                                 ]
                               }
@@ -1882,7 +1971,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "SUM"
                                   },
                                   {
                                     "type": "(",
@@ -1898,7 +1988,8 @@
                                             "type": ".",
                                             "children": []
                                           }
-                                        ]
+                                        ],
+                                        "text": "t.revenue_aux"
                                       }
                                     ]
                                   },
@@ -1917,7 +2008,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue_aux"
                                   }
                                 ]
                               }
@@ -1935,7 +2027,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "SUM"
                                   },
                                   {
                                     "type": "(",
@@ -1951,7 +2044,8 @@
                                             "type": ".",
                                             "children": []
                                           }
-                                        ]
+                                        ],
+                                        "text": "t.revenue"
                                       }
                                     ]
                                   },
@@ -1970,7 +2064,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "revenue"
                                   }
                                 ]
                               }
@@ -2018,7 +2113,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "dr.date_day"
                                                   }
                                                 ]
                                               },
@@ -2039,7 +2135,8 @@
                                                             "type": "DATE",
                                                             "children": []
                                                           }
-                                                        ]
+                                                        ],
+                                                        "text": "DATE"
                                                       },
                                                       {
                                                         "type": "(",
@@ -2050,7 +2147,8 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "date_day"
                                                           }
                                                         ]
                                                       },
@@ -2063,7 +2161,8 @@
                                                         "children": [
                                                           {
                                                             "type": "string",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "'start of month'"
                                                           }
                                                         ]
                                                       },
@@ -2082,7 +2181,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "date_month"
                                                       }
                                                     ]
                                                   }
@@ -2102,7 +2202,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "ds.account_id"
                                                   }
                                                 ]
                                               },
@@ -2118,7 +2219,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "COUNT"
                                                       },
                                                       {
                                                         "type": "(",
@@ -2134,7 +2236,8 @@
                                                                 "type": ".",
                                                                 "children": []
                                                               }
-                                                            ]
+                                                            ],
+                                                            "text": "ds.deal_id"
                                                           }
                                                         ]
                                                       },
@@ -2153,7 +2256,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "deals"
                                                       }
                                                     ]
                                                   }
@@ -2171,7 +2275,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -2187,7 +2292,8 @@
                                                                 "type": ".",
                                                                 "children": []
                                                               }
-                                                            ]
+                                                            ],
+                                                            "text": "ds.revenue_core_day"
                                                           }
                                                         ]
                                                       },
@@ -2206,7 +2312,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue_core"
                                                       }
                                                     ]
                                                   }
@@ -2224,7 +2331,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -2240,7 +2348,8 @@
                                                                 "type": ".",
                                                                 "children": []
                                                               }
-                                                            ]
+                                                            ],
+                                                            "text": "ds.revenue_aux_day"
                                                           }
                                                         ]
                                                       },
@@ -2259,7 +2368,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue_aux"
                                                       }
                                                     ]
                                                   }
@@ -2277,7 +2387,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -2293,7 +2404,8 @@
                                                                 "type": ".",
                                                                 "children": []
                                                               }
-                                                            ]
+                                                            ],
+                                                            "text": "ds.revenue_day"
                                                           }
                                                         ]
                                                       },
@@ -2312,7 +2424,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue"
                                                       }
                                                     ]
                                                   }
@@ -2338,14 +2451,16 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "date_ranges"
                                                           },
                                                           {
                                                             "type": "as_alias",
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "dr"
                                                               }
                                                             ]
                                                           }
@@ -2369,14 +2484,16 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "deals_signed"
                                                           },
                                                           {
                                                             "type": "as_alias",
                                                             "children": [
                                                               {
                                                                 "type": "identifier",
-                                                                "children": []
+                                                                "children": [],
+                                                                "text": "ds"
                                                               }
                                                             ]
                                                           }
@@ -2402,7 +2519,8 @@
                                                                         "type": ".",
                                                                         "children": []
                                                                       }
-                                                                    ]
+                                                                    ],
+                                                                    "text": "dr.date_day"
                                                                   },
                                                                   {
                                                                     "type": ">=",
@@ -2418,7 +2536,8 @@
                                                                             "type": "DATE",
                                                                             "children": []
                                                                           }
-                                                                        ]
+                                                                        ],
+                                                                        "text": "date"
                                                                       },
                                                                       {
                                                                         "type": "(",
@@ -2434,7 +2553,8 @@
                                                                                 "type": ".",
                                                                                 "children": []
                                                                               }
-                                                                            ]
+                                                                            ],
+                                                                            "text": "ds.contract_start_date"
                                                                           }
                                                                         ]
                                                                       },
@@ -2460,7 +2580,8 @@
                                                                         "type": ".",
                                                                         "children": []
                                                                       }
-                                                                    ]
+                                                                    ],
+                                                                    "text": "dr.date_day"
                                                                   },
                                                                   {
                                                                     "type": "<=",
@@ -2476,7 +2597,8 @@
                                                                             "type": "DATE",
                                                                             "children": []
                                                                           }
-                                                                        ]
+                                                                        ],
+                                                                        "text": "date"
                                                                       },
                                                                       {
                                                                         "type": "(",
@@ -2492,7 +2614,8 @@
                                                                                 "type": ".",
                                                                                 "children": []
                                                                               }
-                                                                            ]
+                                                                            ],
+                                                                            "text": "ds.contract_end_date"
                                                                           }
                                                                         ]
                                                                       },
@@ -2535,7 +2658,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "dr.date_day"
                                                   }
                                                 ]
                                               },
@@ -2553,7 +2677,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "ds.account_id"
                                                   }
                                                 ]
                                               }
@@ -2574,7 +2699,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "t"
                                   }
                                 ]
                               }
@@ -2598,7 +2724,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "account_id"
                               }
                             ]
                           },
@@ -2611,7 +2738,8 @@
                             "children": [
                               {
                                 "type": "identifier",
-                                "children": []
+                                "children": [],
+                                "text": "date_month"
                               }
                             ]
                           }
@@ -2655,7 +2783,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "accounts_360"
           }
         ]
       },
@@ -2676,7 +2805,8 @@
           },
           {
             "type": "identifier",
-            "children": []
+            "children": [],
+            "text": "accounts_360"
           },
           {
             "type": "AS",
@@ -2747,7 +2877,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "t.revenue_12m"
                                           },
                                           {
                                             "type": "<=",
@@ -2755,7 +2886,8 @@
                                           },
                                           {
                                             "type": "number",
-                                            "children": []
+                                            "children": [],
+                                            "text": "300"
                                           }
                                         ]
                                       },
@@ -2765,7 +2897,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'Small'"
                                       }
                                     ]
                                   },
@@ -2789,7 +2922,8 @@
                                                     "type": ".",
                                                     "children": []
                                                   }
-                                                ]
+                                                ],
+                                                "text": "t.revenue_12m"
                                               },
                                               {
                                                 "type": ">",
@@ -2797,7 +2931,8 @@
                                               },
                                               {
                                                 "type": "number",
-                                                "children": []
+                                                "children": [],
+                                                "text": "300"
                                               }
                                             ]
                                           },
@@ -2815,7 +2950,8 @@
                                                     "type": ".",
                                                     "children": []
                                                   }
-                                                ]
+                                                ],
+                                                "text": "t.revenue_12m"
                                               },
                                               {
                                                 "type": "<=",
@@ -2823,7 +2959,8 @@
                                               },
                                               {
                                                 "type": "number",
-                                                "children": []
+                                                "children": [],
+                                                "text": "600"
                                               }
                                             ]
                                           }
@@ -2835,7 +2972,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'Medium'"
                                       }
                                     ]
                                   },
@@ -2856,7 +2994,8 @@
                                                 "type": ".",
                                                 "children": []
                                               }
-                                            ]
+                                            ],
+                                            "text": "t.revenue_12m"
                                           },
                                           {
                                             "type": ">",
@@ -2864,7 +3003,8 @@
                                           },
                                           {
                                             "type": "number",
-                                            "children": []
+                                            "children": [],
+                                            "text": "600"
                                           }
                                         ]
                                       },
@@ -2874,7 +3014,8 @@
                                       },
                                       {
                                         "type": "string",
-                                        "children": []
+                                        "children": [],
+                                        "text": "'Large'"
                                       }
                                     ]
                                   },
@@ -2911,7 +3052,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "account_size"
                                   }
                                 ]
                               }
@@ -2954,7 +3096,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "account_id"
                                                   }
                                                 ]
                                               },
@@ -2967,7 +3110,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "date_month"
                                                   }
                                                 ]
                                               },
@@ -2980,7 +3124,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "revenue"
                                                   }
                                                 ]
                                               },
@@ -2993,7 +3138,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "revenue_core"
                                                   }
                                                 ]
                                               },
@@ -3006,7 +3152,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
+                                                    "children": [],
+                                                    "text": "revenue_aux"
                                                   }
                                                 ]
                                               },
@@ -3019,43 +3166,8 @@
                                                 "children": [
                                                   {
                                                     "type": "identifier",
-                                                    "children": []
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "type": ",",
-                                                "children": []
-                                              },
-                                              {
-                                                "type": "select_expression",
-                                                "children": [
-                                                  {
-                                                    "type": "identifier",
-                                                    "children": [
-                                                      {
-                                                        "type": ".",
-                                                        "children": []
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "type": ",",
-                                                "children": []
-                                              },
-                                              {
-                                                "type": "select_expression",
-                                                "children": [
-                                                  {
-                                                    "type": "identifier",
-                                                    "children": [
-                                                      {
-                                                        "type": ".",
-                                                        "children": []
-                                                      }
-                                                    ]
+                                                    "children": [],
+                                                    "text": "deals"
                                                   }
                                                 ]
                                               },
@@ -3073,7 +3185,8 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "accounts.name"
                                                   }
                                                 ]
                                               },
@@ -3091,7 +3204,46 @@
                                                         "type": ".",
                                                         "children": []
                                                       }
-                                                    ]
+                                                    ],
+                                                    "text": "accounts.industry"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "type": ",",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "select_expression",
+                                                "children": [
+                                                  {
+                                                    "type": "identifier",
+                                                    "children": [
+                                                      {
+                                                        "type": ".",
+                                                        "children": []
+                                                      }
+                                                    ],
+                                                    "text": "accounts.country"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "type": ",",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "select_expression",
+                                                "children": [
+                                                  {
+                                                    "type": "identifier",
+                                                    "children": [
+                                                      {
+                                                        "type": ".",
+                                                        "children": []
+                                                      }
+                                                    ],
+                                                    "text": "accounts.priority"
                                                   }
                                                 ]
                                               },
@@ -3107,7 +3259,8 @@
                                                     "children": [
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "SUM"
                                                       },
                                                       {
                                                         "type": "(",
@@ -3118,7 +3271,8 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "revenue"
                                                           }
                                                         ]
                                                       },
@@ -3159,7 +3313,8 @@
                                                                         "children": [
                                                                           {
                                                                             "type": "identifier",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "account_id"
                                                                           }
                                                                         ]
                                                                       }
@@ -3181,7 +3336,8 @@
                                                                         "children": [
                                                                           {
                                                                             "type": "identifier",
-                                                                            "children": []
+                                                                            "children": [],
+                                                                            "text": "date_month"
                                                                           }
                                                                         ]
                                                                       }
@@ -3211,7 +3367,8 @@
                                                                             "children": [
                                                                               {
                                                                                 "type": "number",
-                                                                                "children": []
+                                                                                "children": [],
+                                                                                "text": "11"
                                                                               },
                                                                               {
                                                                                 "type": "PRECEDING",
@@ -3266,7 +3423,8 @@
                                                       },
                                                       {
                                                         "type": "identifier",
-                                                        "children": []
+                                                        "children": [],
+                                                        "text": "revenue_12m"
                                                       }
                                                     ]
                                                   }
@@ -3292,7 +3450,8 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "accounts_revenue"
                                                           }
                                                         ]
                                                       },
@@ -3305,7 +3464,8 @@
                                                         "children": [
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "accounts"
                                                           }
                                                         ]
                                                       },
@@ -3322,7 +3482,8 @@
                                                           },
                                                           {
                                                             "type": "identifier",
-                                                            "children": []
+                                                            "children": [],
+                                                            "text": "account_id"
                                                           },
                                                           {
                                                             "type": ")",
@@ -3355,7 +3516,8 @@
                                   },
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "t"
                                   }
                                 ]
                               }

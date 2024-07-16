@@ -35,7 +35,8 @@
                                     "type": "DATE",
                                     "children": []
                                   }
-                                ]
+                                ],
+                                "text": "date"
                               },
                               {
                                 "type": "(",
@@ -46,7 +47,8 @@
                                 "children": [
                                   {
                                     "type": "identifier",
-                                    "children": []
+                                    "children": [],
+                                    "text": "date_month"
                                   }
                                 ]
                               },
@@ -59,7 +61,8 @@
                                 "children": [
                                   {
                                     "type": "string",
-                                    "children": []
+                                    "children": [],
+                                    "text": "'start of year'"
                                   }
                                 ]
                               },
@@ -92,7 +95,8 @@
                                     "type": ".",
                                     "children": []
                                   }
-                                ]
+                                ],
+                                "text": "date_year\n    CASE\n        WHEN c.region"
                               }
                             ]
                           }
