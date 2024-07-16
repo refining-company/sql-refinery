@@ -1,22 +1,14 @@
 # Setup
 
-1. Initialise submodules (linked repos)
+1. Initialise Environment
 
-   ```bash
-   git submodule init
-   git submodule update
+   Initialise sub-modules, create Conda environment, set up Git pre-commit hook updating `environment.yml`
+
+   ```sh
+   ./setup.sh
    ```
 
-2. Create environment and install dependencies
-
-   ```bash
-   conda create --prefix ./.conda python=3.12 pytest -y
-   conda activate ./.conda
-   pip install tree-sitter
-   pip install -e ./.submodules/tree-sitter-sql-bigquery
-   ```
-
-3. Configure VS Code `.vscode/settings.json`
+2. Configure VS Code `.vscode/settings.json`
 
    ```json
    {
@@ -32,7 +24,7 @@
    }
    ```
 
-4. Configure tasks `.vscode/tasks.json`
+3. Configure tasks `.vscode/tasks.json`
 
    This will allow `> Tasks: Run Task` in VSCode to launch tree-sitter playground in browser
 
