@@ -12,4 +12,4 @@ from . import codebase
 # [ ] If they don't match suggest alternatives ordered by how close the Levenstein distaince is and
 #     how frequently they've been used
 
-codebase = codebase.load(".submodules/playground-edtech/code")
+codebase = codebase.load(".submodules/playground/code")
