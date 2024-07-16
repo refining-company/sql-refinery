@@ -4,4 +4,3 @@ channels:
 dependencies:
   - pytest
   - python=3.12
-  - deepdiff
