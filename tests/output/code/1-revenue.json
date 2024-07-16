@@ -1,0 +1,1134 @@
+{
+  "root": {
+    "type": "source_file",
+    "children": [
+      {
+        "type": "drop_table_statement",
+        "children": [
+          {
+            "type": "DROP",
+            "children": []
+          },
+          {
+            "type": "TABLE",
+            "children": []
+          },
+          {
+            "type": "keyword_if_exists",
+            "children": [
+              {
+                "type": "IF_EXISTS",
+                "children": []
+              },
+              {
+                "type": "IF_EXISTS",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "identifier",
+            "children": [],
+            "text": "revenue"
+          }
+        ]
+      },
+      {
+        "type": ";",
+        "children": []
+      },
+      {
+        "type": "create_table_statement",
+        "children": [
+          {
+            "type": "CREATE",
+            "children": []
+          },
+          {
+            "type": "TABLE",
+            "children": []
+          },
+          {
+            "type": "identifier",
+            "children": [],
+            "text": "revenue"
+          },
+          {
+            "type": "AS",
+            "children": []
+          },
+          {
+            "type": "query_statement",
+            "children": [
+              {
+                "type": "query_expr",
+                "children": [
+                  {
+                    "type": "select",
+                    "children": [
+                      {
+                        "type": "SELECT",
+                        "children": []
+                      },
+                      {
+                        "type": "select_list",
+                        "children": [
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "function_call",
+                                "children": [
+                                  {
+                                    "type": "identifier",
+                                    "children": [
+                                      {
+                                        "type": "DATE",
+                                        "children": []
+                                      }
+                                    ],
+                                    "text": "date"
+                                  },
+                                  {
+                                    "type": "(",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "argument",
+                                    "children": [
+                                      {
+                                        "type": "identifier",
+                                        "children": [],
+                                        "text": "date_month"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": ",",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "argument",
+                                    "children": [
+                                      {
+                                        "type": "string",
+                                        "children": [],
+                                        "text": "'start of year'"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": ")",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "as_alias",
+                                "children": [
+                                  {
+                                    "type": "AS",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "date_year"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "casewhen_expression",
+                                "children": [
+                                  {
+                                    "type": "CASE",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "casewhen_clause",
+                                    "children": [
+                                      {
+                                        "type": "WHEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "binary_expression",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [
+                                              {
+                                                "type": ".",
+                                                "children": []
+                                              }
+                                            ],
+                                            "text": "c.region"
+                                          },
+                                          {
+                                            "type": "IN",
+                                            "children": []
+                                          },
+                                          {
+                                            "type": "struct",
+                                            "children": [
+                                              {
+                                                "type": "(",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "string",
+                                                "children": [],
+                                                "text": "'Americas'"
+                                              },
+                                              {
+                                                "type": ",",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "string",
+                                                "children": [],
+                                                "text": "'Europe'"
+                                              },
+                                              {
+                                                "type": ")",
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "THEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "string",
+                                        "children": [],
+                                        "text": "'North-West'"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "casewhen_clause",
+                                    "children": [
+                                      {
+                                        "type": "WHEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "binary_expression",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [
+                                              {
+                                                "type": ".",
+                                                "children": []
+                                              }
+                                            ],
+                                            "text": "c.region"
+                                          },
+                                          {
+                                            "type": "IN",
+                                            "children": []
+                                          },
+                                          {
+                                            "type": "struct",
+                                            "children": [
+                                              {
+                                                "type": "(",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "string",
+                                                "children": [],
+                                                "text": "'Africa'"
+                                              },
+                                              {
+                                                "type": ",",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "string",
+                                                "children": [],
+                                                "text": "'Asia'"
+                                              },
+                                              {
+                                                "type": ")",
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "THEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "string",
+                                        "children": [],
+                                        "text": "'South-East'"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "caseelse_clause",
+                                    "children": [
+                                      {
+                                        "type": "ELSE",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "NULL",
+                                        "children": [
+                                          {
+                                            "type": "NULL",
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "END",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "as_alias",
+                                "children": [
+                                  {
+                                    "type": "AS",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "region_cluster"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "casewhen_expression",
+                                "children": [
+                                  {
+                                    "type": "CASE",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "casewhen_clause",
+                                    "children": [
+                                      {
+                                        "type": "WHEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "binary_expression",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [
+                                              {
+                                                "type": ".",
+                                                "children": []
+                                              }
+                                            ],
+                                            "text": "a.industry"
+                                          },
+                                          {
+                                            "type": "=",
+                                            "children": []
+                                          },
+                                          {
+                                            "type": "string",
+                                            "children": [],
+                                            "text": "'Information Technology'"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "THEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "string",
+                                        "children": [],
+                                        "text": "'Tech'"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "casewhen_clause",
+                                    "children": [
+                                      {
+                                        "type": "WHEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "unary_expression",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [
+                                              {
+                                                "type": ".",
+                                                "children": []
+                                              }
+                                            ],
+                                            "text": "a.industry"
+                                          },
+                                          {
+                                            "type": "IS",
+                                            "children": []
+                                          },
+                                          {
+                                            "type": "NULL",
+                                            "children": [
+                                              {
+                                                "type": "NULL",
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "THEN",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "NULL",
+                                        "children": [
+                                          {
+                                            "type": "NULL",
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "caseelse_clause",
+                                    "children": [
+                                      {
+                                        "type": "ELSE",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "string",
+                                        "children": [],
+                                        "text": "'Other'"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "END",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "as_alias",
+                                "children": [
+                                  {
+                                    "type": "AS",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "industry_cluster"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "identifier",
+                                "children": [
+                                  {
+                                    "type": ".",
+                                    "children": []
+                                  }
+                                ],
+                                "text": "a360.account_size"
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "function_call",
+                                "children": [
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "SUM"
+                                  },
+                                  {
+                                    "type": "(",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "argument",
+                                    "children": [
+                                      {
+                                        "type": "identifier",
+                                        "children": [
+                                          {
+                                            "type": ".",
+                                            "children": []
+                                          }
+                                        ],
+                                        "text": "ar.revenue"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": ")",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "as_alias",
+                                "children": [
+                                  {
+                                    "type": "AS",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "revenue"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "function_call",
+                                "children": [
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "COUNT"
+                                  },
+                                  {
+                                    "type": "(",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "distinct",
+                                    "children": [
+                                      {
+                                        "type": "DISTINCT",
+                                        "children": []
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "argument",
+                                    "children": [
+                                      {
+                                        "type": "identifier",
+                                        "children": [
+                                          {
+                                            "type": ".",
+                                            "children": []
+                                          }
+                                        ],
+                                        "text": "ar.account_id"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": ")",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "as_alias",
+                                "children": [
+                                  {
+                                    "type": "AS",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "accounts"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "select_expression",
+                            "children": [
+                              {
+                                "type": "binary_expression",
+                                "children": [
+                                  {
+                                    "type": "function_call",
+                                    "children": [
+                                      {
+                                        "type": "identifier",
+                                        "children": [],
+                                        "text": "SUM"
+                                      },
+                                      {
+                                        "type": "(",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "argument",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [
+                                              {
+                                                "type": ".",
+                                                "children": []
+                                              }
+                                            ],
+                                            "text": "a360.revenue_12m"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": ")",
+                                        "children": []
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "/",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "function_call",
+                                    "children": [
+                                      {
+                                        "type": "identifier",
+                                        "children": [],
+                                        "text": "COUNT"
+                                      },
+                                      {
+                                        "type": "(",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "distinct",
+                                        "children": [
+                                          {
+                                            "type": "DISTINCT",
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "argument",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [
+                                              {
+                                                "type": ".",
+                                                "children": []
+                                              }
+                                            ],
+                                            "text": "ar.account_id"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": ")",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "as_alias",
+                                "children": [
+                                  {
+                                    "type": "AS",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "revenue_12m_p_account"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "from_clause",
+                        "children": [
+                          {
+                            "type": "FROM",
+                            "children": []
+                          },
+                          {
+                            "type": "from_item",
+                            "children": [
+                              {
+                                "type": "join_operation",
+                                "children": [
+                                  {
+                                    "type": "from_item",
+                                    "children": [
+                                      {
+                                        "type": "join_operation",
+                                        "children": [
+                                          {
+                                            "type": "from_item",
+                                            "children": [
+                                              {
+                                                "type": "join_operation",
+                                                "children": [
+                                                  {
+                                                    "type": "from_item",
+                                                    "children": [
+                                                      {
+                                                        "type": "identifier",
+                                                        "children": [],
+                                                        "text": "accounts_revenue"
+                                                      },
+                                                      {
+                                                        "type": "as_alias",
+                                                        "children": [
+                                                          {
+                                                            "type": "identifier",
+                                                            "children": [],
+                                                            "text": "ar"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "join_type",
+                                                    "children": [
+                                                      {
+                                                        "type": "LEFT",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "JOIN",
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "type": "from_item",
+                                                    "children": [
+                                                      {
+                                                        "type": "identifier",
+                                                        "children": [],
+                                                        "text": "accounts"
+                                                      },
+                                                      {
+                                                        "type": "as_alias",
+                                                        "children": [
+                                                          {
+                                                            "type": "identifier",
+                                                            "children": [],
+                                                            "text": "a"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "join_condition",
+                                                    "children": [
+                                                      {
+                                                        "type": "USING",
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "type": "(",
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "type": "identifier",
+                                                        "children": [],
+                                                        "text": "account_id"
+                                                      },
+                                                      {
+                                                        "type": ")",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "type": "join_type",
+                                            "children": [
+                                              {
+                                                "type": "LEFT",
+                                                "children": []
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "type": "JOIN",
+                                            "children": []
+                                          },
+                                          {
+                                            "type": "from_item",
+                                            "children": [
+                                              {
+                                                "type": "identifier",
+                                                "children": [],
+                                                "text": "countries"
+                                              },
+                                              {
+                                                "type": "as_alias",
+                                                "children": [
+                                                  {
+                                                    "type": "identifier",
+                                                    "children": [],
+                                                    "text": "c"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "type": "join_condition",
+                                            "children": [
+                                              {
+                                                "type": "USING",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "(",
+                                                "children": []
+                                              },
+                                              {
+                                                "type": "identifier",
+                                                "children": [],
+                                                "text": "country"
+                                              },
+                                              {
+                                                "type": ")",
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "join_type",
+                                    "children": [
+                                      {
+                                        "type": "LEFT",
+                                        "children": []
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "JOIN",
+                                    "children": []
+                                  },
+                                  {
+                                    "type": "from_item",
+                                    "children": [
+                                      {
+                                        "type": "identifier",
+                                        "children": [],
+                                        "text": "accounts_360"
+                                      },
+                                      {
+                                        "type": "as_alias",
+                                        "children": [
+                                          {
+                                            "type": "identifier",
+                                            "children": [],
+                                            "text": "a360"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "join_condition",
+                                    "children": [
+                                      {
+                                        "type": "USING",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "(",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "identifier",
+                                        "children": [],
+                                        "text": "account_id"
+                                      },
+                                      {
+                                        "type": ",",
+                                        "children": []
+                                      },
+                                      {
+                                        "type": "identifier",
+                                        "children": [],
+                                        "text": "date_month"
+                                      },
+                                      {
+                                        "type": ")",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "group_by_clause",
+                        "children": [
+                          {
+                            "type": "GROUP_BY",
+                            "children": []
+                          },
+                          {
+                            "type": "GROUP_BY",
+                            "children": []
+                          },
+                          {
+                            "type": "grouping_item",
+                            "children": [
+                              {
+                                "type": "identifier",
+                                "children": [],
+                                "text": "date_year"
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "grouping_item",
+                            "children": [
+                              {
+                                "type": "identifier",
+                                "children": [],
+                                "text": "region_cluster"
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "grouping_item",
+                            "children": [
+                              {
+                                "type": "identifier",
+                                "children": [],
+                                "text": "industry_cluster"
+                              }
+                            ]
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "grouping_item",
+                            "children": [
+                              {
+                                "type": "identifier",
+                                "children": [
+                                  {
+                                    "type": ".",
+                                    "children": []
+                                  }
+                                ],
+                                "text": "a360.account_size"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "order_by_clause",
+                    "children": [
+                      {
+                        "type": "ORDER_BY",
+                        "children": []
+                      },
+                      {
+                        "type": "ORDER_BY",
+                        "children": []
+                      },
+                      {
+                        "type": "order_by_clause_body",
+                        "children": [
+                          {
+                            "type": "identifier",
+                            "children": [],
+                            "text": "date_year"
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "identifier",
+                            "children": [],
+                            "text": "region_cluster"
+                          },
+                          {
+                            "type": ",",
+                            "children": []
+                          },
+                          {
+                            "type": "identifier",
+                            "children": [],
+                            "text": "industry_cluster"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": ";",
+        "children": []
+      },
+      {
+        "type": "query_statement",
+        "children": [
+          {
+            "type": "query_expr",
+            "children": [
+              {
+                "type": "select",
+                "children": [
+                  {
+                    "type": "SELECT",
+                    "children": []
+                  },
+                  {
+                    "type": "select_list",
+                    "children": [
+                      {
+                        "type": "select_all",
+                        "children": [
+                          {
+                            "type": "asterisk_expression",
+                            "children": [
+                              {
+                                "type": "*",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "from_clause",
+                    "children": [
+                      {
+                        "type": "FROM",
+                        "children": []
+                      },
+                      {
+                        "type": "from_item",
+                        "children": [
+                          {
+                            "type": "identifier",
+                            "children": [],
+                            "text": "revenue"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": ";",
+        "children": []
+      }
+    ]
+  }
+}

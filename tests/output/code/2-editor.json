@@ -1,0 +1,320 @@
+{
+  "root": {
+    "type": "source_file",
+    "children": [
+      {
+        "type": "comment",
+        "children": []
+      },
+      {
+        "type": "query_statement",
+        "children": [
+          {
+            "type": "query_expr",
+            "children": [
+              {
+                "type": "select",
+                "children": [
+                  {
+                    "type": "SELECT",
+                    "children": []
+                  },
+                  {
+                    "type": "select_list",
+                    "children": [
+                      {
+                        "type": "select_expression",
+                        "children": [
+                          {
+                            "type": "function_call",
+                            "children": [
+                              {
+                                "type": "identifier",
+                                "children": [
+                                  {
+                                    "type": "DATE",
+                                    "children": []
+                                  }
+                                ],
+                                "text": "date"
+                              },
+                              {
+                                "type": "(",
+                                "children": []
+                              },
+                              {
+                                "type": "argument",
+                                "children": [
+                                  {
+                                    "type": "identifier",
+                                    "children": [],
+                                    "text": "date_month"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": ",",
+                                "children": []
+                              },
+                              {
+                                "type": "argument",
+                                "children": [
+                                  {
+                                    "type": "string",
+                                    "children": [],
+                                    "text": "'start of year'"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": ")",
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "type": "as_alias",
+                            "children": [
+                              {
+                                "type": "AS",
+                                "children": []
+                              },
+                              {
+                                "type": "identifier",
+                                "children": [
+                                  {
+                                    "type": "ERROR",
+                                    "children": [
+                                      {
+                                        "type": "WHEN_MATCHED",
+                                        "children": []
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": ".",
+                                    "children": []
+                                  }
+                                ],
+                                "text": "date_year\n    CASE\n        WHEN c.region"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ERROR",
+        "children": [
+          {
+            "type": "(",
+            "children": []
+          },
+          {
+            "type": "ERROR",
+            "children": [
+              {
+                "type": ",",
+                "children": []
+              },
+              {
+                "type": ")",
+                "children": []
+              },
+              {
+                "type": "THEN",
+                "children": []
+              },
+              {
+                "type": "WHEN_MATCHED",
+                "children": []
+              },
+              {
+                "type": ".",
+                "children": []
+              },
+              {
+                "type": "IN",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "(",
+            "children": []
+          },
+          {
+            "type": "ERROR",
+            "children": [
+              {
+                "type": ")",
+                "children": []
+              },
+              {
+                "type": "THEN",
+                "children": []
+              },
+              {
+                "type": "WHEN_MATCHED",
+                "children": []
+              },
+              {
+                "type": ".",
+                "children": []
+              },
+              {
+                "type": "IN",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "(",
+            "children": []
+          },
+          {
+            "type": "ERROR",
+            "children": [
+              {
+                "type": ")",
+                "children": []
+              },
+              {
+                "type": "THEN",
+                "children": []
+              },
+              {
+                "type": "ELSE",
+                "children": []
+              },
+              {
+                "type": "NOT_NULL",
+                "children": []
+              },
+              {
+                "type": "END_IF",
+                "children": []
+              },
+              {
+                "type": "AS",
+                "children": []
+              },
+              {
+                "type": ",",
+                "children": []
+              },
+              {
+                "type": "CASE",
+                "children": []
+              },
+              {
+                "type": "WHEN_MATCHED",
+                "children": []
+              },
+              {
+                "type": ".",
+                "children": []
+              },
+              {
+                "type": "IN",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "(",
+            "children": []
+          },
+          {
+            "type": "ERROR",
+            "children": [
+              {
+                "type": ",",
+                "children": []
+              },
+              {
+                "type": ")",
+                "children": []
+              },
+              {
+                "type": "THEN",
+                "children": []
+              },
+              {
+                "type": "WHEN_MATCHED",
+                "children": []
+              },
+              {
+                "type": ".",
+                "children": []
+              },
+              {
+                "type": "IS",
+                "children": []
+              },
+              {
+                "type": "NOT_NULL",
+                "children": []
+              },
+              {
+                "type": "THEN",
+                "children": []
+              },
+              {
+                "type": "NOT_NULL",
+                "children": []
+              },
+              {
+                "type": "ELSE",
+                "children": []
+              },
+              {
+                "type": "END_IF",
+                "children": []
+              },
+              {
+                "type": "AS",
+                "children": []
+              },
+              {
+                "type": ",",
+                "children": []
+              },
+              {
+                "type": "FROM",
+                "children": []
+              },
+              {
+                "type": "LEFT",
+                "children": []
+              },
+              {
+                "type": "JOIN",
+                "children": []
+              },
+              {
+                "type": "USING",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "(",
+            "children": []
+          },
+          {
+            "type": ")",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

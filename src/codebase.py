@@ -1,7 +1,6 @@
 from __future__ import annotations
 import dataclasses
 from dataclasses import dataclass
-from pathlib import Path
 from . import sql
 
 __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
@@ -46,7 +45,7 @@ class Codebase:
 
 def load(path: str) -> Codebase:
     """Load codebase from `path`"""
-    files = load_files(path)
+    files = sql.parse_files(path)
     queries = sum([to_queries(t.root_node) for t in files.values()], [])
     codebase = Codebase(files=files, queries=queries)
     pprint(codebase)
@@ -54,13 +53,17 @@ def load(path: str) -> Codebase:
     return codebase
 
 
-def load_files(path: str) -> dict[str, sql.Tree]:
-    """Load all sql files from `path` into dict `{<file name>: <sql tree>, ...}`"""
-    root = Path(path)
-    paths = list(root.glob("**/*.sql"))
-    files = {str(f.relative_to(root)): sql.parse(f.read_bytes()) for f in paths}
+### TODO: make sure all identifiers are minimally resolved:
+### it takes sql files, and makes a Database object that contains a tree of queries
+### each query would have columns and tables that have:
+###    - aliases resolved (so e.g. a.id becomes account.id)
+###    - tables resolved if no JOINS (e.g. SELECT id FROM accounts -> accounts.id)
 
-    return files
+### TODO: capture all expressions and identifiers
+### so in checker.py we can find similar experessions it will creat this
+###  sort of a mapping {<column name> : [all expressions that use it]}
+
+### TODO: think and tell me what about table mapping
 
 
 def to_queries(node: sql.Node) -> list[Query]:
@@ -86,8 +89,8 @@ def to_queries(node: sql.Node) -> list[Query]:
             if table:
                 path["table"] = table.table
                 path["dataset"] = table.dataset
-            # TODO: resolve using data model
-            # TODO: resolve when different datasets
+            # TODO: resolve using data model (when no table is specified in JOIN but could be inferred)
+            # TODO: resolve when different datasets/catalogs
             # TODO: resolve `*` into columns
 
         # Squash multiple nodes into single column
@@ -103,7 +106,6 @@ def to_queries(node: sql.Node) -> list[Query]:
         # Capture ops
         # BUG: `USING (account_id, date_month)` is captured incorrectly
         # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
-        # XXX add tests for this function
         nodes_columns = {n: col for col in columns for n in col.nodes}
         ops = []
         for op_node in sql.find_desc(select_node, "@expression"):
