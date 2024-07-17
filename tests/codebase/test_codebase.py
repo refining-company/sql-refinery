@@ -79,7 +79,7 @@ class QueryTreeJSONEncoder(json.JSONEncoder):
 
     def encode_column(self, column: Column):
         encoded_column = {
-            "node": [self.default(node) for node in column.nodes],
+            "node": [self.encode_node(node) for node in column.nodes],
             "dataset": self.default(column.dataset),
             "table": self.default(column.table),
             "column": self.default(column.column),
@@ -111,7 +111,7 @@ def prep_output():
 ENCODER = QueryTreeJSONEncoder()
 
 
-def test_parser():
+def test_codebase():
 
     try:
         codebase_tree = codebase.load(Path(INPUT_DIR))
