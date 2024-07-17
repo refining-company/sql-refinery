@@ -70,6 +70,7 @@ def is_type(node: Node, types: str | list[str]) -> bool:
         if (_type == "@query") and node.type in {"query_expr"} and node.named_child(0).type in {"select"}:
             return True
 
+        # BUG: `USING (account_id, date_month)` is captured incorrectly
         if (_type == "@table") and (node.type == "identifier" and node.parent.type in {"from_item"}):
             return True
 

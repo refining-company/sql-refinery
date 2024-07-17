@@ -13,7 +13,7 @@ in the output.json
 """
 
 INPUT_DIR = Path("tests/input/code")
-OUTPUT_DIR = Path("tests/output/code")
+OUTPUT_DIR = Path("tests/sql/output")
 
 
 class TreeSitterJSONEncoder(json.JSONEncoder):

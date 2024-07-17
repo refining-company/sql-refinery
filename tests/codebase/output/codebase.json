@@ -1,0 +1,2089 @@
+{
+  "files": {
+    "2-editor.sql": {
+      "root": {
+        "type": "source_file"
+      }
+    },
+    "0-accounts.sql": {
+      "root": {
+        "type": "source_file"
+      }
+    },
+    "1-revenue.sql": {
+      "root": {
+        "type": "source_file"
+      }
+    }
+  },
+  "queries": [
+    {
+      "node": {
+        "type": "query_expr"
+      },
+      "sources": [],
+      "ops": [
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_month"
+            }
+          ],
+          "alias": "date_year\n    CASE\n        WHEN c.region"
+        }
+      ],
+      "alias": "None"
+    },
+    {
+      "node": {
+        "type": "query_expr"
+      },
+      "sources": [
+        {
+          "node": {
+            "type": "query_expr"
+          },
+          "sources": [
+            {
+              "node": {
+                "type": "identifier",
+                "text": "orders"
+              },
+              "dataset": "None",
+              "table": "orders",
+              "alias": "o"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "deals"
+              },
+              "dataset": "None",
+              "table": "deals",
+              "alias": "d"
+            }
+          ],
+          "ops": [
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.deal_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.deal_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.deal_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "deal_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.account_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "account_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.contract_start_date"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "contract_start_date"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.contract_end_date"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "contract_end_date"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "binary_expression"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "contract_end_date"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "contract_start_date"
+                }
+              ],
+              "alias": "contract_duration_days"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "o.product"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.product"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "orders",
+                  "column": "product"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "orders",
+                  "column": "value"
+                }
+              ],
+              "alias": "revenue_core"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "o.product"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.product"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "orders",
+                  "column": "product"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "orders",
+                  "column": "value"
+                }
+              ],
+              "alias": "revenue_aux"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "o.value"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "orders",
+                  "column": "value"
+                }
+              ],
+              "alias": "revenue"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "deal_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "deal_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "None",
+                  "column": "deal_id"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "order_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "None",
+                  "column": "order_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "order_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "deal_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "None",
+                  "column": "deal_id"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "order_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "None",
+                  "column": "order_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.deal_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.deal_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.deal_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "deal_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.account_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "account_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.contract_start_date"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_start_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "contract_start_date"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "d.contract_end_date"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "d.contract_end_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals",
+                  "column": "contract_end_date"
+                }
+              ],
+              "alias": "None"
+            }
+          ],
+          "alias": "None"
+        }
+      ],
+      "ops": [
+        {
+          "node": {
+            "type": "binary_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "revenue"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "revenue"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                },
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                },
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "contract_duration_days"
+            }
+          ],
+          "alias": "revenue_day"
+        },
+        {
+          "node": {
+            "type": "binary_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "revenue_core"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "revenue_core"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                },
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                },
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "contract_duration_days"
+            }
+          ],
+          "alias": "revenue_core_day"
+        },
+        {
+          "node": {
+            "type": "binary_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "revenue_aux"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "revenue_aux"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                },
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                },
+                {
+                  "type": "identifier",
+                  "text": "contract_duration_days"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "contract_duration_days"
+            }
+          ],
+          "alias": "revenue_aux_day"
+        }
+      ],
+      "alias": "None"
+    },
+    {
+      "node": {
+        "type": "query_expr"
+      },
+      "sources": [
+        {
+          "node": {
+            "type": "query_expr"
+          },
+          "sources": [
+            {
+              "node": {
+                "type": "identifier",
+                "text": "date_ranges"
+              },
+              "dataset": "None",
+              "table": "date_ranges",
+              "alias": "dr"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "deals_signed"
+              },
+              "dataset": "None",
+              "table": "deals_signed",
+              "alias": "ds"
+            }
+          ],
+          "ops": [
+            {
+              "node": {
+                "type": "identifier",
+                "text": "dr.date_day"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "date_ranges",
+                  "column": "date_day"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "date_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "None",
+                  "column": "date_day"
+                }
+              ],
+              "alias": "date_month"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "ds.account_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "ds.account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "account_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.deal_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "deal_id"
+                }
+              ],
+              "alias": "deals"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.revenue_core_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "revenue_core_day"
+                }
+              ],
+              "alias": "revenue_core"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.revenue_aux_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "revenue_aux_day"
+                }
+              ],
+              "alias": "revenue_aux"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.revenue_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "revenue_day"
+                }
+              ],
+              "alias": "revenue"
+            },
+            {
+              "node": {
+                "type": "binary_expression"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "date_ranges",
+                  "column": "date_day"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.contract_start_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "contract_start_date"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.contract_end_date"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "contract_end_date"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "dr.date_day"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "dr.date_day"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "date_ranges",
+                  "column": "date_day"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "ds.account_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "ds.account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "ds.account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "deals_signed",
+                  "column": "account_id"
+                }
+              ],
+              "alias": "None"
+            }
+          ],
+          "alias": "None"
+        }
+      ],
+      "ops": [
+        {
+          "node": {
+            "type": "identifier",
+            "text": "t.date_month"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.date_month"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "date_month"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "t.account_id"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "account_id"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.deals"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "deals"
+            }
+          ],
+          "alias": "deals"
+        },
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.revenue_core"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "revenue_core"
+            }
+          ],
+          "alias": "revenue_core"
+        },
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.revenue_aux"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "revenue_aux"
+            }
+          ],
+          "alias": "revenue_aux"
+        },
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.revenue"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "revenue"
+            }
+          ],
+          "alias": "revenue"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "account_id"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "account_id"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "date_month"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_month"
+            }
+          ],
+          "alias": "None"
+        }
+      ],
+      "alias": "None"
+    },
+    {
+      "node": {
+        "type": "query_expr"
+      },
+      "sources": [
+        {
+          "node": {
+            "type": "query_expr"
+          },
+          "sources": [
+            {
+              "node": {
+                "type": "identifier",
+                "text": "accounts_revenue"
+              },
+              "dataset": "None",
+              "table": "accounts_revenue",
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "accounts"
+              },
+              "dataset": "None",
+              "table": "accounts",
+              "alias": "None"
+            }
+          ],
+          "ops": [
+            {
+              "node": {
+                "type": "identifier",
+                "text": "account_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "account_id"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "date_month"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "date_month"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "date_month"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "date_month"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "revenue"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "revenue"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "revenue"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "revenue"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "revenue_core"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "revenue_core"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "revenue_core"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "revenue_aux"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "revenue_aux"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "revenue_aux"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "deals"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "deals"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "deals"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "accounts.name"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "accounts.name"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "name"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "accounts.industry"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "accounts.industry"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "industry"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "accounts.country"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "accounts.country"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "country"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "accounts.priority"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "accounts.priority"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "priority"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "function_call"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "revenue"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "revenue"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "revenue"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "account_id"
+                },
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "date_month"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "date_month"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "date_month"
+                }
+              ],
+              "alias": "revenue_12m"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "date_month"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "date_month"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "date_month"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "date_month"
+                }
+              ],
+              "alias": "None"
+            },
+            {
+              "node": {
+                "type": "identifier",
+                "text": "account_id"
+              },
+              "columns": [
+                {
+                  "node": [
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    },
+                    {
+                      "type": "identifier",
+                      "text": "account_id"
+                    }
+                  ],
+                  "dataset": "None",
+                  "table": "accounts",
+                  "column": "account_id"
+                }
+              ],
+              "alias": "None"
+            }
+          ],
+          "alias": "None"
+        }
+      ],
+      "ops": [
+        {
+          "node": {
+            "type": "casewhen_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "t.revenue_12m"
+                },
+                {
+                  "type": "identifier",
+                  "text": "t.revenue_12m"
+                },
+                {
+                  "type": "identifier",
+                  "text": "t.revenue_12m"
+                },
+                {
+                  "type": "identifier",
+                  "text": "t.revenue_12m"
+                }
+              ],
+              "dataset": "None",
+              "table": "t",
+              "column": "revenue_12m"
+            }
+          ],
+          "alias": "account_size"
+        }
+      ],
+      "alias": "None"
+    },
+    {
+      "node": {
+        "type": "query_expr"
+      },
+      "sources": [
+        {
+          "node": {
+            "type": "identifier",
+            "text": "accounts_revenue"
+          },
+          "dataset": "None",
+          "table": "accounts_revenue",
+          "alias": "ar"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "accounts"
+          },
+          "dataset": "None",
+          "table": "accounts",
+          "alias": "a"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "countries"
+          },
+          "dataset": "None",
+          "table": "countries",
+          "alias": "c"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "accounts_360"
+          },
+          "dataset": "None",
+          "table": "accounts_360",
+          "alias": "a360"
+        }
+      ],
+      "ops": [
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_month"
+            }
+          ],
+          "alias": "date_year"
+        },
+        {
+          "node": {
+            "type": "casewhen_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "c.region"
+                },
+                {
+                  "type": "identifier",
+                  "text": "c.region"
+                }
+              ],
+              "dataset": "None",
+              "table": "countries",
+              "column": "region"
+            }
+          ],
+          "alias": "region_cluster"
+        },
+        {
+          "node": {
+            "type": "casewhen_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "a.industry"
+                },
+                {
+                  "type": "identifier",
+                  "text": "a.industry"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts",
+              "column": "industry"
+            }
+          ],
+          "alias": "industry_cluster"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "a360.account_size"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "a360.account_size"
+                },
+                {
+                  "type": "identifier",
+                  "text": "a360.account_size"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts_360",
+              "column": "account_size"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "ar.revenue"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts_revenue",
+              "column": "revenue"
+            }
+          ],
+          "alias": "revenue"
+        },
+        {
+          "node": {
+            "type": "function_call"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "ar.account_id"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ar.account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts_revenue",
+              "column": "account_id"
+            }
+          ],
+          "alias": "accounts"
+        },
+        {
+          "node": {
+            "type": "binary_expression"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "a360.revenue_12m"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts_360",
+              "column": "revenue_12m"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "ar.account_id"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ar.account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts_revenue",
+              "column": "account_id"
+            }
+          ],
+          "alias": "revenue_12m_p_account"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "account_id"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                },
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "account_id"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "country"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "country"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "country"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "account_id"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                },
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "account_id"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_month"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "date_month"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                },
+                {
+                  "type": "identifier",
+                  "text": "account_id"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "account_id"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_month"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_month"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "date_year"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_year"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "region_cluster"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "region_cluster"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "industry_cluster"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "industry_cluster"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "a360.account_size"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "a360.account_size"
+                },
+                {
+                  "type": "identifier",
+                  "text": "a360.account_size"
+                }
+              ],
+              "dataset": "None",
+              "table": "accounts_360",
+              "column": "account_size"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "date_year"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_year"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "region_cluster"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "industry_cluster"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "region_cluster"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_year"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "region_cluster"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "industry_cluster"
+            }
+          ],
+          "alias": "None"
+        },
+        {
+          "node": {
+            "type": "identifier",
+            "text": "industry_cluster"
+          },
+          "columns": [
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                },
+                {
+                  "type": "identifier",
+                  "text": "date_year"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "date_year"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "region_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "region_cluster"
+            },
+            {
+              "node": [
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                },
+                {
+                  "type": "identifier",
+                  "text": "industry_cluster"
+                }
+              ],
+              "dataset": "None",
+              "table": "None",
+              "column": "industry_cluster"
+            }
+          ],
+          "alias": "None"
+        }
+      ],
+      "alias": "None"
+    },
+    {
+      "node": {
+        "type": "query_expr"
+      },
+      "sources": [
+        {
+          "node": {
+            "type": "identifier",
+            "text": "revenue"
+          },
+          "dataset": "None",
+          "table": "revenue",
+          "alias": "None"
+        }
+      ],
+      "ops": [],
+      "alias": "None"
+    }
+  ]
+}
