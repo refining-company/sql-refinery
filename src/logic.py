@@ -1,4 +1,9 @@
-from src import codebase
+from pathlib import Path
+import json
+from deepdiff import DeepDiff
+from src.sql import Tree, Node
+from src.codebase import Codebase, Column, Op, Table, Column, Query, load
+
 
 # Algorithm:
 # [x] Load and parse codebase
@@ -15,4 +20,162 @@ from src import codebase
 # TODO: write hacky code to make it work and output an example. this code will be 100% discarded. we'll use it to undestand
 #       how to structure the actual solution.
 
-codebase = codebase.load(".submodules/playground/code")
+
+class QueryTreeJSONEncoder(json.JSONEncoder):
+
+    def __init__(self, **kwargs):
+        super(QueryTreeJSONEncoder, self).__init__(**kwargs)
+
+    def default(self, obj):
+        if isinstance(obj, bytes):
+            return obj.decode()
+        elif isinstance(obj, Codebase):
+            return self.encode_codebase(obj)
+        elif isinstance(obj, Query):
+            return self.encode_query(obj)
+        elif isinstance(obj, Op):
+            return self.encode_op(obj)
+        elif isinstance(obj, Table):
+            return self.encode_table(obj)
+        elif isinstance(obj, Column):
+            return self.encode_column(obj)
+        elif isinstance(obj, Node):
+            return self.encode_node(obj)
+        elif isinstance(obj, Tree):
+            return self.encode_tree(obj)
+        elif isinstance(obj, Path):
+            return self.encode_path(obj)
+        elif obj is None:
+            return "None"
+        else:
+            return super().default(obj)
+
+    def encode_codebase(self, codebase: Codebase):
+        encoded_dict = {}
+
+        for path, tree in codebase.files.items():
+            encoded_dict[str(path)] = self.encode_tree(tree)
+
+        encoded_codebase = {"files": encoded_dict, "queries": [self.encode_query(query) for query in codebase.queries]}
+        return encoded_codebase
+
+    def encode_query(self, query: Query):
+        encoded_query = {
+            "node": self.encode_node(query.node),
+            "sources": [self.default(obj) for obj in query.sources],
+            "ops": [self.encode_op(op) for op in query.ops],
+            "alias": self.default(query.alias),
+        }
+        return encoded_query
+
+    def encode_table(self, table: Table):
+        encoded_table = {
+            "node": self.encode_node(table.node),
+            "dataset": self.default(table.dataset),
+            "table": self.default(table.table),
+            "alias": self.default(table.alias),
+        }
+
+        return encoded_table
+
+    def encode_op(self, op: Op):
+        encoded_op = {
+            "node": self.encode_node(op.node),
+            "columns": [self.encode_column(column) for column in op.columns],
+            "alias": self.default(op.alias),
+        }
+        return encoded_op
+
+    def encode_column(self, column: Column):
+        encoded_column = {
+            "node": [self.encode_node(node) for node in column.nodes],
+            "dataset": self.default(column.dataset),
+            "table": self.default(column.table),
+            "column": self.default(column.column),
+        }
+        return encoded_column
+
+    def encode_node(self, node: Node):
+        encoded_node = {
+            "type": node.type,
+            # "children": [self.encode_node(child) for child in node.children],
+        }
+        if node.type in ["identifier", "number", "string"]:
+            encoded_node["text"] = node.text.decode("utf-8")
+        return encoded_node
+
+    def encode_tree(self, tree: Tree):
+        encoded_tree = {"root": self.encode_node(tree.root_node)}
+        return encoded_tree
+
+
+def count_keys_and_values(d):
+    num_keys = 0
+    num_values = 0
+
+    def traverse_dict(d):
+        nonlocal num_keys, num_values
+        if isinstance(d, dict):
+            num_keys += len(d)
+            for key, value in d.items():
+                traverse_dict(value)
+        elif isinstance(d, list):
+            num_values += len(d)
+            for item in d:
+                traverse_dict(item)
+        else:
+            num_values += 1
+
+    traverse_dict(d)
+    return num_keys + num_values
+
+
+def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
+
+    column_map = {}
+
+    for query in codebase.queries:
+        for op in query.ops:
+            for column in op.columns:
+                # use datastructure like (tuple(dataset,table, column) : {Op : times_used})
+
+                col_resolved = tuple(column.dataset, column.table, column.column)
+                column_map.setdefault(col_resolved, {})
+                column_map[col_resolved].setdefault(op, 1)
+                column_map[col_resolved][op] += 1
+
+    return column_map
+
+
+if __name__ == "__main__":
+
+    codebase = load("tests/input/code")
+    editor = load("src/editor")
+
+    column_op_mapping = map_column_uses(codebase)
+
+    encoder = QueryTreeJSONEncoder()
+
+    for query in editor.queries:
+        for op in query.ops:
+            for col in op.columns:
+                ops_using_col = column_op_mapping[tuple(col.dataset, col.table, col.column)]
+                ops_similarity = {}
+                for codebase_op, freq in ops_using_col.items():
+                    op_dict = encoder.default(op)
+                    codebase_op_dict = encoder.default(codebase_op)
+
+                    differences = DeepDiff(op_dict, codebase_op_dict)
+                    num_differences = len(differences)
+                    num_elements_op = count_keys_and_values(op_dict)
+
+                    similarity = (num_elements_op - num_differences) / num_elements_op
+                    if 0.7 < similarity < 0.95:
+                        ops_similarity[codebase_op] = similarity * freq  # a better metric maybe?
+
+                if not ops_similarity:
+                    continue
+                best_fit_op = max(ops_similarity, key=ops_similarity.get)
+                print(best_fit_op)
+
+    print("breakpoint")
