@@ -1,8 +1,8 @@
 from pathlib import Path
 import json
 from deepdiff import DeepDiff
-from src.sql import Tree, Node
-from src.codebase import Codebase, Column, Op, Table, Column, Query, load
+from sql import Tree, Node
+from codebase import Codebase, Column, Op, Table, Column, Query, load
 
 
 # Algorithm:
@@ -19,6 +19,8 @@ from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 
 # TODO: write hacky code to make it work and output an example. this code will be 100% discarded. we'll use it to undestand
 #       how to structure the actual solution.
+
+### Important!! Op dataclass needs to be hashable in order to use it in a dict to get the frequencies of the operation
 
 
 class QueryTreeJSONEncoder(json.JSONEncoder):
@@ -109,6 +111,9 @@ class QueryTreeJSONEncoder(json.JSONEncoder):
         return encoded_tree
 
 
+encoder = QueryTreeJSONEncoder()
+
+
 def count_keys_and_values(d):
     num_keys = 0
     num_values = 0
@@ -137,12 +142,11 @@ def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
     for query in codebase.queries:
         for op in query.ops:
             for column in op.columns:
-                # use datastructure like (tuple(dataset,table, column) : {Op : times_used})
+                # BUG In order to measure frequency Op needs to be hashable
+                # use datastructure like (tuple(dataset,table, column) : [])
 
-                col_resolved = tuple(column.dataset, column.table, column.column)
-                column_map.setdefault(col_resolved, {})
-                column_map[col_resolved].setdefault(op, 1)
-                column_map[col_resolved][op] += 1
+                col_resolved = (column.dataset, column.table, column.column)
+                column_map.setdefault(col_resolved, []).append(op)
 
     return column_map
 
@@ -154,14 +158,14 @@ if __name__ == "__main__":
 
     column_op_mapping = map_column_uses(codebase)
 
-    encoder = QueryTreeJSONEncoder()
-
     for query in editor.queries:
         for op in query.ops:
             for col in op.columns:
-                ops_using_col = column_op_mapping[tuple(col.dataset, col.table, col.column)]
-                ops_similarity = {}
-                for codebase_op, freq in ops_using_col.items():
+                ops_using_col = column_op_mapping[(col.dataset, col.table, col.column)]
+                best_fit_op = None
+                max_similarity = 0
+
+                for codebase_op in ops_using_col:
                     op_dict = encoder.default(op)
                     codebase_op_dict = encoder.default(codebase_op)
 
@@ -170,12 +174,11 @@ if __name__ == "__main__":
                     num_elements_op = count_keys_and_values(op_dict)
 
                     similarity = (num_elements_op - num_differences) / num_elements_op
-                    if 0.7 < similarity < 0.95:
-                        ops_similarity[codebase_op] = similarity * freq  # a better metric maybe?
-
-                if not ops_similarity:
-                    continue
-                best_fit_op = max(ops_similarity, key=ops_similarity.get)
-                print(best_fit_op)
+                    if 0.7 < similarity < 0.95 and similarity > max_similarity:
+                        best_fit_op = codebase_op
+                if best_fit_op is None:
+                    print("no good fit found")
+                else:
+                    print(best_fit_op)
 
     print("breakpoint")

@@ -1,7 +1,8 @@
 from __future__ import annotations
 import dataclasses
 from dataclasses import dataclass
-from src import sql
+import sql
+import sqlite3
 
 """
 We will take in all sql files and parse the queries into tree-sitter trees,
