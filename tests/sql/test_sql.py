@@ -1,10 +1,9 @@
-import json
-import sys
-import pytest
+import json, re, sys
+import tree_sitter
+from src import sql
 from deepdiff import DeepDiff
 from pathlib import Path
-from src import sql
-from tree_sitter import Node, Tree
+
 
 """
 We will take input.sql file, parse it with sql.parse() function and turn the parse tree
@@ -12,65 +11,61 @@ into a dictionary (by using only some of the fields). Then we'll compare it with
 in the output.json
 """
 
-INPUT_DIR = Path("tests/input/code")
-OUTPUT_DIR = Path("tests/output/code")
+INPUTS = Path("tests/input/code")
+OUTPUT = Path("tests/sql/output.json")
 
 
-class TreeSitterJSONEncoder(json.JSONEncoder):
+def simplify(obj) -> dict | list | str:
+    """Transform into standard JSON serialisable objects."""
+    if isinstance(obj, tree_sitter.Tree):
+        return {"root": [simplify(obj.root_node)]}
 
-    def __init__(self, **kwargs):
-        super(TreeSitterJSONEncoder, self).__init__(**kwargs)
+    if isinstance(obj, tree_sitter.Node):
+        keys = [obj.grammar_name]
+        if obj.type in ("identifier", "number", "string"):
+            keys.append(obj.text.decode("utf-8"))
+        return {":".join(keys): [simplify(child) for child in obj.children]}
 
-    def default(self, obj):
-        if isinstance(obj, bytes):
-            return obj.decode()
-        elif isinstance(obj, Node):
-            return self.encode_node(obj)
-        elif isinstance(obj, Tree):
-            return self.encode_tree(obj)
-        else:
-            return super().default(obj)
+    if isinstance(obj, dict):
+        return {str(key): simplify(value) for key, value in obj.items()}
 
-    def encode_node(self, node: Node):
-        encoded_node = {
-            "type": node.type,
-            "children": [self.encode_node(child) for child in node.children],
-        }
-        if node.type in ["identifier", "number", "string"]:
-            encoded_node["text"] = node.text.decode("utf-8")
-        return encoded_node
+    if isinstance(obj, list):
+        return [simplify(item) for item in obj]
 
-    def encode_tree(self, tree: Tree):
-        encoded_tree = {"root": self.encode_node(tree.root_node)}
-        return encoded_tree
+    try:
+        return str(obj)
+    except Exception as e:
+        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+
+
+def json_minify(string: str) -> str:
+    """Minify JSON string."""
+    string = re.sub(r"\{\s+(.*)\s+\}", r"{ \1 }", string)  # small one-item objects
+    string = re.sub(r"(\n[ \t]*)\{\s+", r"\1{ ", string)  # hanging {
+    string = re.sub(r"\s+(?=[\}\]])", " ", string)  # combine closing brackets on one line
+
+    return string
 
 
 def prep_output():
-
-    for file, tree in sql.parse_files(INPUT_DIR).items():
-        output_json = json.dumps(tree, cls=TreeSitterJSONEncoder, indent=2)
-        output_file = Path(OUTPUT_DIR) / (file.stem + ".json")
-        output_file.write_text(output_json)
-
-
-ENCODER = TreeSitterJSONEncoder()
+    output = simplify(sql.parse_files(INPUTS))
+    output_json = json.dumps(output, indent=2)
+    output_mini = json_minify(output_json)
+    OUTPUT.write_text(output_mini)
 
 
-def test_parser():
-    for file, tree in sql.parse_files(INPUT_DIR).items():
-        try:
-            input_dict = ENCODER.default(tree)
-        except Exception as _:
-            assert False, "Parsing of {}: failed ".format(file)
+def test_parse_files():
+    try:
+        output_test = simplify(sql.parse_files(INPUTS))
+    except Exception as e:
+        assert False, "Parsing failed: {e}"
 
-        output_file = Path(OUTPUT_DIR) / (file.stem + ".json")
-        target_dict = json.load(output_file.open("r"))
-        diff = DeepDiff(input_dict, target_dict)
-        assert not diff, "Test {}: failed with error {}".format(file, diff)
+    output_true = json.load(OUTPUT.open("r"))
+    diff = DeepDiff(output_test, output_true, ignore_order=True)
+    assert not diff, f"Parsing incorrect:\n{diff}"
 
 
 if __name__ == "__main__":
-
     if "--create-outputs" in sys.argv:
         prep_output()
-    test_parser()
+        print("Outputs created.")
