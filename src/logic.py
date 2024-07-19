@@ -100,7 +100,7 @@ class QueryTreeJSONEncoder(json.JSONEncoder):
     def encode_node(self, node: Node):
         encoded_node = {
             "type": node.type,
-            # "children": [self.encode_node(child) for child in node.children],
+            "children": [self.encode_node(child) for child in node.children],
         }
         if node.type in ["identifier", "number", "string"]:
             encoded_node["text"] = node.text.decode("utf-8")
@@ -142,12 +142,11 @@ def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
     for query in codebase.queries:
         for op in query.ops:
             for column in op.columns:
-                # BUG In order to measure frequency Op needs to be hashable
-                # use datastructure like (tuple(dataset,table, column) : [])
 
                 col_resolved = (column.dataset, column.table, column.column)
-                column_map.setdefault(col_resolved, []).append(op)
-
+                column_map.setdefault(col_resolved, {})
+                column_map[col_resolved].setdefault(op, [op, 0])
+                column_map[col_resolved][op][1] += 1
     return column_map
 
 
@@ -159,26 +158,29 @@ if __name__ == "__main__":
     column_op_mapping = map_column_uses(codebase)
 
     for query in editor.queries:
-        for op in query.ops:
-            for col in op.columns:
-                ops_using_col = column_op_mapping[(col.dataset, col.table, col.column)]
-                best_fit_op = None
-                max_similarity = 0
+        for editor_op in query.ops:
+            for col in editor_op.columns:
+                ops = column_op_mapping[(col.dataset, col.table, col.column)]
+                op_score = {}
 
-                for codebase_op in ops_using_col:
-                    op_dict = encoder.default(op)
-                    codebase_op_dict = encoder.default(codebase_op)
+                for op_signature, op_freq in ops.items():
+                    editor_op_dict = encoder.default(editor_op)
+                    codebase_op_dict = encoder.default(ops[op_signature][0])
 
-                    differences = DeepDiff(op_dict, codebase_op_dict)
+                    differences = DeepDiff(editor_op_dict, codebase_op_dict)
                     num_differences = len(differences)
-                    num_elements_op = count_keys_and_values(op_dict)
+                    num_elements_op = count_keys_and_values(editor_op_dict)
 
                     similarity = (num_elements_op - num_differences) / num_elements_op
-                    if 0.7 < similarity < 0.95 and similarity > max_similarity:
-                        best_fit_op = codebase_op
-                if best_fit_op is None:
-                    print("no good fit found")
-                else:
-                    print(best_fit_op)
+                    if 0.7 < similarity < 0.95:
+                        op_score[op_signature] = similarity * op_freq[1]
+                try:
+                    best_op = max(op_score, key=op_score.get)
+                    print(ops[best_op])
+                    print()
+                    print()
+
+                except ValueError as e:
+                    print("Error:", e)
 
     print("breakpoint")
