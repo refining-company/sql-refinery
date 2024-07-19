@@ -1,131 +1,119 @@
 import sys
 import pytest
 import json
+import re
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import codebase
 from src.codebase import Codebase, Query, Op, Table, Column
-from tree_sitter import Node, Tree
+import tree_sitter
 
 
-INPUT_DIR = "tests/input/code"
-OUTPUT_DIR = "tests/codebase/output"
+INPUT_DIR = Path("tests/input/code")
+OUTPUT = Path("tests/codebase/outputs.json")
 
 
-class QueryTreeJSONEncoder(json.JSONEncoder):
+def simplify(obj) -> dict | list | str:
 
-    def __init__(self, **kwargs):
-        super(QueryTreeJSONEncoder, self).__init__(**kwargs)
-
-    def default(self, obj):
-        if isinstance(obj, bytes):
-            return obj.decode()
-        elif isinstance(obj, Codebase):
-            return self.encode_codebase(obj)
-        elif isinstance(obj, Query):
-            return self.encode_query(obj)
-        elif isinstance(obj, Op):
-            return self.encode_op(obj)
-        elif isinstance(obj, Table):
-            return self.encode_table(obj)
-        elif isinstance(obj, Column):
-            return self.encode_column(obj)
-        elif isinstance(obj, Node):
-            return self.encode_node(obj)
-        elif isinstance(obj, Tree):
-            return self.encode_tree(obj)
-        elif isinstance(obj, Path):
-            return self.encode_path(obj)
-        elif obj is None:
-            return "None"
-        else:
-            return super().default(obj)
-
-    def encode_codebase(self, codebase: Codebase):
+    if isinstance(obj, Codebase):
         encoded_dict = {}
 
-        for path, tree in codebase.files.items():
-            encoded_dict[str(path)] = self.encode_tree(tree)
+        for path, tree in obj.files.items():
+            encoded_dict[str(path)] = simplify(tree)
 
-        encoded_codebase = {"files": encoded_dict, "queries": [self.encode_query(query) for query in codebase.queries]}
+        encoded_codebase = {"files": encoded_dict, "queries": [simplify(query) for query in obj.queries]}
         return encoded_codebase
 
-    def encode_query(self, query: Query):
+    if isinstance(obj, Query):
         encoded_query = {
-            "node": self.encode_node(query.node),
-            "sources": [self.default(obj) for obj in query.sources],
-            "ops": [self.encode_op(op) for op in query.ops],
-            "alias": self.default(query.alias),
+            "node": simplify(obj.node),
+            "sources": [simplify(obj) for obj in obj.sources],
+            "ops": [simplify(op) for op in obj.ops],
+            "alias": simplify(obj.alias),
         }
         return encoded_query
 
-    def encode_table(self, table: Table):
+    if isinstance(obj, Op):
+        encoded_op = {
+            "node": simplify(obj.node),
+            "columns": [simplify(column) for column in obj.columns],
+            "alias": simplify(obj.alias),
+        }
+        return encoded_op
+
+    if isinstance(obj, Table):
         encoded_table = {
-            "node": self.encode_node(table.node),
-            "dataset": self.default(table.dataset),
-            "table": self.default(table.table),
-            "alias": self.default(table.alias),
+            "node": simplify(obj.node),
+            "dataset": simplify(obj.dataset),
+            "table": simplify(obj.table),
+            "alias": simplify(obj.alias),
         }
 
         return encoded_table
 
-    def encode_op(self, op: Op):
-        encoded_op = {
-            "node": self.encode_node(op.node),
-            "columns": [self.encode_column(column) for column in op.columns],
-            "alias": self.default(op.alias),
-        }
-        return encoded_op
-
-    def encode_column(self, column: Column):
+    if isinstance(obj, Column):
         encoded_column = {
-            "node": [self.encode_node(node) for node in column.nodes],
-            "dataset": self.default(column.dataset),
-            "table": self.default(column.table),
-            "column": self.default(column.column),
+            "node": [simplify(node) for node in obj.nodes],
+            "dataset": simplify(obj.dataset),
+            "table": simplify(obj.table),
+            "column": simplify(obj.column),
         }
         return encoded_column
 
-    def encode_node(self, node: Node):
-        encoded_node = {
-            "type": node.type,
-            # "children": [self.encode_node(child) for child in node.children],
-        }
-        if node.type in ["identifier", "number", "string"]:
-            encoded_node["text"] = node.text.decode("utf-8")
-        return encoded_node
+    if isinstance(obj, tree_sitter.Tree):
+        return {"root": [simplify(obj.root_node)]}
 
-    def encode_tree(self, tree: Tree):
-        encoded_tree = {"root": self.encode_node(tree.root_node)}
-        return encoded_tree
+    if isinstance(obj, tree_sitter.Node):
+        keys = [obj.grammar_name]
+        if obj.type in ("identifier", "number", "string"):
+            keys.append(obj.text.decode("utf-8"))
+        return {":".join(keys): [simplify(child) for child in obj.children]}
+
+    if isinstance(obj, dict):
+        return {str(key): simplify(value) for key, value in obj.items()}
+
+    if isinstance(obj, list):
+        return [simplify(item) for item in obj]
+
+    if isinstance(obj, bytes):
+        return obj.decode("utf-8")
+
+    try:
+        return str(obj)
+    except Exception as e:
+        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+
+
+def json_minify(string: str) -> str:
+    """Minify JSON string."""
+    string = re.sub(r"\{\s+(.*)\s+\}", r"{ \1 }", string)  # small one-item objects
+    string = re.sub(r"(\n[ \t]*)\{\s+", r"\1{ ", string)  # hanging {
+    string = re.sub(r"\s+(?=[\}\]])", " ", string)  # combine closing brackets on one line
+
+    return string
 
 
 def prep_output():
 
-    codebase_tree = codebase.load(Path(INPUT_DIR))
-    output_json = json.dumps(codebase_tree, cls=QueryTreeJSONEncoder, indent=2)
-    output_file = Path(OUTPUT_DIR + "/codebase.json")
-    output_file.write_text(output_json)
-
-
-ENCODER = QueryTreeJSONEncoder()
+    output = simplify(codebase.load(INPUT_DIR))
+    output_json = json.dumps(output, indent=2)
+    output_mini = json_minify(output_json)
+    OUTPUT.write_text(output_mini)
 
 
 def test_codebase():
 
     try:
-        codebase_tree = codebase.load(Path(INPUT_DIR))
-        input_dict = ENCODER.default(codebase_tree)
+        output_test = simplify(codebase.load(INPUT_DIR))
     except Exception as _:
         assert False, "Parsing of Codebase: failed"
 
-    output_file = Path(OUTPUT_DIR + "/codebase.json")
-    target_dict = json.load(output_file.open("r"))
-    diff = DeepDiff(input_dict, target_dict)
+    output_true = json.load(OUTPUT.open("r"))
+    diff = DeepDiff(output_test, output_true)
     assert not diff, "Test failed with error {}".format(diff)
 
 
 if __name__ == "__main__":
     if "--create-outputs" in sys.argv:
         prep_output()
-    pytest.main()
+        print("Outputs created.")

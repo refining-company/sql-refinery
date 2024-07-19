@@ -1,3 +1,6 @@
+-- FOUNDATIONAL TABLES
+
+-- Calendar scaffolding: one day per row
 
 DROP TABLE IF EXISTS date_ranges;
 CREATE TABLE date_ranges AS
@@ -16,6 +19,7 @@ SELECT
 FROM date_ranges
 GROUP BY date_day;
 
+-- Currently active signed deals (stage=4) and daily revenue
 
 DROP TABLE IF EXISTS deals_signed;
 CREATE TABLE deals_signed AS
@@ -35,11 +39,12 @@ FROM (
         SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END) AS revenue_aux,
         SUM(o.value) AS revenue
     FROM orders o
-    JOIN deals d USING (deal_id, order_id)
+        JOIN deals d USING (deal_id, order_id)
     WHERE d.stage = 4
     GROUP BY d.deal_id, d.account_id, d.contract_start_date, d.contract_end_date
 ) AS t;
 
+-- Revenue per account per month
 
 DROP TABLE IF EXISTS accounts_revenue;
 CREATE TABLE accounts_revenue AS
@@ -60,12 +65,14 @@ FROM (
         SUM(ds.revenue_aux_day) AS revenue_aux,
         SUM(ds.revenue_day) AS revenue
     FROM date_ranges dr
-    LEFT JOIN deals_signed ds 
-        ON  dr.date_day >= date(ds.contract_start_date)
-        AND dr.date_day <= date(ds.contract_end_date)
+        LEFT JOIN deals_signed ds 
+            ON  dr.date_day >= date(ds.contract_start_date)
+            AND dr.date_day <= date(ds.contract_end_date)
     GROUP BY dr.date_day, ds.account_id) t
 GROUP BY account_id, date_month;
 
+
+-- Key information by account as of now
 
 DROP TABLE IF EXISTS accounts_360;
 CREATE TABLE accounts_360 AS
@@ -88,6 +95,11 @@ FROM (
         accounts.name,
         accounts.industry,
         accounts.country,
+        CASE
+            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
+            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
+            ELSE NULL
+        END AS region_cluster,
         accounts.priority,
         SUM(revenue) OVER (
             PARTITION BY account_id 
@@ -95,5 +107,6 @@ FROM (
             ROWS BETWEEN 11 PRECEDING AND CURRENT ROW
         ) AS revenue_12m
     FROM accounts_revenue
-    JOIN accounts USING (account_id)
+        JOIN accounts USING (account_id)
+        LEFT JOIN countries c USING (country)
 ) AS t;
