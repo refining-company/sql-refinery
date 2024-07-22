@@ -1,6 +1,9 @@
 -- FOUNDATIONAL TABLES
 
 -- Calendar scaffolding: one day per row
+-- FOUNDATIONAL TABLES
+
+-- Calendar scaffolding: one day per row
 
 DROP TABLE IF EXISTS date_ranges;
 CREATE TABLE date_ranges AS
@@ -19,6 +22,7 @@ SELECT
 FROM date_ranges
 GROUP BY date_day;
 
+-- Currently active signed deals (stage=4) and daily revenue
 -- Currently active signed deals (stage=4) and daily revenue
 
 DROP TABLE IF EXISTS deals_signed;
@@ -40,10 +44,12 @@ FROM (
         SUM(o.value) AS revenue
     FROM orders o
         JOIN deals d USING (deal_id, order_id)
+        JOIN deals d USING (deal_id, order_id)
     WHERE d.stage = 4
     GROUP BY d.deal_id, d.account_id, d.contract_start_date, d.contract_end_date
 ) AS t;
 
+-- Revenue per account per month
 -- Revenue per account per month
 
 DROP TABLE IF EXISTS accounts_revenue;
@@ -68,9 +74,14 @@ FROM (
         LEFT JOIN deals_signed ds 
             ON  dr.date_day >= date(ds.contract_start_date)
             AND dr.date_day <= date(ds.contract_end_date)
+        LEFT JOIN deals_signed ds 
+            ON  dr.date_day >= date(ds.contract_start_date)
+            AND dr.date_day <= date(ds.contract_end_date)
     GROUP BY dr.date_day, ds.account_id) t
 GROUP BY account_id, date_month;
 
+
+-- Key information by account as of now
 
 -- Key information by account as of now
 
@@ -95,6 +106,7 @@ FROM (
         accounts.name,
         accounts.industry,
         accounts.country,
+        -- Error 1: alternative
         CASE
             WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
             WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
@@ -107,6 +119,6 @@ FROM (
             ROWS BETWEEN 11 PRECEDING AND CURRENT ROW
         ) AS revenue_12m
     FROM accounts_revenue
-        LEFT JOIN accounts USING (account_id)
+        JOIN accounts USING (account_id)
         LEFT JOIN countries c USING (country)
 ) AS t;

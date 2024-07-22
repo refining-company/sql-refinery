@@ -1,9 +1,9 @@
 from pathlib import Path
 import json
 from deepdiff import DeepDiff
-from sql import Tree, Node
-from codebase import Codebase, Column, Op, Table, Column, Query, load
-
+from . import sql, codebase
+from src.sql import Tree, Node
+from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 
 # Algorithm:
 # [x] Load and parse codebase
@@ -101,6 +101,7 @@ class QueryTreeJSONEncoder(json.JSONEncoder):
         encoded_node = {
             "type": node.type,
             "children": [self.encode_node(child) for child in node.children],
+            "text": node.text.decode("utf-8"),
         }
         if node.type in ["identifier", "number", "string"]:
             encoded_node["text"] = node.text.decode("utf-8")
@@ -150,6 +151,30 @@ def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
     return column_map
 
 
+# mapping {column -> [ops, ...]}
+# [column1->{op.signature:[op,freq]}, column2->, ...]
+# you're now looking into editor_op[0]. it uses column3 and column4.
+# you check mappping and retrieve only ops for column3 and column4.
+
+
+# Op1(column1, column 2) and Op2(column3)
+# ALTERNATIVE 1: mapping {column1->[Op1, ...], column2->[Op1, ...], column3->[Op2, ...]} --- best option
+# ALTERNATIVE 2: mapping {(column1, column2)->Op1, column3->Op2}
+
+# OP b"date(date_month, 'start of year')"
+# b'date_month' 0.9759036144578314
+# b"date(date_month, 'start of year')" 1.0
+# b'account_id' 0.963855421686747     <--- this does not make sense
+# b'date_month' 0.963855421686747
+
+# duble check the codebase is capturing things correctly
+
+# HASH should be SIGNATURE
+# hash should be something that is not dependent on where in the code it is, what aliases does it use, etc. but is should
+# capture formula (e.g. CASE WHEN), all constants ("North-West") and all fully-resolved columns (dataset.table.column)
+# Op1.signature ≈ Op2.signature = Op2 is an example of this forumula that is located in Op2.node (node has SQLParse tree, start, end, etc.)
+
+
 if __name__ == "__main__":
 
     codebase = load("tests/input/code")
@@ -158,7 +183,9 @@ if __name__ == "__main__":
     column_op_mapping = map_column_uses(codebase)
 
     for query in editor.queries:
+        print("QUERY", query.node.text[:100])
         for editor_op in query.ops:
+            print("OP", editor_op.node.text[:100])
             for col in editor_op.columns:
                 ops = column_op_mapping[(col.dataset, col.table, col.column)]
                 op_score = {}
@@ -172,15 +199,23 @@ if __name__ == "__main__":
                     num_elements_op = count_keys_and_values(editor_op_dict)
 
                     similarity = (num_elements_op - num_differences) / num_elements_op
-                    if 0.7 < similarity < 0.95:
-                        op_score[op_signature] = similarity * op_freq[1]
+                    # if 0.3 < similarity < 0.95:
+                    op_score[op_signature] = similarity * op_freq[1]
                 try:
+
+                    for op, score in op_score.items():
+                        print(ops[op][0].node.text[:100], score)
+                    """    
+                    for  op_score.get 
                     best_op = max(op_score, key=op_score.get)
-                    print(ops[best_op])
+                    target_op = ops[best_op]
+                    print(ops[best_op][0].node.text)
                     print()
                     print()
+                    """
 
                 except ValueError as e:
                     print("Error:", e)
-
+            print("\n\n")
+        print("\n\n\n\n")
     print("breakpoint")

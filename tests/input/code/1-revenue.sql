@@ -1,9 +1,13 @@
 -- REVENUE REPORTS
 
 -- Revenue by region, cluster, account size
+-- REVENUE REPORTS
+
+-- Revenue by region, cluster, account size
 
 SELECT 
     date(date_month, 'start of year') AS date_year,
+    -- Error 1: alternative
     CASE
         WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
         WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
@@ -30,9 +34,10 @@ ORDER BY date_year, region_cluster, industry_cluster;
 SELECT
     accounts.name,
     region,
+    -- Error 1: alternative
     CASE
-        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
-        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
+        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'
+        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'
         ELSE NULL
     END AS cluster,
     accounts.industry AS industry,

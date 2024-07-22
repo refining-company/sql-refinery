@@ -1,8 +1,8 @@
 from __future__ import annotations
+import sqlite3
 import dataclasses
 from dataclasses import dataclass
-import sql
-import sqlite3
+from . import sql
 
 """
 We will take in all sql files and parse the queries into tree-sitter trees,
@@ -37,6 +37,7 @@ class Op:
     columns: list[Column] = None
     alias: str = None
 
+    # BUG doesnt capture the op correctly
     def __hash__(self):
         columns_resolved = [(col.dataset, col.table, col.column) for col in self.columns]
         return hash((self.node.type, self.node.start_byte, self.node.end_byte, *columns_resolved, self.alias))

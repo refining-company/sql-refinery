@@ -1,0 +1,48 @@
+---Logic.py
+
+1. Column_Operation mapping Data structure
+   1.1 Overriding **hash** to use in Dict?
+   { tuple(column.fields) -> { op.hash: (op, freq) }
+   vvv
+   { tuple(column.fields) -> { op.hash: [op1, op2] }
+2. How to encode the operation(how much detail to include (e.g encode all of the tree, which fields??))
+   `CASE WHEN blabla THEN as blabla` vs `CASE WHEN blabla ---comment THEN as blabla`
+   when you compare Op.node1 vs Op.node2 -> hash
+   if you use str(Op.node1) then you have a problem of unresolved columns
+   if you use dict(Op.node1) then you might be sensitive to small changes, but maybe not
+   use dict, and when translating Op.node -> dict[dict[dict]], make sure you find columns and resolve them
+   using info in Op.columns list
+
+3. Similarity of two operations
+
+4. How frequency vs similarity should affect op suggestion
+   put a placeholder for now so you pick up everything.
+
+5. How to extract the expression
+   for now: you just give list of alternatives like this:
+
+   ```
+    option A: str
+    file1 (from: to), file2 (from: to)
+
+    option B: str
+    ...
+   ```
+
+   5.1 Copy paste from codebase (need to save exact location)
+   a) use hacky way to replace colunm identifiers and convert tree-sitter into string
+   (you know all column nodes location from Op.columns[X].node.start, so you can just
+   cut and replace them manually)
+   b) we'd need separate library for that that could be slower like SQLGlot
+
+   5.2 Convert from tree-sitter.Node
+
+---Test_Codebase
+
+1. Should I fully adapt the encoding format used in test_sql or keep more info in it
+   Answer adapt it as much as possible
+   Also use json minify to replace pretty print
+
+   each `codebase.py`, `sql.py` etc. might have their own `simplify()->dict`
+   you have `src/utils.py` that will have `json_minify()` and `pprint(obj, simplifier=fn)->str`
+   `prep_outputs` put in `test/utils.py`
