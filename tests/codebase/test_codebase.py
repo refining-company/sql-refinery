@@ -5,7 +5,6 @@ import re
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import codebase
-from src.codebase import Codebase, Query, Op, Table, Column
 import tree_sitter
 
 
@@ -15,50 +14,13 @@ OUTPUT = Path("tests/codebase/outputs.json")
 
 def simplify(obj) -> dict | list | str:
 
-    if isinstance(obj, Codebase):
-        encoded_dict = {}
-
-        for path, tree in obj.files.items():
-            encoded_dict[str(path)] = simplify(tree)
-
-        encoded_codebase = {"files": encoded_dict, "queries": [simplify(query) for query in obj.queries]}
-        return encoded_codebase
-
-    if isinstance(obj, Query):
-        encoded_query = {
-            "node": simplify(obj.node),
-            "sources": [simplify(obj) for obj in obj.sources],
-            "ops": [simplify(op) for op in obj.ops],
-            "alias": simplify(obj.alias),
+    if isinstance(obj, codebase.Codebase | codebase.Query | codebase.Table | codebase.Op | codebase.Column):
+        keys = list(obj.__dataclass_fields__.keys())
+        return {
+            ":".join(keys): [
+                simplify(getattr(obj, field_name)) for field_name, field_info in obj.__dataclass_fields__.items()
+            ]
         }
-        return encoded_query
-
-    if isinstance(obj, Op):
-        encoded_op = {
-            "node": simplify(obj.node),
-            "columns": [simplify(column) for column in obj.columns],
-            "alias": simplify(obj.alias),
-        }
-        return encoded_op
-
-    if isinstance(obj, Table):
-        encoded_table = {
-            "node": simplify(obj.node),
-            "dataset": simplify(obj.dataset),
-            "table": simplify(obj.table),
-            "alias": simplify(obj.alias),
-        }
-
-        return encoded_table
-
-    if isinstance(obj, Column):
-        encoded_column = {
-            "node": [simplify(node) for node in obj.nodes],
-            "dataset": simplify(obj.dataset),
-            "table": simplify(obj.table),
-            "column": simplify(obj.column),
-        }
-        return encoded_column
 
     if isinstance(obj, tree_sitter.Tree):
         return {"root": [simplify(obj.root_node)]}
