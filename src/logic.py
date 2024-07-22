@@ -1,5 +1,5 @@
 from . import codebase
-from codebase import Codebase, Column
+from codebase import Codebase, Column, Op
 
 
 # Algorithm:
