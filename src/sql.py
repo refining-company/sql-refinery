@@ -73,17 +73,20 @@ def is_type(node: Node, types: str | list[str]) -> bool:
         if (_type == "@table") and (node.type == "identifier" and node.parent.type in {"from_item"}):
             return True
 
+        # BUG: `USING (account_id, date_month)` is captured incorrectly
         if (
             (_type == "@expression")
             and node.type not in {"as_alias", "(", ")"}
+            # using group_by_clause causes both columns to appear in both grouping_items
             and node.parent.type in {"select_expression", "join_condition", "grouping_item", "order_by_clause_body"}
         ):
             return True
 
         if (_type == "@column") and (
-            node.type == "identifier"
+            node.type in ["identifier", "select_all"]
             and node.parent.type
             not in {
+                "from_item",
                 "function_call",
                 "as_alias",
                 "drop_table_statement",

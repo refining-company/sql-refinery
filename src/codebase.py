@@ -2,6 +2,14 @@ from __future__ import annotations
 import dataclasses
 from dataclasses import dataclass
 from . import sql
+import sqlite3
+
+"""
+We will take in all sql files and parse the queries into tree-sitter trees,
+afterwards we convert them into query trees containing all relveant information and 
+traverse them resolving column names in the process, in the end the whole codebase is 
+represented in form of a tree of each query in the database which itself is a query tree
+"""
 
 __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
@@ -104,7 +112,6 @@ def to_queries(node: sql.Node) -> list[Query]:
             columns.append(Column(nodes=n, dataset=d, table=t, column=c))
 
         # Capture ops
-        # BUG: `USING (account_id, date_month)` is captured incorrectly
         # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
         nodes_columns = {n: col for col in columns for n in col.nodes}
         ops = []
@@ -163,3 +170,28 @@ def to_str(obj, lvl: int = 0, indent: int = 2):
         return obj.decode("utf-8")
 
     return str(obj)
+
+
+def extract_schema(db_path):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+
+    schema = {}
+
+    for table in tables:
+        table_name = table[0]
+        cursor.execute(f"PRAGMA table_info({table_name});")
+        columns = cursor.fetchall()
+
+        table_name = table_name.encode("utf-8")
+        schema[table_name] = []
+
+        for column in columns:
+            ## retrieve only the name
+            schema[table_name].append(column[1].encode("utf-8"))
+
+    conn.close()
+    return schema
