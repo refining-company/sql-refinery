@@ -25,7 +25,7 @@ from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 
 def get_op_signature(op):
 
-    # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases re not resolved in the tree-sitter level
+    # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases are not resolved yet in the tree-sitter level
     def get_node_signature(node):
         node_signature = [node.type]
         [node_signature.append(get_node_signature(child)) for child in node.children]
@@ -46,8 +46,7 @@ def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
 
                 col_resolved = (column.dataset, column.table, column.column)
                 column_map.setdefault(col_resolved, {})
-                column_map[col_resolved].setdefault(get_op_signature(op), [op, 0])
-                column_map[col_resolved][get_op_signature(op)][1] += 1
+                column_map[col_resolved].setdefault(get_op_signature(op), []).append(op)
     return column_map
 
 
@@ -135,25 +134,34 @@ def get_similar_op(op: Op):
     print("OP", op.node.text[:].decode())
     print("\n")
     for col in op.columns:
-        codebase_ops = COLUMN_OP_MAPPING[(col.dataset, col.table, col.column)]
+        col_ops = COLUMN_OP_MAPPING[(col.dataset, col.table, col.column)]
         op_score = {}
 
-        for op_signature, (codebase_op, freq) in codebase_ops.items():
-            op_dict = simplify(op)
-            codebase_op_dict = simplify(codebase_op)
-            differences = DeepDiff(op_dict, codebase_op_dict)
-            num_tok = count_keys_values(op_dict)
-            similarity = 1 - (len(differences) / num_tok)
-            if similarity != 1:
-                op_score[op_signature] = (codebase_op, similarity * freq)
+        for op_signature, codebase_ops in col_ops.items():
+            for codebase_op in codebase_ops:
+                op_dict = simplify(op)
+                codebase_op_dict = simplify(codebase_op)
+                differences = DeepDiff(op_dict, codebase_op_dict)
+                num_tok = count_keys_values(op_dict)
+                similarity = 1 - (len(differences) / num_tok)
+                if similarity != 1:
+                    op_score.setdefault(op_signature, []).append((codebase_op, similarity))
 
         try:
-            for op_signature, (codebase_op, score) in op_score.items():
-
-                print(codebase_op.node.text[:].decode("utf-8") + "\n")
-                print("Score: {}\n".format(score))
-                print("\n")
-                print("\n")
+            for op_signature, codebase_op_and_score in op_score.items():
+                for op, score in codebase_op_and_score:
+                    start = op.node.start_point
+                    end = op.node.end_point
+                    print(
+                        "Expression starting at Row, Col:{},{} and ending at Row, Col:{},{}".format(
+                            start.row, start.column, end.row, end.column
+                        )
+                        + "\n"
+                    )
+                    print(op.node.text[:].decode("utf-8") + "\n")
+                    print("Score: {}\n".format(score))
+                    print("\n")
+                    print("\n")
 
         except ValueError as e:
             print("Error:", e)
