@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
+import tree_sitter
 from deepdiff import DeepDiff
-from . import sql, codebase
 from src.sql import Tree, Node
 from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 
@@ -23,121 +23,21 @@ from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 ### Important!! Op dataclass needs to be hashable in order to use it in a dict to get the frequencies of the operation
 
 
-class QueryTreeJSONEncoder(json.JSONEncoder):
+def get_op_signature(op):
 
-    def __init__(self, **kwargs):
-        super(QueryTreeJSONEncoder, self).__init__(**kwargs)
+    # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases re not resolved in the tree-sitter level
+    def get_node_signature(node):
+        node_signature = [node.type]
+        [node_signature.append(get_node_signature(child)) for child in node.children]
+        return ":".join(node_signature)
 
-    def default(self, obj):
-        if isinstance(obj, bytes):
-            return obj.decode()
-        elif isinstance(obj, Codebase):
-            return self.encode_codebase(obj)
-        elif isinstance(obj, Query):
-            return self.encode_query(obj)
-        elif isinstance(obj, Op):
-            return self.encode_op(obj)
-        elif isinstance(obj, Table):
-            return self.encode_table(obj)
-        elif isinstance(obj, Column):
-            return self.encode_column(obj)
-        elif isinstance(obj, Node):
-            return self.encode_node(obj)
-        elif isinstance(obj, Tree):
-            return self.encode_tree(obj)
-        elif isinstance(obj, Path):
-            return self.encode_path(obj)
-        elif obj is None:
-            return "None"
-        else:
-            return super().default(obj)
+    column_strings = [":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns]
+    columns_resolved = ":".join(column_strings)
 
-    def encode_codebase(self, codebase: Codebase):
-        encoded_dict = {}
-
-        for path, tree in codebase.files.items():
-            encoded_dict[str(path)] = self.encode_tree(tree)
-
-        encoded_codebase = {"files": encoded_dict, "queries": [self.encode_query(query) for query in codebase.queries]}
-        return encoded_codebase
-
-    def encode_query(self, query: Query):
-        encoded_query = {
-            "node": self.encode_node(query.node),
-            "sources": [self.default(obj) for obj in query.sources],
-            "ops": [self.encode_op(op) for op in query.ops],
-            "alias": self.default(query.alias),
-        }
-        return encoded_query
-
-    def encode_table(self, table: Table):
-        encoded_table = {
-            "node": self.encode_node(table.node),
-            "dataset": self.default(table.dataset),
-            "table": self.default(table.table),
-            "alias": self.default(table.alias),
-        }
-
-        return encoded_table
-
-    def encode_op(self, op: Op):
-        encoded_op = {
-            "node": self.encode_node(op.node),
-            "columns": [self.encode_column(column) for column in op.columns],
-            "alias": self.default(op.alias),
-        }
-        return encoded_op
-
-    def encode_column(self, column: Column):
-        encoded_column = {
-            "node": [self.encode_node(node) for node in column.nodes],
-            "dataset": self.default(column.dataset),
-            "table": self.default(column.table),
-            "column": self.default(column.column),
-        }
-        return encoded_column
-
-    def encode_node(self, node: Node):
-        encoded_node = {
-            "type": node.type,
-            "children": [self.encode_node(child) for child in node.children],
-            "text": node.text.decode("utf-8"),
-        }
-        if node.type in ["identifier", "number", "string"]:
-            encoded_node["text"] = node.text.decode("utf-8")
-        return encoded_node
-
-    def encode_tree(self, tree: Tree):
-        encoded_tree = {"root": self.encode_node(tree.root_node)}
-        return encoded_tree
-
-
-encoder = QueryTreeJSONEncoder()
-
-
-def count_keys_and_values(d):
-    num_keys = 0
-    num_values = 0
-
-    def traverse_dict(d):
-        nonlocal num_keys, num_values
-        if isinstance(d, dict):
-            num_keys += len(d)
-            for key, value in d.items():
-                traverse_dict(value)
-        elif isinstance(d, list):
-            num_values += len(d)
-            for item in d:
-                traverse_dict(item)
-        else:
-            num_values += 1
-
-    traverse_dict(d)
-    return num_keys + num_values
+    return ":".join([get_node_signature(op.node), columns_resolved])
 
 
 def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
-
     column_map = {}
 
     for query in codebase.queries:
@@ -146,9 +46,65 @@ def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
 
                 col_resolved = (column.dataset, column.table, column.column)
                 column_map.setdefault(col_resolved, {})
-                column_map[col_resolved].setdefault(op, [op, 0])
-                column_map[col_resolved][op][1] += 1
+                column_map[col_resolved].setdefault(get_op_signature(op), [op, 0])
+                column_map[col_resolved][get_op_signature(op)][1] += 1
     return column_map
+
+
+codebase = load("tests/input/code")
+COLUMN_OP_MAPPING = map_column_uses(codebase)
+
+
+def simplify(obj) -> dict | list | str:
+    if isinstance(obj, Codebase | Query | Table | Op | Column):
+        keys = list(obj.__dataclass_fields__.keys())
+        return {
+            ":".join(keys): [
+                simplify(getattr(obj, field_name)) for field_name, field_info in obj.__dataclass_fields__.items()
+            ]
+        }
+
+    if isinstance(obj, tree_sitter.Tree):
+        return {"root": [simplify(obj.root_node)]}
+
+    if isinstance(obj, tree_sitter.Node):
+        keys = [obj.grammar_name]
+        if obj.type in ("identifier", "number", "string"):
+            keys.append(obj.text.decode("utf-8"))
+        return {":".join(keys): [simplify(child) for child in obj.children]}
+
+    if isinstance(obj, dict):
+        return {str(key): simplify(value) for key, value in obj.items()}
+
+    if isinstance(obj, list):
+        return [simplify(item) for item in obj]
+
+    if isinstance(obj, bytes):
+        return obj.decode("utf-8")
+
+    try:
+        return str(obj)
+    except Exception as e:
+        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+
+
+def count_keys_values(d):
+    def count_recursive(d):
+        keys_count = 0
+        values_count = 0
+        if isinstance(d, dict):
+            for key, value in d.items():
+                keys_count += 1
+                values_count += 1
+                if isinstance(value, dict):
+                    sub_keys, sub_values = count_recursive(value)
+                    keys_count += sub_keys
+                    values_count += sub_values
+                elif isinstance(value, list):
+                    values_count += len(value)
+        return keys_count + values_count
+
+    return count_recursive(d)
 
 
 # mapping {column -> [ops, ...]}
@@ -175,47 +131,41 @@ def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
 # Op1.signature ≈ Op2.signature = Op2 is an example of this forumula that is located in Op2.node (node has SQLParse tree, start, end, etc.)
 
 
+def get_similar_op(op: Op):
+    print("OP", op.node.text[:].decode())
+    print("\n")
+    for col in op.columns:
+        codebase_ops = COLUMN_OP_MAPPING[(col.dataset, col.table, col.column)]
+        op_score = {}
+
+        for op_signature, (codebase_op, freq) in codebase_ops.items():
+            op_dict = simplify(op)
+            codebase_op_dict = simplify(codebase_op)
+            differences = DeepDiff(op_dict, codebase_op_dict)
+            num_tok = count_keys_values(op_dict)
+            similarity = 1 - (len(differences) / num_tok)
+            if similarity != 1:
+                op_score[op_signature] = (codebase_op, similarity * freq)
+
+        try:
+            for op_signature, (codebase_op, score) in op_score.items():
+
+                print(codebase_op.node.text[:].decode("utf-8") + "\n")
+                print("Score: {}\n".format(score))
+                print("\n")
+                print("\n")
+
+        except ValueError as e:
+            print("Error:", e)
+
+
 if __name__ == "__main__":
 
-    codebase = load("tests/input/code")
     editor = load("src/editor")
-
-    column_op_mapping = map_column_uses(codebase)
 
     for query in editor.queries:
         print("QUERY", query.node.text[:100])
-        for editor_op in query.ops:
-            print("OP", editor_op.node.text[:100])
-            for col in editor_op.columns:
-                ops = column_op_mapping[(col.dataset, col.table, col.column)]
-                op_score = {}
+        for op in query.ops:
+            get_similar_op(op)
 
-                for op_signature, op_freq in ops.items():
-                    editor_op_dict = encoder.default(editor_op)
-                    codebase_op_dict = encoder.default(ops[op_signature][0])
-
-                    differences = DeepDiff(editor_op_dict, codebase_op_dict)
-                    num_differences = len(differences)
-                    num_elements_op = count_keys_and_values(editor_op_dict)
-
-                    similarity = (num_elements_op - num_differences) / num_elements_op
-                    # if 0.3 < similarity < 0.95:
-                    op_score[op_signature] = similarity * op_freq[1]
-                try:
-
-                    for op, score in op_score.items():
-                        print(ops[op][0].node.text[:100], score)
-                    """    
-                    for  op_score.get 
-                    best_op = max(op_score, key=op_score.get)
-                    target_op = ops[best_op]
-                    print(ops[best_op][0].node.text)
-                    print()
-                    print()
-                    """
-
-                except ValueError as e:
-                    print("Error:", e)
-            print("\n\n")
-        print("\n\n\n\n")
     print("breakpoint")

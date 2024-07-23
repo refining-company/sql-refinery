@@ -78,8 +78,7 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
         # BUG: `USING (account_id, date_month)` is captured incorrectly
         if (
             (_type == "@expression")
-            and node.type not in {"as_alias", "(", ")"}
-            # using group_by_clause causes both columns to appear in both grouping_items
+            and node.type not in {"as_alias", "(", ")", "identifier"}
             and node.parent.type in {"select_expression", "join_condition", "grouping_item", "order_by_clause_body"}
         ):
             return True

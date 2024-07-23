@@ -30,17 +30,11 @@ class Table:
     alias: str = None
 
 
-# (unsafe_hash=True) didn't work
 @dataclass
 class Op:
     node: sql.Node
     columns: list[Column] = None
     alias: str = None
-
-    # BUG doesnt capture the op correctly
-    def __hash__(self):
-        columns_resolved = [(col.dataset, col.table, col.column) for col in self.columns]
-        return hash((self.node.type, self.node.start_byte, self.node.end_byte, *columns_resolved, self.alias))
 
 
 @dataclass
