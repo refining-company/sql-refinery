@@ -70,6 +70,7 @@ def is_type(node: Node, types: str | list[str]) -> bool:
         if (_type == "@query") and node.type in {"query_expr"} and node.named_child(0).type in {"select"}:
             return True
 
+        # BUG: `USING (account_id, date_month)` is captured incorrectly
         if (_type == "@table") and (node.type == "identifier" and node.parent.type in {"from_item"}):
             return True
 
@@ -149,3 +150,27 @@ def to_str(node: Tree, indent: str = 0) -> str:
             res += "\n" + to_str(child, indent + 2)
     res += ")"
     return res
+
+
+
+def simplify(obj) -> dict | list | str:
+    """Transform into standard JSON serialisable objects."""
+    if isinstance(obj, tree_sitter.Tree):
+        return {"root": [simplify(obj.root_node)]}
+
+    if isinstance(obj, tree_sitter.Node):
+        keys = [obj.grammar_name]
+        if obj.type in ("identifier", "number", "string"):
+            keys.append(obj.text.decode("utf-8"))
+        return {":".join(keys): [simplify(child) for child in obj.children]}
+
+    if isinstance(obj, dict):
+        return {str(key): simplify(value) for key, value in obj.items()}
+
+    if isinstance(obj, list):
+        return [simplify(item) for item in obj]
+
+    try:
+        return str(obj)
+    except Exception as e:
+        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")

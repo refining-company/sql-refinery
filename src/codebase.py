@@ -56,7 +56,7 @@ def load(path: str) -> Codebase:
     files = sql.parse_files(path)
     queries = sum([to_queries(t.root_node) for t in files.values()], [])
     codebase = Codebase(files=files, queries=queries)
-    pprint(codebase)
+    # pprint(codebase)
 
     return codebase
 
