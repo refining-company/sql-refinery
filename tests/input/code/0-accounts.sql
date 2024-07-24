@@ -107,6 +107,6 @@ FROM (
             ROWS BETWEEN 11 PRECEDING AND CURRENT ROW
         ) AS revenue_12m
     FROM accounts_revenue
-        JOIN accounts USING (account_id)
+        LEFT JOIN accounts USING (account_id)
         LEFT JOIN countries c USING (country)
 ) AS t;

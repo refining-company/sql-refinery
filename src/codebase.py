@@ -1,8 +1,8 @@
 from __future__ import annotations
 import dataclasses
 from dataclasses import dataclass
-from . import sql
-import sqlite3
+import tree_sitter
+from src import sql
 
 """
 We will take in all sql files and parse the queries into tree-sitter trees,
@@ -16,7 +16,7 @@ __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
 @dataclass
 class Query:
-    node: sql.Node
+    node: tree_sitter.Node
     sources: list[Table | Query] = None
     ops: list[Op] = None
     alias: str = None
@@ -24,7 +24,7 @@ class Query:
 
 @dataclass
 class Table:
-    node: sql.Node
+    node: tree_sitter.Node
     dataset: str = None
     table: str = None
     alias: str = None
@@ -32,14 +32,14 @@ class Table:
 
 @dataclass
 class Op:
-    node: sql.Node
+    node: tree_sitter.Node
     columns: list[Column] = None
     alias: str = None
 
 
 @dataclass
 class Column:
-    nodes: list[sql.Node]
+    nodes: list[tree_sitter.Node]
     dataset: str = None
     table: str = None
     column: str = None
@@ -47,7 +47,7 @@ class Column:
 
 @dataclass
 class Codebase:
-    files: dict[str, sql.Tree]
+    files: dict[str, tree_sitter.Tree]
     queries: list[Query]
 
 
@@ -56,7 +56,6 @@ def load(path: str) -> Codebase:
     files = sql.parse_files(path)
     queries = sum([to_queries(t.root_node) for t in files.values()], [])
     codebase = Codebase(files=files, queries=queries)
-    # pprint(codebase)
 
     return codebase
 
@@ -74,7 +73,7 @@ def load(path: str) -> Codebase:
 ### TODO: think and tell me what about table mapping
 
 
-def to_queries(node: sql.Node) -> list[Query]:
+def to_queries(node: tree_sitter.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -112,7 +111,6 @@ def to_queries(node: sql.Node) -> list[Query]:
             columns.append(Column(nodes=n, dataset=d, table=t, column=c))
 
         # Capture ops
-        # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
         nodes_columns = {n: col for col in columns for n in col.nodes}
         ops = []
         for op_node in sql.find_desc(select_node, "@expression"):
@@ -159,39 +157,14 @@ def to_str(obj, lvl: int = 0, indent: int = 2):
         pad = "\n" + " " * (lvl * indent)
         lvl += len(obj) > 1
         return "".join("{}{}".format(pad if len(obj) > 1 else "", to_str(o, lvl)) for o in obj)
-    if isinstance(obj, sql.Tree):
-        return "sql.Tree"
-    if isinstance(obj, sql.Node):
+    if isinstance(obj, tree_sitter.Tree):
+        return "tree_sitter.Tree"
+    if isinstance(obj, tree_sitter.Node):
         fields = [obj.type]
         fields += ["{}:{}-{}:{}".format(*obj.start_point, *obj.end_point)]
         fields += [to_str(obj.text, lvl)] if obj.type == "identifier" else []
-        return "sql.Node({fields})".format(fields=" ".join(fields))
+        return "tree_sitter.Node({fields})".format(fields=" ".join(fields))
     if isinstance(obj, (bytearray, bytes)):
         return obj.decode("utf-8")
 
     return str(obj)
-
-
-def extract_schema(db_path):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    tables = cursor.fetchall()
-
-    schema = {}
-
-    for table in tables:
-        table_name = table[0]
-        cursor.execute(f"PRAGMA table_info({table_name});")
-        columns = cursor.fetchall()
-
-        table_name = table_name.encode("utf-8")
-        schema[table_name] = []
-
-        for column in columns:
-            ## retrieve only the name
-            schema[table_name].append(column[1].encode("utf-8"))
-
-    conn.close()
-    return schema

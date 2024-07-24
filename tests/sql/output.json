@@ -1,4 +1,217 @@
 {
+  "editor.sql": {
+    "root": [
+      { "source_file": [
+          { "comment": [] },
+          { "query_statement": [
+              { "query_expr": [
+                  { "select": [
+                      { "SELECT": [] },
+                      { "select_list": [
+                          { "_aliasable_expression": [
+                              { "function_call": [
+                                  { "identifier": "date" },
+                                  { "(": [] },
+                                  { "argument": [
+                                      { "identifier": "date_month" } ] },
+                                  { ",": [] },
+                                  { "argument": [
+                                      { "string": "'start of year'" } ] },
+                                  { ")": [] } ] },
+                              { "as_alias": [
+                                  { "AS": [] },
+                                  { "identifier": "date_year" } ] } ] },
+                          { ",": [] },
+                          { "comment": [] },
+                          { "_aliasable_expression": [
+                              { "casewhen_expression": [
+                                  { "CASE": [] },
+                                  { "casewhen_clause": [
+                                      { "WHEN_MATCHED": [] },
+                                      { "binary_expression": [
+                                          { "identifier": "c.region" },
+                                          { "IN": [] },
+                                          { "(": [] },
+                                          { "string": "'Americas'" },
+                                          { ")": [] } ] },
+                                      { "THEN": [] },
+                                      { "string": "'AMER'" } ] },
+                                  { "casewhen_clause": [
+                                      { "WHEN_MATCHED": [] },
+                                      { "binary_expression": [
+                                          { "identifier": "c.region" },
+                                          { "IN": [] },
+                                          { "struct": [
+                                              { "(": [] },
+                                              { "string": "'Europe'" },
+                                              { ",": [] },
+                                              { "string": "'Africa'" },
+                                              { ")": [] } ] } ] },
+                                      { "THEN": [] },
+                                      { "string": "'EMEA'" } ] },
+                                  { "casewhen_clause": [
+                                      { "WHEN_MATCHED": [] },
+                                      { "binary_expression": [
+                                          { "identifier": "c.region" },
+                                          { "=": [] },
+                                          { "string": "'Asia'" } ] },
+                                      { "THEN": [] },
+                                      { "string": "'APAC'" } ] },
+                                  { "caseelse_clause": [
+                                      { "ELSE": [] },
+                                      { "NULL": [
+                                          { "NOT_NULL": [] } ] } ] },
+                                  { "END_IF": [] } ] },
+                              { "as_alias": [
+                                  { "AS": [] },
+                                  { "identifier": "macro_region" } ] } ] },
+                          { ",": [] },
+                          { "comment": [] },
+                          { "_aliasable_expression": [
+                              { "function_call": [
+                                  { "identifier": "IIF" },
+                                  { "(": [] },
+                                  { "argument": [
+                                      { "binary_expression": [
+                                          { "identifier": "a.industry" },
+                                          { "=": [] },
+                                          { "string": "'Information Technology'" } ] } ] },
+                                  { ",": [] },
+                                  { "argument": [
+                                      { "string": "'IT'" } ] },
+                                  { ",": [] },
+                                  { "argument": [
+                                      { "string": "'Non-IT'" } ] },
+                                  { ")": [] } ] },
+                              { "as_alias": [
+                                  { "AS": [] },
+                                  { "identifier": "industry_it" } ] } ] },
+                          { ",": [] },
+                          { "_aliasable_expression": [
+                              { "function_call": [
+                                  { "identifier": "SUM" },
+                                  { "(": [] },
+                                  { "argument": [
+                                      { "identifier": "ar.revenue" } ] },
+                                  { ")": [] } ] },
+                              { "as_alias": [
+                                  { "AS": [] },
+                                  { "identifier": "revenue" } ] } ] },
+                          { ",": [] },
+                          { "_aliasable_expression": [
+                              { "function_call": [
+                                  { "identifier": "COUNT" },
+                                  { "(": [] },
+                                  { "_keyword_distinct": [
+                                      { "DISTINCT_FROM": [] } ] },
+                                  { "argument": [
+                                      { "identifier": "ar.account_id" } ] },
+                                  { ")": [] } ] },
+                              { "as_alias": [
+                                  { "AS": [] },
+                                  { "identifier": "accounts" } ] } ] },
+                          { ",": [] },
+                          { "_aliasable_expression": [
+                              { "binary_expression": [
+                                  { "function_call": [
+                                      { "identifier": "SUM" },
+                                      { "(": [] },
+                                      { "argument": [
+                                          { "identifier": "ar.revenue" } ] },
+                                      { ")": [] } ] },
+                                  { "/": [] },
+                                  { "function_call": [
+                                      { "identifier": "COUNT" },
+                                      { "(": [] },
+                                      { "_keyword_distinct": [
+                                          { "DISTINCT_FROM": [] } ] },
+                                      { "argument": [
+                                          { "identifier": "ar.account_id" } ] },
+                                      { ")": [] } ] } ] },
+                              { "as_alias": [
+                                  { "AS": [] },
+                                  { "identifier": "revenue_per_account" } ] } ] } ] },
+                      { "from_clause": [
+                          { "FROM": [] },
+                          { "from_item": [
+                              { "join_operation": [
+                                  { "from_item": [
+                                      { "join_operation": [
+                                          { "from_item": [
+                                              { "identifier": "accounts_revenue" },
+                                              { "as_alias": [
+                                                  { "identifier": "ar" } ] } ] },
+                                          { "join_type": [
+                                              { "LEFT": [] } ] },
+                                          { "JOIN": [] },
+                                          { "from_item": [
+                                              { "identifier": "accounts" },
+                                              { "as_alias": [
+                                                  { "identifier": "a" } ] } ] },
+                                          { "join_condition": [
+                                              { "USING": [] },
+                                              { "(": [] },
+                                              { "identifier": "account_id" },
+                                              { ")": [] } ] } ] } ] },
+                                  { "join_type": [
+                                      { "LEFT": [] } ] },
+                                  { "JOIN": [] },
+                                  { "from_item": [
+                                      { "identifier": "countries" },
+                                      { "as_alias": [
+                                          { "identifier": "c" } ] } ] },
+                                  { "join_condition": [
+                                      { "USING": [] },
+                                      { "(": [] },
+                                      { "identifier": "country" },
+                                      { ")": [] } ] } ] } ] } ] },
+                      { "where_clause": [
+                          { "WHERE": [] },
+                          { "comment": [] },
+                          { "binary_expression": [
+                              { "binary_expression": [
+                                  { "identifier": "a.industry" },
+                                  { "IN": [] },
+                                  { "struct": [
+                                      { "(": [] },
+                                      { "string": "'Information Technology'" },
+                                      { ",": [] },
+                                      { "string": "'Telecommunication Services'" },
+                                      { ")": [] } ] } ] },
+                              { "comment": [] },
+                              { "AND": [] },
+                              { "between_operator": [
+                                  { "identifier": "date_month" },
+                                  { "BETWEEN": [] },
+                                  { "_expression": [
+                                      { "function_call": [
+                                          { "identifier": "DATE" },
+                                          { "(": [] },
+                                          { "argument": [
+                                              { "string": "'now'" } ] },
+                                          { ",": [] },
+                                          { "argument": [
+                                              { "string": "'-24 months'" } ] },
+                                          { ")": [] } ] } ] },
+                                  { "AND": [] },
+                                  { "_expression": [
+                                      { "function_call": [
+                                          { "identifier": "DATE" },
+                                          { "(": [] },
+                                          { "argument": [
+                                              { "string": "'now'" } ] },
+                                          { ")": [] } ] } ] } ] } ] } ] },
+                      { "group_by_clause": [
+                          { "GROUP_BY": [] },
+                          { "GROUP_BY": [] },
+                          { "grouping_item": [
+                              { "identifier": "date_year" } ] },
+                          { ",": [] },
+                          { "grouping_item": [
+                              { "identifier": "macro_region" } ] },
+                          { ",": [] },
+                          { "grouping_item": [
+                              { "identifier": "industry_it" } ] } ] } ] } ] } ] } ] } ] },
   "0-accounts.sql": {
     "root": [
       { "source_file": [
@@ -10,12 +223,12 @@
               { "keyword_if_exists": [
                   { "IF": [] },
                   { "IF_NOT_EXISTS": [] } ] },
-              { "identifier:date_ranges": [] } ] },
+              { "identifier": "date_ranges" } ] },
           { ";": [] },
           { "create_table_statement": [
               { "CREATE": [] },
               { "TABLE": [] },
-              { "identifier:date_ranges": [] },
+              { "identifier": "date_ranges" },
               { "AS": [] },
               { "query_statement": [
                   { "query_expr": [
@@ -23,7 +236,7 @@
                           { "REMOTE_WITH_CONNECTION": [] },
                           { "with_recursive_keyword": [] },
                           { "cte": [
-                              { "identifier:date_ranges": [] },
+                              { "identifier": "date_ranges" },
                               { "ERROR": [
                                   { "(": [] },
                                   { ")": [] } ] },
@@ -37,12 +250,11 @@
                                               { "select_list": [
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:date": [
-                                                              { "DATE": [] } ] },
+                                                          { "identifier": "date" },
                                                           { "(": [] },
                                                           { "argument": [
                                                               { "function_call": [
-                                                                  { "identifier:MIN": [] },
+                                                                  { "identifier": "MIN" },
                                                                   { "(": [] },
                                                                   { "argument": [
                                                                       { "casewhen_expression": [
@@ -50,30 +262,26 @@
                                                                           { "casewhen_clause": [
                                                                               { "WHEN_MATCHED": [] },
                                                                               { "binary_expression": [
-                                                                                  { "identifier:d.stage_date": [
-                                                                                      { ".": [] } ] },
+                                                                                  { "identifier": "d.stage_date" },
                                                                                   { "<": [] },
-                                                                                  { "identifier:d.contract_start_date": [
-                                                                                      { ".": [] } ] } ] },
+                                                                                  { "identifier": "d.contract_start_date" } ] },
                                                                               { "THEN": [] },
-                                                                              { "identifier:d.stage_date": [
-                                                                                  { ".": [] } ] } ] },
+                                                                              { "identifier": "d.stage_date" } ] },
                                                                           { "caseelse_clause": [
                                                                               { "ELSE": [] },
-                                                                              { "identifier:d.contract_start_date": [
-                                                                                  { ".": [] } ] } ] },
+                                                                              { "identifier": "d.contract_start_date" } ] },
                                                                           { "END_IF": [] } ] } ] },
                                                                   { ")": [] } ] } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:date_month": [] } ] } ] } ] },
+                                                          { "identifier": "date_month" } ] } ] } ] },
                                               { "from_clause": [
                                                   { "FROM": [] },
                                                   { "from_item": [
-                                                      { "identifier:deals": [] },
+                                                      { "identifier": "deals" },
                                                       { "as_alias": [
-                                                          { "identifier:d": [] } ] } ] } ] } ] } ] },
+                                                          { "identifier": "d" } ] } ] } ] } ] } ] },
                                       { "UNION_ALL": [] },
                                       { "ALL": [] },
                                       { "query_expr": [
@@ -82,23 +290,22 @@
                                               { "select_list": [
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:date": [
-                                                              { "DATE": [] } ] },
+                                                          { "identifier": "date" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:date_day": [] } ] },
+                                                              { "identifier": "date_day" } ] },
                                                           { ",": [] },
                                                           { "argument": [
-                                                              { "string:'+1 day'": [] } ] },
+                                                              { "string": "'+1 day'" } ] },
                                                           { ")": [] } ] } ] } ] },
                                               { "from_clause": [
                                                   { "FROM": [] },
                                                   { "from_item": [
-                                                      { "identifier:date_ranges": [] } ] } ] },
+                                                      { "identifier": "date_ranges" } ] } ] },
                                               { "where_clause": [
                                                   { "WHERE": [] },
                                                   { "binary_expression": [
-                                                      { "identifier:date_day": [] },
+                                                      { "identifier": "date_day" },
                                                       { "<": [] },
                                                       { "select_subexpression": [
                                                           { "(": [] },
@@ -108,12 +315,11 @@
                                                                   { "select_list": [
                                                                       { "_aliasable_expression": [
                                                                           { "function_call": [
-                                                                              { "identifier:date": [
-                                                                                  { "DATE": [] } ] },
+                                                                              { "identifier": "date" },
                                                                               { "(": [] },
                                                                               { "argument": [
                                                                                   { "function_call": [
-                                                                                      { "identifier:MAX": [] },
+                                                                                      { "identifier": "MAX" },
                                                                                       { "(": [] },
                                                                                       { "argument": [
                                                                                           { "casewhen_expression": [
@@ -121,43 +327,39 @@
                                                                                               { "casewhen_clause": [
                                                                                                   { "WHEN_MATCHED": [] },
                                                                                                   { "binary_expression": [
-                                                                                                      { "identifier:d.contract_end_date": [
-                                                                                                          { ".": [] } ] },
+                                                                                                      { "identifier": "d.contract_end_date" },
                                                                                                       { ">": [] },
-                                                                                                      { "identifier:d.stage_date": [
-                                                                                                          { ".": [] } ] } ] },
+                                                                                                      { "identifier": "d.stage_date" } ] },
                                                                                                   { "THEN": [] },
-                                                                                                  { "identifier:d.contract_end_date": [
-                                                                                                      { ".": [] } ] } ] },
+                                                                                                  { "identifier": "d.contract_end_date" } ] },
                                                                                               { "caseelse_clause": [
                                                                                                   { "ELSE": [] },
-                                                                                                  { "identifier:d.stage_date": [
-                                                                                                      { ".": [] } ] } ] },
+                                                                                                  { "identifier": "d.stage_date" } ] },
                                                                                               { "END_IF": [] } ] } ] },
                                                                                       { ")": [] } ] } ] },
                                                                               { ")": [] } ] } ] } ] },
                                                                   { "from_clause": [
                                                                       { "FROM": [] },
                                                                       { "from_item": [
-                                                                          { "identifier:deals": [] },
+                                                                          { "identifier": "deals" },
                                                                           { "as_alias": [
-                                                                              { "identifier:d": [] } ] } ] } ] } ] } ] },
+                                                                              { "identifier": "d" } ] } ] } ] } ] } ] },
                                                           { ")": [] } ] } ] } ] } ] } ] } ] } ] },
                               { ")": [] } ] } ] },
                       { "select": [
                           { "SELECT": [] },
                           { "select_list": [
                               { "_aliasable_expression": [
-                                  { "identifier:date_day": [] } ] } ] },
+                                  { "identifier": "date_day" } ] } ] },
                           { "from_clause": [
                               { "FROM": [] },
                               { "from_item": [
-                                  { "identifier:date_ranges": [] } ] } ] },
+                                  { "identifier": "date_ranges" } ] } ] },
                           { "group_by_clause": [
                               { "GROUP_BY": [] },
                               { "GROUP_BY": [] },
                               { "grouping_item": [
-                                  { "identifier:date_day": [] } ] } ] } ] } ] } ] } ] },
+                                  { "identifier": "date_day" } ] } ] } ] } ] } ] } ] },
           { ";": [] },
           { "comment": [] },
           { "drop_table_statement": [
@@ -166,12 +368,12 @@
               { "keyword_if_exists": [
                   { "IF": [] },
                   { "IF_NOT_EXISTS": [] } ] },
-              { "identifier:deals_signed": [] } ] },
+              { "identifier": "deals_signed" } ] },
           { ";": [] },
           { "create_table_statement": [
               { "CREATE": [] },
               { "TABLE": [] },
-              { "identifier:deals_signed": [] },
+              { "identifier": "deals_signed" },
               { "AS": [] },
               { "query_statement": [
                   { "query_expr": [
@@ -184,30 +386,30 @@
                               { ",": [] },
                               { "_aliasable_expression": [
                                   { "binary_expression": [
-                                      { "identifier:revenue": [] },
+                                      { "identifier": "revenue" },
                                       { "/": [] },
-                                      { "identifier:contract_duration_days": [] } ] },
+                                      { "identifier": "contract_duration_days" } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:revenue_day": [] } ] } ] },
+                                      { "identifier": "revenue_day" } ] } ] },
                               { ",": [] },
                               { "_aliasable_expression": [
                                   { "binary_expression": [
-                                      { "identifier:revenue_core": [] },
+                                      { "identifier": "revenue_core" },
                                       { "/": [] },
-                                      { "identifier:contract_duration_days": [] } ] },
+                                      { "identifier": "contract_duration_days" } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:revenue_core_day": [] } ] } ] },
+                                      { "identifier": "revenue_core_day" } ] } ] },
                               { ",": [] },
                               { "_aliasable_expression": [
                                   { "binary_expression": [
-                                      { "identifier:revenue_aux": [] },
+                                      { "identifier": "revenue_aux" },
                                       { "/": [] },
-                                      { "identifier:contract_duration_days": [] } ] },
+                                      { "identifier": "contract_duration_days" } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:revenue_aux_day": [] } ] } ] } ] },
+                                      { "identifier": "revenue_aux_day" } ] } ] } ] },
                           { "from_clause": [
                               { "FROM": [] },
                               { "from_item": [
@@ -218,48 +420,42 @@
                                               { "SELECT": [] },
                                               { "select_list": [
                                                   { "_aliasable_expression": [
-                                                      { "identifier:d.deal_id": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.deal_id" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:d.account_id": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.account_id" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:d.contract_start_date": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.contract_start_date" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:d.contract_end_date": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.contract_end_date" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "binary_expression": [
                                                           { "binary_expression": [
                                                               { "function_call": [
-                                                                  { "identifier:julianday": [] },
+                                                                  { "identifier": "julianday" },
                                                                   { "(": [] },
                                                                   { "argument": [
-                                                                      { "identifier:d.contract_end_date": [
-                                                                          { ".": [] } ] } ] },
+                                                                      { "identifier": "d.contract_end_date" } ] },
                                                                   { ")": [] } ] },
                                                               { "-": [] },
                                                               { "function_call": [
-                                                                  { "identifier:julianday": [] },
+                                                                  { "identifier": "julianday" },
                                                                   { "(": [] },
                                                                   { "argument": [
-                                                                      { "identifier:d.contract_start_date": [
-                                                                          { ".": [] } ] } ] },
+                                                                      { "identifier": "d.contract_start_date" } ] },
                                                                   { ")": [] } ] } ] },
                                                           { "+": [] },
-                                                          { "number:1": [] } ] },
+                                                          { "number": "1" } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:contract_duration_days": [] } ] } ] },
+                                                          { "identifier": "contract_duration_days" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "SUM" },
                                                           { "(": [] },
                                                           { "argument": [
                                                               { "casewhen_expression": [
@@ -267,30 +463,28 @@
                                                                   { "casewhen_clause": [
                                                                       { "WHEN_MATCHED": [] },
                                                                       { "binary_expression": [
-                                                                          { "identifier:o.product": [
-                                                                              { ".": [] } ] },
+                                                                          { "identifier": "o.product" },
                                                                           { "IN": [] },
                                                                           { "struct": [
                                                                               { "(": [] },
-                                                                              { "string:'Subscription Base'": [] },
+                                                                              { "string": "'Subscription Base'" },
                                                                               { ",": [] },
-                                                                              { "string:'Subscription Premium'": [] },
+                                                                              { "string": "'Subscription Premium'" },
                                                                               { ")": [] } ] } ] },
                                                                       { "THEN": [] },
-                                                                      { "identifier:o.value": [
-                                                                          { ".": [] } ] } ] },
+                                                                      { "identifier": "o.value" } ] },
                                                                   { "caseelse_clause": [
                                                                       { "ELSE": [] },
-                                                                      { "number:0": [] } ] },
+                                                                      { "number": "0" } ] },
                                                                   { "END_IF": [] } ] } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue_core": [] } ] } ] },
+                                                          { "identifier": "revenue_core" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "SUM" },
                                                           { "(": [] },
                                                           { "argument": [
                                                               { "casewhen_expression": [
@@ -298,87 +492,79 @@
                                                                   { "casewhen_clause": [
                                                                       { "WHEN_MATCHED": [] },
                                                                       { "binary_expression": [
-                                                                          { "identifier:o.product": [
-                                                                              { ".": [] } ] },
+                                                                          { "identifier": "o.product" },
                                                                           { "IN": [] },
                                                                           { "struct": [
                                                                               { "(": [] },
-                                                                              { "string:'Training'": [] },
+                                                                              { "string": "'Training'" },
                                                                               { ",": [] },
-                                                                              { "string:'Consulting'": [] },
+                                                                              { "string": "'Consulting'" },
                                                                               { ")": [] } ] } ] },
                                                                       { "THEN": [] },
-                                                                      { "identifier:o.value": [
-                                                                          { ".": [] } ] } ] },
+                                                                      { "identifier": "o.value" } ] },
                                                                   { "caseelse_clause": [
                                                                       { "ELSE": [] },
-                                                                      { "number:0": [] } ] },
+                                                                      { "number": "0" } ] },
                                                                   { "END_IF": [] } ] } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue_aux": [] } ] } ] },
+                                                          { "identifier": "revenue_aux" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "SUM" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:o.value": [
-                                                                  { ".": [] } ] } ] },
+                                                              { "identifier": "o.value" } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue": [] } ] } ] } ] },
+                                                          { "identifier": "revenue" } ] } ] } ] },
                                               { "from_clause": [
                                                   { "FROM": [] },
                                                   { "from_item": [
                                                       { "join_operation": [
                                                           { "from_item": [
-                                                              { "identifier:orders": [] },
+                                                              { "identifier": "orders" },
                                                               { "as_alias": [
-                                                                  { "identifier:o": [] } ] } ] },
+                                                                  { "identifier": "o" } ] } ] },
                                                           { "JOIN": [] },
                                                           { "from_item": [
-                                                              { "identifier:deals": [] },
+                                                              { "identifier": "deals" },
                                                               { "as_alias": [
-                                                                  { "identifier:d": [] } ] } ] },
+                                                                  { "identifier": "d" } ] } ] },
                                                           { "join_condition": [
                                                               { "USING": [] },
                                                               { "(": [] },
-                                                              { "identifier:deal_id": [] },
+                                                              { "identifier": "deal_id" },
                                                               { ",": [] },
-                                                              { "identifier:order_id": [] },
+                                                              { "identifier": "order_id" },
                                                               { ")": [] } ] } ] } ] } ] },
                                               { "where_clause": [
                                                   { "WHERE": [] },
                                                   { "binary_expression": [
-                                                      { "identifier:d.stage": [
-                                                          { ".": [] } ] },
+                                                      { "identifier": "d.stage" },
                                                       { "=": [] },
-                                                      { "number:4": [] } ] } ] },
+                                                      { "number": "4" } ] } ] },
                                               { "group_by_clause": [
                                                   { "GROUP_BY": [] },
                                                   { "GROUP_BY": [] },
                                                   { "grouping_item": [
-                                                      { "identifier:d.deal_id": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.deal_id" } ] },
                                                   { ",": [] },
                                                   { "grouping_item": [
-                                                      { "identifier:d.account_id": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.account_id" } ] },
                                                   { ",": [] },
                                                   { "grouping_item": [
-                                                      { "identifier:d.contract_start_date": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "d.contract_start_date" } ] },
                                                   { ",": [] },
                                                   { "grouping_item": [
-                                                      { "identifier:d.contract_end_date": [
-                                                          { ".": [] } ] } ] } ] } ] } ] },
+                                                      { "identifier": "d.contract_end_date" } ] } ] } ] } ] },
                                       { ")": [] } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:t": [] } ] } ] } ] } ] } ] } ] } ] },
+                                      { "identifier": "t" } ] } ] } ] } ] } ] } ] } ] },
           { ";": [] },
           { "comment": [] },
           { "drop_table_statement": [
@@ -387,12 +573,12 @@
               { "keyword_if_exists": [
                   { "IF": [] },
                   { "IF_NOT_EXISTS": [] } ] },
-              { "identifier:accounts_revenue": [] } ] },
+              { "identifier": "accounts_revenue" } ] },
           { ";": [] },
           { "create_table_statement": [
               { "CREATE": [] },
               { "TABLE": [] },
-              { "identifier:accounts_revenue": [] },
+              { "identifier": "accounts_revenue" },
               { "AS": [] },
               { "query_statement": [
                   { "query_expr": [
@@ -400,60 +586,54 @@
                           { "SELECT": [] },
                           { "select_list": [
                               { "_aliasable_expression": [
-                                  { "identifier:t.date_month": [
-                                      { ".": [] } ] } ] },
+                                  { "identifier": "t.date_month" } ] },
                               { ",": [] },
                               { "_aliasable_expression": [
-                                  { "identifier:t.account_id": [
-                                      { ".": [] } ] } ] },
-                              { ",": [] },
-                              { "_aliasable_expression": [
-                                  { "function_call": [
-                                      { "identifier:AVG": [] },
-                                      { "(": [] },
-                                      { "argument": [
-                                          { "identifier:t.deals": [
-                                              { ".": [] } ] } ] },
-                                      { ")": [] } ] },
-                                  { "as_alias": [
-                                      { "AS": [] },
-                                      { "identifier:deals": [] } ] } ] },
+                                  { "identifier": "t.account_id" } ] },
                               { ",": [] },
                               { "_aliasable_expression": [
                                   { "function_call": [
-                                      { "identifier:SUM": [] },
+                                      { "identifier": "AVG" },
                                       { "(": [] },
                                       { "argument": [
-                                          { "identifier:t.revenue_core": [
-                                              { ".": [] } ] } ] },
+                                          { "identifier": "t.deals" } ] },
                                       { ")": [] } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:revenue_core": [] } ] } ] },
+                                      { "identifier": "deals" } ] } ] },
                               { ",": [] },
                               { "_aliasable_expression": [
                                   { "function_call": [
-                                      { "identifier:SUM": [] },
+                                      { "identifier": "SUM" },
                                       { "(": [] },
                                       { "argument": [
-                                          { "identifier:t.revenue_aux": [
-                                              { ".": [] } ] } ] },
+                                          { "identifier": "t.revenue_core" } ] },
                                       { ")": [] } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:revenue_aux": [] } ] } ] },
+                                      { "identifier": "revenue_core" } ] } ] },
                               { ",": [] },
                               { "_aliasable_expression": [
                                   { "function_call": [
-                                      { "identifier:SUM": [] },
+                                      { "identifier": "SUM" },
                                       { "(": [] },
                                       { "argument": [
-                                          { "identifier:t.revenue": [
-                                              { ".": [] } ] } ] },
+                                          { "identifier": "t.revenue_aux" } ] },
                                       { ")": [] } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:revenue": [] } ] } ] } ] },
+                                      { "identifier": "revenue_aux" } ] } ] },
+                              { ",": [] },
+                              { "_aliasable_expression": [
+                                  { "function_call": [
+                                      { "identifier": "SUM" },
+                                      { "(": [] },
+                                      { "argument": [
+                                          { "identifier": "t.revenue" } ] },
+                                      { ")": [] } ] },
+                                  { "as_alias": [
+                                      { "AS": [] },
+                                      { "identifier": "revenue" } ] } ] } ] },
                           { "from_clause": [
                               { "FROM": [] },
                               { "from_item": [
@@ -464,139 +644,124 @@
                                               { "SELECT": [] },
                                               { "select_list": [
                                                   { "_aliasable_expression": [
-                                                      { "identifier:dr.date_day": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "dr.date_day" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:DATE": [
-                                                              { "DATE": [] } ] },
+                                                          { "identifier": "DATE" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:date_day": [] } ] },
+                                                              { "identifier": "date_day" } ] },
                                                           { ",": [] },
                                                           { "argument": [
-                                                              { "string:'start of month'": [] } ] },
+                                                              { "string": "'start of month'" } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:date_month": [] } ] } ] },
+                                                          { "identifier": "date_month" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:ds.account_id": [
-                                                          { ".": [] } ] } ] },
-                                                  { ",": [] },
-                                                  { "_aliasable_expression": [
-                                                      { "function_call": [
-                                                          { "identifier:COUNT": [] },
-                                                          { "(": [] },
-                                                          { "argument": [
-                                                              { "identifier:ds.deal_id": [
-                                                                  { ".": [] } ] } ] },
-                                                          { ")": [] } ] },
-                                                      { "as_alias": [
-                                                          { "AS": [] },
-                                                          { "identifier:deals": [] } ] } ] },
+                                                      { "identifier": "ds.account_id" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "COUNT" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:ds.revenue_core_day": [
-                                                                  { ".": [] } ] } ] },
+                                                              { "identifier": "ds.deal_id" } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue_core": [] } ] } ] },
+                                                          { "identifier": "deals" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "SUM" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:ds.revenue_aux_day": [
-                                                                  { ".": [] } ] } ] },
+                                                              { "identifier": "ds.revenue_core_day" } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue_aux": [] } ] } ] },
+                                                          { "identifier": "revenue_core" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "SUM" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:ds.revenue_day": [
-                                                                  { ".": [] } ] } ] },
+                                                              { "identifier": "ds.revenue_aux_day" } ] },
                                                           { ")": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue": [] } ] } ] } ] },
+                                                          { "identifier": "revenue_aux" } ] } ] },
+                                                  { ",": [] },
+                                                  { "_aliasable_expression": [
+                                                      { "function_call": [
+                                                          { "identifier": "SUM" },
+                                                          { "(": [] },
+                                                          { "argument": [
+                                                              { "identifier": "ds.revenue_day" } ] },
+                                                          { ")": [] } ] },
+                                                      { "as_alias": [
+                                                          { "AS": [] },
+                                                          { "identifier": "revenue" } ] } ] } ] },
                                               { "from_clause": [
                                                   { "FROM": [] },
                                                   { "from_item": [
                                                       { "join_operation": [
                                                           { "from_item": [
-                                                              { "identifier:date_ranges": [] },
+                                                              { "identifier": "date_ranges" },
                                                               { "as_alias": [
-                                                                  { "identifier:dr": [] } ] } ] },
+                                                                  { "identifier": "dr" } ] } ] },
                                                           { "join_type": [
                                                               { "LEFT": [] } ] },
                                                           { "JOIN": [] },
                                                           { "from_item": [
-                                                              { "identifier:deals_signed": [] },
+                                                              { "identifier": "deals_signed" },
                                                               { "as_alias": [
-                                                                  { "identifier:ds": [] } ] } ] },
+                                                                  { "identifier": "ds" } ] } ] },
                                                           { "join_condition": [
                                                               { "ON": [] },
                                                               { "binary_expression": [
                                                                   { "binary_expression": [
-                                                                      { "identifier:dr.date_day": [
-                                                                          { ".": [] } ] },
+                                                                      { "identifier": "dr.date_day" },
                                                                       { ">=": [] },
                                                                       { "function_call": [
-                                                                          { "identifier:date": [
-                                                                              { "DATE": [] } ] },
+                                                                          { "identifier": "date" },
                                                                           { "(": [] },
                                                                           { "argument": [
-                                                                              { "identifier:ds.contract_start_date": [
-                                                                                  { ".": [] } ] } ] },
+                                                                              { "identifier": "ds.contract_start_date" } ] },
                                                                           { ")": [] } ] } ] },
                                                                   { "AND": [] },
                                                                   { "binary_expression": [
-                                                                      { "identifier:dr.date_day": [
-                                                                          { ".": [] } ] },
+                                                                      { "identifier": "dr.date_day" },
                                                                       { "<=": [] },
                                                                       { "function_call": [
-                                                                          { "identifier:date": [
-                                                                              { "DATE": [] } ] },
+                                                                          { "identifier": "date" },
                                                                           { "(": [] },
                                                                           { "argument": [
-                                                                              { "identifier:ds.contract_end_date": [
-                                                                                  { ".": [] } ] } ] },
+                                                                              { "identifier": "ds.contract_end_date" } ] },
                                                                           { ")": [] } ] } ] } ] } ] } ] } ] } ] },
                                               { "group_by_clause": [
                                                   { "GROUP_BY": [] },
                                                   { "GROUP_BY": [] },
                                                   { "grouping_item": [
-                                                      { "identifier:dr.date_day": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "dr.date_day" } ] },
                                                   { ",": [] },
                                                   { "grouping_item": [
-                                                      { "identifier:ds.account_id": [
-                                                          { ".": [] } ] } ] } ] } ] } ] },
+                                                      { "identifier": "ds.account_id" } ] } ] } ] } ] },
                                       { ")": [] } ] },
                                   { "as_alias": [
-                                      { "identifier:t": [] } ] } ] } ] },
+                                      { "identifier": "t" } ] } ] } ] },
                           { "group_by_clause": [
                               { "GROUP_BY": [] },
                               { "GROUP_BY": [] },
                               { "grouping_item": [
-                                  { "identifier:account_id": [] } ] },
+                                  { "identifier": "account_id" } ] },
                               { ",": [] },
                               { "grouping_item": [
-                                  { "identifier:date_month": [] } ] } ] } ] } ] } ] } ] },
+                                  { "identifier": "date_month" } ] } ] } ] } ] } ] } ] },
           { ";": [] },
           { "comment": [] },
           { "drop_table_statement": [
@@ -605,12 +770,12 @@
               { "keyword_if_exists": [
                   { "IF": [] },
                   { "IF_NOT_EXISTS": [] } ] },
-              { "identifier:accounts_360": [] } ] },
+              { "identifier": "accounts_360" } ] },
           { ";": [] },
           { "create_table_statement": [
               { "CREATE": [] },
               { "TABLE": [] },
-              { "identifier:accounts_360": [] },
+              { "identifier": "accounts_360" },
               { "AS": [] },
               { "query_statement": [
                   { "query_expr": [
@@ -628,37 +793,33 @@
                                       { "casewhen_clause": [
                                           { "WHEN_MATCHED": [] },
                                           { "binary_expression": [
-                                              { "identifier:t.revenue_12m": [
-                                                  { ".": [] } ] },
+                                              { "identifier": "t.revenue_12m" },
                                               { "<=": [] },
-                                              { "number:300": [] } ] },
+                                              { "number": "300" } ] },
                                           { "THEN": [] },
-                                          { "string:'Small'": [] } ] },
+                                          { "string": "'Small'" } ] },
                                       { "casewhen_clause": [
                                           { "WHEN_MATCHED": [] },
                                           { "binary_expression": [
                                               { "binary_expression": [
-                                                  { "identifier:t.revenue_12m": [
-                                                      { ".": [] } ] },
+                                                  { "identifier": "t.revenue_12m" },
                                                   { ">": [] },
-                                                  { "number:300": [] } ] },
+                                                  { "number": "300" } ] },
                                               { "AND": [] },
                                               { "binary_expression": [
-                                                  { "identifier:t.revenue_12m": [
-                                                      { ".": [] } ] },
+                                                  { "identifier": "t.revenue_12m" },
                                                   { "<=": [] },
-                                                  { "number:600": [] } ] } ] },
+                                                  { "number": "600" } ] } ] },
                                           { "THEN": [] },
-                                          { "string:'Medium'": [] } ] },
+                                          { "string": "'Medium'" } ] },
                                       { "casewhen_clause": [
                                           { "WHEN_MATCHED": [] },
                                           { "binary_expression": [
-                                              { "identifier:t.revenue_12m": [
-                                                  { ".": [] } ] },
+                                              { "identifier": "t.revenue_12m" },
                                               { ">": [] },
-                                              { "number:600": [] } ] },
+                                              { "number": "600" } ] },
                                           { "THEN": [] },
-                                          { "string:'Large'": [] } ] },
+                                          { "string": "'Large'" } ] },
                                       { "caseelse_clause": [
                                           { "ELSE": [] },
                                           { "NULL": [
@@ -666,7 +827,7 @@
                                       { "END_IF": [] } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:account_size": [] } ] } ] } ] },
+                                      { "identifier": "account_size" } ] } ] } ] },
                           { "from_clause": [
                               { "FROM": [] },
                               { "from_item": [
@@ -677,34 +838,31 @@
                                               { "SELECT": [] },
                                               { "select_list": [
                                                   { "_aliasable_expression": [
-                                                      { "identifier:account_id": [] } ] },
+                                                      { "identifier": "account_id" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:date_month": [] } ] },
+                                                      { "identifier": "date_month" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:revenue": [] } ] },
+                                                      { "identifier": "revenue" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:revenue_core": [] } ] },
+                                                      { "identifier": "revenue_core" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:revenue_aux": [] } ] },
+                                                      { "identifier": "revenue_aux" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:deals": [] } ] },
+                                                      { "identifier": "deals" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:accounts.name": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "accounts.name" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:accounts.industry": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "accounts.industry" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:accounts.country": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "accounts.country" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "casewhen_expression": [
@@ -712,31 +870,29 @@
                                                           { "casewhen_clause": [
                                                               { "WHEN_MATCHED": [] },
                                                               { "binary_expression": [
-                                                                  { "identifier:c.region": [
-                                                                      { ".": [] } ] },
+                                                                  { "identifier": "c.region" },
                                                                   { "IN": [] },
                                                                   { "struct": [
                                                                       { "(": [] },
-                                                                      { "string:'Americas'": [] },
+                                                                      { "string": "'Americas'" },
                                                                       { ",": [] },
-                                                                      { "string:'Europe'": [] },
+                                                                      { "string": "'Europe'" },
                                                                       { ")": [] } ] } ] },
                                                               { "THEN": [] },
-                                                              { "string:'North-West'": [] } ] },
+                                                              { "string": "'North-West'" } ] },
                                                           { "casewhen_clause": [
                                                               { "WHEN_MATCHED": [] },
                                                               { "binary_expression": [
-                                                                  { "identifier:c.region": [
-                                                                      { ".": [] } ] },
+                                                                  { "identifier": "c.region" },
                                                                   { "IN": [] },
                                                                   { "struct": [
                                                                       { "(": [] },
-                                                                      { "string:'Africa'": [] },
+                                                                      { "string": "'Africa'" },
                                                                       { ",": [] },
-                                                                      { "string:'Asia'": [] },
+                                                                      { "string": "'Asia'" },
                                                                       { ")": [] } ] } ] },
                                                               { "THEN": [] },
-                                                              { "string:'South-East'": [] } ] },
+                                                              { "string": "'South-East'" } ] },
                                                           { "caseelse_clause": [
                                                               { "ELSE": [] },
                                                               { "NULL": [
@@ -744,18 +900,17 @@
                                                           { "END_IF": [] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:region_cluster": [] } ] } ] },
+                                                          { "identifier": "region_cluster" } ] } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
-                                                      { "identifier:accounts.priority": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "accounts.priority" } ] },
                                                   { ",": [] },
                                                   { "_aliasable_expression": [
                                                       { "function_call": [
-                                                          { "identifier:SUM": [] },
+                                                          { "identifier": "SUM" },
                                                           { "(": [] },
                                                           { "argument": [
-                                                              { "identifier:revenue": [] } ] },
+                                                              { "identifier": "revenue" } ] },
                                                           { ")": [] },
                                                           { "analytics_clause": [
                                                               { "OVER": [] },
@@ -766,19 +921,19 @@
                                                                           { "PARTITION_COLUMNS": [] },
                                                                           { "GROUP_BY": [] },
                                                                           { "_expression": [
-                                                                              { "identifier:account_id": [] } ] } ] },
+                                                                              { "identifier": "account_id" } ] } ] },
                                                                       { "order_by_clause": [
                                                                           { "ORDER_BY": [] },
                                                                           { "GROUP_BY": [] },
                                                                           { "order_by_clause_body": [
-                                                                              { "identifier:date_month": [] } ] } ] },
+                                                                              { "identifier": "date_month" } ] } ] },
                                                                       { "window_frame_clause": [
                                                                           { "rows_range": [
                                                                               { "ROWS": [] } ] },
                                                                           { "window_frame_between": [
                                                                               { "BETWEEN": [] },
                                                                               { "window_numeric_preceding": [
-                                                                                  { "number:11": [] },
+                                                                                  { "number": "11" },
                                                                                   { "PRECEDING": [] } ] },
                                                                               { "AND": [] },
                                                                               { "between_to": [
@@ -788,7 +943,7 @@
                                                                       { ")": [] } ] } ] } ] } ] },
                                                       { "as_alias": [
                                                           { "AS": [] },
-                                                          { "identifier:revenue_12m": [] } ] } ] } ] },
+                                                          { "identifier": "revenue_12m" } ] } ] } ] },
                                               { "from_clause": [
                                                   { "FROM": [] },
                                                   { "from_item": [
@@ -796,31 +951,33 @@
                                                           { "from_item": [
                                                               { "join_operation": [
                                                                   { "from_item": [
-                                                                      { "identifier:accounts_revenue": [] } ] },
+                                                                      { "identifier": "accounts_revenue" } ] },
+                                                                  { "join_type": [
+                                                                      { "LEFT": [] } ] },
                                                                   { "JOIN": [] },
                                                                   { "from_item": [
-                                                                      { "identifier:accounts": [] } ] },
+                                                                      { "identifier": "accounts" } ] },
                                                                   { "join_condition": [
                                                                       { "USING": [] },
                                                                       { "(": [] },
-                                                                      { "identifier:account_id": [] },
+                                                                      { "identifier": "account_id" },
                                                                       { ")": [] } ] } ] } ] },
                                                           { "join_type": [
                                                               { "LEFT": [] } ] },
                                                           { "JOIN": [] },
                                                           { "from_item": [
-                                                              { "identifier:countries": [] },
+                                                              { "identifier": "countries" },
                                                               { "as_alias": [
-                                                                  { "identifier:c": [] } ] } ] },
+                                                                  { "identifier": "c" } ] } ] },
                                                           { "join_condition": [
                                                               { "USING": [] },
                                                               { "(": [] },
-                                                              { "identifier:country": [] },
+                                                              { "identifier": "country" },
                                                               { ")": [] } ] } ] } ] } ] } ] } ] },
                                       { ")": [] } ] },
                                   { "as_alias": [
                                       { "AS": [] },
-                                      { "identifier:t": [] } ] } ] } ] } ] } ] } ] } ] },
+                                      { "identifier": "t" } ] } ] } ] } ] } ] } ] } ] },
           { ";": [] } ] } ] },
   "1-revenue.sql": {
     "root": [
@@ -834,18 +991,17 @@
                       { "select_list": [
                           { "_aliasable_expression": [
                               { "function_call": [
-                                  { "identifier:date": [
-                                      { "DATE": [] } ] },
+                                  { "identifier": "date" },
                                   { "(": [] },
                                   { "argument": [
-                                      { "identifier:date_month": [] } ] },
+                                      { "identifier": "date_month" } ] },
                                   { ",": [] },
                                   { "argument": [
-                                      { "string:'start of year'": [] } ] },
+                                      { "string": "'start of year'" } ] },
                                   { ")": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:date_year": [] } ] } ] },
+                                  { "identifier": "date_year" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
@@ -853,31 +1009,29 @@
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
+                                          { "identifier": "c.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
-                                              { "string:'Americas'": [] },
+                                              { "string": "'Americas'" },
                                               { ",": [] },
-                                              { "string:'Europe'": [] },
+                                              { "string": "'Europe'" },
                                               { ")": [] } ] } ] },
                                       { "THEN": [] },
-                                      { "string:'North-West'": [] } ] },
+                                      { "string": "'North-West'" } ] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
+                                          { "identifier": "c.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
-                                              { "string:'Africa'": [] },
+                                              { "string": "'Africa'" },
                                               { ",": [] },
-                                              { "string:'Asia'": [] },
+                                              { "string": "'Asia'" },
                                               { ")": [] } ] } ] },
                                       { "THEN": [] },
-                                      { "string:'South-East'": [] } ] },
+                                      { "string": "'South-East'" } ] },
                                   { "caseelse_clause": [
                                       { "ELSE": [] },
                                       { "NULL": [
@@ -885,7 +1039,7 @@
                                   { "END_IF": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:region_cluster": [] } ] } ] },
+                                  { "identifier": "region_cluster" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
@@ -893,17 +1047,15 @@
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier:a.industry": [
-                                              { ".": [] } ] },
+                                          { "identifier": "a.industry" },
                                           { "=": [] },
-                                          { "string:'Information Technology'": [] } ] },
+                                          { "string": "'Information Technology'" } ] },
                                       { "THEN": [] },
-                                      { "string:'Tech'": [] } ] },
+                                      { "string": "'Tech'" } ] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "unary_expression": [
-                                          { "identifier:a.industry": [
-                                              { ".": [] } ] },
+                                          { "identifier": "a.industry" },
                                           { "IS": [] },
                                           { "NULL": [
                                               { "NOT_NULL": [] } ] } ] },
@@ -912,64 +1064,59 @@
                                           { "NOT_NULL": [] } ] } ] },
                                   { "caseelse_clause": [
                                       { "ELSE": [] },
-                                      { "string:'Other'": [] } ] },
+                                      { "string": "'Other'" } ] },
                                   { "END_IF": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:industry_cluster": [] } ] } ] },
+                                  { "identifier": "industry_cluster" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
-                              { "identifier:a360.account_size": [
-                                  { ".": [] } ] } ] },
+                              { "identifier": "a360.account_size" } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "function_call": [
-                                  { "identifier:SUM": [] },
+                                  { "identifier": "SUM" },
                                   { "(": [] },
                                   { "argument": [
-                                      { "identifier:ar.revenue": [
-                                          { ".": [] } ] } ] },
+                                      { "identifier": "ar.revenue" } ] },
                                   { ")": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:revenue": [] } ] } ] },
+                                  { "identifier": "revenue" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "function_call": [
-                                  { "identifier:COUNT": [] },
+                                  { "identifier": "COUNT" },
                                   { "(": [] },
                                   { "_keyword_distinct": [
                                       { "DISTINCT_FROM": [] } ] },
                                   { "argument": [
-                                      { "identifier:ar.account_id": [
-                                          { ".": [] } ] } ] },
+                                      { "identifier": "ar.account_id" } ] },
                                   { ")": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:accounts": [] } ] } ] },
+                                  { "identifier": "accounts" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "binary_expression": [
                                   { "function_call": [
-                                      { "identifier:SUM": [] },
+                                      { "identifier": "SUM" },
                                       { "(": [] },
                                       { "argument": [
-                                          { "identifier:ar.revenue": [
-                                              { ".": [] } ] } ] },
+                                          { "identifier": "ar.revenue" } ] },
                                       { ")": [] } ] },
                                   { "/": [] },
                                   { "function_call": [
-                                      { "identifier:COUNT": [] },
+                                      { "identifier": "COUNT" },
                                       { "(": [] },
                                       { "_keyword_distinct": [
                                           { "DISTINCT_FROM": [] } ] },
                                       { "argument": [
-                                          { "identifier:ar.account_id": [
-                                              { ".": [] } ] } ] },
+                                          { "identifier": "ar.account_id" } ] },
                                       { ")": [] } ] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:revenue_per_account": [] } ] } ] } ] },
+                                  { "identifier": "revenue_per_account" } ] } ] } ] },
                       { "from_clause": [
                           { "FROM": [] },
                           { "from_item": [
@@ -979,71 +1126,70 @@
                                           { "from_item": [
                                               { "join_operation": [
                                                   { "from_item": [
-                                                      { "identifier:accounts_revenue": [] },
+                                                      { "identifier": "accounts_revenue" },
                                                       { "as_alias": [
-                                                          { "identifier:ar": [] } ] } ] },
+                                                          { "identifier": "ar" } ] } ] },
                                                   { "join_type": [
                                                       { "LEFT": [] } ] },
                                                   { "JOIN": [] },
                                                   { "from_item": [
-                                                      { "identifier:accounts": [] },
+                                                      { "identifier": "accounts" },
                                                       { "as_alias": [
-                                                          { "identifier:a": [] } ] } ] },
+                                                          { "identifier": "a" } ] } ] },
                                                   { "join_condition": [
                                                       { "USING": [] },
                                                       { "(": [] },
-                                                      { "identifier:account_id": [] },
+                                                      { "identifier": "account_id" },
                                                       { ")": [] } ] } ] } ] },
                                           { "join_type": [
                                               { "LEFT": [] } ] },
                                           { "JOIN": [] },
                                           { "from_item": [
-                                              { "identifier:countries": [] },
+                                              { "identifier": "countries" },
                                               { "as_alias": [
-                                                  { "identifier:c": [] } ] } ] },
+                                                  { "identifier": "c" } ] } ] },
                                           { "join_condition": [
                                               { "USING": [] },
                                               { "(": [] },
-                                              { "identifier:country": [] },
+                                              { "identifier": "country" },
                                               { ")": [] } ] } ] } ] },
                                   { "join_type": [
                                       { "LEFT": [] } ] },
                                   { "JOIN": [] },
                                   { "from_item": [
-                                      { "identifier:accounts_360": [] },
+                                      { "identifier": "accounts_360" },
                                       { "as_alias": [
-                                          { "identifier:a360": [] } ] } ] },
+                                          { "identifier": "a360" } ] } ] },
                                   { "join_condition": [
                                       { "USING": [] },
                                       { "(": [] },
-                                      { "identifier:account_id": [] },
+                                      { "identifier": "account_id" },
                                       { ",": [] },
-                                      { "identifier:date_month": [] },
+                                      { "identifier": "date_month" },
                                       { ")": [] } ] } ] } ] } ] },
                       { "group_by_clause": [
                           { "GROUP_BY": [] },
                           { "GROUP_BY": [] },
                           { "grouping_item": [
-                              { "identifier:date_year": [] } ] },
+                              { "identifier": "date_year" } ] },
                           { ",": [] },
                           { "grouping_item": [
-                              { "identifier:region_cluster": [] } ] },
+                              { "identifier": "region_cluster" } ] },
                           { ",": [] },
                           { "grouping_item": [
-                              { "identifier:industry_cluster": [] } ] },
+                              { "identifier": "industry_cluster" } ] },
                           { ",": [] },
                           { "grouping_item": [
-                              { "identifier:a360.account_size": [
-                                  { ".": [] } ] } ] } ] } ] },
+                              { "identifier": "a360.account_size" } ] } ] } ] },
                   { "order_by_clause": [
                       { "ORDER_BY": [] },
                       { "GROUP_BY": [] },
                       { "order_by_clause_body": [
-                          { "identifier:date_year": [] },
+                          { "identifier": "date_year" },
                           { ",": [] },
-                          { "identifier:region_cluster": [] },
+                          { "identifier": "region_cluster" },
                           { ",": [] },
-                          { "identifier:industry_cluster": [] } ] } ] } ] } ] },
+                          { "identifier": "industry_cluster" } ] } ] } ] } ] },
           { ";": [] },
           { "comment": [] },
           { "query_statement": [
@@ -1052,11 +1198,10 @@
                       { "SELECT": [] },
                       { "select_list": [
                           { "_aliasable_expression": [
-                              { "identifier:accounts.name": [
-                                  { ".": [] } ] } ] },
+                              { "identifier": "accounts.name" } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
-                              { "identifier:region": [] } ] },
+                              { "identifier": "region" } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
@@ -1064,31 +1209,29 @@
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
+                                          { "identifier": "c.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
-                                              { "string:'Americas'": [] },
+                                              { "string": "'Americas'" },
                                               { ",": [] },
-                                              { "string:'Europe'": [] },
+                                              { "string": "'Europe'" },
                                               { ")": [] } ] } ] },
                                       { "THEN": [] },
-                                      { "string:'North-West'": [] } ] },
+                                      { "string": "'North-West'" } ] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
+                                          { "identifier": "c.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
-                                              { "string:'Africa'": [] },
+                                              { "string": "'Africa'" },
                                               { ",": [] },
-                                              { "string:'Asia'": [] },
+                                              { "string": "'Asia'" },
                                               { ")": [] } ] } ] },
                                       { "THEN": [] },
-                                      { "string:'South-East'": [] } ] },
+                                      { "string": "'South-East'" } ] },
                                   { "caseelse_clause": [
                                       { "ELSE": [] },
                                       { "NULL": [
@@ -1096,35 +1239,33 @@
                                   { "END_IF": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:cluster": [] } ] } ] },
+                                  { "identifier": "cluster" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
-                              { "identifier:accounts.industry": [
-                                  { ".": [] } ] },
+                              { "identifier": "accounts.industry" },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:industry": [] } ] } ] },
+                                  { "identifier": "industry" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "function_call": [
-                                  { "identifier:IIF": [] },
+                                  { "identifier": "IIF" },
                                   { "(": [] },
                                   { "argument": [
                                       { "binary_expression": [
-                                          { "identifier:accounts.industry": [
-                                              { ".": [] } ] },
+                                          { "identifier": "accounts.industry" },
                                           { "=": [] },
-                                          { "string:'Information Technology'": [] } ] } ] },
+                                          { "string": "'Information Technology'" } ] } ] },
                                   { ",": [] },
                                   { "argument": [
-                                      { "string:'Tech'": [] } ] },
+                                      { "string": "'Tech'" } ] },
                                   { ",": [] },
                                   { "argument": [
-                                      { "string:'Other'": [] } ] },
+                                      { "string": "'Other'" } ] },
                                   { ")": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:industry_tech": [] } ] } ] },
+                                  { "identifier": "industry_tech" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
@@ -1133,56 +1274,52 @@
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
                                           { "function_call": [
-                                              { "identifier:SUM": [] },
+                                              { "identifier": "SUM" },
                                               { "(": [] },
                                               { "argument": [
-                                                  { "identifier:accounts_revenue.revenue": [
-                                                      { ".": [] } ] } ] },
+                                                  { "identifier": "accounts_revenue.revenue" } ] },
                                               { ")": [] } ] },
                                           { "<=": [] },
-                                          { "number:300": [] } ] },
+                                          { "number": "300" } ] },
                                       { "THEN": [] },
-                                      { "string:'Small'": [] } ] },
+                                      { "string": "'Small'" } ] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
                                           { "binary_expression": [
                                               { "function_call": [
-                                                  { "identifier:SUM": [] },
+                                                  { "identifier": "SUM" },
                                                   { "(": [] },
                                                   { "argument": [
-                                                      { "identifier:accounts_revenue.revenue": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "accounts_revenue.revenue" } ] },
                                                   { ")": [] } ] },
                                               { ">": [] },
-                                              { "number:300": [] } ] },
+                                              { "number": "300" } ] },
                                           { "AND": [] },
                                           { "binary_expression": [
                                               { "function_call": [
-                                                  { "identifier:SUM": [] },
+                                                  { "identifier": "SUM" },
                                                   { "(": [] },
                                                   { "argument": [
-                                                      { "identifier:accounts_revenue.revenue": [
-                                                          { ".": [] } ] } ] },
+                                                      { "identifier": "accounts_revenue.revenue" } ] },
                                                   { ")": [] } ] },
                                               { "<=": [] },
-                                              { "number:600": [] } ] } ] },
+                                              { "number": "600" } ] } ] },
                                       { "THEN": [] },
-                                      { "string:'Medium'": [] } ] },
+                                      { "string": "'Medium'" } ] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
                                           { "function_call": [
-                                              { "identifier:SUM": [] },
+                                              { "identifier": "SUM" },
                                               { "(": [] },
                                               { "argument": [
-                                                  { "identifier:accounts_revenue.revenue": [
-                                                      { ".": [] } ] } ] },
+                                                  { "identifier": "accounts_revenue.revenue" } ] },
                                               { ")": [] } ] },
                                           { ">": [] },
-                                          { "number:600": [] } ] },
+                                          { "number": "600" } ] },
                                       { "THEN": [] },
-                                      { "string:'Large'": [] } ] },
+                                      { "string": "'Large'" } ] },
                                   { "caseelse_clause": [
                                       { "ELSE": [] },
                                       { "NULL": [
@@ -1190,19 +1327,18 @@
                                   { "END_IF": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:account_size": [] } ] } ] },
+                                  { "identifier": "account_size" } ] } ] },
                           { ",": [] },
                           { "_aliasable_expression": [
                               { "function_call": [
-                                  { "identifier:SUM": [] },
+                                  { "identifier": "SUM" },
                                   { "(": [] },
                                   { "argument": [
-                                      { "identifier:accounts_revenue.revenue": [
-                                          { ".": [] } ] } ] },
+                                      { "identifier": "accounts_revenue.revenue" } ] },
                                   { ")": [] } ] },
                               { "as_alias": [
                                   { "AS": [] },
-                                  { "identifier:revenue_12m": [] } ] } ] } ] },
+                                  { "identifier": "revenue_12m" } ] } ] } ] },
                       { "from_clause": [
                           { "FROM": [] },
                           { "from_item": [
@@ -1210,291 +1346,61 @@
                                   { "from_item": [
                                       { "join_operation": [
                                           { "from_item": [
-                                              { "identifier:accounts": [] } ] },
+                                              { "identifier": "accounts" } ] },
                                           { "join_type": [
                                               { "LEFT": [] } ] },
                                           { "JOIN": [] },
                                           { "from_item": [
-                                              { "identifier:accounts_revenue": [] } ] },
+                                              { "identifier": "accounts_revenue" } ] },
                                           { "join_condition": [
                                               { "USING": [] },
                                               { "(": [] },
-                                              { "identifier:account_id": [] },
+                                              { "identifier": "account_id" },
                                               { ")": [] } ] } ] } ] },
                                   { "join_type": [
                                       { "LEFT": [] } ] },
                                   { "JOIN": [] },
                                   { "from_item": [
-                                      { "identifier:countries": [] },
+                                      { "identifier": "countries" },
                                       { "as_alias": [
-                                          { "identifier:c": [] } ] } ] },
+                                          { "identifier": "c" } ] } ] },
                                   { "join_condition": [
                                       { "USING": [] },
                                       { "(": [] },
-                                      { "identifier:country": [] },
+                                      { "identifier": "country" },
                                       { ")": [] } ] } ] } ] } ] },
                       { "where_clause": [
                           { "WHERE": [] },
                           { "between_operator": [
-                              { "identifier:accounts_revenue.date_month": [
-                                  { ".": [] } ] },
+                              { "identifier": "accounts_revenue.date_month" },
                               { "BETWEEN": [] },
                               { "_expression": [
                                   { "function_call": [
-                                      { "identifier:DATE": [
-                                          { "DATE": [] } ] },
+                                      { "identifier": "DATE" },
                                       { "(": [] },
                                       { "argument": [
-                                          { "string:'now'": [] } ] },
+                                          { "string": "'now'" } ] },
                                       { ",": [] },
                                       { "argument": [
-                                          { "string:'-12 months'": [] } ] },
+                                          { "string": "'-12 months'" } ] },
                                       { ")": [] } ] } ] },
                               { "AND": [] },
                               { "_expression": [
                                   { "function_call": [
-                                      { "identifier:DATE": [
-                                          { "DATE": [] } ] },
+                                      { "identifier": "DATE" },
                                       { "(": [] },
                                       { "argument": [
-                                          { "string:'now'": [] } ] },
+                                          { "string": "'now'" } ] },
                                       { ")": [] } ] } ] } ] } ] },
                       { "group_by_clause": [
                           { "GROUP_BY": [] },
                           { "GROUP_BY": [] },
                           { "grouping_item": [
-                              { "identifier:accounts.name": [
-                                  { ".": [] } ] } ] },
+                              { "identifier": "accounts.name" } ] },
                           { ",": [] },
                           { "grouping_item": [
-                              { "identifier:region": [] } ] },
+                              { "identifier": "region" } ] },
                           { ",": [] },
                           { "grouping_item": [
-                              { "identifier:accounts.industry": [
-                                  { ".": [] } ] } ] } ] } ] } ] } ] },
-          { ";": [] } ] } ] },
-  "editor.sql": {
-    "root": [
-      { "source_file": [
-          { "comment": [] },
-          { "query_statement": [
-              { "query_expr": [
-                  { "select": [
-                      { "SELECT": [] },
-                      { "select_list": [
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier:date": [
-                                      { "DATE": [] } ] },
-                                  { "(": [] },
-                                  { "argument": [
-                                      { "identifier:date_month": [] } ] },
-                                  { ",": [] },
-                                  { "argument": [
-                                      { "string:'start of year'": [] } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier:date_year": [] } ] } ] },
-                          { ",": [] },
-                          { "comment": [] },
-                          { "_aliasable_expression": [
-                              { "casewhen_expression": [
-                                  { "CASE": [] },
-                                  { "casewhen_clause": [
-                                      { "WHEN_MATCHED": [] },
-                                      { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
-                                          { "IN": [] },
-                                          { "(": [] },
-                                          { "string:'Americas'": [] },
-                                          { ")": [] } ] },
-                                      { "THEN": [] },
-                                      { "string:'AMER'": [] } ] },
-                                  { "casewhen_clause": [
-                                      { "WHEN_MATCHED": [] },
-                                      { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
-                                          { "IN": [] },
-                                          { "struct": [
-                                              { "(": [] },
-                                              { "string:'Europe'": [] },
-                                              { ",": [] },
-                                              { "string:'Africa'": [] },
-                                              { ")": [] } ] } ] },
-                                      { "THEN": [] },
-                                      { "string:'EMEA'": [] } ] },
-                                  { "casewhen_clause": [
-                                      { "WHEN_MATCHED": [] },
-                                      { "binary_expression": [
-                                          { "identifier:c.region": [
-                                              { ".": [] } ] },
-                                          { "=": [] },
-                                          { "string:'Asia'": [] } ] },
-                                      { "THEN": [] },
-                                      { "string:'APAC'": [] } ] },
-                                  { "caseelse_clause": [
-                                      { "ELSE": [] },
-                                      { "NULL": [
-                                          { "NOT_NULL": [] } ] } ] },
-                                  { "END_IF": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier:macro_region": [] } ] } ] },
-                          { ",": [] },
-                          { "comment": [] },
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier:IIF": [] },
-                                  { "(": [] },
-                                  { "argument": [
-                                      { "binary_expression": [
-                                          { "identifier:a.industry": [
-                                              { ".": [] } ] },
-                                          { "=": [] },
-                                          { "string:'Information Technology'": [] } ] } ] },
-                                  { ",": [] },
-                                  { "argument": [
-                                      { "string:'IT'": [] } ] },
-                                  { ",": [] },
-                                  { "argument": [
-                                      { "string:'Non-IT'": [] } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier:industry_it": [] } ] } ] },
-                          { ",": [] },
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier:SUM": [] },
-                                  { "(": [] },
-                                  { "argument": [
-                                      { "identifier:ar.revenue": [
-                                          { ".": [] } ] } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier:revenue": [] } ] } ] },
-                          { ",": [] },
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier:COUNT": [] },
-                                  { "(": [] },
-                                  { "_keyword_distinct": [
-                                      { "DISTINCT_FROM": [] } ] },
-                                  { "argument": [
-                                      { "identifier:ar.account_id": [
-                                          { ".": [] } ] } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier:accounts": [] } ] } ] },
-                          { ",": [] },
-                          { "_aliasable_expression": [
-                              { "binary_expression": [
-                                  { "function_call": [
-                                      { "identifier:SUM": [] },
-                                      { "(": [] },
-                                      { "argument": [
-                                          { "identifier:ar.revenue": [
-                                              { ".": [] } ] } ] },
-                                      { ")": [] } ] },
-                                  { "/": [] },
-                                  { "function_call": [
-                                      { "identifier:COUNT": [] },
-                                      { "(": [] },
-                                      { "_keyword_distinct": [
-                                          { "DISTINCT_FROM": [] } ] },
-                                      { "argument": [
-                                          { "identifier:ar.account_id": [
-                                              { ".": [] } ] } ] },
-                                      { ")": [] } ] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier:revenue_per_account": [] } ] } ] } ] },
-                      { "from_clause": [
-                          { "FROM": [] },
-                          { "from_item": [
-                              { "join_operation": [
-                                  { "from_item": [
-                                      { "join_operation": [
-                                          { "from_item": [
-                                              { "identifier:accounts_revenue": [] },
-                                              { "as_alias": [
-                                                  { "identifier:ar": [] } ] } ] },
-                                          { "join_type": [
-                                              { "LEFT": [] } ] },
-                                          { "JOIN": [] },
-                                          { "from_item": [
-                                              { "identifier:accounts": [] },
-                                              { "as_alias": [
-                                                  { "identifier:a": [] } ] } ] },
-                                          { "join_condition": [
-                                              { "USING": [] },
-                                              { "(": [] },
-                                              { "identifier:account_id": [] },
-                                              { ")": [] } ] } ] } ] },
-                                  { "join_type": [
-                                      { "LEFT": [] } ] },
-                                  { "JOIN": [] },
-                                  { "from_item": [
-                                      { "identifier:countries": [] },
-                                      { "as_alias": [
-                                          { "identifier:c": [] } ] } ] },
-                                  { "join_condition": [
-                                      { "USING": [] },
-                                      { "(": [] },
-                                      { "identifier:country": [] },
-                                      { ")": [] } ] } ] } ] } ] },
-                      { "where_clause": [
-                          { "WHERE": [] },
-                          { "comment": [] },
-                          { "binary_expression": [
-                              { "binary_expression": [
-                                  { "identifier:a.industry": [
-                                      { ".": [] } ] },
-                                  { "IN": [] },
-                                  { "struct": [
-                                      { "(": [] },
-                                      { "string:'Information Technology'": [] },
-                                      { ",": [] },
-                                      { "string:'Telecommunication Services'": [] },
-                                      { ")": [] } ] } ] },
-                              { "comment": [] },
-                              { "AND": [] },
-                              { "between_operator": [
-                                  { "identifier:date_month": [] },
-                                  { "BETWEEN": [] },
-                                  { "_expression": [
-                                      { "function_call": [
-                                          { "identifier:DATE": [
-                                              { "DATE": [] } ] },
-                                          { "(": [] },
-                                          { "argument": [
-                                              { "string:'now'": [] } ] },
-                                          { ",": [] },
-                                          { "argument": [
-                                              { "string:'-24 months'": [] } ] },
-                                          { ")": [] } ] } ] },
-                                  { "AND": [] },
-                                  { "_expression": [
-                                      { "function_call": [
-                                          { "identifier:DATE": [
-                                              { "DATE": [] } ] },
-                                          { "(": [] },
-                                          { "argument": [
-                                              { "string:'now'": [] } ] },
-                                          { ")": [] } ] } ] } ] } ] } ] },
-                      { "group_by_clause": [
-                          { "GROUP_BY": [] },
-                          { "GROUP_BY": [] },
-                          { "grouping_item": [
-                              { "identifier:date_year": [] } ] },
-                          { ",": [] },
-                          { "grouping_item": [
-                              { "identifier:macro_region": [] } ] },
-                          { ",": [] },
-                          { "grouping_item": [
-                              { "identifier:industry_it": [] } ] } ] } ] } ] } ] } ] } ] } }
+                              { "identifier": "accounts.industry" } ] } ] } ] } ] } ] },
+          { ";": [] } ] } ] } }

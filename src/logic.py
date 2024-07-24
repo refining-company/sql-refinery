@@ -1,6 +1,4 @@
-from . import codebase
-from codebase import Codebase, Column, Op
-
+from src import codebase
 
 # Algorithm:
 # [x] Load and parse codebase
@@ -16,18 +14,5 @@ from codebase import Codebase, Column, Op
 
 # TODO: write hacky code to make it work and output an example. this code will be 100% discarded. we'll use it to undestand
 #       how to structure the actual solution.
-
-
-def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
-
-    column_map = {}
-
-    for query in codebase.queries:
-        for op in query.ops:
-            for column in op.columns:
-                column_map.setdefault(tuple(column.dataset, column.table, column.column), []).append(op)
-
-    return column_map
-
 
 codebase = codebase.load(".submodules/playground/code")
