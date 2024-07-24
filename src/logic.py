@@ -20,90 +20,7 @@ from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 # TODO: write hacky code to make it work and output an example. this code will be 100% discarded. we'll use it to undestand
 #       how to structure the actual solution.
 
-### Important!! Op dataclass needs to be hashable in order to use it in a dict to get the frequencies of the operation
-
-
-def get_op_signature(op):
-
-    # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases are not resolved yet in the tree-sitter level
-    def get_node_signature(node):
-        node_signature = [node.type]
-        [node_signature.append(get_node_signature(child)) for child in node.children]
-        return ":".join(node_signature)
-
-    column_strings = [":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns]
-    columns_resolved = ":".join(column_strings)
-
-    return ":".join([get_node_signature(op.node), columns_resolved])
-
-
-def map_column_uses(codebase: Codebase) -> dict[Column, Op]:
-    column_map = {}
-
-    for query in codebase.queries:
-        for op in query.ops:
-            for column in op.columns:
-
-                col_resolved = (column.dataset, column.table, column.column)
-                column_map.setdefault(col_resolved, {})
-                column_map[col_resolved].setdefault(get_op_signature(op), []).append(op)
-    return column_map
-
-
-codebase = load("tests/input/code")
-COLUMN_OP_MAPPING = map_column_uses(codebase)
-
-
-def simplify(obj) -> dict | list | str:
-    if isinstance(obj, Codebase | Query | Table | Op | Column):
-        keys = list(obj.__dataclass_fields__.keys())
-        return {
-            ":".join(keys): [
-                simplify(getattr(obj, field_name)) for field_name, field_info in obj.__dataclass_fields__.items()
-            ]
-        }
-
-    if isinstance(obj, tree_sitter.Tree):
-        return {"root": [simplify(obj.root_node)]}
-
-    if isinstance(obj, tree_sitter.Node):
-        keys = [obj.grammar_name]
-        if obj.type in ("identifier", "number", "string"):
-            keys.append(obj.text.decode("utf-8"))
-        return {":".join(keys): [simplify(child) for child in obj.children]}
-
-    if isinstance(obj, dict):
-        return {str(key): simplify(value) for key, value in obj.items()}
-
-    if isinstance(obj, list):
-        return [simplify(item) for item in obj]
-
-    if isinstance(obj, bytes):
-        return obj.decode("utf-8")
-
-    try:
-        return str(obj)
-    except Exception as e:
-        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
-
-
-def count_keys_values(d):
-    def count_recursive(d):
-        keys_count = 0
-        values_count = 0
-        if isinstance(d, dict):
-            for key, value in d.items():
-                keys_count += 1
-                values_count += 1
-                if isinstance(value, dict):
-                    sub_keys, sub_values = count_recursive(value)
-                    keys_count += sub_keys
-                    values_count += sub_values
-                elif isinstance(value, list):
-                    values_count += len(value)
-        return keys_count + values_count
-
-    return count_recursive(d)
+### TODO Look into deepdiff.DeepHash for hashing node (hashes all of the dict so position in code will become an issue)
 
 
 # mapping {column -> [ops, ...]}
@@ -130,50 +47,115 @@ def count_keys_values(d):
 # Op1.signature ≈ Op2.signature = Op2 is an example of this forumula that is located in Op2.node (node has SQLParse tree, start, end, etc.)
 
 
-def get_similar_op(op: Op):
-    print("OP", op.node.text[:].decode())
-    print("\n")
-    for col in op.columns:
-        col_ops = COLUMN_OP_MAPPING[(col.dataset, col.table, col.column)]
-        op_score = {}
+class Logic:
 
-        for op_signature, codebase_ops in col_ops.items():
-            for codebase_op in codebase_ops:
-                op_dict = simplify(op)
-                codebase_op_dict = simplify(codebase_op)
-                differences = DeepDiff(op_dict, codebase_op_dict)
-                num_tok = count_keys_values(op_dict)
-                similarity = 1 - (len(differences) / num_tok)
-                if similarity != 1:
-                    op_score.setdefault(op_signature, []).append((codebase_op, similarity))
+    def __init__(self, codebase_path):
+        self.codebase = load("tests/input/code")
+        self.column_op_map = {}
+        self.map_column_uses()
+
+    def map_column_uses(self) -> dict[Column, Op]:
+        for query in self.codebase.queries:
+            for op in query.ops:
+                for column in op.columns:
+
+                    col_resolved = (column.dataset, column.table, column.column)
+                    self.column_op_map.setdefault(col_resolved, {})
+                    self.column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
+
+    def get_op_signature(self, op):
+        # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases are not resolved yet in the tree-sitter level
+        def get_node_signature(node):
+            node_signature = [node.type]
+            [node_signature.append(get_node_signature(child)) for child in node.children]
+            return ":".join(node_signature)
+
+        column_strings = [":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns]
+        columns_resolved = ":".join(column_strings)
+
+        return ":".join([get_node_signature(op.node), columns_resolved])
+
+    def get_similar_op(self, op: Op):
+        start = op.node.start_point
+        end = op.node.end_point
+        print(
+            "Expression from file {} starting at Row,Col : ({},{}) and ending at Row,Col : ({},{})".format(
+                op.file, start.row, start.column, end.row, end.column
+            )
+        )
+        print("OP", op.node.text[:].decode())
+        print("\n")
+        for col in op.columns:
+            col_ops = self.column_op_map[(col.dataset, col.table, col.column)]
+            op_score = {}
+
+            for op_signature, codebase_ops in col_ops.items():
+                for codebase_op in codebase_ops:
+                    op_dict = self.simplify(op)
+                    codebase_op_dict = self.simplify(codebase_op)
+                    # https://zepworks.com/deepdiff/current/deep_distance.html #uses levenstein distance
+                    similarity = 1 - DeepDiff(op_dict, codebase_op_dict, get_deep_distance=True).tree["deep_distance"]
+                    if 0.95 < similarity < 1:
+                        op_score.setdefault(op_signature, []).append((codebase_op, similarity))
+
+            try:
+                for op_signature, codebase_op_and_score in op_score.items():
+                    for op, score in codebase_op_and_score:
+                        start = op.node.start_point
+                        end = op.node.end_point
+                        print(
+                            "Expression from file {} starting at Row,Col: ({},{}) and ending at Row,Col : ({},{})".format(
+                                op.file, start.row, start.column, end.row, end.column
+                            )
+                            + "\n"
+                        )
+                        print(op.node.text[:].decode("utf-8") + "\n")
+                        print("Score: {}\n".format(score))
+                        print("\n")
+                        print("\n")
+
+            except ValueError as e:
+                print("Error:", e)
+
+    def simplify(self, obj) -> dict | list | str:
+        if isinstance(obj, Codebase | Query | Table | Op | Column):
+            keys = list(obj.__dataclass_fields__.keys())
+            return {
+                ":".join(keys): [
+                    self.simplify(getattr(obj, field_name))
+                    for field_name, field_info in obj.__dataclass_fields__.items()
+                ]
+            }
+
+        if isinstance(obj, tree_sitter.Tree):
+            return {"root": [self.simplify(obj.root_node)]}
+
+        if isinstance(obj, tree_sitter.Node):
+            keys = [obj.grammar_name]
+            if obj.type in ("identifier", "number", "string"):
+                keys.append(obj.text.decode("utf-8"))
+            return {":".join(keys): [self.simplify(child) for child in obj.children]}
+
+        if isinstance(obj, dict):
+            return {str(key): self.simplify(value) for key, value in obj.items()}
+
+        if isinstance(obj, list):
+            return [self.simplify(item) for item in obj]
+
+        if isinstance(obj, bytes):
+            return obj.decode("utf-8")
 
         try:
-            for op_signature, codebase_op_and_score in op_score.items():
-                for op, score in codebase_op_and_score:
-                    start = op.node.start_point
-                    end = op.node.end_point
-                    print(
-                        "Expression starting at Row, Col:{},{} and ending at Row, Col:{},{}".format(
-                            start.row, start.column, end.row, end.column
-                        )
-                        + "\n"
-                    )
-                    print(op.node.text[:].decode("utf-8") + "\n")
-                    print("Score: {}\n".format(score))
-                    print("\n")
-                    print("\n")
-
-        except ValueError as e:
-            print("Error:", e)
+            return str(obj)
+        except Exception as e:
+            raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
 
 
 if __name__ == "__main__":
 
     editor = load("src/editor")
+    logic = Logic("tests/input/code")
 
     for query in editor.queries:
-        print("QUERY", query.node.text[:100])
         for op in query.ops:
-            get_similar_op(op)
-
-    print("breakpoint")
+            logic.get_similar_op(op)

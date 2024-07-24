@@ -1,2 +1,2 @@
 if __name__ == "__main__":
-    import src.logic as logic
+    import src.logic_spike as logic_spike
