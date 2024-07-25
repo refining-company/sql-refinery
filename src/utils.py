@@ -6,55 +6,34 @@ import tree_sitter
 from src import codebase
 
 
-# TODO combine simplify and simplify codebase into one function. The issue is when we simplify a
-# codebase we don't want to capture the column identifiers at the tree sitter level since they are not resolved
+# The issue is when we simplify a codebase we don't want to capture the column identifiers at
+# the tree-sitter level since they are not resolved, so once we are simplifing one of the
+# codebase dataclasses we pass include_identifier = false recursivly
+# if we are simpifying a tree sitter tree or node then the include_identifier defaults to true and is never set to false
+# since it doesn't enter the codebase dataclasses block
 
 
-def simplify_codebase(obj) -> dict | list | str:
+def simplify(obj, include_identifier=True) -> dict | list | str:
     if isinstance(obj, (codebase.Codebase, codebase.Query, codebase.Table, codebase.Op, codebase.Column)):
         keys = [field.name for field in dataclasses.fields(obj)]
-        return {":".join(keys): [simplify_codebase(getattr(obj, field)) for field in keys]}
+        return {":".join(keys): [simplify(getattr(obj, field), False) for field in keys]}
 
     if isinstance(obj, tree_sitter.Tree):
-        return {"root": [simplify_codebase(obj.root_node)]}
+        return {"root": [simplify(obj.root_node, include_identifier)]}
 
     if isinstance(obj, tree_sitter.Node):
         keys = [obj.grammar_name]
         if obj.type in ("identifier", "number", "string"):
-            # columns are not resolved in tree-sitter level
+            if include_identifier:
+                return {":".join(keys): obj.text.decode("utf-8")}
             return {":".join(keys): ""}
-        return {":".join(keys): [simplify_codebase(child) for child in obj.children]}
+        return {":".join(keys): [simplify(child, include_identifier) for child in obj.children]}
 
     if isinstance(obj, dict):
-        return {str(key): simplify_codebase(value) for key, value in obj.items()}
+        return {str(key): simplify(value, include_identifier) for key, value in obj.items()}
 
     if isinstance(obj, list):
-        return [simplify_codebase(item) for item in obj]
-
-    if isinstance(obj, bytes):
-        return obj.decode("utf-8")
-
-    try:
-        return str(obj)
-    except Exception as e:
-        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
-
-
-def simplify(obj) -> dict | list | str:
-    if isinstance(obj, tree_sitter.Tree):
-        return {"root": [simplify(obj.root_node)]}
-
-    if isinstance(obj, tree_sitter.Node):
-        keys = [obj.grammar_name]
-        if obj.type in ("identifier", "number", "string"):
-            return {":".join(keys): obj.text.decode("utf-8")}
-        return {":".join(keys): [simplify(child) for child in obj.children]}
-
-    if isinstance(obj, dict):
-        return {str(key): simplify(value) for key, value in obj.items()}
-
-    if isinstance(obj, list):
-        return [simplify(item) for item in obj]
+        return [simplify(item, include_identifier) for item in obj]
 
     if isinstance(obj, bytes):
         return obj.decode("utf-8")

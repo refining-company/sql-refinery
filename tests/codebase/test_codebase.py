@@ -18,7 +18,7 @@ OUTPUT = Path("tests/codebase/outputs.json")
 
 
 def prep_output():
-    output = utils.simplify_codebase(codebase.load(INPUT_DIR))
+    output = utils.simplify(codebase.load(INPUT_DIR))
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)
     OUTPUT.write_text(output_mini)
@@ -26,7 +26,7 @@ def prep_output():
 
 def test_codebase():
     try:
-        output_test = utils.simplify_codebase(codebase.load(INPUT_DIR))
+        output_test = utils.simplify(codebase.load(INPUT_DIR))
     except Exception as _:
         assert False, "Parsing of Codebase: failed"
 
