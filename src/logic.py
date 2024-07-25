@@ -1,6 +1,8 @@
 from pathlib import Path
+from typing import Tuple
 import json
 import tree_sitter
+from dataclasses import dataclass
 from deepdiff import DeepDiff
 from src.sql import Tree, Node
 from src.codebase import Codebase, Column, Op, Table, Column, Query, load
@@ -47,18 +49,26 @@ from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 # Op1.signature ≈ Op2.signature = Op2 is an example of this forumula that is located in Op2.node (node has SQLParse tree, start, end, etc.)
 
 
+@dataclass
+class Suggestion:
+    file: str
+    start_point: Tuple[int, int]
+    end_point: Tuple[int, int]
+    expression: str
+    score: int = None
+
+
 class Logic:
 
     def __init__(self, codebase_path):
-        self.codebase = load("tests/input/code")
+        self.codebase = codebase.load(codebase_path)
         self.column_op_map = {}
         self.map_column_uses()
 
-    def map_column_uses(self) -> dict[Column, Op]:
+    def map_column_uses(self) -> dict[codebase.Column, dict[str, codebase.Op]]:
         for query in self.codebase.queries:
             for op in query.ops:
                 for column in op.columns:
-
                     col_resolved = (column.dataset, column.table, column.column)
                     self.column_op_map.setdefault(col_resolved, {})
                     self.column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
@@ -75,47 +85,48 @@ class Logic:
 
         return ":".join([get_node_signature(op.node), columns_resolved])
 
-    def get_similar_op(self, op: Op):
-        start = op.node.start_point
-        end = op.node.end_point
-        print(
-            "Expression from file {} starting at Row,Col : ({},{}) and ending at Row,Col : ({},{})".format(
-                op.file, start.row, start.column, end.row, end.column
+    # TODO refactor this method
+    def get_similar_op(self, op: codebase.Op):
+        suggestions = []
+        suggestions.append(
+            Suggestion(
+                op.file,
+                (op.node.start_point.row, op.node.start_point.column),
+                (op.node.end_point.row, op.node.end_point.column),
+                op.node.text.decode("utf-8"),
             )
         )
-        print("OP", op.node.text[:].decode())
-        print("\n")
+
         for col in op.columns:
             col_ops = self.column_op_map[(col.dataset, col.table, col.column)]
             op_score = {}
 
             for op_signature, codebase_ops in col_ops.items():
                 for codebase_op in codebase_ops:
-                    op_dict = self.simplify(op)
-                    codebase_op_dict = self.simplify(codebase_op)
-                    # https://zepworks.com/deepdiff/current/deep_distance.html #uses levenstein distance
-                    similarity = 1 - DeepDiff(op_dict, codebase_op_dict, get_deep_distance=True).tree["deep_distance"]
+                    op_dict = utils.simplify(op, include_identifier=True)
+                    codebase_op_dict = utils.simplify(codebase_op, include_identifier=True)
+                    diff = DeepDiff(op_dict, codebase_op_dict, get_deep_distance=True)
+                    if not isinstance(diff.tree["deep_distance"], float):
+                        continue
+                    similarity = 1 - diff.tree["deep_distance"]
                     if 0.95 < similarity < 1:
                         op_score.setdefault(op_signature, []).append((codebase_op, similarity))
-
             try:
                 for op_signature, codebase_op_and_score in op_score.items():
                     for op, score in codebase_op_and_score:
-                        start = op.node.start_point
-                        end = op.node.end_point
-                        print(
-                            "Expression from file {} starting at Row,Col: ({},{}) and ending at Row,Col : ({},{})".format(
-                                op.file, start.row, start.column, end.row, end.column
+                        suggestions.append(
+                            Suggestion(
+                                op.file,
+                                (op.node.start_point.row, op.node.start_point.column),
+                                (op.node.end_point.row, op.node.end_point.column),
+                                op.node.text.decode("utf-8"),
+                                score,
                             )
-                            + "\n"
                         )
-                        print(op.node.text[:].decode("utf-8") + "\n")
-                        print("Score: {}\n".format(score))
-                        print("\n")
-                        print("\n")
 
             except ValueError as e:
                 print("Error:", e)
+        return suggestions
 
     def simplify(self, obj) -> dict | list | str:
         if isinstance(obj, Codebase | Query | Table | Op | Column):
@@ -158,4 +169,10 @@ if __name__ == "__main__":
 
     for query in editor.queries:
         for op in query.ops:
-            logic.get_similar_op(op)
+            print("\n")
+            print("\n")
+            print("\n")
+            suggestions = logic.get_similar_op(op)
+            for suggestion in suggestions:
+                utils.print_dataclass(suggestion)
+                print("\n")

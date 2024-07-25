@@ -4,7 +4,6 @@ import sqlite3
 import dataclasses
 from src import codebase, sql
 
-
 # The issue is when we simplify a codebase we don't want to capture the column identifiers at
 # the tree-sitter level since they are not resolved, so once we are simplifing one of the
 # codebase dataclasses we pass include_identifier = false recursivly
@@ -12,25 +11,27 @@ from src import codebase, sql
 # since it doesn't enter the codebase dataclasses block
 
 
-def simplify(obj) -> dict | list | str:
+def simplify(obj, include_identifier=True) -> dict | list | str:
     if isinstance(obj, (codebase.Codebase, codebase.Query, codebase.Table, codebase.Op, codebase.Column)):
         keys = [field.name for field in dataclasses.fields(obj)]
-        return {":".join(keys): [simplify(getattr(obj, field)) for field in keys]}
+        return {":".join(keys): [simplify(getattr(obj, field), False) for field in keys]}
 
-    if isinstance(obj, sql.Tree):
-        return {"root": [simplify(obj.root_node)]}
+    if isinstance(obj, tree_sitter.Tree):
+        return {"root": [simplify(obj.root_node, include_identifier)]}
 
-    if isinstance(obj, sql.Node):
+    if isinstance(obj, tree_sitter.Node):
         keys = [obj.grammar_name]
         if obj.type in ("identifier", "number", "string"):
-            return {":".join(keys): obj.text.decode("utf-8")}
-        return {":".join(keys): [simplify(child) for child in obj.children]}
+            if include_identifier:
+                return {":".join(keys): obj.text.decode("utf-8")}
+            return {":".join(keys): ""}
+        return {":".join(keys): [simplify(child, include_identifier) for child in obj.children]}
 
     if isinstance(obj, dict):
-        return {str(key): simplify(value) for key, value in obj.items()}
+        return {str(key): simplify(value, include_identifier) for key, value in obj.items()}
 
     if isinstance(obj, list):
-        return [simplify(item) for item in obj]
+        return [simplify(item, include_identifier) for item in obj]
 
     if isinstance(obj, bytes):
         return obj.decode("utf-8")
@@ -59,6 +60,14 @@ def prettify(obj, fn: callable) -> str:
 
 def pprint(obj, fn: callable):
     print(prettify(obj, fn))
+
+
+# TODO change to handle nested dataclasses
+def print_dataclass(obj):
+    for field in dataclasses.fields(obj):
+        field_name = field.name
+        field_value = getattr(obj, field_name)
+        print(f"{field_name}: {field_value}")
 
 
 def extract_schema(db_path):

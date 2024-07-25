@@ -9,7 +9,7 @@ SELECT
         WHEN c.region = 'Asia' THEN 'APAC'
         ELSE NULL
     END AS macro_region,
-    -- This should cause an error #2
+    -- This should case an error #2
     IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,
     SUM(ar.revenue) AS revenue,
     COUNT(DISTINCT ar.account_id) AS accounts,
