@@ -16,7 +16,7 @@ from src import codebase
 def simplify(obj, include_identifier=True) -> dict | list | str:
     if isinstance(obj, (codebase.Codebase, codebase.Query, codebase.Table, codebase.Op, codebase.Column)):
         keys = [field.name for field in dataclasses.fields(obj)]
-        return {":".join(keys): [simplify(getattr(obj, field), False) for field in keys]}
+        return {":".join(keys): [simplify(getattr(obj, field), include_identifier) for field in keys]}
 
     if isinstance(obj, tree_sitter.Tree):
         return {"root": [simplify(obj.root_node, include_identifier)]}
