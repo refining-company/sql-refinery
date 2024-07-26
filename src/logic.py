@@ -2,10 +2,9 @@ from pathlib import Path
 from typing import Tuple
 import json
 import tree_sitter
+import Levenshtein
 from dataclasses import dataclass
-from deepdiff import DeepDiff
-from src.sql import Tree, Node
-from src.codebase import Codebase, Column, Op, Table, Column, Query, load
+from src import sql, codebase, utils
 
 # Algorithm:
 # [x] Load and parse codebase
@@ -30,6 +29,16 @@ from src.codebase import Codebase, Column, Op, Table, Column, Query, load
 # you're now looking into editor_op[0]. it uses column3 and column4.
 # you check mappping and retrieve only ops for column3 and column4.
 
+# column map
+#   {resolved_col1: {op_signature1: [Op1, Op2, Op3 ...],
+#                    op_signature2: [Op1, Op2, Op3 ...],
+#                    }
+#
+#   {resolved_col2: {op_signature1: [Op1, Op2, Op3 ...],
+#                    op_signature2: [Op1, Op2, Op3 ...],
+#
+#   }
+#
 
 # Op1(column1, column 2) and Op2(column3)
 # ALTERNATIVE 1: mapping {column1->[Op1, ...], column2->[Op1, ...], column3->[Op2, ...]} --- best option
@@ -73,7 +82,9 @@ class Logic:
                     self.column_op_map.setdefault(col_resolved, {})
                     self.column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
 
-    def get_op_signature(self, op):
+    # TODO refactor this to be cleaner
+    @staticmethod
+    def get_op_signature(op):
         # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases are not resolved yet in the tree-sitter level
         def get_node_signature(node):
             node_signature = [node.type]
@@ -85,47 +96,27 @@ class Logic:
 
         return ":".join([get_node_signature(op.node), columns_resolved])
 
-    # TODO refactor this method
     def get_similar_op(self, op: codebase.Op):
         suggestions = []
-        suggestions.append(
-            Suggestion(
-                op.file,
-                (op.node.start_point.row, op.node.start_point.column),
-                (op.node.end_point.row, op.node.end_point.column),
-                op.node.text.decode("utf-8"),
-            )
-        )
-
         for col in op.columns:
             col_ops = self.column_op_map[(col.dataset, col.table, col.column)]
-            op_score = {}
-
-            for op_signature, codebase_ops in col_ops.items():
+            for _, codebase_ops in col_ops.items():
+                freq = len(codebase_ops)
                 for codebase_op in codebase_ops:
-                    op_dict = utils.simplify(op, include_identifier=True)
-                    codebase_op_dict = utils.simplify(codebase_op, include_identifier=True)
-                    diff = DeepDiff(op_dict, codebase_op_dict, get_deep_distance=True)
-                    if not isinstance(diff.tree["deep_distance"], float):
-                        continue
-                    similarity = 1 - diff.tree["deep_distance"]
-                    if 0.95 < similarity < 1:
-                        op_score.setdefault(op_signature, []).append((codebase_op, similarity))
-            try:
-                for op_signature, codebase_op_and_score in op_score.items():
-                    for op, score in codebase_op_and_score:
+                    op_expression = op.node.text.decode("utf-8")
+                    codebase_op_expression = codebase_op.node.text.decode("utf-8")
+                    similarity = Levenshtein.ratio(op_expression, codebase_op_expression)
+                    if 0.7 < similarity < 1:
                         suggestions.append(
                             Suggestion(
-                                op.file,
-                                (op.node.start_point.row, op.node.start_point.column),
-                                (op.node.end_point.row, op.node.end_point.column),
-                                op.node.text.decode("utf-8"),
-                                score,
+                                codebase_op.file,
+                                (codebase_op.node.start_point.row, op.node.start_point.column),
+                                (codebase_op.node.end_point.row, op.node.end_point.column),
+                                codebase_op.node.text.decode("utf-8"),
+                                score=similarity * freq,
                             )
                         )
 
-            except ValueError as e:
-                print("Error:", e)
         return suggestions
 
     def simplify(self, obj) -> dict | list | str:
@@ -171,8 +162,16 @@ if __name__ == "__main__":
         for op in query.ops:
             print("\n")
             print("\n")
-            print("\n")
             suggestions = logic.get_similar_op(op)
+            utils.print_dataclass(
+                Suggestion(
+                    op.file,
+                    (op.node.start_point.row, op.node.start_point.column),
+                    (op.node.end_point.row, op.node.end_point.column),
+                    op.node.text.decode("utf-8"),
+                )
+            )
+            print("\n")
             for suggestion in suggestions:
                 utils.print_dataclass(suggestion)
                 print("\n")

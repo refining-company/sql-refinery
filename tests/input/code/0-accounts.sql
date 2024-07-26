@@ -95,10 +95,12 @@ FROM (
         accounts.name,
         accounts.industry,
         accounts.country,
-        -- Error 1: alternative
+        -- Error 1: alternative, BUG this doesn't get captured as a suggestion because
+        -- it's table is accounts_360 as t so it doesn't get catured in the column_Op mapping
         CASE
             WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
             WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
+            WHEN countries.region IN ('Asia', 'Oceania') THEN 'East'
             ELSE NULL
         END AS region_cluster,
         accounts.priority,
