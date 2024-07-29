@@ -1,5 +1,6 @@
 from pathlib import Path
 import tree_sitter
+from tree_sitter import Tree, Node
 import tree_sitter_sql_bigquery
 
 __all__ = ["Tree", "Node"]

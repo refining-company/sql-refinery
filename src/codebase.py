@@ -1,8 +1,11 @@
 from __future__ import annotations
 import dataclasses
 from dataclasses import dataclass
-import tree_sitter
 from src import sql
+
+Tree = sql.Tree
+Node = sql.Node
+
 
 """
 We will take in all sql files and parse the queries into tree-sitter trees,
@@ -16,7 +19,7 @@ __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
 @dataclass
 class Query:
-    node: tree_sitter.Node
+    node: Node
     sources: list[Table | Query] = None
     ops: list[Op] = None
     alias: str = None
@@ -24,7 +27,7 @@ class Query:
 
 @dataclass
 class Table:
-    node: tree_sitter.Node
+    node: Node
     dataset: str = None
     table: str = None
     alias: str = None
@@ -32,14 +35,14 @@ class Table:
 
 @dataclass
 class Op:
-    node: tree_sitter.Node
+    node: Node
     columns: list[Column] = None
     alias: str = None
 
 
 @dataclass
 class Column:
-    nodes: list[tree_sitter.Node]
+    nodes: list[Node]
     dataset: str = None
     table: str = None
     column: str = None
@@ -47,7 +50,7 @@ class Column:
 
 @dataclass
 class Codebase:
-    files: dict[str, tree_sitter.Tree]
+    files: dict[str, Tree]
     queries: list[Query]
 
 
@@ -73,7 +76,7 @@ def load(path: str) -> Codebase:
 ### TODO: think and tell me what about table mapping
 
 
-def to_queries(node: tree_sitter.Node) -> list[Query]:
+def to_queries(node: Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -157,9 +160,9 @@ def to_str(obj, lvl: int = 0, indent: int = 2):
         pad = "\n" + " " * (lvl * indent)
         lvl += len(obj) > 1
         return "".join("{}{}".format(pad if len(obj) > 1 else "", to_str(o, lvl)) for o in obj)
-    if isinstance(obj, tree_sitter.Tree):
+    if isinstance(obj, Tree):
         return "tree_sitter.Tree"
-    if isinstance(obj, tree_sitter.Node):
+    if isinstance(obj, Node):
         fields = [obj.type]
         fields += ["{}:{}-{}:{}".format(*obj.start_point, *obj.end_point)]
         fields += [to_str(obj.text, lvl)] if obj.type == "identifier" else []
