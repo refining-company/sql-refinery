@@ -1,6 +1,6 @@
 from pathlib import Path
-from typing import Tuple
 import json
+import re
 import tree_sitter
 import Levenshtein
 from dataclasses import dataclass
@@ -18,51 +18,12 @@ from src import sql, codebase, utils
 # [ ] For those that are similar but not exactly equal (e.g. > .7 and <0.99)
 # [ ] Suggest alternatives ordered by how close they are and how frequently they've been used
 
-# TODO: write hacky code to make it work and output an example. this code will be 100% discarded. we'll use it to undestand
-#       how to structure the actual solution.
-
-### TODO Look into deepdiff.DeepHash for hashing node (hashes all of the dict so position in code will become an issue)
-
-
-# mapping {column -> [ops, ...]}
-# [column1->{op.signature:[op,freq]}, column2->, ...]
-# you're now looking into editor_op[0]. it uses column3 and column4.
-# you check mappping and retrieve only ops for column3 and column4.
-
-# column map
-#   {resolved_col1: {op_signature1: [Op1, Op2, Op3 ...],
-#                    op_signature2: [Op1, Op2, Op3 ...],
-#                    }
-#
-#   {resolved_col2: {op_signature1: [Op1, Op2, Op3 ...],
-#                    op_signature2: [Op1, Op2, Op3 ...],
-#
-#   }
-#
-
-# Op1(column1, column 2) and Op2(column3)
-# ALTERNATIVE 1: mapping {column1->[Op1, ...], column2->[Op1, ...], column3->[Op2, ...]} --- best option
-# ALTERNATIVE 2: mapping {(column1, column2)->Op1, column3->Op2}
-
-# OP b"date(date_month, 'start of year')"
-# b'date_month' 0.9759036144578314
-# b"date(date_month, 'start of year')" 1.0
-# b'account_id' 0.963855421686747     <--- this does not make sense
-# b'date_month' 0.963855421686747
-
-# duble check the codebase is capturing things correctly
-
-# HASH should be SIGNATURE
-# hash should be something that is not dependent on where in the code it is, what aliases does it use, etc. but is should
-# capture formula (e.g. CASE WHEN), all constants ("North-West") and all fully-resolved columns (dataset.table.column)
-# Op1.signature ≈ Op2.signature = Op2 is an example of this forumula that is located in Op2.node (node has SQLParse tree, start, end, etc.)
-
 
 @dataclass
 class Suggestion:
     file: str
-    start_point: Tuple[int, int]
-    end_point: Tuple[int, int]
+    start_point: tuple[int, int]
+    end_point: tuple[int, int]
     expression: str
     score: int = None
 
@@ -82,18 +43,14 @@ class Logic:
                     self.column_op_map.setdefault(col_resolved, {})
                     self.column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
 
-    # TODO refactor this to be cleaner
     @staticmethod
     def get_op_signature(op):
-        # only gets the structure of the node not the identifiers of the leaf nodes since the column aliases are not resolved yet in the tree-sitter level
         def get_node_signature(node):
-            node_signature = [node.type]
-            [node_signature.append(get_node_signature(child)) for child in node.children]
-            return ":".join(node_signature)
+            return ":".join([node.type] + [get_node_signature(child) for child in node.children])
 
-        column_strings = [":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns]
-        columns_resolved = ":".join(column_strings)
-
+        columns_resolved = ":".join(
+            [":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns]
+        )
         return ":".join([get_node_signature(op.node), columns_resolved])
 
     def get_similar_op(self, op: codebase.Op):
@@ -112,45 +69,39 @@ class Logic:
                                 codebase_op.file,
                                 (codebase_op.node.start_point.row, op.node.start_point.column),
                                 (codebase_op.node.end_point.row, op.node.end_point.column),
-                                codebase_op.node.text.decode("utf-8"),
+                                self.resolve_columns(codebase_op.node.text.decode("utf-8"), codebase_op.columns),
                                 score=similarity * freq,
                             )
                         )
 
         return suggestions
 
-    def simplify(self, obj) -> dict | list | str:
-        if isinstance(obj, Codebase | Query | Table | Op | Column):
-            keys = list(obj.__dataclass_fields__.keys())
-            return {
-                ":".join(keys): [
-                    self.simplify(getattr(obj, field_name))
-                    for field_name, field_info in obj.__dataclass_fields__.items()
-                ]
-            }
+    # BUG the expression "SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts" is processed wrong
+    @staticmethod
+    def resolve_columns(expression: str, op_columns):
+        words = [part for part in re.split(r"(\s+|[\n()])", expression) if part]
+        resolved_expression = []
+        resolved_columns = {
+            str(column.column.decode("utf-8")): (column.dataset, column.table, column.column) for column in op_columns
+        }
+        for word in words:
+            for column in resolved_columns.keys():
+                if word.endswith(column):
+                    word = ".".join(
+                        [
+                            (
+                                ""
+                                if resolved_columns[column][i] is None
+                                else str(resolved_columns[column][i].decode("utf-8"))
+                            )
+                            for i in range(3)
+                        ]
+                    )
+                    resolved_expression.append(word.strip("."))
+                else:
+                    resolved_expression.append(word)
 
-        if isinstance(obj, tree_sitter.Tree):
-            return {"root": [self.simplify(obj.root_node)]}
-
-        if isinstance(obj, tree_sitter.Node):
-            keys = [obj.grammar_name]
-            if obj.type in ("identifier", "number", "string"):
-                keys.append(obj.text.decode("utf-8"))
-            return {":".join(keys): [self.simplify(child) for child in obj.children]}
-
-        if isinstance(obj, dict):
-            return {str(key): self.simplify(value) for key, value in obj.items()}
-
-        if isinstance(obj, list):
-            return [self.simplify(item) for item in obj]
-
-        if isinstance(obj, bytes):
-            return obj.decode("utf-8")
-
-        try:
-            return str(obj)
-        except Exception as e:
-            raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+        return " ".join(resolved_expression)
 
 
 if __name__ == "__main__":
@@ -160,7 +111,6 @@ if __name__ == "__main__":
 
     for query in editor.queries:
         for op in query.ops:
-            print("\n")
             print("\n")
             suggestions = logic.get_similar_op(op)
             utils.print_dataclass(
