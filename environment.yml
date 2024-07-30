@@ -2,6 +2,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - deepdiff
   - pytest
   - python=3.12
+  - deepdiff
+  - python-levenshtein
