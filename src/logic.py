@@ -1,10 +1,15 @@
 from pathlib import Path
-import json
 import re
-import tree_sitter
 import Levenshtein
 from dataclasses import dataclass
 from src import sql, codebase, utils
+
+"""
+We take in the the whole codebase and construct a computational query tree, we then create a mapping between columns and 
+expressions that use that column, afterwards when we input an expression from the editor we search which operations in the 
+codebase use the same column, then measure how similar the texts of the expressions are and based on the similarity and the 
+frequency we suggest an expression from the codebase.  
+"""
 
 # Algorithm:
 # [x] Load and parse codebase
@@ -55,53 +60,47 @@ class Logic:
 
     def get_similar_op(self, op: codebase.Op):
         suggestions = []
+        op_expression = self.resolve_columns(op.node.text.decode("utf-8"), op.columns)
+
         for col in op.columns:
             col_ops = self.column_op_map[(col.dataset, col.table, col.column)]
-            for _, codebase_ops in col_ops.items():
-                freq = len(codebase_ops)
+            for codebase_ops in col_ops.values():
                 for codebase_op in codebase_ops:
-                    op_expression = op.node.text.decode("utf-8")
-                    codebase_op_expression = codebase_op.node.text.decode("utf-8")
+                    codebase_op_expression = self.resolve_columns(
+                        codebase_op.node.text.decode("utf-8"), codebase_op.columns
+                    )
                     similarity = Levenshtein.ratio(op_expression, codebase_op_expression)
+
                     if 0.7 < similarity < 1:
                         suggestions.append(
                             Suggestion(
                                 codebase_op.file,
                                 (codebase_op.node.start_point.row, op.node.start_point.column),
                                 (codebase_op.node.end_point.row, op.node.end_point.column),
-                                self.resolve_columns(codebase_op.node.text.decode("utf-8"), codebase_op.columns),
-                                score=similarity * freq,
+                                codebase_op_expression,
+                                score=similarity * len(codebase_ops),
                             )
                         )
 
         return suggestions
 
     # BUG the expression "SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts" is processed wrong
+    ## issue is probably that the alias has the same name as the column name we are resolving
     @staticmethod
     def resolve_columns(expression: str, op_columns):
-        words = [part for part in re.split(r"(\s+|[\n()])", expression) if part]
-        resolved_expression = []
+        expression_parts = re.split(r"(\s+|[\n()])", expression)
         resolved_columns = {
             str(column.column.decode("utf-8")): (column.dataset, column.table, column.column) for column in op_columns
         }
-        for word in words:
-            for column in resolved_columns.keys():
-                if word.endswith(column):
-                    word = ".".join(
-                        [
-                            (
-                                ""
-                                if resolved_columns[column][i] is None
-                                else str(resolved_columns[column][i].decode("utf-8"))
-                            )
-                            for i in range(3)
-                        ]
-                    )
-                    resolved_expression.append(word.strip("."))
-                else:
-                    resolved_expression.append(word)
 
-        return " ".join(resolved_expression)
+        def resolve_word(word):
+            for column, parts in resolved_columns.items():
+                if word.endswith(column):
+                    return ".".join(str(part.decode("utf-8")) if part else "" for part in parts).strip(".")
+            return word
+
+        resolved_expression = [resolve_word(word) for word in expression_parts if word]
+        return "".join(resolved_expression)
 
 
 if __name__ == "__main__":
@@ -112,13 +111,14 @@ if __name__ == "__main__":
     for query in editor.queries:
         for op in query.ops:
             print("\n")
+
             suggestions = logic.get_similar_op(op)
             utils.print_dataclass(
                 Suggestion(
                     op.file,
                     (op.node.start_point.row, op.node.start_point.column),
                     (op.node.end_point.row, op.node.end_point.column),
-                    op.node.text.decode("utf-8"),
+                    logic.resolve_columns(op.node.text.decode("utf-8"), op.columns),
                 )
             )
             print("\n")
