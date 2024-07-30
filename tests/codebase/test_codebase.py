@@ -1,6 +1,5 @@
 import json
 import sys
-import pytest
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import codebase, utils

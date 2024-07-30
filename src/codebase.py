@@ -3,10 +3,6 @@ import dataclasses
 from dataclasses import dataclass
 from src import sql
 
-Tree = sql.Tree
-Node = sql.Node
-
-
 """
 We will take in all sql files and parse the queries into tree-sitter trees,
 afterwards we convert them into query trees containing all relveant information and 
@@ -19,7 +15,7 @@ __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
 @dataclass
 class Query:
-    node: Node
+    node: sql.Node
     sources: list[Table | Query] = None
     ops: list[Op] = None
     alias: str = None
@@ -27,7 +23,7 @@ class Query:
 
 @dataclass
 class Table:
-    node: Node
+    node: sql.Node
     dataset: str = None
     table: str = None
     alias: str = None
@@ -35,14 +31,14 @@ class Table:
 
 @dataclass
 class Op:
-    node: Node
+    node: sql.Node
     columns: list[Column] = None
     alias: str = None
 
 
 @dataclass
 class Column:
-    nodes: list[Node]
+    nodes: list[sql.Node]
     dataset: str = None
     table: str = None
     column: str = None
@@ -50,7 +46,7 @@ class Column:
 
 @dataclass
 class Codebase:
-    files: dict[str, Tree]
+    files: dict[str, sql.Tree]
     queries: list[Query]
 
 
@@ -76,7 +72,7 @@ def load(path: str) -> Codebase:
 ### TODO: think and tell me what about table mapping
 
 
-def to_queries(node: Node) -> list[Query]:
+def to_queries(node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -160,9 +156,9 @@ def to_str(obj, lvl: int = 0, indent: int = 2):
         pad = "\n" + " " * (lvl * indent)
         lvl += len(obj) > 1
         return "".join("{}{}".format(pad if len(obj) > 1 else "", to_str(o, lvl)) for o in obj)
-    if isinstance(obj, Tree):
+    if isinstance(obj, sql.Tree):
         return "tree_sitter.Tree"
-    if isinstance(obj, Node):
+    if isinstance(obj, sql.Node):
         fields = [obj.type]
         fields += ["{}:{}-{}:{}".format(*obj.start_point, *obj.end_point)]
         fields += [to_str(obj.text, lvl)] if obj.type == "identifier" else []
