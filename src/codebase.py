@@ -157,12 +157,12 @@ def to_str(obj, lvl: int = 0, indent: int = 2):
         lvl += len(obj) > 1
         return "".join("{}{}".format(pad if len(obj) > 1 else "", to_str(o, lvl)) for o in obj)
     if isinstance(obj, sql.Tree):
-        return "tree_sitter.Tree"
+        return "sql.Tree"
     if isinstance(obj, sql.Node):
         fields = [obj.type]
         fields += ["{}:{}-{}:{}".format(*obj.start_point, *obj.end_point)]
         fields += [to_str(obj.text, lvl)] if obj.type == "identifier" else []
-        return "tree_sitter.Node({fields})".format(fields=" ".join(fields))
+        return "sql.Node({fields})".format(fields=" ".join(fields))
     if isinstance(obj, (bytearray, bytes)):
         return obj.decode("utf-8")
 
