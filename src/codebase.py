@@ -2,7 +2,7 @@ from __future__ import annotations
 import sqlite3
 import dataclasses
 from dataclasses import dataclass
-from . import sql
+from src import sql
 
 """
 We will take in all sql files and parse the queries into tree-sitter trees,
@@ -17,7 +17,7 @@ __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 @dataclass
 class Query:
     file: str
-    node: tree_sitter.Node
+    node: sql.Node
     sources: list[Table | Query] = None
     ops: list[Op] = None
     alias: str = None
@@ -34,7 +34,7 @@ class Table:
 @dataclass
 class Op:
     file: str
-    node: tree_sitter.Node
+    node: sql.Node
     columns: list[Column] = None
     alias: str = None
 
@@ -75,7 +75,7 @@ def load(path: str) -> Codebase:
 ### TODO: think and tell me what about table mapping
 
 
-def to_queries(file: str, node: tree_sitter.Node) -> list[Query]:
+def to_queries(file: str, node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):

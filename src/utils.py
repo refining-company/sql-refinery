@@ -2,6 +2,7 @@ import re
 import json
 import sqlite3
 import dataclasses
+import tree_sitter
 from src import codebase, sql
 
 # The issue is when we simplify a codebase we don't want to capture the column identifiers at
@@ -16,10 +17,10 @@ def simplify(obj, include_identifier=True) -> dict | list | str:
         keys = [field.name for field in dataclasses.fields(obj)]
         return {":".join(keys): [simplify(getattr(obj, field), False) for field in keys]}
 
-    if isinstance(obj, tree_sitter.Tree):
+    if isinstance(obj, sql.Tree):
         return {"root": [simplify(obj.root_node, include_identifier)]}
 
-    if isinstance(obj, tree_sitter.Node):
+    if isinstance(obj, sql.Node):
         keys = [obj.grammar_name]
         if obj.type in ("identifier", "number", "string"):
             if include_identifier:
@@ -60,14 +61,6 @@ def prettify(obj, fn: callable) -> str:
 
 def pprint(obj, fn: callable):
     print(prettify(obj, fn))
-
-
-# TODO change to handle nested dataclasses
-def print_dataclass(obj):
-    for field in dataclasses.fields(obj):
-        field_name = field.name
-        field_value = getattr(obj, field_name)
-        print(f"{field_name}: {field_value}")
 
 
 def extract_schema(db_path):

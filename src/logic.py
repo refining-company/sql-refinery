@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 import Levenshtein
 from dataclasses import dataclass
-from src import sql, codebase, utils
+from src import codebase
 
 """
 We take in the the whole codebase and construct a computational query tree, we then create a mapping between columns and 
@@ -26,11 +26,19 @@ frequency we suggest an expression from the codebase.
 
 @dataclass
 class Suggestion:
-    file: str
-    start_point: tuple[int, int]
-    end_point: tuple[int, int]
+    file: list[tuple[str, tuple[int, int], tuple[int, int]]]
     expression: str
+    freq: int = 0
     score: int = None
+
+    def __str__(self):
+        files_str = "\n    ".join(f"{file}, Start: {start}, End: {end}" for file, start, end in self.file)
+        return (
+            f"Files:\n    {files_str}\n"
+            f"Expression: {self.expression}\n"
+            f"Frequency: {self.freq}\n"
+            f"Score: {self.score}\n"
+        )
 
 
 class Logic:
@@ -60,34 +68,38 @@ class Logic:
 
     def get_similar_op(self, op: codebase.Op):
         suggestions = []
-        op_expression = self.resolve_columns(op.node.text.decode("utf-8"), op.columns)
-
+        op_expression = self.resolve_columns(op)
         for col in op.columns:
             col_ops = self.column_op_map[(col.dataset, col.table, col.column)]
             for codebase_ops in col_ops.values():
-                for codebase_op in codebase_ops:
-                    codebase_op_expression = self.resolve_columns(
-                        codebase_op.node.text.decode("utf-8"), codebase_op.columns
-                    )
-                    similarity = Levenshtein.ratio(op_expression, codebase_op_expression)
-
-                    if 0.7 < similarity < 1:
-                        suggestions.append(
-                            Suggestion(
-                                codebase_op.file,
-                                (codebase_op.node.start_point.row, op.node.start_point.column),
-                                (codebase_op.node.end_point.row, op.node.end_point.column),
-                                codebase_op_expression,
-                                score=similarity * len(codebase_ops),
-                            )
+                codebase_op_expression = self.resolve_columns(codebase_ops[0])
+                similarity = Levenshtein.ratio(op_expression, codebase_op_expression)
+                if 0.7 < similarity < 1:
+                    locations = [
+                        (
+                            str(c_op.file),
+                            (c_op.node.start_point.row, c_op.node.start_point.column),
+                            (c_op.node.end_point.row, c_op.node.end_point.column),
                         )
+                        for c_op in codebase_ops
+                    ]
+                    suggestions.append(
+                        Suggestion(
+                            locations,
+                            codebase_op_expression,
+                            freq=len(codebase_ops),
+                            score=similarity,
+                        )
+                    )
 
         return suggestions
 
     # BUG the expression "SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts" is processed wrong
     ## issue is probably that the alias has the same name as the column name we are resolving
     @staticmethod
-    def resolve_columns(expression: str, op_columns):
+    def resolve_columns(op: codebase.Op):
+        expression = op.node.text.decode("utf-8")
+        op_columns = op.columns
         expression_parts = re.split(r"(\s+|[\n()])", expression)
         resolved_columns = {
             str(column.column.decode("utf-8")): (column.dataset, column.table, column.column) for column in op_columns
@@ -111,17 +123,20 @@ if __name__ == "__main__":
     for query in editor.queries:
         for op in query.ops:
             print("\n")
+            print("\n")
 
             suggestions = logic.get_similar_op(op)
-            utils.print_dataclass(
+            print(
                 Suggestion(
-                    op.file,
-                    (op.node.start_point.row, op.node.start_point.column),
-                    (op.node.end_point.row, op.node.end_point.column),
-                    logic.resolve_columns(op.node.text.decode("utf-8"), op.columns),
+                    [
+                        (
+                            str(op.file),
+                            (op.node.start_point.row, op.node.start_point.column),
+                            (op.node.end_point.row, op.node.end_point.column),
+                        )
+                    ],
+                    logic.resolve_columns(op),
                 )
             )
-            print("\n")
             for suggestion in suggestions:
-                utils.print_dataclass(suggestion)
-                print("\n")
+                print(suggestion)
