@@ -1,44 +1,14 @@
 import re
 import json
 import sqlite3
-import dataclasses
-from src import codebase, sql
+from src import sql
 
 
-# The issue is when we simplify a codebase we don't want to capture the column identifiers at
-# the tree-sitter level since they are not resolved, so once we are simplifing one of the
-# codebase dataclasses we pass include_identifier = false recursivly
-# if we are simpifying a tree sitter tree or node then the include_identifier defaults to true and is never set to false
-# since it doesn't enter the codebase dataclasses block
-
-
-def simplify(obj) -> dict | list | str:
-    if isinstance(obj, (codebase.Codebase, codebase.Query, codebase.Table, codebase.Op, codebase.Column)):
-        keys = [field.name for field in dataclasses.fields(obj)]
-        return {":".join(keys): [simplify(getattr(obj, field)) for field in keys]}
-
-    if isinstance(obj, sql.Tree):
-        return {"root": [simplify(obj.root_node)]}
-
-    if isinstance(obj, sql.Node):
-        keys = [obj.grammar_name]
-        if obj.type in ("identifier", "number", "string"):
-            return {":".join(keys): obj.text.decode("utf-8")}
-        return {":".join(keys): [simplify(child) for child in obj.children]}
-
-    if isinstance(obj, dict):
-        return {str(key): simplify(value) for key, value in obj.items()}
-
-    if isinstance(obj, list):
-        return [simplify(item) for item in obj]
-
-    if isinstance(obj, bytes):
-        return obj.decode("utf-8")
-
-    try:
-        return str(obj)
-    except Exception as e:
-        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+def node_preview(node: sql.Node):
+    text = node.text.decode("utf-8")[:100]
+    text = re.sub(r"\n", " ", text)
+    text = re.sub(r"\s\s+", " ", text)
+    return text
 
 
 def json_minify(string: str) -> str:

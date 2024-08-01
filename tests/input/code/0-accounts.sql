@@ -58,7 +58,7 @@ SELECT
 FROM (
     SELECT 
         dr.date_day,
-        DATE(date_day, 'start of month') AS date_month,
+        DATE(date_day, 'start of monthaa') AS date_month,
         ds.account_id,
         COUNT(ds.deal_id) AS deals,
         SUM(ds.revenue_core_day) AS revenue_core,

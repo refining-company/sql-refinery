@@ -15,6 +15,7 @@ __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
 @dataclass
 class Query:
+    file: str
     node: sql.Node
     sources: list[Table | Query] = None
     ops: list[Op] = None
@@ -31,6 +32,7 @@ class Table:
 
 @dataclass
 class Op:
+    file: str
     node: sql.Node
     columns: list[Column] = None
     alias: str = None
@@ -53,7 +55,7 @@ class Codebase:
 def load(path: str) -> Codebase:
     """Load codebase from `path`"""
     files = sql.parse_files(path)
-    queries = sum([to_queries(t.root_node) for t in files.values()], [])
+    queries = sum([to_queries(file, tree.root_node) for file, tree in files.items()], [])
     codebase = Codebase(files=files, queries=queries)
 
     return codebase
@@ -72,7 +74,7 @@ def load(path: str) -> Codebase:
 ### TODO: think and tell me what about table mapping
 
 
-def to_queries(node: sql.Node) -> list[Query]:
+def to_queries(file: str, node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -117,11 +119,11 @@ def to_queries(node: sql.Node) -> list[Query]:
             for col_node in sql.find_desc(op_node.parent, "@column"):
                 if nodes_columns[col_node] not in op_cols:
                     op_cols.append(nodes_columns[col_node])
-            ops.append(Op(node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
+            ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
-        subqueries = to_queries(select_node)
+        subqueries = to_queries(file, select_node)
 
-        query = Query(node=select_node, sources=tables + subqueries, ops=ops)
+        query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)
 
     return queries
