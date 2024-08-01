@@ -1,7 +1,6 @@
 import json
 import sys
 import json
-import dataclasses
 import hashlib
 from deepdiff import DeepDiff
 from pathlib import Path
@@ -23,7 +22,7 @@ def simplify(obj) -> dict | list | str:
     if isinstance(obj, codebase.Codebase):
         return {
             "files": [
-                {"file:{}:{}".format(str(file), utils.node_preview(tree.root_node)): []}
+                {"File:{}:{}".format(str(file), utils.node_preview(tree.root_node)): []}
                 for file, tree in obj.files.items()
             ],
             "queries": [simplify(query) for query in obj.queries],
@@ -31,21 +30,28 @@ def simplify(obj) -> dict | list | str:
 
     if isinstance(obj, codebase.Query):
         query = {
-            "File:{}:{}:{} Expression:{}".format(
+            "Query:{}:{}:{}:{}".format(
                 obj.file, obj.node.start_point.row, obj.node.start_point.column, utils.node_preview(obj.node)
             ): {
-                "columns": list(set([simplify(column) for op in obj.ops for column in op.columns])),
+                "columns": sorted(list(set([simplify(column) for op in obj.ops for column in op.columns]))),
                 "ops": [simplify(op) for op in obj.ops],
             }
         }
         return query
 
     if isinstance(obj, codebase.Table):
-        return {"Table:{}:{}:{}:{}".format(obj.dataset, obj.table, obj.alias, utils.node_preview(obj.node)): []}
+        return {
+            "Table:{}:{}:{}:{}".format(
+                "None" if obj.dataset is None else obj.dataset.decode("utf-8"),
+                "None" if obj.table is None else obj.table.decode("utf-8"),
+                "None" if obj.alias is None else obj.alias.decode("utf-8"),
+                utils.node_preview(obj.node),
+            ): []
+        }
 
     if isinstance(obj, codebase.Op):
         op = {
-            "File:{}:{}:{} Expression:{}:{}".format(
+            "Op:{}:{}:{}:{}:{}".format(
                 obj.file,
                 obj.node.start_point.row,
                 obj.node.start_point.column,
@@ -57,7 +63,11 @@ def simplify(obj) -> dict | list | str:
         return op
 
     if isinstance(obj, codebase.Column):
-        return "{}:{}:{}".format(obj.dataset, obj.table, obj.column)
+        return "Column:{}:{}:{}".format(
+            "None" if obj.dataset is None else obj.dataset.decode("utf-8"),
+            "None" if obj.table is None else obj.table.decode("utf-8"),
+            "None" if obj.column is None else obj.column.decode("utf-8"),
+        )
 
     if isinstance(obj, sql.Tree):
         return {"root": [simplify(obj.root_node)]}
