@@ -21,41 +21,33 @@ OUTPUT = Path("tests/codebase/outputs.json")
 def simplify(obj) -> dict | list | str:
     if isinstance(obj, codebase.Codebase):
         return {
-            "files": [
-                {"File:{}:{}".format(str(file), utils.node_preview(tree.root_node)): []}
-                for file, tree in obj.files.items()
-            ],
+            "files": [{"File:{}".format(str(file)): []} for file in obj.files.keys()],
             "queries": [simplify(query) for query in obj.queries],
         }
 
     if isinstance(obj, codebase.Query):
         query = {
-            "Query:{}:{}:{}:{}".format(
-                obj.file, obj.node.start_point.row, obj.node.start_point.column, utils.node_preview(obj.node)
-            ): {
-                "columns": sorted(list(set([simplify(column) for op in obj.ops for column in op.columns]))),
-                "ops": [simplify(op) for op in obj.ops],
+            "Query:{}:{}:{}".format(obj.file, obj.node.start_point.row + 1, obj.node.start_point.column + 1): {
+                "ops": [simplify(op) for op in obj.ops]
             }
         }
         return query
 
     if isinstance(obj, codebase.Table):
         return {
-            "Table:{}:{}:{}:{}".format(
-                "None" if obj.dataset is None else obj.dataset.decode("utf-8"),
-                "None" if obj.table is None else obj.table.decode("utf-8"),
-                "None" if obj.alias is None else obj.alias.decode("utf-8"),
-                utils.node_preview(obj.node),
+            "Table:{}:{}:{}".format(
+                simplify(obj.dataset),
+                simplify(obj.table),
+                simplify(obj.alias),
             ): []
         }
 
     if isinstance(obj, codebase.Op):
         op = {
-            "Op:{}:{}:{}:{}:{}".format(
+            "Op:{}:{}:{}:{}".format(
                 obj.file,
-                obj.node.start_point.row,
-                obj.node.start_point.column,
-                utils.node_preview(obj.node),
+                obj.node.start_point.row + 1,
+                obj.node.start_point.column + 1,
                 hashlib.sha256(json.dumps(simplify(obj.node)).encode("utf-8")).hexdigest(),
             ): [],
             "columns": [simplify(column) for column in obj.columns],
@@ -64,9 +56,9 @@ def simplify(obj) -> dict | list | str:
 
     if isinstance(obj, codebase.Column):
         return "Column:{}:{}:{}".format(
-            "None" if obj.dataset is None else obj.dataset.decode("utf-8"),
-            "None" if obj.table is None else obj.table.decode("utf-8"),
-            "None" if obj.column is None else obj.column.decode("utf-8"),
+            simplify(obj.dataset),
+            simplify(obj.table),
+            simplify(obj.column),
         )
 
     if isinstance(obj, sql.Tree):

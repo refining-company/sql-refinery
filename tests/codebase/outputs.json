@@ -1,237 +1,190 @@
 {
   "files": [
-    { "File:editor.sql:-- CASE: Different groupings or thresholds applied to columns SELECT date(date_month, 'start o": [] },
-    { "File:0-accounts.sql:-- FOUNDATIONAL TABLES -- Calendar scaffolding: one day per row DROP TABLE IF EXISTS date_ranges; ": [] },
-    { "File:1-revenue.sql:-- REVENUE REPORTS -- Revenue by region, cluster, account size SELECT date(date_month, 'start": [] } ],
+    { "File:editor.sql": [] },
+    { "File:0-accounts.sql": [] },
+    { "File:1-revenue.sql": [] } ],
   "queries": [
-    { "Query:editor.sql:2:0:SELECT date(date_month, 'start of year') AS date_year, -- This should cause an error CA": {
-        "columns": [
-          "Column:None:None:account_id",
-          "Column:None:None:country",
-          "Column:None:None:date_month",
-          "Column:None:None:date_year",
-          "Column:None:None:industry_it",
-          "Column:None:None:macro_region",
-          "Column:None:accounts:industry",
-          "Column:None:accounts_revenue:account_id",
-          "Column:None:accounts_revenue:revenue",
-          "Column:None:countries:region" ],
+    { "Query:editor.sql:3:1": {
         "ops": [
-          { "Op:editor.sql:3:4:date(date_month, 'start of year'):4b7b97e7a6896e093cad32653300500aaa41bdd3cef9129d22da46e7479b9b76": [],
+          { "Op:editor.sql:4:5:4b7b97e7a6896e093cad32653300500aaa41bdd3cef9129d22da46e7479b9b76": [],
             "columns": [
               "Column:None:None:date_month" ] },
-          { "Op:editor.sql:5:4:CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'Africa'):3e6ce402ad75545e4bc33912151bbd21e9130f312c5f8264434ec6a04ff01a09": [],
+          { "Op:editor.sql:6:5:3e6ce402ad75545e4bc33912151bbd21e9130f312c5f8264434ec6a04ff01a09": [],
             "columns": [
               "Column:None:countries:region" ] },
-          { "Op:editor.sql:12:4:IIF(a.industry = 'Information Technology', 'IT', 'Non-IT'):c0b13fbaf4bbe940b50b558c057106356ead92fec7df3ae268c7df4f835a88d9": [],
+          { "Op:editor.sql:13:5:c0b13fbaf4bbe940b50b558c057106356ead92fec7df3ae268c7df4f835a88d9": [],
             "columns": [
               "Column:None:accounts:industry" ] },
-          { "Op:editor.sql:13:4:SUM(ar.revenue):b63a36ce15ba6b5fe27de8705f6e88b47b3df577aab4903b2204cd16ded340c6": [],
+          { "Op:editor.sql:14:5:b63a36ce15ba6b5fe27de8705f6e88b47b3df577aab4903b2204cd16ded340c6": [],
             "columns": [
               "Column:None:accounts_revenue:revenue" ] },
-          { "Op:editor.sql:14:4:COUNT(DISTINCT ar.account_id):deb42d562dad3cc78436994dadb32a4e875bb3afac7d3fb01daa3721a5b60a85": [],
+          { "Op:editor.sql:15:5:deb42d562dad3cc78436994dadb32a4e875bb3afac7d3fb01daa3721a5b60a85": [],
             "columns": [
               "Column:None:accounts_revenue:account_id" ] },
-          { "Op:editor.sql:15:4:SUM(ar.revenue) / COUNT(DISTINCT ar.account_id):787feb0754235784176b4b3438a50c239a42ebb7d1f37331a6cdbd53f5e2234f": [],
+          { "Op:editor.sql:16:5:787feb0754235784176b4b3438a50c239a42ebb7d1f37331a6cdbd53f5e2234f": [],
             "columns": [
               "Column:None:accounts_revenue:revenue",
               "Column:None:accounts_revenue:account_id" ] },
-          { "Op:editor.sql:17:32:account_id:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
+          { "Op:editor.sql:18:33:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
             "columns": [
               "Column:None:None:account_id" ] },
-          { "Op:editor.sql:18:33:country:9c92d791dfe191f885b510e68fddd75e50be5e19d55dfd12a7b016c541b30705": [],
+          { "Op:editor.sql:19:34:9c92d791dfe191f885b510e68fddd75e50be5e19d55dfd12a7b016c541b30705": [],
             "columns": [
               "Column:None:None:country" ] },
-          { "Op:editor.sql:24:9:date_year:dfdec1fde5d3fb8cd44b6c956e7c9cf2b629b120950b3bc2918cf80b1c6249ca": [],
+          { "Op:editor.sql:25:10:dfdec1fde5d3fb8cd44b6c956e7c9cf2b629b120950b3bc2918cf80b1c6249ca": [],
             "columns": [
               "Column:None:None:date_year" ] },
-          { "Op:editor.sql:24:20:macro_region:bcc4934d5fe46751da8d887ea8b4e72bd72e0313f327f4825bf1be75819efcbe": [],
+          { "Op:editor.sql:25:21:bcc4934d5fe46751da8d887ea8b4e72bd72e0313f327f4825bf1be75819efcbe": [],
             "columns": [
               "Column:None:None:macro_region" ] },
-          { "Op:editor.sql:24:34:industry_it:c3aa9981d9242a27d50908d9041098dd9dcaf76f7d7e5dbc77997d69e22c8f2d": [],
+          { "Op:editor.sql:25:35:c3aa9981d9242a27d50908d9041098dd9dcaf76f7d7e5dbc77997d69e22c8f2d": [],
             "columns": [
               "Column:None:None:industry_it" ] } ] } },
-    { "Query:0-accounts.sql:25:0:SELECT *, revenue / contract_duration_days AS revenue_day, revenue_core / contract_dura": {
-        "columns": [
-          "Column:None:None:contract_duration_days",
-          "Column:None:None:revenue",
-          "Column:None:None:revenue_aux",
-          "Column:None:None:revenue_core" ],
+    { "Query:0-accounts.sql:26:1": {
         "ops": [
-          { "Op:0-accounts.sql:27:4:revenue / contract_duration_days:51f5fc4a853126c8799ca65b1db65ce5efaa4c8f8c202ee9646fc909d8868dab": [],
+          { "Op:0-accounts.sql:28:5:51f5fc4a853126c8799ca65b1db65ce5efaa4c8f8c202ee9646fc909d8868dab": [],
             "columns": [
               "Column:None:None:revenue",
               "Column:None:None:contract_duration_days" ] },
-          { "Op:0-accounts.sql:28:4:revenue_core / contract_duration_days:7bbea5dce65707acba6d337652a0da591d19c3e22cd6c99cd8b9f4a005f6a0d4": [],
+          { "Op:0-accounts.sql:29:5:7bbea5dce65707acba6d337652a0da591d19c3e22cd6c99cd8b9f4a005f6a0d4": [],
             "columns": [
               "Column:None:None:revenue_core",
               "Column:None:None:contract_duration_days" ] },
-          { "Op:0-accounts.sql:29:4:revenue_aux / contract_duration_days:e77a77b6803cf3e557134ada6e9f56c9f8ab19c3463238022426c4f08bd36775": [],
+          { "Op:0-accounts.sql:30:5:e77a77b6803cf3e557134ada6e9f56c9f8ab19c3463238022426c4f08bd36775": [],
             "columns": [
               "Column:None:None:revenue_aux",
               "Column:None:None:contract_duration_days" ] } ] } },
-    { "Query:0-accounts.sql:50:0:SELECT t.date_month, t.account_id, AVG(t.deals) AS deals, SUM(t.revenue_core) AS re": {
-        "columns": [
-          "Column:None:None:account_id",
-          "Column:None:None:date_month",
-          "Column:None:t:account_id",
-          "Column:None:t:date_month",
-          "Column:None:t:deals",
-          "Column:None:t:revenue",
-          "Column:None:t:revenue_aux",
-          "Column:None:t:revenue_core" ],
+    { "Query:0-accounts.sql:51:1": {
         "ops": [
-          { "Op:0-accounts.sql:51:4:t.date_month:67317e501b3a779b7fac632026f46726e34e5bbab9688dc385a57e604a20eef1": [],
+          { "Op:0-accounts.sql:52:5:67317e501b3a779b7fac632026f46726e34e5bbab9688dc385a57e604a20eef1": [],
             "columns": [
               "Column:None:t:date_month" ] },
-          { "Op:0-accounts.sql:52:4:t.account_id:c21101b11f131efe74f257d7f7f4149b21da80df5716a866cc20023136cdd365": [],
+          { "Op:0-accounts.sql:53:5:c21101b11f131efe74f257d7f7f4149b21da80df5716a866cc20023136cdd365": [],
             "columns": [
               "Column:None:t:account_id" ] },
-          { "Op:0-accounts.sql:53:4:AVG(t.deals):14a9db0bfcd45a2a6d315c35ae9ab577687439d3b6ce14262d07d5c050216200": [],
+          { "Op:0-accounts.sql:54:5:14a9db0bfcd45a2a6d315c35ae9ab577687439d3b6ce14262d07d5c050216200": [],
             "columns": [
               "Column:None:t:deals" ] },
-          { "Op:0-accounts.sql:54:4:SUM(t.revenue_core):011b13191a7951961453905e8c14f49057b0f8695a86eee9cd1825d30a458026": [],
+          { "Op:0-accounts.sql:55:5:011b13191a7951961453905e8c14f49057b0f8695a86eee9cd1825d30a458026": [],
             "columns": [
               "Column:None:t:revenue_core" ] },
-          { "Op:0-accounts.sql:55:4:SUM(t.revenue_aux):e0d3f664fe2d1a7e29d2c4ccac79b0ca24536142e57d4e523a656095737e7901": [],
+          { "Op:0-accounts.sql:56:5:e0d3f664fe2d1a7e29d2c4ccac79b0ca24536142e57d4e523a656095737e7901": [],
             "columns": [
               "Column:None:t:revenue_aux" ] },
-          { "Op:0-accounts.sql:56:4:SUM(t.revenue):e4de1d66f96f0e8e5d990299e488b2f4e6adc33630d0c80eb4ae3aa1ea224eac": [],
+          { "Op:0-accounts.sql:57:5:e4de1d66f96f0e8e5d990299e488b2f4e6adc33630d0c80eb4ae3aa1ea224eac": [],
             "columns": [
               "Column:None:t:revenue" ] },
-          { "Op:0-accounts.sql:71:9:account_id:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
+          { "Op:0-accounts.sql:72:10:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
             "columns": [
               "Column:None:None:account_id" ] },
-          { "Op:0-accounts.sql:71:21:date_month:25aff29a8fcdb8b5b04fdf197217ef36208e5cb3d6e87135841457dc65fa239d": [],
+          { "Op:0-accounts.sql:72:22:25aff29a8fcdb8b5b04fdf197217ef36208e5cb3d6e87135841457dc65fa239d": [],
             "columns": [
               "Column:None:None:date_month" ] } ] } },
-    { "Query:0-accounts.sql:78:0:SELECT t.*, CASE WHEN t.revenue_12m <= 300 THEN 'Small' WHEN t.revenue_12m": {
-        "columns": [
-          "Column:None:t:revenue_12m" ],
+    { "Query:0-accounts.sql:79:1": {
         "ops": [
-          { "Op:0-accounts.sql:80:4:CASE WHEN t.revenue_12m <= 300 THEN 'Small' WHEN t.revenue_12m > 300 AND t.revenue_:c9651417f21495f87d0c7d6a7cfae40a21147cc8efbb78f150733a0758354724": [],
+          { "Op:0-accounts.sql:81:5:c9651417f21495f87d0c7d6a7cfae40a21147cc8efbb78f150733a0758354724": [],
             "columns": [
               "Column:None:t:revenue_12m" ] } ] } },
-    { "Query:1-revenue.sql:4:0:SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ('Amer": {
-        "columns": [
-          "Column:None:None:account_id",
-          "Column:None:None:country",
-          "Column:None:None:date_month",
-          "Column:None:None:date_year",
-          "Column:None:None:industry_cluster",
-          "Column:None:None:region_cluster",
-          "Column:None:accounts:industry",
-          "Column:None:accounts_360:account_size",
-          "Column:None:accounts_revenue:account_id",
-          "Column:None:accounts_revenue:revenue",
-          "Column:None:countries:region" ],
+    { "Query:1-revenue.sql:5:1": {
         "ops": [
-          { "Op:1-revenue.sql:5:4:date(date_month, 'start of year'):4b7b97e7a6896e093cad32653300500aaa41bdd3cef9129d22da46e7479b9b76": [],
+          { "Op:1-revenue.sql:6:5:4b7b97e7a6896e093cad32653300500aaa41bdd3cef9129d22da46e7479b9b76": [],
             "columns": [
               "Column:None:None:date_month" ] },
-          { "Op:1-revenue.sql:6:4:CASE WHEN c.region IN ('Americas', 'Europe') THEN 'North-West' WHEN c.region IN ('Af:ecb334b79ee833cf1226dd33198cdc61e2863ea22416dc1be17d8af713cd636f": [],
+          { "Op:1-revenue.sql:7:5:ecb334b79ee833cf1226dd33198cdc61e2863ea22416dc1be17d8af713cd636f": [],
             "columns": [
               "Column:None:countries:region" ] },
-          { "Op:1-revenue.sql:11:4:CASE WHEN a.industry = 'Information Technology' THEN 'Tech' WHEN a.industry IS NULL:cdad108efc823f2045dd61df442280e40d550fa237c2da6c080055c2b2aa9575": [],
+          { "Op:1-revenue.sql:12:5:cdad108efc823f2045dd61df442280e40d550fa237c2da6c080055c2b2aa9575": [],
             "columns": [
               "Column:None:accounts:industry" ] },
-          { "Op:1-revenue.sql:16:4:a360.account_size:c062cfd77c57fa3d7799862a617cb1424a31b4098b4b5825c02d75e5801820ad": [],
+          { "Op:1-revenue.sql:17:5:c062cfd77c57fa3d7799862a617cb1424a31b4098b4b5825c02d75e5801820ad": [],
             "columns": [
               "Column:None:accounts_360:account_size" ] },
-          { "Op:1-revenue.sql:17:4:SUM(ar.revenue):b63a36ce15ba6b5fe27de8705f6e88b47b3df577aab4903b2204cd16ded340c6": [],
+          { "Op:1-revenue.sql:18:5:b63a36ce15ba6b5fe27de8705f6e88b47b3df577aab4903b2204cd16ded340c6": [],
             "columns": [
               "Column:None:accounts_revenue:revenue" ] },
-          { "Op:1-revenue.sql:18:4:COUNT(DISTINCT ar.account_id):deb42d562dad3cc78436994dadb32a4e875bb3afac7d3fb01daa3721a5b60a85": [],
+          { "Op:1-revenue.sql:19:5:deb42d562dad3cc78436994dadb32a4e875bb3afac7d3fb01daa3721a5b60a85": [],
             "columns": [
               "Column:None:accounts_revenue:account_id" ] },
-          { "Op:1-revenue.sql:19:4:SUM(ar.revenue) / COUNT(DISTINCT ar.account_id):787feb0754235784176b4b3438a50c239a42ebb7d1f37331a6cdbd53f5e2234f": [],
+          { "Op:1-revenue.sql:20:5:787feb0754235784176b4b3438a50c239a42ebb7d1f37331a6cdbd53f5e2234f": [],
             "columns": [
               "Column:None:accounts_revenue:revenue",
               "Column:None:accounts_revenue:account_id" ] },
-          { "Op:1-revenue.sql:21:32:account_id:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
+          { "Op:1-revenue.sql:22:33:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
             "columns": [
               "Column:None:None:account_id" ] },
-          { "Op:1-revenue.sql:22:33:country:9c92d791dfe191f885b510e68fddd75e50be5e19d55dfd12a7b016c541b30705": [],
+          { "Op:1-revenue.sql:23:34:9c92d791dfe191f885b510e68fddd75e50be5e19d55dfd12a7b016c541b30705": [],
             "columns": [
               "Column:None:None:country" ] },
-          { "Op:1-revenue.sql:23:39:account_id:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
+          { "Op:1-revenue.sql:24:40:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
             "columns": [
               "Column:None:None:account_id",
               "Column:None:None:date_month" ] },
-          { "Op:1-revenue.sql:23:51:date_month:25aff29a8fcdb8b5b04fdf197217ef36208e5cb3d6e87135841457dc65fa239d": [],
+          { "Op:1-revenue.sql:24:52:25aff29a8fcdb8b5b04fdf197217ef36208e5cb3d6e87135841457dc65fa239d": [],
             "columns": [
               "Column:None:None:account_id",
               "Column:None:None:date_month" ] },
-          { "Op:1-revenue.sql:24:9:date_year:dfdec1fde5d3fb8cd44b6c956e7c9cf2b629b120950b3bc2918cf80b1c6249ca": [],
+          { "Op:1-revenue.sql:25:10:dfdec1fde5d3fb8cd44b6c956e7c9cf2b629b120950b3bc2918cf80b1c6249ca": [],
             "columns": [
               "Column:None:None:date_year" ] },
-          { "Op:1-revenue.sql:24:20:region_cluster:5bf05161bfb2ae29623db366105106c840582b52cae51b05d46a4ff6adbc4964": [],
+          { "Op:1-revenue.sql:25:21:5bf05161bfb2ae29623db366105106c840582b52cae51b05d46a4ff6adbc4964": [],
             "columns": [
               "Column:None:None:region_cluster" ] },
-          { "Op:1-revenue.sql:24:36:industry_cluster:cc33e4c7fc6cb7ccb2603f41b7259dfd4cdf598ba14ffae14fb5d7994249abb9": [],
+          { "Op:1-revenue.sql:25:37:cc33e4c7fc6cb7ccb2603f41b7259dfd4cdf598ba14ffae14fb5d7994249abb9": [],
             "columns": [
               "Column:None:None:industry_cluster" ] },
-          { "Op:1-revenue.sql:24:54:a360.account_size:c062cfd77c57fa3d7799862a617cb1424a31b4098b4b5825c02d75e5801820ad": [],
+          { "Op:1-revenue.sql:25:55:c062cfd77c57fa3d7799862a617cb1424a31b4098b4b5825c02d75e5801820ad": [],
             "columns": [
               "Column:None:accounts_360:account_size" ] },
-          { "Op:1-revenue.sql:25:9:date_year:dfdec1fde5d3fb8cd44b6c956e7c9cf2b629b120950b3bc2918cf80b1c6249ca": [],
+          { "Op:1-revenue.sql:26:10:dfdec1fde5d3fb8cd44b6c956e7c9cf2b629b120950b3bc2918cf80b1c6249ca": [],
             "columns": [
               "Column:None:None:date_year",
               "Column:None:None:region_cluster",
               "Column:None:None:industry_cluster" ] },
-          { "Op:1-revenue.sql:25:20:region_cluster:5bf05161bfb2ae29623db366105106c840582b52cae51b05d46a4ff6adbc4964": [],
+          { "Op:1-revenue.sql:26:21:5bf05161bfb2ae29623db366105106c840582b52cae51b05d46a4ff6adbc4964": [],
             "columns": [
               "Column:None:None:date_year",
               "Column:None:None:region_cluster",
               "Column:None:None:industry_cluster" ] },
-          { "Op:1-revenue.sql:25:36:industry_cluster:cc33e4c7fc6cb7ccb2603f41b7259dfd4cdf598ba14ffae14fb5d7994249abb9": [],
+          { "Op:1-revenue.sql:26:37:cc33e4c7fc6cb7ccb2603f41b7259dfd4cdf598ba14ffae14fb5d7994249abb9": [],
             "columns": [
               "Column:None:None:date_year",
               "Column:None:None:region_cluster",
               "Column:None:None:industry_cluster" ] } ] } },
-    { "Query:1-revenue.sql:29:0:SELECT accounts.name, region, CASE WHEN c.region IN ('Americas', 'Europe') THEN ": {
-        "columns": [
-          "Column:None:accounts:industry",
-          "Column:None:accounts:name",
-          "Column:None:accounts_revenue:account_id",
-          "Column:None:accounts_revenue:country",
-          "Column:None:accounts_revenue:region",
-          "Column:None:accounts_revenue:revenue",
-          "Column:None:countries:region" ],
+    { "Query:1-revenue.sql:30:1": {
         "ops": [
-          { "Op:1-revenue.sql:30:4:accounts.name:3d4d38d841e360ea2672fad2445c6d8f60cd0604fba111db2693bbeeb21a8f4c": [],
+          { "Op:1-revenue.sql:31:5:3d4d38d841e360ea2672fad2445c6d8f60cd0604fba111db2693bbeeb21a8f4c": [],
             "columns": [
               "Column:None:accounts:name" ] },
-          { "Op:1-revenue.sql:31:4:region:c33d6fe3df0c9eaca54d99c18d15aba9e2c76c130caaefdf24fa0dfae0b44707": [],
+          { "Op:1-revenue.sql:32:5:c33d6fe3df0c9eaca54d99c18d15aba9e2c76c130caaefdf24fa0dfae0b44707": [],
             "columns": [
               "Column:None:accounts_revenue:region" ] },
-          { "Op:1-revenue.sql:32:4:CASE WHEN c.region IN ('Americas', 'Europe') THEN 'North-West' WHEN c.region IN ('Af:ecb334b79ee833cf1226dd33198cdc61e2863ea22416dc1be17d8af713cd636f": [],
+          { "Op:1-revenue.sql:33:5:ecb334b79ee833cf1226dd33198cdc61e2863ea22416dc1be17d8af713cd636f": [],
             "columns": [
               "Column:None:countries:region" ] },
-          { "Op:1-revenue.sql:37:4:accounts.industry:081c32c3400d07bb74c3ae4808846d306e5b8f982a6dbd1c1877a23bb20ab6ab": [],
+          { "Op:1-revenue.sql:38:5:081c32c3400d07bb74c3ae4808846d306e5b8f982a6dbd1c1877a23bb20ab6ab": [],
             "columns": [
               "Column:None:accounts:industry" ] },
-          { "Op:1-revenue.sql:38:4:IIF(accounts.industry = 'Information Technology', 'Tech', 'Other'):0283633179496ea59e17859094ce6b30796e39be4d655e2410cc4c8c8c90e66e": [],
+          { "Op:1-revenue.sql:39:5:0283633179496ea59e17859094ce6b30796e39be4d655e2410cc4c8c8c90e66e": [],
             "columns": [
               "Column:None:accounts:industry" ] },
-          { "Op:1-revenue.sql:39:4:CASE WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small' WHEN SUM(accounts_reven:e38675467d1de20f63525b2a4b2bb303186ddb1a3fddc0048f9ab6bfca17be76": [],
+          { "Op:1-revenue.sql:40:5:e38675467d1de20f63525b2a4b2bb303186ddb1a3fddc0048f9ab6bfca17be76": [],
             "columns": [
               "Column:None:accounts_revenue:revenue" ] },
-          { "Op:1-revenue.sql:45:4:SUM(accounts_revenue.revenue):db93a2907a69509dfcffd393f3987a84d98d88f3695bd3d9eb73cf5945ae9392": [],
+          { "Op:1-revenue.sql:46:5:db93a2907a69509dfcffd393f3987a84d98d88f3695bd3d9eb73cf5945ae9392": [],
             "columns": [
               "Column:None:accounts_revenue:revenue" ] },
-          { "Op:1-revenue.sql:47:38:account_id:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
+          { "Op:1-revenue.sql:48:39:80d5680d88a935ce1f11b0731d6c27091798019cf1b93f093393238d061c4afe": [],
             "columns": [
               "Column:None:accounts_revenue:account_id" ] },
-          { "Op:1-revenue.sql:48:33:country:9c92d791dfe191f885b510e68fddd75e50be5e19d55dfd12a7b016c541b30705": [],
+          { "Op:1-revenue.sql:49:34:9c92d791dfe191f885b510e68fddd75e50be5e19d55dfd12a7b016c541b30705": [],
             "columns": [
               "Column:None:accounts_revenue:country" ] },
-          { "Op:1-revenue.sql:50:9:accounts.name:3d4d38d841e360ea2672fad2445c6d8f60cd0604fba111db2693bbeeb21a8f4c": [],
+          { "Op:1-revenue.sql:51:10:3d4d38d841e360ea2672fad2445c6d8f60cd0604fba111db2693bbeeb21a8f4c": [],
             "columns": [
               "Column:None:accounts:name" ] },
-          { "Op:1-revenue.sql:50:24:region:c33d6fe3df0c9eaca54d99c18d15aba9e2c76c130caaefdf24fa0dfae0b44707": [],
+          { "Op:1-revenue.sql:51:25:c33d6fe3df0c9eaca54d99c18d15aba9e2c76c130caaefdf24fa0dfae0b44707": [],
             "columns": [
               "Column:None:accounts_revenue:region" ] },
-          { "Op:1-revenue.sql:50:32:accounts.industry:081c32c3400d07bb74c3ae4808846d306e5b8f982a6dbd1c1877a23bb20ab6ab": [],
+          { "Op:1-revenue.sql:51:33:081c32c3400d07bb74c3ae4808846d306e5b8f982a6dbd1c1877a23bb20ab6ab": [],
             "columns": [
               "Column:None:accounts:industry" ] } ] } } ] }
