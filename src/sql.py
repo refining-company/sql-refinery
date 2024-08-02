@@ -46,6 +46,7 @@ def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True)
     return find_asc(node.parent, types, local)
 
 
+# BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
 def find_alias(node: tree_sitter.Node) -> str:
     """Find alias name"""
     if not is_type(node, ["@table", "@expression"]):

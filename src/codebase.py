@@ -113,8 +113,6 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
             columns.append(Column(nodes=n, dataset=d, table=t, column=c))
 
         # Capture ops
-        # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
-        # BUG: expressions are not capturen properly, they are duplicated with only
         nodes_columns = {n: col for col in columns for n in col.nodes}
         ops = []
         for op_node in sql.find_desc(select_node, "@expression"):
@@ -125,6 +123,8 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
             ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
         subqueries = to_queries(file, select_node)
+        for subquery in subqueries:
+            queries.append(subquery)
 
         query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)

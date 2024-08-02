@@ -32,7 +32,9 @@ class Suggestion:
     score: int = None
 
     def __str__(self):
-        files_str = "\n    ".join(f"{file}, Start: {start}, End: {end}" for file, start, end in self.file)
+        files_str = "\n    ".join(
+            "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end) for file, start, end in self.file
+        )
         return (
             f"Files:\n    {files_str}\n"
             f"Expression: {self.expression}\n"
@@ -78,8 +80,8 @@ class Logic:
                     locations = [
                         (
                             str(c_op.file),
-                            (c_op.node.start_point.row, c_op.node.start_point.column),
-                            (c_op.node.end_point.row, c_op.node.end_point.column),
+                            (c_op.node.start_point.row + 1, c_op.node.start_point.column + 1),
+                            (c_op.node.end_point.row + 1, c_op.node.end_point.column + 1),
                         )
                         for c_op in codebase_ops
                     ]
@@ -91,7 +93,7 @@ class Logic:
                             score=similarity,
                         )
                     )
-
+        suggestions.sort(key=lambda suggestion: (suggestion.score is not None, suggestion.score), reverse=True)
         return suggestions
 
     # BUG the expression "SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts" is processed wrong
@@ -116,7 +118,6 @@ class Logic:
 
 
 if __name__ == "__main__":
-
     editor = codebase.load("src/editor")
     logic = Logic("tests/input/code")
 
@@ -131,8 +132,8 @@ if __name__ == "__main__":
                     [
                         (
                             str(op.file),
-                            (op.node.start_point.row, op.node.start_point.column),
-                            (op.node.end_point.row, op.node.end_point.column),
+                            (op.node.start_point.row + 1, op.node.start_point.column + 1),
+                            (op.node.end_point.row + 1, op.node.end_point.column + 1),
                         )
                     ],
                     logic.resolve_columns(op),
