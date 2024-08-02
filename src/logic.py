@@ -117,7 +117,7 @@ class Logic:
 
 if __name__ == "__main__":
 
-    editor = load("src/editor")
+    editor = codebase.load("src/editor")
     logic = Logic("tests/input/code")
 
     for query in editor.queries:
