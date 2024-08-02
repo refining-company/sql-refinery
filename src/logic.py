@@ -28,7 +28,7 @@ frequency we suggest an expression from the codebase.
 class Suggestion:
     file: list[tuple[str, tuple[int, int], tuple[int, int]]]
     expression: str
-    freq: int = 0
+    freq: int = None
     score: int = None
 
     def __str__(self):

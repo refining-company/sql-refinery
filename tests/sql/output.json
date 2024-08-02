@@ -1,217 +1,4 @@
 {
-  "editor.sql": {
-    "root": [
-      { "source_file": [
-          { "comment": [] },
-          { "query_statement": [
-              { "query_expr": [
-                  { "select": [
-                      { "SELECT": [] },
-                      { "select_list": [
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier": "date" },
-                                  { "(": [] },
-                                  { "argument": [
-                                      { "identifier": "date_month" } ] },
-                                  { ",": [] },
-                                  { "argument": [
-                                      { "string": "'start of year'" } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier": "date_year" } ] } ] },
-                          { ",": [] },
-                          { "comment": [] },
-                          { "_aliasable_expression": [
-                              { "casewhen_expression": [
-                                  { "CASE": [] },
-                                  { "casewhen_clause": [
-                                      { "WHEN_MATCHED": [] },
-                                      { "binary_expression": [
-                                          { "identifier": "c.region" },
-                                          { "IN": [] },
-                                          { "(": [] },
-                                          { "string": "'Americas'" },
-                                          { ")": [] } ] },
-                                      { "THEN": [] },
-                                      { "string": "'AMER'" } ] },
-                                  { "casewhen_clause": [
-                                      { "WHEN_MATCHED": [] },
-                                      { "binary_expression": [
-                                          { "identifier": "c.region" },
-                                          { "IN": [] },
-                                          { "struct": [
-                                              { "(": [] },
-                                              { "string": "'Europe'" },
-                                              { ",": [] },
-                                              { "string": "'Africa'" },
-                                              { ")": [] } ] } ] },
-                                      { "THEN": [] },
-                                      { "string": "'EMEA'" } ] },
-                                  { "casewhen_clause": [
-                                      { "WHEN_MATCHED": [] },
-                                      { "binary_expression": [
-                                          { "identifier": "c.region" },
-                                          { "=": [] },
-                                          { "string": "'Asia'" } ] },
-                                      { "THEN": [] },
-                                      { "string": "'APAC'" } ] },
-                                  { "caseelse_clause": [
-                                      { "ELSE": [] },
-                                      { "NULL": [
-                                          { "NOT_NULL": [] } ] } ] },
-                                  { "END_IF": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier": "macro_region" } ] } ] },
-                          { ",": [] },
-                          { "comment": [] },
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier": "IIF" },
-                                  { "(": [] },
-                                  { "argument": [
-                                      { "binary_expression": [
-                                          { "identifier": "a.industry" },
-                                          { "=": [] },
-                                          { "string": "'Information Technology'" } ] } ] },
-                                  { ",": [] },
-                                  { "argument": [
-                                      { "string": "'IT'" } ] },
-                                  { ",": [] },
-                                  { "argument": [
-                                      { "string": "'Non-IT'" } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier": "industry_it" } ] } ] },
-                          { ",": [] },
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier": "SUM" },
-                                  { "(": [] },
-                                  { "argument": [
-                                      { "identifier": "ar.revenue" } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier": "revenue" } ] } ] },
-                          { ",": [] },
-                          { "_aliasable_expression": [
-                              { "function_call": [
-                                  { "identifier": "COUNT" },
-                                  { "(": [] },
-                                  { "_keyword_distinct": [
-                                      { "DISTINCT_FROM": [] } ] },
-                                  { "argument": [
-                                      { "identifier": "ar.account_id" } ] },
-                                  { ")": [] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier": "accounts" } ] } ] },
-                          { ",": [] },
-                          { "_aliasable_expression": [
-                              { "binary_expression": [
-                                  { "function_call": [
-                                      { "identifier": "SUM" },
-                                      { "(": [] },
-                                      { "argument": [
-                                          { "identifier": "ar.revenue" } ] },
-                                      { ")": [] } ] },
-                                  { "/": [] },
-                                  { "function_call": [
-                                      { "identifier": "COUNT" },
-                                      { "(": [] },
-                                      { "_keyword_distinct": [
-                                          { "DISTINCT_FROM": [] } ] },
-                                      { "argument": [
-                                          { "identifier": "ar.account_id" } ] },
-                                      { ")": [] } ] } ] },
-                              { "as_alias": [
-                                  { "AS": [] },
-                                  { "identifier": "revenue_per_account" } ] } ] } ] },
-                      { "from_clause": [
-                          { "FROM": [] },
-                          { "from_item": [
-                              { "join_operation": [
-                                  { "from_item": [
-                                      { "join_operation": [
-                                          { "from_item": [
-                                              { "identifier": "accounts_revenue" },
-                                              { "as_alias": [
-                                                  { "identifier": "ar" } ] } ] },
-                                          { "join_type": [
-                                              { "LEFT": [] } ] },
-                                          { "JOIN": [] },
-                                          { "from_item": [
-                                              { "identifier": "accounts" },
-                                              { "as_alias": [
-                                                  { "identifier": "a" } ] } ] },
-                                          { "join_condition": [
-                                              { "USING": [] },
-                                              { "(": [] },
-                                              { "identifier": "account_id" },
-                                              { ")": [] } ] } ] } ] },
-                                  { "join_type": [
-                                      { "LEFT": [] } ] },
-                                  { "JOIN": [] },
-                                  { "from_item": [
-                                      { "identifier": "countries" },
-                                      { "as_alias": [
-                                          { "identifier": "c" } ] } ] },
-                                  { "join_condition": [
-                                      { "USING": [] },
-                                      { "(": [] },
-                                      { "identifier": "country" },
-                                      { ")": [] } ] } ] } ] } ] },
-                      { "where_clause": [
-                          { "WHERE": [] },
-                          { "comment": [] },
-                          { "binary_expression": [
-                              { "binary_expression": [
-                                  { "identifier": "a.industry" },
-                                  { "IN": [] },
-                                  { "struct": [
-                                      { "(": [] },
-                                      { "string": "'Information Technology'" },
-                                      { ",": [] },
-                                      { "string": "'Telecommunication Services'" },
-                                      { ")": [] } ] } ] },
-                              { "comment": [] },
-                              { "AND": [] },
-                              { "between_operator": [
-                                  { "identifier": "date_month" },
-                                  { "BETWEEN": [] },
-                                  { "_expression": [
-                                      { "function_call": [
-                                          { "identifier": "DATE" },
-                                          { "(": [] },
-                                          { "argument": [
-                                              { "string": "'now'" } ] },
-                                          { ",": [] },
-                                          { "argument": [
-                                              { "string": "'-24 months'" } ] },
-                                          { ")": [] } ] } ] },
-                                  { "AND": [] },
-                                  { "_expression": [
-                                      { "function_call": [
-                                          { "identifier": "DATE" },
-                                          { "(": [] },
-                                          { "argument": [
-                                              { "string": "'now'" } ] },
-                                          { ")": [] } ] } ] } ] } ] } ] },
-                      { "group_by_clause": [
-                          { "GROUP_BY": [] },
-                          { "GROUP_BY": [] },
-                          { "grouping_item": [
-                              { "identifier": "date_year" } ] },
-                          { ",": [] },
-                          { "grouping_item": [
-                              { "identifier": "macro_region" } ] },
-                          { ",": [] },
-                          { "grouping_item": [
-                              { "identifier": "industry_it" } ] } ] } ] } ] } ] } ] } ] },
   "0-accounts.sql": {
     "root": [
       { "source_file": [
@@ -864,6 +651,8 @@
                                                   { "_aliasable_expression": [
                                                       { "identifier": "accounts.country" } ] },
                                                   { ",": [] },
+                                                  { "comment": [] },
+                                                  { "comment": [] },
                                                   { "_aliasable_expression": [
                                                       { "casewhen_expression": [
                                                           { "CASE": [] },
@@ -893,6 +682,19 @@
                                                                       { ")": [] } ] } ] },
                                                               { "THEN": [] },
                                                               { "string": "'South-East'" } ] },
+                                                          { "casewhen_clause": [
+                                                              { "WHEN_MATCHED": [] },
+                                                              { "binary_expression": [
+                                                                  { "identifier": "countries.region" },
+                                                                  { "IN": [] },
+                                                                  { "struct": [
+                                                                      { "(": [] },
+                                                                      { "string": "'Asia'" },
+                                                                      { ",": [] },
+                                                                      { "string": "'Oceania'" },
+                                                                      { ")": [] } ] } ] },
+                                                              { "THEN": [] },
+                                                              { "string": "'East'" } ] },
                                                           { "caseelse_clause": [
                                                               { "ELSE": [] },
                                                               { "NULL": [
@@ -952,8 +754,6 @@
                                                               { "join_operation": [
                                                                   { "from_item": [
                                                                       { "identifier": "accounts_revenue" } ] },
-                                                                  { "join_type": [
-                                                                      { "LEFT": [] } ] },
                                                                   { "JOIN": [] },
                                                                   { "from_item": [
                                                                       { "identifier": "accounts" } ] },
@@ -1003,6 +803,7 @@
                                   { "AS": [] },
                                   { "identifier": "date_year" } ] } ] },
                           { ",": [] },
+                          { "comment": [] },
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
                                   { "CASE": [] },
@@ -1203,13 +1004,14 @@
                           { "_aliasable_expression": [
                               { "identifier": "region" } ] },
                           { ",": [] },
+                          { "comment": [] },
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
                                   { "CASE": [] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier": "c.region" },
+                                          { "identifier": "countries.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
@@ -1222,7 +1024,7 @@
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier": "c.region" },
+                                          { "identifier": "countries.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
