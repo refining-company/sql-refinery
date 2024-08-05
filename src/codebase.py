@@ -123,7 +123,6 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
             ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
         subqueries = to_queries(file, select_node)
-        queries.extend(subqueries)
 
         query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)
