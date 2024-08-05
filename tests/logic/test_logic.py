@@ -15,12 +15,11 @@ OUTPUT = Path("tests/logic/outputs.json")
 def simplify(obj) -> dict | list | str:
     if isinstance(obj, list) and all(isinstance(item, logic.Suggestion) for item in obj):
         return {
-            "input": [
-                "\n    ".join(
+            "input": {
+                "\n".join(
                     "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end) for file, start, end in obj[0].file
-                ),
-                obj[0].expression,
-            ],
+                ): obj[0].expression,
+            },
             "suggestions": [simplify(suggestion) for suggestion in obj[1:]],
         }
 

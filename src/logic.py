@@ -51,7 +51,12 @@ class Logic:
         self.map_column_uses()
 
     def map_column_uses(self) -> dict[codebase.Column, dict[str, codebase.Op]]:
-        for query in self.codebase.queries:
+        queries = []
+        [
+            queries.extend([query] + [source for source in query.sources if isinstance(source, codebase.Query)])
+            for query in self.codebase.queries
+        ]
+        for query in queries:
             for op in query.ops:
                 for column in op.columns:
                     col_resolved = (column.dataset, column.table, column.column)
