@@ -14,8 +14,33 @@ INPUTS = Path("tests/input/code")
 OUTPUT = Path("tests/sql/output.json")
 
 
+def simplify(obj) -> dict | list | str:
+    if isinstance(obj, sql.Tree):
+        return {"root": [simplify(obj.root_node)]}
+
+    if isinstance(obj, sql.Node):
+        keys = [obj.grammar_name]
+        if obj.type in ("identifier", "number", "string"):
+            return {":".join(keys): obj.text.decode("utf-8")}
+        return {":".join(keys): [simplify(child) for child in obj.children]}
+
+    if isinstance(obj, dict):
+        return {str(key): simplify(value) for key, value in obj.items()}
+
+    if isinstance(obj, list):
+        return [simplify(item) for item in obj]
+
+    if isinstance(obj, bytes):
+        return obj.decode("utf-8")
+
+    try:
+        return str(obj)
+    except Exception as e:
+        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+
+
 def prep_output():
-    output = utils.simplify(sql.parse_files(INPUTS))
+    output = simplify(sql.parse_files(INPUTS))
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)
     OUTPUT.write_text(output_mini)
@@ -23,7 +48,7 @@ def prep_output():
 
 def test_parse_files():
     try:
-        output_test = utils.simplify(sql.parse_files(INPUTS))
+        output_test = simplify(sql.parse_files(INPUTS))
     except Exception as e:
         assert False, "Parsing failed: {e}"
 
