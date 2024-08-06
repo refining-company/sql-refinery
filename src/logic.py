@@ -47,21 +47,24 @@ class Logic:
 
     def __init__(self, codebase_path):
         self.codebase = codebase.load(codebase_path)
+        self.queries = Logic.get_queries(self.codebase.queries)
         self.column_op_map = {}
         self.map_column_uses()
 
     def map_column_uses(self) -> dict[codebase.Column, dict[str, codebase.Op]]:
-        queries = []
-        [
-            queries.extend([query] + [source for source in query.sources if isinstance(source, codebase.Query)])
-            for query in self.codebase.queries
-        ]
-        for query in queries:
+        for query in self.queries:
             for op in query.ops:
                 for column in op.columns:
                     col_resolved = (column.dataset, column.table, column.column)
                     self.column_op_map.setdefault(col_resolved, {})
                     self.column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
+
+    @staticmethod
+    def get_queries(queries: list[codebase.Query]):
+        subqueries = [source for query in queries for source in query.sources if isinstance(source, codebase.Query)]
+        if len(subqueries) == 0:
+            return queries
+        return queries + Logic.get_queries(subqueries)
 
     @staticmethod
     def get_op_signature(op):

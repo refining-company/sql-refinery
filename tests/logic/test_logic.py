@@ -12,24 +12,35 @@ CODEBASE = Path("tests/logic/input/code")
 OUTPUT = Path("tests/logic/outputs.json")
 
 
+def simplify_suggestions(obj):
+    return {
+        "Suggestion:{}:{}:{}".format(obj.score, obj.freq, obj.expression): [
+            "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end)
+            for suggestion in obj[1:]
+            for file, start, end in suggestion.file
+        ]
+    }
+
+
 def simplify(obj) -> dict | list | str:
     if isinstance(obj, list) and all(isinstance(item, logic.Suggestion) for item in obj):
+        codebase_suggestions = {}
+        if len(obj) > 1:
+            codebase_suggestions = {
+                "Suggestion:{}:{}:{}".format(obj[1].score, obj[1].freq, obj[1].expression): [
+                    "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end)
+                    for suggestion in obj[1:]
+                    for file, start, end in suggestion.file
+                ]
+            }
+
         return {
             "input": {
                 "\n".join(
                     "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end) for file, start, end in obj[0].file
                 ): obj[0].expression,
             },
-            "suggestions": [simplify(suggestion) for suggestion in obj[1:]],
-        }
-
-    if isinstance(obj, logic.Suggestion):
-        return {
-            "\n".join("File:{}:{}:{}, End:{}".format(file, start[0], start[1], end) for file, start, end in obj.file): [
-                obj.expression,
-                obj.freq,
-                obj.score,
-            ]
+            "suggestions": codebase_suggestions,
         }
 
     if isinstance(obj, dict):
