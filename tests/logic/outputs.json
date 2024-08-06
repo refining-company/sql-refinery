@@ -1,0 +1,23 @@
+[
+  { "input": { "File:editor.sql:4:5, End:(4, 38)": "date(date_month, 'start of year')" },
+    "suggestions": {} },
+  { "input": { "File:editor.sql:6:5, End:(11, 8)": "CASE\n        WHEN countries.region IN ('Americas') THEN 'AMER'\n        WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN countries.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
+    "suggestions": {
+      "Suggestion:0.7974137931034483:1:CASE\n            WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n            WHEN countries.region IN ('Asia', 'Oceania') THEN 'East'\n            ELSE NULL\n        END": [
+        "File:0-accounts.sql:100:9, End:(105, 12)",
+        "File:1-revenue.sql:8:5, End:(12, 8)",
+        "File:1-revenue.sql:35:5, End:(39, 8)" ] } },
+  { "input": { "File:editor.sql:13:5, End:(13, 63)": "IIF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')" },
+    "suggestions": {
+      "Suggestion:0.8854961832061069:1:IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')": [
+        "File:1-revenue.sql:41:5, End:(41, 71)" ] } },
+  { "input": { "File:editor.sql:14:5, End:(14, 20)": "SUM(accounts_revenue.revenue)" },
+    "suggestions": {} },
+  { "input": { "File:editor.sql:15:5, End:(15, 34)": "COUNT(DISTINCT accounts_revenue.account_id)" },
+    "suggestions": {
+      "Suggestion:0.728813559322034:1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
+        "File:1-revenue.sql:21:5, End:(21, 52)" ] } },
+  { "input": { "File:editor.sql:16:5, End:(16, 52)": "SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)" },
+    "suggestions": {
+      "Suggestion:0.728813559322034:1:COUNT(DISTINCT accounts_revenue.account_id)": [
+        "File:1-revenue.sql:20:5, End:(20, 34)" ] } } ]

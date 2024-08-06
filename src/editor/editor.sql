@@ -2,14 +2,14 @@
 
 SELECT 
     date(date_month, 'start of year') AS date_year,
-    -- This should cause an error
+    -- This should cause an error #1
     CASE
         WHEN c.region IN ('Americas') THEN 'AMER'
         WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'
         WHEN c.region = 'Asia' THEN 'APAC'
         ELSE NULL
     END AS macro_region,
-    -- This should case an error
+    -- This should case an error #2
     IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,
     SUM(ar.revenue) AS revenue,
     COUNT(DISTINCT ar.account_id) AS accounts,
