@@ -130,6 +130,11 @@ def parse(text: bytes) -> tree_sitter.Tree:
 def parse_files(path: str) -> dict[Path, tree_sitter.Tree]:
     """Load all sql files from `path` into dict `{<file Path>: <sql tree>, ...}`"""
     root = Path(path)
+
+    if root.is_file():
+        paths = [root]
+        root = root.parent
+
     paths = list(root.glob("**/*.sql"))
     files = {f.relative_to(root): parse(f.read_bytes()) for f in paths}
 

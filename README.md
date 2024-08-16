@@ -8,40 +8,6 @@
    ./setup.sh
    ```
 
-2. Configure VS Code `.vscode/settings.json`
-
-   ```json
-   {
-     "python.testing.unittestEnabled": false,
-     "python.testing.pytestEnabled": true,
-     "python.testing.pytestArgs": ["tests"],
-     "black-formatter.args": ["--config", "./pyproject.toml"],
-     "files.exclude": {
-       "**/.conda": true,
-       "**/__pycache__": true,
-       "**/.pytest_cache": true
-     }
-   }
-   ```
-
-3. Configure tasks `.vscode/tasks.json`
-
-   This will allow `> Tasks: Run Task` in VSCode to launch tree-sitter playground in browser
-
-   ```json
-   {
-     "version": "2.0.0",
-     "tasks": [
-       {
-         "label": "Playground: tree-sitter-sql-bigquery",
-         "type": "shell",
-         "command": "${workspaceFolder}/.submodules/tree-sitter-sql-bigquery/playground/start.sh",
-         "problemMatcher": []
-       }
-     ]
-   }
-   ```
-
 # Overview
 
 **`src/`** contains the entire logic.

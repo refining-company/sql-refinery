@@ -44,30 +44,28 @@ class Suggestion:
 
 
 class Logic:
-
     def __init__(self, codebase_path):
         self.codebase = codebase.load(codebase_path)
-        self.queries = Logic.get_queries(self.codebase.queries)
-        self.column_op_map = {}
-        self.map_column_uses()
+        self.queries = self.get_queries(self.codebase.queries)
+        self.column_op_map = self.map_column_uses(self.codebase.queries)
 
-    def map_column_uses(self) -> dict[codebase.Column, dict[str, codebase.Op]]:
-        for query in self.queries:
+    def map_column_uses(self, queries) -> dict[tuple[str, str, str], dict[str, codebase.Op]]:
+        column_op_map = {}
+        for query in queries:
             for op in query.ops:
                 for column in op.columns:
                     col_resolved = (column.dataset, column.table, column.column)
-                    self.column_op_map.setdefault(col_resolved, {})
-                    self.column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
+                    column_op_map.setdefault(col_resolved, {})
+                    column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
+        return column_op_map
 
-    @staticmethod
-    def get_queries(queries: list[codebase.Query]):
+    def get_queries(self, queries: list[codebase.Query]) -> list[codebase.Query]:
         subqueries = [source for query in queries for source in query.sources if isinstance(source, codebase.Query)]
         if len(subqueries) == 0:
             return queries
-        return queries + Logic.get_queries(subqueries)
+        return queries + self.get_queries(subqueries)
 
-    @staticmethod
-    def get_op_signature(op):
+    def get_op_signature(self, op):
         def get_node_signature(node):
             return ":".join([node.type] + [get_node_signature(child) for child in node.children])
 
@@ -106,8 +104,7 @@ class Logic:
 
     # BUG the expression "SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts" is processed wrong
     ## issue is probably that the alias has the same name as the column name we are resolving
-    @staticmethod
-    def resolve_columns(op: codebase.Op):
+    def resolve_columns(self, op: codebase.Op):
         expression = op.node.text.decode("utf-8")
         op_columns = op.columns
         expression_parts = re.split(r"(\s+|[\n()])", expression)
@@ -124,28 +121,25 @@ class Logic:
         resolved_expression = [resolve_word(word) for word in expression_parts if word]
         return "".join(resolved_expression)
 
+    def analyse(self, editor_path):
+        editor = codebase.load(editor_path)
+        for query in editor.queries:
+            for op in query.ops:
+                print("\n")
+                print("\n")
 
-if __name__ == "__main__":
-    editor = codebase.load("src/editor")
-    logic = Logic("tests/input/code")
-
-    for query in editor.queries:
-        for op in query.ops:
-            print("\n")
-            print("\n")
-
-            suggestions = logic.get_similar_op(op)
-            print(
-                Suggestion(
-                    [
-                        (
-                            str(op.file),
-                            (op.node.start_point.row + 1, op.node.start_point.column + 1),
-                            (op.node.end_point.row + 1, op.node.end_point.column + 1),
-                        )
-                    ],
-                    logic.resolve_columns(op),
+                suggestions = self.get_similar_op(op)
+                print(
+                    Suggestion(
+                        [
+                            (
+                                str(op.file),
+                                (op.node.start_point.row + 1, op.node.start_point.column + 1),
+                                (op.node.end_point.row + 1, op.node.end_point.column + 1),
+                            )
+                        ],
+                        self.resolve_columns(op),
+                    )
                 )
-            )
-            for suggestion in suggestions:
-                print(suggestion)
+                for suggestion in suggestions:
+                    print(suggestion)
