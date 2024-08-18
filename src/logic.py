@@ -48,6 +48,7 @@ class Logic:
         self.codebase = codebase.load(codebase_path)
         self.queries = self.get_queries(self.codebase.queries)
         self.column_op_map = self.map_column_uses(self.codebase.queries)
+        ...
 
     def map_column_uses(self, queries) -> dict[tuple[str, str, str], dict[str, codebase.Op]]:
         column_op_map = {}
@@ -56,7 +57,8 @@ class Logic:
                 for column in op.columns:
                     col_resolved = (column.dataset, column.table, column.column)
                     column_op_map.setdefault(col_resolved, {})
-                    column_op_map[col_resolved].setdefault(self.get_op_signature(op), []).append(op)
+                    column_op_map[col_resolved].setdefault(self.get_op_signature(op), [])
+                    column_op_map.append(op)
         return column_op_map
 
     def get_queries(self, queries: list[codebase.Query]) -> list[codebase.Query]:
