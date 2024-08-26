@@ -1,7 +1,6 @@
 {
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["tests"],
   "black-formatter.args": ["-l", "120"],
   "files.exclude": {
     "**/.conda": true,

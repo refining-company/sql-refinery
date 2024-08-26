@@ -46,41 +46,15 @@ class Suggestion:
 class Logic:
     def __init__(self, codebase_path):
         self.codebase = codebase.load(codebase_path)
-        self.queries = self.get_queries(self.codebase.queries)
-        self.column_op_map = self.map_column_uses(self.codebase.queries)
+        self.all_queries = get_all_queries(self.codebase.queries)
+        self.map_column_ops = get_column_ops_map(self.all_queries)
         ...
-
-    def map_column_uses(self, queries) -> dict[tuple[str, str, str], dict[str, codebase.Op]]:
-        column_op_map = {}
-        for query in queries:
-            for op in query.ops:
-                for column in op.columns:
-                    col_resolved = (column.dataset, column.table, column.column)
-                    column_op_map.setdefault(col_resolved, {})
-                    column_op_map[col_resolved].setdefault(self.get_op_signature(op), [])
-                    column_op_map.append(op)
-        return column_op_map
-
-    def get_queries(self, queries: list[codebase.Query]) -> list[codebase.Query]:
-        subqueries = [source for query in queries for source in query.sources if isinstance(source, codebase.Query)]
-        if len(subqueries) == 0:
-            return queries
-        return queries + self.get_queries(subqueries)
-
-    def get_op_signature(self, op):
-        def get_node_signature(node):
-            return ":".join([node.type] + [get_node_signature(child) for child in node.children])
-
-        columns_resolved = ":".join(
-            [":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns]
-        )
-        return ":".join([get_node_signature(op.node), columns_resolved])
 
     def get_similar_op(self, op: codebase.Op):
         suggestions = []
         op_expression = self.resolve_columns(op)
         for col in op.columns:
-            col_ops = self.column_op_map[(col.dataset, col.table, col.column)]
+            col_ops = self.map_column_ops[(col.dataset, col.table, col.column)]
             for codebase_ops in col_ops.values():
                 codebase_op_expression = self.resolve_columns(codebase_ops[0])
                 similarity = Levenshtein.ratio(op_expression, codebase_op_expression)
@@ -145,3 +119,29 @@ class Logic:
                 )
                 for suggestion in suggestions:
                     print(suggestion)
+
+
+def get_all_queries(queries: list[codebase.Query]) -> list[codebase.Query]:
+    nested_queries = []
+    for query in queries:
+        nested_queries += get_all_queries([s for s in query.sources if isinstance(s, codebase.Query)])
+    return queries + nested_queries
+
+
+def get_column_ops_map(queries: list[codebase.Query]) -> dict[tuple[str, str, str], dict[str, codebase.Op]]:
+    column_op_map = {}
+    for query in queries:
+        for op in query.ops:
+            for column in op.columns:
+                col_resolved = (column.dataset, column.table, column.column)
+                column_op_map.setdefault(col_resolved, {})
+                column_op_map[col_resolved].setdefault(get_op_signature(op), []).append(op)
+    return column_op_map
+
+
+def get_op_signature(op: codebase.Op) -> str:
+    def get_node_signature(node):
+        return ":".join([node.type] + [get_node_signature(child) for child in node.children])
+
+    columns_resolved = ":".join([":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns])
+    return ":".join([get_node_signature(op.node), columns_resolved])
