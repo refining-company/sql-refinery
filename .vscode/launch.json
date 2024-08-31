@@ -13,10 +13,10 @@
       "justMyCode": false
     },
     {
-      "name": "Python Debugger: Current File",
+      "name": "Python Debugger: Create tests",
       "type": "debugpy",
       "request": "launch",
-      "program": "${file}",
+      "module": "tests.create",
       "console": "integratedTerminal",
       "env": {
         "PYTHONPATH": "${workspaceFolder}"

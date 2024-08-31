@@ -1,3 +1,73 @@
 {
-  "files": [],
-  "queries": [] }
+  "files": [
+    { "File:0-accounts.sql": [] },
+    { "File:1-revenue.sql": [] } ],
+  "queries": [
+    { "Query:0-accounts.sql:26:1": {
+        "ops": [
+          { "Op:0-accounts.sql:28:5:51f5fc4a853126c8799ca65b1db65ce5efaa4c8f8c202ee9646fc909d8868dab": [],
+            "columns": [
+              "Column:None:None:revenue",
+              "Column:None:None:contract_duration_days" ] },
+          { "Op:0-accounts.sql:29:5:7bbea5dce65707acba6d337652a0da591d19c3e22cd6c99cd8b9f4a005f6a0d4": [],
+            "columns": [
+              "Column:None:None:revenue_core",
+              "Column:None:None:contract_duration_days" ] },
+          { "Op:0-accounts.sql:30:5:e77a77b6803cf3e557134ada6e9f56c9f8ab19c3463238022426c4f08bd36775": [],
+            "columns": [
+              "Column:None:None:revenue_aux",
+              "Column:None:None:contract_duration_days" ] } ] } },
+    { "Query:0-accounts.sql:51:1": {
+        "ops": [
+          { "Op:0-accounts.sql:54:5:14a9db0bfcd45a2a6d315c35ae9ab577687439d3b6ce14262d07d5c050216200": [],
+            "columns": [
+              "Column:None:t:deals" ] },
+          { "Op:0-accounts.sql:55:5:011b13191a7951961453905e8c14f49057b0f8695a86eee9cd1825d30a458026": [],
+            "columns": [
+              "Column:None:t:revenue_core" ] },
+          { "Op:0-accounts.sql:56:5:e0d3f664fe2d1a7e29d2c4ccac79b0ca24536142e57d4e523a656095737e7901": [],
+            "columns": [
+              "Column:None:t:revenue_aux" ] },
+          { "Op:0-accounts.sql:57:5:e4de1d66f96f0e8e5d990299e488b2f4e6adc33630d0c80eb4ae3aa1ea224eac": [],
+            "columns": [
+              "Column:None:t:revenue" ] } ] } },
+    { "Query:0-accounts.sql:79:1": {
+        "ops": [
+          { "Op:0-accounts.sql:81:5:c9651417f21495f87d0c7d6a7cfae40a21147cc8efbb78f150733a0758354724": [],
+            "columns": [
+              "Column:None:t:revenue_12m" ] } ] } },
+    { "Query:1-revenue.sql:5:1": {
+        "ops": [
+          { "Op:1-revenue.sql:6:5:4b7b97e7a6896e093cad32653300500aaa41bdd3cef9129d22da46e7479b9b76": [],
+            "columns": [
+              "Column:None:None:date_month" ] },
+          { "Op:1-revenue.sql:7:5:ecb334b79ee833cf1226dd33198cdc61e2863ea22416dc1be17d8af713cd636f": [],
+            "columns": [
+              "Column:None:countries:region" ] },
+          { "Op:1-revenue.sql:12:5:cdad108efc823f2045dd61df442280e40d550fa237c2da6c080055c2b2aa9575": [],
+            "columns": [
+              "Column:None:accounts:industry" ] },
+          { "Op:1-revenue.sql:18:5:b63a36ce15ba6b5fe27de8705f6e88b47b3df577aab4903b2204cd16ded340c6": [],
+            "columns": [
+              "Column:None:accounts_revenue:revenue" ] },
+          { "Op:1-revenue.sql:19:5:deb42d562dad3cc78436994dadb32a4e875bb3afac7d3fb01daa3721a5b60a85": [],
+            "columns": [
+              "Column:None:accounts_revenue:account_id" ] },
+          { "Op:1-revenue.sql:20:5:787feb0754235784176b4b3438a50c239a42ebb7d1f37331a6cdbd53f5e2234f": [],
+            "columns": [
+              "Column:None:accounts_revenue:revenue",
+              "Column:None:accounts_revenue:account_id" ] } ] } },
+    { "Query:1-revenue.sql:30:1": {
+        "ops": [
+          { "Op:1-revenue.sql:33:5:ecb334b79ee833cf1226dd33198cdc61e2863ea22416dc1be17d8af713cd636f": [],
+            "columns": [
+              "Column:None:countries:region" ] },
+          { "Op:1-revenue.sql:39:5:0283633179496ea59e17859094ce6b30796e39be4d655e2410cc4c8c8c90e66e": [],
+            "columns": [
+              "Column:None:accounts:industry" ] },
+          { "Op:1-revenue.sql:40:5:e38675467d1de20f63525b2a4b2bb303186ddb1a3fddc0048f9ab6bfca17be76": [],
+            "columns": [
+              "Column:None:accounts_revenue:revenue" ] },
+          { "Op:1-revenue.sql:46:5:db93a2907a69509dfcffd393f3987a84d98d88f3695bd3d9eb73cf5945ae9392": [],
+            "columns": [
+              "Column:None:accounts_revenue:revenue" ] } ] } } ] }

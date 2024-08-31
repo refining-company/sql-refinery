@@ -8,16 +8,6 @@ from src import logic, utils
 GOLDEN_MASTER_FILE = Path(__file__).with_suffix(".json")
 
 
-def simplify_suggestions(obj):
-    return {
-        "Suggestion:{}:{}:{}".format(obj.score, obj.freq, obj.expression): [
-            "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end)
-            for suggestion in obj[1:]
-            for file, start, end in suggestion.file
-        ]
-    }
-
-
 def simplify(obj) -> dict | list | str:
     if isinstance(obj, list) and all(isinstance(item, logic.Suggestion) for item in obj):
         codebase_suggestions = {}
@@ -72,6 +62,7 @@ def create_masters(paths: dict[str, Path]):
 
     logic_ = logic.Logic(paths["codebase"])
     output = logic_.analyse(paths["editor"])
+    output = simplify(output)
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)
     GOLDEN_MASTER_FILE.write_text(output_mini)
