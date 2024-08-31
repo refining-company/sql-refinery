@@ -10,8 +10,7 @@ into a dictionary (by using only some of the fields)with the simplify() function
 with benchmark that is stored in the output.json
 """
 
-INPUTS = Path("tests/input/code")
-OUTPUT = Path("tests/sql/output.json")
+GOLDEN_MASTER_FILE = Path(__file__).with_suffix(".json")
 
 
 def simplify(obj) -> dict | list | str:
@@ -39,25 +38,21 @@ def simplify(obj) -> dict | list | str:
         raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
 
 
-def prep_output():
-    output = simplify(sql.parse_files(INPUTS))
-    output_json = json.dumps(output, indent=2)
-    output_mini = utils.json_minify(output_json)
-    OUTPUT.write_text(output_mini)
-
-
-def test_parse_files():
+def test_parse_files(paths: dict[str, Path]):
     try:
-        output_test = simplify(sql.parse_files(INPUTS))
+        output = simplify(sql.parse_files(paths["codebase"]))
     except Exception as e:
         assert False, "Parsing failed: {e}"
 
-    output_true = json.load(OUTPUT.open("r"))
-    diff = DeepDiff(output_test, output_true)
+    master = json.load(GOLDEN_MASTER_FILE.open("r"))
+    diff = DeepDiff(output, master)
     assert not diff, f"Parsing incorrect:\n{diff}"
 
 
-if __name__ == "__main__":
-    if "--create-outputs" in sys.argv:
-        prep_output()
-        print("Outputs created.")
+def create_masters(paths: dict[str, Path]):
+    global GOLDEN_MASTER_FILE
+
+    output = simplify(sql.parse_files(paths["codebase"]))
+    output_json = json.dumps(output, indent=2)
+    output_mini = utils.json_minify(output_json)
+    GOLDEN_MASTER_FILE.write_text(output_mini)

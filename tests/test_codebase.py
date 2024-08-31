@@ -1,11 +1,9 @@
 import json
-import sys
 import json
 import hashlib
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import codebase, utils, sql
-
 
 """
 We will take every file in the input folder, parse it with codebase.load() function and 
@@ -14,8 +12,7 @@ the simplify_codebase() function. Then we'll compare it with benchmark that is s
 in the output.json
 """
 
-INPUT_DIR = Path("tests/input/code")
-OUTPUT = Path("tests/codebase/outputs.json")
+GOLDEN_MASTER_FILE = Path(__file__).with_suffix(".json")
 
 
 def simplify(obj) -> dict | list | str:
@@ -85,25 +82,23 @@ def simplify(obj) -> dict | list | str:
         raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
 
 
-def prep_output():
-    output = simplify(codebase.load(INPUT_DIR))
-    output_json = json.dumps(output, indent=2)
-    output_mini = utils.json_minify(output_json)
-    OUTPUT.write_text(output_mini)
+def test_codebase(paths: dict[str, Path]):
+    global GOLDEN_MASTER_FILE
 
-
-def test_codebase():
     try:
-        output_test = simplify(codebase.load(INPUT_DIR))
+        output = simplify(codebase.load(paths["codebase"]))
     except Exception as _:
         assert False, "Parsing of Codebase: failed"
 
-    output_true = json.load(OUTPUT.open("r"))
-    diff = DeepDiff(output_test, output_true)
+    master = json.load(GOLDEN_MASTER_FILE.open("r"))
+    diff = DeepDiff(output, master)
     assert not diff, "Test failed with error {}".format(diff)
 
 
-if __name__ == "__main__":
-    if "--create-outputs" in sys.argv:
-        prep_output()
-        print("Outputs created.")
+def create_masters(paths: dict[str, Path]):
+    global GOLDEN_MASTER_FILE
+
+    output = simplify(codebase.load(paths["codebase"]))
+    output_json = json.dumps(output, indent=2)
+    output_mini = utils.json_minify(output_json)
+    GOLDEN_MASTER_FILE.write_text(output_mini)

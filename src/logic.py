@@ -99,13 +99,10 @@ class Logic:
 
     def analyse(self, editor_path):
         editor = codebase.load(editor_path)
+        output = []
         for query in editor.queries:
             for op in query.ops:
-                print("\n")
-                print("\n")
-
-                suggestions = self.get_similar_op(op)
-                print(
+                suggestions = [
                     Suggestion(
                         [
                             (
@@ -116,9 +113,11 @@ class Logic:
                         ],
                         self.resolve_columns(op),
                     )
-                )
-                for suggestion in suggestions:
-                    print(suggestion)
+                ]
+                similar_ops = self.get_similar_op(op)
+                suggestions.extend(similar_ops)
+                output.append(suggestions)
+        return output
 
 
 def get_all_queries(queries: list[codebase.Query]) -> list[codebase.Query]:
