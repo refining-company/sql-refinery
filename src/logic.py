@@ -134,13 +134,5 @@ def get_column_ops_map(queries: list[codebase.Query]) -> dict[tuple[str, str, st
             for column in op.columns:
                 col_tuple = (column.dataset, column.table, column.column)
                 column_op_map.setdefault(col_tuple, {})
-                column_op_map[col_tuple].setdefault(get_op_signature(op), []).append(op)
+                column_op_map[col_tuple].setdefault(str(op), []).append(op)
     return column_op_map
-
-
-def get_op_signature(op: codebase.Op) -> str:
-    def get_node_signature(node):
-        return ":".join([node.type] + [get_node_signature(child) for child in node.children])
-
-    columns_resolved = ":".join([":".join([str(col.dataset), str(col.table), str(col.column)]) for col in op.columns])
-    return ":".join([get_node_signature(op.node), columns_resolved])

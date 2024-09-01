@@ -1,6 +1,6 @@
 from __future__ import annotations
-import sqlite3
-import dataclasses
+import json
+import hashlib
 from dataclasses import dataclass
 from src import sql
 
@@ -30,6 +30,9 @@ class Table:
     table: str = None
     alias: str = None
 
+    def __str__(self) -> str:
+        return "Table({}.{}{})".format(self.dataset, self.table, f" as {self.alias}" if self.alias else "")
+
 
 @dataclass
 class Op:
@@ -38,6 +41,18 @@ class Op:
     columns: list[Column] = None
     alias: str = None
 
+    def __str__(self) -> str:
+        nodes_to_col = {node: column for column in self.columns for node in column.nodes}
+
+        def node_to_str(node: sql.Node) -> str:
+            result = str(nodes_to_col.get(node) or node.type)
+            if len(node.children):
+                result += "({})".format(" ".join([node_to_str(child) for child in node.children]))
+
+            return result
+
+        return "Op({})".format(node_to_str(self.node))
+
 
 @dataclass
 class Column:
@@ -45,6 +60,9 @@ class Column:
     dataset: str = None
     table: str = None
     column: str = None
+
+    def __str__(self) -> str:
+        return "Column({}.{}.{})".format(self.dataset, self.table, self.column)
 
 
 @dataclass
@@ -133,40 +151,57 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
 ### HELPERS
 
 
-def pprint(obj):
-    """Pretty print objects in this module"""
-    print(to_str(obj))
+def simplify(obj) -> dict | list | str:
+    if isinstance(obj, Codebase):
+        return {
+            "files": [{"File:{}".format(str(file)): []} for file in obj.files.keys()],
+            "queries": [simplify(query) for query in obj.queries],
+        }
 
+    if isinstance(obj, Query):
+        query = {
+            "Query:{}:{}:{}".format(obj.file, obj.node.start_point.row + 1, obj.node.start_point.column + 1): {
+                "ops": [simplify(op) for op in obj.ops]
+            }
+        }
+        return query
 
-def to_str(obj, lvl: int = 0, indent: int = 2):
-    # Convert all to tuples
-    if isinstance(obj, list):
-        lvl += len(obj) > 1
-        fields = tuple(to_str(v, lvl) for v in obj)
-        return "[{fields}]".format(fields=to_str(fields, lvl))
-    if isinstance(obj, dict):
-        lvl += len(obj) > 1
-        fields = tuple("{}:{}".format(k, to_str(v, lvl)) for k, v in obj.items())
-        return "{{{fields}}}".format(fields=to_str(fields, lvl))
-    if isinstance(obj, (Codebase, Query, Table, Op, Column)):
-        lvl += len(dataclasses.fields(obj)) > 1
-        fields = [(f.name, getattr(obj, f.name)) for f in dataclasses.fields(obj)]
-        fields = tuple("{}={}".format(f, to_str(v, lvl)) for f, v in fields)
-        return "{name}({fields})".format(name=obj.__class__.__name__, fields=to_str(fields, lvl))
+    if isinstance(obj, Table):
+        return {str(obj): []}
 
-    # Convert tall to strings
-    if isinstance(obj, tuple):
-        pad = "\n" + " " * (lvl * indent)
-        lvl += len(obj) > 1
-        return "".join("{}{}".format(pad if len(obj) > 1 else "", to_str(o, lvl)) for o in obj)
+    if isinstance(obj, Op):
+        op = {
+            "{} at {}:{}:{}".format(
+                op,
+                op.file,
+                op.node.start_point.row + 1,
+                op.node.start_point.column + 1,
+            ): simplify(obj.columns)
+        }
+        return op
+
+    if isinstance(obj, Column):
+        return str(obj)
+
     if isinstance(obj, sql.Tree):
-        return "sql.Tree"
+        return {"root": [simplify(obj.root_node)]}
+
     if isinstance(obj, sql.Node):
-        fields = [obj.type]
-        fields += ["{}:{}-{}:{}".format(*obj.start_point, *obj.end_point)]
-        fields += [to_str(obj.text, lvl)] if obj.type == "identifier" else []
-        return "sql.Node({fields})".format(fields=" ".join(fields))
-    if isinstance(obj, (bytearray, bytes)):
+        keys = [obj.grammar_name]
+        if obj.type in ("identifier", "number", "string"):
+            return {":".join(keys): obj.text.decode("utf-8")}
+        return {":".join(keys): [simplify(child) for child in obj.children]}
+
+    if isinstance(obj, dict):
+        return {str(key): simplify(value) for key, value in obj.items()}
+
+    if isinstance(obj, list):
+        return [simplify(item) for item in obj]
+
+    if isinstance(obj, bytes):
         return obj.decode("utf-8")
 
-    return str(obj)
+    try:
+        return str(obj)
+    except Exception as e:
+        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")

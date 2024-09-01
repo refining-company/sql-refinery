@@ -55,7 +55,7 @@ def find_alias(node: tree_sitter.Node) -> str:
     if node.next_named_sibling:
         alias_node = find_desc(node.next_named_sibling, "@alias")
         if len(alias_node):
-            return alias_node[0].text
+            return alias_node[0].text.decode("utf-8")
 
     return None
 
@@ -110,13 +110,13 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
 
 def get_column_path(node: tree_sitter.Node) -> dict[str, str, str]:
     """Parse column from `<database>.<table>.<column>` into dictionary"""
-    *_, dataset, table, column = (None, None, None) + tuple(node.text.split(b"."))
+    *_, dataset, table, column = (None, None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table, "column": column}
 
 
 def get_table_path(node: tree_sitter.Node) -> dict[str, str]:
     """Parse column from `<database>.<table>.<column>` into dictionary"""
-    *_, dataset, table = (None, None) + tuple(node.text.split(b"."))
+    *_, dataset, table = (None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table}
 
 
