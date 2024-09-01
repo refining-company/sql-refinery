@@ -132,9 +132,9 @@ def get_column_ops_map(queries: list[codebase.Query]) -> dict[tuple[str, str, st
     for query in queries:
         for op in query.ops:
             for column in op.columns:
-                col_resolved = (column.dataset, column.table, column.column)
-                column_op_map.setdefault(col_resolved, {})
-                column_op_map[col_resolved].setdefault(get_op_signature(op), []).append(op)
+                col_tuple = (column.dataset, column.table, column.column)
+                column_op_map.setdefault(col_tuple, {})
+                column_op_map[col_tuple].setdefault(get_op_signature(op), []).append(op)
     return column_op_map
 
 

@@ -1,5 +1,4 @@
 import json
-import sys
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import sql, utils
@@ -49,7 +48,7 @@ def test_parse_files(paths: dict[str, Path]):
     assert not diff, f"Parsing incorrect:\n{diff}"
 
 
-def create_masters(paths: dict[str, Path]):
+def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
     output = simplify(sql.parse_files(paths["codebase"]))

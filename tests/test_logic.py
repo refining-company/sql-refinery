@@ -1,6 +1,4 @@
 import json
-import sys
-import json
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import logic, utils
@@ -13,8 +11,8 @@ def simplify(obj) -> dict | list | str:
         codebase_suggestions = {}
         if len(obj) > 1:
             codebase_suggestions = {
-                "Suggestion:{}:{}:{}".format(obj[1].score, obj[1].freq, obj[1].expression): [
-                    "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end)
+                "Suggestion:score-{}:freq-{}:{}".format(obj[1].score, obj[1].freq, obj[1].expression): [
+                    "File:{}:({}:{}):({})".format(file, start[0], start[1], end)
                     for suggestion in obj[1:]
                     for file, start, end in suggestion.file
                 ]
@@ -57,7 +55,7 @@ def test_logic(paths: dict[str, Path]):
     assert not diff, "Test failed with error {}".format(diff)
 
 
-def create_masters(paths: dict[str, Path]):
+def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
     logic_ = logic.Logic(paths["codebase"])

@@ -1,5 +1,4 @@
 import json
-import json
 import hashlib
 from deepdiff import DeepDiff
 from pathlib import Path
@@ -95,7 +94,7 @@ def test_codebase(paths: dict[str, Path]):
     assert not diff, "Test failed with error {}".format(diff)
 
 
-def create_masters(paths: dict[str, Path]):
+def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
     output = simplify(codebase.load(paths["codebase"]))

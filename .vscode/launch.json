@@ -16,7 +16,8 @@
       "name": "Python Debugger: Create tests",
       "type": "debugpy",
       "request": "launch",
-      "module": "tests.create",
+      "module": "tests.update",
+      "args": [".submodules/playground/code"],
       "console": "integratedTerminal",
       "env": {
         "PYTHONPATH": "${workspaceFolder}"

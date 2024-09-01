@@ -3,39 +3,39 @@
     "suggestions": {} },
   { "input": { "File:editor.sql:6:5, End:(11, 8)": "CASE\n        WHEN countries.region IN ('Americas') THEN 'AMER'\n        WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN countries.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
     "suggestions": {
-      "Suggestion:0.7493403693931399:3:CASE\n        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END": [
-        "File:1-revenue.sql:7:5, End:(11, 8)",
-        "File:1-revenue.sql:33:5, End:(37, 8)",
-        "File:0-accounts.sql:98:9, End:(102, 12)" ] } },
+      "Suggestion:score-0.7493403693931399:freq-3:CASE\n        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END": [
+        "File:1-revenue.sql:(7:5):((11, 8))",
+        "File:1-revenue.sql:(33:5):((37, 8))",
+        "File:0-accounts.sql:(98:9):((102, 12))" ] } },
   { "input": { "File:editor.sql:13:5, End:(13, 63)": "IIF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')" },
     "suggestions": {
-      "Suggestion:0.8854961832061069:1:IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')": [
-        "File:1-revenue.sql:39:5, End:(39, 71)" ] } },
+      "Suggestion:score-0.8854961832061069:freq-1:IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')": [
+        "File:1-revenue.sql:(39:5):((39, 71))" ] } },
   { "input": { "File:editor.sql:14:5, End:(14, 20)": "SUM(accounts_revenue.revenue)" },
     "suggestions": {} },
   { "input": { "File:editor.sql:15:5, End:(15, 34)": "COUNT(DISTINCT accounts_revenue.account_id)" },
     "suggestions": {
-      "Suggestion:0.728813559322034:1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:20:5, End:(20, 52)" ] } },
+      "Suggestion:score-0.728813559322034:freq-1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
+        "File:1-revenue.sql:(20:5):((20, 52))" ] } },
   { "input": { "File:editor.sql:16:5, End:(16, 52)": "SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)" },
     "suggestions": {
-      "Suggestion:0.728813559322034:1:COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:19:5, End:(19, 34)" ] } },
+      "Suggestion:score-0.728813559322034:freq-1:COUNT(DISTINCT accounts_revenue.account_id)": [
+        "File:1-revenue.sql:(19:5):((19, 34))" ] } },
   { "input": { "File:codebase/0-accounts.sql:28:5, End:(28, 37)": "revenue / contract_duration_days" },
     "suggestions": {
-      "Suggestion:0.9411764705882353:1:revenue_aux / contract_duration_days": [
-        "File:0-accounts.sql:30:5, End:(30, 41)",
-        "File:0-accounts.sql:29:5, End:(29, 42)" ] } },
+      "Suggestion:score-0.9411764705882353:freq-1:revenue_aux / contract_duration_days": [
+        "File:0-accounts.sql:(30:5):((30, 41))",
+        "File:0-accounts.sql:(29:5):((29, 42))" ] } },
   { "input": { "File:codebase/0-accounts.sql:29:5, End:(29, 42)": "revenue_core / contract_duration_days" },
     "suggestions": {
-      "Suggestion:0.927536231884058:1:revenue / contract_duration_days": [
-        "File:0-accounts.sql:28:5, End:(28, 37)",
-        "File:0-accounts.sql:30:5, End:(30, 41)" ] } },
+      "Suggestion:score-0.927536231884058:freq-1:revenue / contract_duration_days": [
+        "File:0-accounts.sql:(28:5):((28, 37))",
+        "File:0-accounts.sql:(30:5):((30, 41))" ] } },
   { "input": { "File:codebase/0-accounts.sql:30:5, End:(30, 41)": "revenue_aux / contract_duration_days" },
     "suggestions": {
-      "Suggestion:0.9411764705882353:1:revenue / contract_duration_days": [
-        "File:0-accounts.sql:28:5, End:(28, 37)",
-        "File:0-accounts.sql:29:5, End:(29, 42)" ] } },
+      "Suggestion:score-0.9411764705882353:freq-1:revenue / contract_duration_days": [
+        "File:0-accounts.sql:(28:5):((28, 37))",
+        "File:0-accounts.sql:(29:5):((29, 42))" ] } },
   { "input": { "File:codebase/0-accounts.sql:54:5, End:(54, 17)": "AVG(t.deals)" },
     "suggestions": {} },
   { "input": { "File:codebase/0-accounts.sql:55:5, End:(55, 24)": "SUM(t.revenue_core)" },
@@ -56,12 +56,12 @@
     "suggestions": {} },
   { "input": { "File:codebase/1-revenue.sql:19:5, End:(19, 34)": "COUNT(DISTINCT accounts_revenue.account_id)" },
     "suggestions": {
-      "Suggestion:0.728813559322034:1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:20:5, End:(20, 52)" ] } },
+      "Suggestion:score-0.728813559322034:freq-1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
+        "File:1-revenue.sql:(20:5):((20, 52))" ] } },
   { "input": { "File:codebase/1-revenue.sql:20:5, End:(20, 52)": "SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)" },
     "suggestions": {
-      "Suggestion:0.728813559322034:1:COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:19:5, End:(19, 34)" ] } },
+      "Suggestion:score-0.728813559322034:freq-1:COUNT(DISTINCT accounts_revenue.account_id)": [
+        "File:1-revenue.sql:(19:5):((19, 34))" ] } },
   { "input": { "File:codebase/1-revenue.sql:33:5, End:(37, 8)": "CASE\n        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
     "suggestions": {} },
   { "input": { "File:codebase/1-revenue.sql:39:5, End:(39, 71)": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" },
