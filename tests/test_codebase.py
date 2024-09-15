@@ -1,8 +1,7 @@
 import json
-import hashlib
 from deepdiff import DeepDiff
 from pathlib import Path
-from src import codebase, utils, sql
+from src import code, utils, sql
 
 """
 We will take every file in the input folder, parse it with codebase.load() function and 
@@ -18,7 +17,7 @@ def test_codebase(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
     try:
-        output = codebase.simplify(codebase.load(paths["codebase"]))
+        output = code.simplify(code.load(paths["codebase"]))
     except Exception as _:
         assert False, "Parsing of Codebase: failed"
 
@@ -30,7 +29,7 @@ def test_codebase(paths: dict[str, Path]):
 def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
-    output = codebase.simplify(codebase.load(paths["codebase"]))
+    output = code.simplify(code.load(paths["codebase"]))
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)
     GOLDEN_MASTER_FILE.write_text(output_mini)

@@ -10,7 +10,7 @@ traverse them resolving column names in the process, in the end the whole codeba
 represented in form of a tree of each query in the database which itself is a query tree
 """
 
-__all__ = ["Codebase", "Query", "Table", "Op", "Column"]
+__all__ = ["Tree", "Query", "Table", "Op", "Column"]
 
 
 @dataclass
@@ -79,16 +79,16 @@ class Query:
 
 
 @dataclass
-class Codebase:
+class Tree:
     files: dict[str, sql.Tree]
     queries: list[Query]
 
 
-def load(path: str) -> Codebase:
+def load(path: str) -> Tree:
     """Load codebase from `path`"""
     files = sql.parse_files(path)
     queries = sum([to_queries(file, tree.root_node) for file, tree in files.items()], [])
-    codebase = Codebase(files=files, queries=queries)
+    codebase = Tree(files=files, queries=queries)
 
     return codebase
 
@@ -164,7 +164,7 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
 
 
 def simplify(obj) -> dict | list | str:
-    if isinstance(obj, Codebase):
+    if isinstance(obj, Tree):
         return {
             "files": [{"File:{}".format(str(file)): []} for file in obj.files.keys()],
             "queries": [simplify(query) for query in obj.queries],

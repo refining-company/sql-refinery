@@ -7,7 +7,7 @@ GOLDEN_MASTER_FILE = Path(__file__).with_suffix(".json")
 
 
 def simplify(obj) -> dict | list | str:
-    if isinstance(obj, list) and all(isinstance(item, logic.Suggestion) for item in obj):
+    if isinstance(obj, list) and all(isinstance(item, logic.Alternative) for item in obj):
         codebase_suggestions = {}
         if len(obj) > 1:
             codebase_suggestions = {

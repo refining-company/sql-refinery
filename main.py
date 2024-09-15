@@ -3,8 +3,11 @@ import textwrap
 
 
 if __name__ == "__main__":
-    logic = src.logic.Logic(codebase_path=".submodules/playground/code/codebase")
-    suggestions = logic.compare_codebases(editor_path=".submodules/playground/code/editor.sql")
+    session = src.kernel.Session(
+        codebase_path=".submodules/playground/code/codebase",
+        editor_path=".submodules/playground/code/editor.sql",
+    )
+    suggestions = session.analyse_editor()
 
     # debug output
     for suggestion in suggestions:
