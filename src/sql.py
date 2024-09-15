@@ -155,25 +155,9 @@ def parse_files(path: str) -> dict[Path, tree_sitter.Tree]:
     if root.is_file():
         paths = [root]
         root = root.parent
+    else:
+        paths = list(root.glob("**/*.sql"))
 
-    paths = list(root.glob("**/*.sql"))
     files = {f.relative_to(root): parse(f.read_bytes()) for f in paths}
 
     return files
-
-
-### HELPERS
-
-
-def pprint(node: tree_sitter.Tree):
-    """Pretty print objects in this module"""
-    print(to_str(node))
-
-
-def to_str(node: tree_sitter.Tree, indent: str = 0) -> str:
-    res = " " * indent + "(" + str(node.type)
-    if hasattr(node, "children"):
-        for child in node.children:
-            res += "\n" + to_str(child, indent + 2)
-    res += ")"
-    return res
