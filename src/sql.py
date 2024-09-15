@@ -101,6 +101,12 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
         if (_type == "@alias") and (node.type == "identifier" and node.parent.type == "as_alias"):
             return True
 
+        if (_type == "@constant") and (node.type in {"number", "string"}):
+            return True
+
+        if (_type == "@function") and (node.type in {"function_call", "binary_expression"}):
+            return True
+
         # tree-sitter grammar type
         if node.type == _type:
             return True
@@ -108,13 +114,28 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     return False
 
 
-def get_column_path(node: tree_sitter.Node) -> dict[str, str, str]:
+def parse_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.Node]]:
+    if node.type == "function_call":
+        name = node.named_children[0].text.decode("utf-8").capitalize()
+        # taking children of the `attribute` node
+        args = sum([child.named_children for child in node.named_children[1:]], [])
+        return {"name": name, "args": args}
+
+    if node.type == "binary_expression":
+        name = node.children[1].text.decode("utf-8").capitalize()
+        args = node.named_children
+        return {"name": name, "args": args}
+
+    return False
+
+
+def parse_column(node: tree_sitter.Node) -> dict[str, str, str]:
     """Parse column from `<database>.<table>.<column>` into dictionary"""
     *_, dataset, table, column = (None, None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table, "column": column}
 
 
-def get_table_path(node: tree_sitter.Node) -> dict[str, str]:
+def parse_table(node: tree_sitter.Node) -> dict[str, str]:
     """Parse column from `<database>.<table>.<column>` into dictionary"""
     *_, dataset, table = (None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table}

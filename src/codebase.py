@@ -1,6 +1,5 @@
 from __future__ import annotations
-import json
-import hashlib
+from pathlib import Path
 from dataclasses import dataclass
 from src import sql
 
@@ -15,12 +14,48 @@ __all__ = ["Codebase", "Query", "Table", "Op", "Column"]
 
 
 @dataclass
-class Query:
-    file: str
+class Column:
+    nodes: list[sql.Node]
+    dataset: str = None
+    table: str = None
+    column: str = None
+
+    def __repr__(self) -> str:
+        return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
+
+    def __str__(self) -> str:
+        return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
+
+    def __hash__(self) -> tuple[str, str, str]:
+        return hash("{}.{}.{}".format(self.dataset, self.table, self.column))
+
+
+@dataclass
+class Op:
+    file: Path
     node: sql.Node
-    sources: list[Table | Query] = None
-    ops: list[Op] = None
+    columns: list[Column] = None
     alias: str = None
+
+    def __str__(self) -> str:
+        nodes_to_col = {node: column for column in self.columns for node in column.nodes}
+
+        def node_to_str(node: sql.Node) -> str:
+            if node in nodes_to_col:
+                result = str(nodes_to_col[node])
+            elif sql.is_type(node, "@constant"):
+                result = node.text.decode("utf-8")
+            elif sql.is_type(node, "@function"):
+                parsed = sql.parse_function(node)
+                result = "{}({})".format(parsed["name"], ", ".join(map(node_to_str, parsed["args"])))
+            else:
+                result = node.type.capitalize()
+                if len(node.children):
+                    result += "({})".format(", ".join(map(node_to_str, node.named_children)))
+
+            return result
+
+        return "Op({})".format(node_to_str(self.node))
 
 
 @dataclass
@@ -35,34 +70,12 @@ class Table:
 
 
 @dataclass
-class Op:
+class Query:
     file: str
     node: sql.Node
-    columns: list[Column] = None
+    sources: list[Table | Query] = None
+    ops: list[Op] = None
     alias: str = None
-
-    def __str__(self) -> str:
-        nodes_to_col = {node: column for column in self.columns for node in column.nodes}
-
-        def node_to_str(node: sql.Node) -> str:
-            result = str(nodes_to_col.get(node) or node.type)
-            if len(node.children):
-                result += "({})".format(" ".join([node_to_str(child) for child in node.children]))
-
-            return result
-
-        return "Op({})".format(node_to_str(self.node))
-
-
-@dataclass
-class Column:
-    nodes: list[sql.Node]
-    dataset: str = None
-    table: str = None
-    column: str = None
-
-    def __str__(self) -> str:
-        return "Column({}.{}.{})".format(self.dataset, self.table, self.column)
 
 
 @dataclass
@@ -100,10 +113,10 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
         # Capture tables
         tables = []
         for n in sql.find_desc(select_node, "@table"):
-            tables.append(Table(node=n, **sql.get_table_path(n), alias=sql.find_alias(n)))
+            tables.append(Table(node=n, **sql.parse_table(n), alias=sql.find_alias(n)))
 
         # Capture columns
-        nodes_columns = {n: sql.get_column_path(n) for n in sql.find_desc(select_node, "@column")}
+        nodes_columns = {n: sql.parse_column(n) for n in sql.find_desc(select_node, "@column")}
 
         # Resolve columns
         tables_aliases = {t.alias: t for t in tables}
@@ -120,7 +133,7 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
             # TODO: resolve when different datasets/catalogs
             # TODO: resolve `*` into columns
 
-        # Squash multiple nodes into single column
+        # Squash multiple column nodes into single column object
         columns_nodes = {}
         for k, v in nodes_columns.items():
             columns_nodes.setdefault(tuple(v.values()), []).append(k)
@@ -141,7 +154,6 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
             ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
         subqueries = to_queries(file, select_node)
-
         query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)
 
