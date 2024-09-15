@@ -45,7 +45,7 @@ def simplify(obj) -> dict | list | str:
 def test_logic(paths: dict[str, Path]):
     try:
         logic_ = logic.Logic(paths["codebase"])
-        output = logic_.analyse(paths["editor"])
+        output = logic_.compare_codebases(paths["editor"])
         output = simplify(output)
     except Exception as _:
         assert False, "Parsing of Codebase: failed"
@@ -59,7 +59,7 @@ def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
     logic_ = logic.Logic(paths["codebase"])
-    output = logic_.analyse(paths["editor"])
+    output = logic_.compare_codebases(paths["editor"])
     output = simplify(output)
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)

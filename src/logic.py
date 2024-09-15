@@ -1,5 +1,3 @@
-from pathlib import Path
-import re
 import Levenshtein
 from dataclasses import dataclass
 from src import codebase
@@ -26,113 +24,57 @@ frequency we suggest an expression from the codebase.
 
 @dataclass
 class Suggestion:
-    file: list[tuple[str, tuple[int, int], tuple[int, int]]]
-    expression: str
+    op: codebase.Op = None
     freq: int = None
     score: int = None
-
-    def __str__(self):
-        files_str = "\n    ".join(
-            "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end) for file, start, end in self.file
-        )
-        return (
-            f"Files:\n    {files_str}\n"
-            f"Expression: {self.expression}\n"
-            f"Frequency: {self.freq}\n"
-            f"Score: {self.score}\n"
-        )
+    alt: list[codebase.Op] = None
 
 
 class Logic:
     def __init__(self, codebase_path):
         self.codebase = codebase.load(codebase_path)
-        self.all_queries = get_all_queries(self.codebase.queries)
-        self.map_column_ops = get_column_ops_map(self.all_queries)
+        self.all_queries = flatten_queries(self.codebase.queries)
+        self.map_column_ops = map_columns_to_ops(self.all_queries)
         ...
 
-    def get_similar_op(self, op: codebase.Op):
+    def get_similar_ops(self, op: codebase.Op, threshold=0.7) -> list[Suggestion]:
         suggestions = []
-        op_expression = self.resolve_columns(op)
+        op_str = str(op)
         for col in op.columns:
             col_ops = self.map_column_ops[(col.dataset, col.table, col.column)]
-            for codebase_ops in col_ops.values():
-                codebase_op_expression = self.resolve_columns(codebase_ops[0])
-                similarity = Levenshtein.ratio(op_expression, codebase_op_expression)
-                if 0.7 < similarity < 1:
-                    locations = [
-                        (
-                            str(c_op.file),
-                            (c_op.node.start_point.row + 1, c_op.node.start_point.column + 1),
-                            (c_op.node.end_point.row + 1, c_op.node.end_point.column + 1),
-                        )
-                        for c_op in codebase_ops
-                    ]
-                    suggestions.append(
-                        Suggestion(
-                            locations,
-                            codebase_op_expression,
-                            freq=len(codebase_ops),
-                            score=similarity,
-                        )
-                    )
-        suggestions.sort(key=lambda suggestion: (suggestion.score is not None, suggestion.score), reverse=True)
+            for alt_op_str, alt_op_ops in col_ops.items():
+                similarity = Levenshtein.ratio(op_str, alt_op_str)
+                if threshold < similarity < 1:
+                    suggestions.append(Suggestion(freq=len(alt_op_ops), score=similarity, op=op, alt=alt_op_ops))
+
+        suggestions.sort(key=lambda suggestion: (suggestion.freq, suggestion.score), reverse=True)
         return suggestions
 
-    # BUG the expression "SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts" is processed wrong
-    ## issue is probably that the alias has the same name as the column name we are resolving
-    def resolve_columns(self, op: codebase.Op):
-        expression = op.node.text.decode("utf-8")
-        op_columns = op.columns
-        expression_parts = re.split(r"(\s+|[\n()])", expression)
-        resolved_columns = {
-            str(column.column.decode("utf-8")): (column.dataset, column.table, column.column) for column in op_columns
-        }
-
-        def resolve_word(word):
-            for column, parts in resolved_columns.items():
-                if word.endswith(column):
-                    return ".".join(str(part.decode("utf-8")) if part else "" for part in parts).strip(".")
-            return word
-
-        resolved_expression = [resolve_word(word) for word in expression_parts if word]
-        return "".join(resolved_expression)
-
-    def analyse(self, editor_path):
+    def compare_codebases(self, editor_path) -> list[Suggestion]:
         editor = codebase.load(editor_path)
         output = []
         for query in editor.queries:
             for op in query.ops:
-                suggestions = [
-                    Suggestion(
-                        [
-                            (
-                                str(op.file),
-                                (op.node.start_point.row + 1, op.node.start_point.column + 1),
-                                (op.node.end_point.row + 1, op.node.end_point.column + 1),
-                            )
-                        ],
-                        self.resolve_columns(op),
-                    )
-                ]
-                similar_ops = self.get_similar_op(op)
-                suggestions.extend(similar_ops)
-                output.append(suggestions)
+                output += self.get_similar_ops(op)
         return output
 
 
-def get_all_queries(queries: list[codebase.Query]) -> list[codebase.Query]:
+def flatten_queries(queries: list[codebase.Query]) -> list[codebase.Query]:
     nested_queries = []
     for query in queries:
-        nested_queries += get_all_queries([s for s in query.sources if isinstance(s, codebase.Query)])
+        nested_queries += flatten_queries([s for s in query.sources if isinstance(s, codebase.Query)])
     return queries + nested_queries
 
 
-def get_column_ops_map(queries: list[codebase.Query]) -> dict[tuple[str, str, str], dict[str, codebase.Op]]:
+def map_columns_to_ops(queries: list[codebase.Query]) -> dict[tuple[str, str, str], dict[str, list[codebase.Op]]]:
     column_op_map = {}
     for query in queries:
         for op in query.ops:
+            op_id = str(op)
             for column in op.columns:
-                col_tuple = (column.dataset, column.table, column.column)
-                column_op_map.setdefault(col_tuple, {})
-                column_op_map[col_tuple].setdefault(str(op), []).append(op)
+                col_id = (column.dataset, column.table, column.column)
+                column_op_map.setdefault(col_id, {})
+                column_op_map[col_id].setdefault(op_id, [])
+                column_op_map[col_id][op_id].append(op)
+
     return column_op_map
