@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import Levenshtein
 from src import code
+from collections import defaultdict
 
 """
 We take in the the whole codebase and construct a computational query tree, we then create a mapping between columns and 
@@ -27,56 +28,53 @@ frequency we suggest an expression from the codebase.
 class Alternative:
     op: code.Op = None
     alt: list[code.Op] = None
-    freq: int = None
-    score: int = None
+    reliability: int = None
+    similarity: float = None
 
 
+@dataclass
 class Map:
     tree: code.Tree = None
     all_queries: list[code.Query] = None
-    columns_to_ops: list[code.Query] = None
+    all_ops: dict[tuple[str, set[str]], code.Op] = None
 
-    def __init__(self, tree: code.Tree):
-        self.tree = tree
-        self.all_queries = self.get_all_queries(tree.queries)
-        self.columns_to_ops = self.map_columns_to_ops(self.all_queries)
 
-    def get_all_queries(self, queries: list[code.Query]) -> list[code.Query]:
-        nested_queries = []
-        for query in queries:
-            nested_queries += self.get_all_queries([s for s in query.sources if isinstance(s, code.Query)])
-        return queries + nested_queries
+def parse(tree: code.Tree) -> Map:
+    all_queries = get_all_queries(tree.queries)
+    all_ops = get_all_ops(all_queries)
 
-    def map_columns_to_ops(self, queries: list[code.Query]) -> dict[tuple[str, str, str], dict[str, list[code.Op]]]:
-        column_op_map = {}
-        for query in queries:
-            for op in query.ops:
-                op_id = str(op)
-                for column in op.columns:
-                    col_id = (column.dataset, column.table, column.column)
-                    column_op_map.setdefault(col_id, {})
-                    column_op_map[col_id].setdefault(op_id, [])
-                    column_op_map[col_id][op_id].append(op)
+    return Map(tree=tree, all_queries=all_queries, all_ops=all_ops)
 
-        return column_op_map
 
-    def find_alternatives(self, op: code.Op, threshold=0.7) -> list[Alternative]:
-        suggestions = []
-        op_str = str(op)
-        for col in op.columns:
-            col_ops = self.columns_to_ops[(col.dataset, col.table, col.column)]
-            for alt_op_str, alt_op_ops in col_ops.items():
-                similarity = Levenshtein.ratio(op_str, alt_op_str)
-                if threshold < similarity < 1:
-                    suggestions.append(Alternative(freq=len(alt_op_ops), score=similarity, op=op, alt=alt_op_ops))
+def get_all_queries(queries: list[code.Query]) -> list[code.Query]:
+    nested_queries = []
+    for query in queries:
+        nested_queries += get_all_queries([s for s in query.sources if isinstance(s, code.Query)])
+    return queries + nested_queries
 
-        suggestions.sort(key=lambda suggestion: (suggestion.freq, suggestion.score), reverse=True)
-        return suggestions
 
-    def compare(self, other: Map) -> list[Alternative]:
-        output = []
-        for query in self.all_queries:
-            for op in query.ops:
-                output += other.find_alternatives(op)
+def get_all_ops(queries: list[code.Query]) -> dict[tuple[str, set[str]], code.Op]:
+    all_ops = defaultdict(list)
+    for query in queries:
+        for op in query.ops:
+            op_key = (str(op), frozenset(map(str, op.columns)))
+            all_ops[op_key].append(op)
 
-        return output
+    return dict(all_ops)
+
+
+def compare(this: Map, that: Map, threshold=0.7) -> list[Alternative]:
+    alternatives = []
+    for this_id, this_ops in this.all_ops.items():
+        for that_id, that_ops in that.all_ops.items():
+            sim_ops = Levenshtein.ratio(this_id[0], that_id[0])
+            sim_cols = len(this_id[1].intersection(that_id[1])) / len(this_id[1].union(that_id[1]))
+            sim_total = sim_ops * sim_cols
+
+            if threshold < sim_total < 1:
+                for op in this_ops:
+                    alternatives.append(
+                        Alternative(reliability=len(that_ops), similarity=sim_total, op=op, alt=that_ops)
+                    )
+
+    return alternatives

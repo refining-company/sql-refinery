@@ -13,9 +13,9 @@ class Session:
         self.queries_codebase = code.load(codebase_path)
         self.queries_editor = code.load(editor_path)
 
-        self.logic_codebase = logic.Map(self.queries_codebase)
-        self.logic_editor = logic.Map(self.queries_editor)
+        self.logic_codebase = logic.parse(self.queries_codebase)
+        self.logic_editor = logic.parse(self.queries_editor)
 
     def analyse_editor(self) -> list[logic.Alternative]:
-        suggestions = self.logic_editor.compare(self.logic_codebase)
+        suggestions = logic.compare(self.logic_editor, self.logic_codebase)
         return suggestions

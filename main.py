@@ -22,8 +22,8 @@ if __name__ == "__main__":
                 end_row=suggestion.op.node.end_point.row + 1,
                 end_col=suggestion.op.node.end_point.column + 1,
                 op=suggestion.op.node.text.decode("utf-8"),
-                freq=suggestion.freq,
-                score=suggestion.score,
+                freq=suggestion.reliability,
+                score=suggestion.similarity,
                 alts=textwrap.indent("\n\n".join(n.node.text.decode("utf-8") for n in suggestion.alt), prefix="\t"),
             )
         )
