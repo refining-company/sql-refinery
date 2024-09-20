@@ -17,7 +17,7 @@ def test_codebase(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
     try:
-        output = code.simplify(code.load(paths["codebase"]))
+        output = code.simplify(code.parse(paths["codebase"]))
     except Exception as _:
         assert False, "Parsing of Codebase: failed"
 
@@ -29,7 +29,7 @@ def test_codebase(paths: dict[str, Path]):
 def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
-    output = code.simplify(code.load(paths["codebase"]))
+    output = code.simplify(code.parse(paths["codebase"]))
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)
     GOLDEN_MASTER_FILE.write_text(output_mini)

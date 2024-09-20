@@ -39,7 +39,7 @@ def simplify(obj) -> dict | list | str:
 
 def test_parse_files(paths: dict[str, Path]):
     try:
-        output = simplify(sql.parse_files(paths["codebase"]))
+        output = simplify(sql.load(paths["codebase"]))
     except Exception as e:
         assert False, "Parsing failed: {e}"
 
@@ -51,7 +51,7 @@ def test_parse_files(paths: dict[str, Path]):
 def update_snapshots(paths: dict[str, Path]):
     global GOLDEN_MASTER_FILE
 
-    output = simplify(sql.parse_files(paths["codebase"]))
+    output = simplify(sql.load(paths["codebase"]))
     output_json = json.dumps(output, indent=2)
     output_mini = utils.json_minify(output_json)
     GOLDEN_MASTER_FILE.write_text(output_mini)

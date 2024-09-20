@@ -32,12 +32,13 @@ class Column:
 
 @dataclass
 class Op:
-    file: Path
+    file: Path  # TODO: add root to all objects
     node: sql.Node
     columns: list[Column] = None
     alias: str = None
 
     def __str__(self) -> str:
+        # TODO: maybe should be a different method
         nodes_to_col = {node: column for column in self.columns for node in column.nodes}
 
         def node_to_str(node: sql.Node) -> str:
@@ -46,7 +47,7 @@ class Op:
             elif sql.is_type(node, "@constant"):
                 result = node.text.decode("utf-8")
             elif sql.is_type(node, "@function"):
-                parsed = sql.parse_function(node)
+                parsed = sql.decode_function(node)
                 result = "{}({})".format(parsed["name"], ", ".join(map(node_to_str, parsed["args"])))
             else:
                 result = node.type.capitalize()
@@ -84,10 +85,10 @@ class Tree:
     queries: list[Query]
 
 
-def load(path: str) -> Tree:
+def parse(path: str) -> Tree:
     """Load codebase from `path`"""
-    files = sql.parse_files(path)
-    queries = sum([to_queries(file, tree.root_node) for file, tree in files.items()], [])
+    files = sql.parse(path)
+    queries = sum([sql_to_code_tree(file, tree.root_node) for file, tree in files.items()], [])
     codebase = Tree(files=files, queries=queries)
 
     return codebase
@@ -106,17 +107,17 @@ def load(path: str) -> Tree:
 ### TODO: think and tell me what about table mapping
 
 
-def to_queries(file: str, node: sql.Node) -> list[Query]:
+def sql_to_code_tree(file: str, node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
         # Capture tables
         tables = []
         for n in sql.find_desc(select_node, "@table"):
-            tables.append(Table(node=n, **sql.parse_table(n), alias=sql.find_alias(n)))
+            tables.append(Table(node=n, **sql.decode_table(n), alias=sql.find_alias(n)))
 
         # Capture columns
-        nodes_columns = {n: sql.parse_column(n) for n in sql.find_desc(select_node, "@column")}
+        nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
 
         # Resolve columns
         tables_aliases = {t.alias: t for t in tables}
@@ -153,7 +154,7 @@ def to_queries(file: str, node: sql.Node) -> list[Query]:
                     op_cols.append(nodes_columns[col_node])
             ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
-        subqueries = to_queries(file, select_node)
+        subqueries = sql_to_code_tree(file, select_node)
         query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)
 

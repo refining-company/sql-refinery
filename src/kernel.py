@@ -10,8 +10,8 @@ class Session:
     logic_editor: logic.Map
 
     def __init__(self, codebase_path: str, editor_path: str):
-        self.queries_codebase = code.load(codebase_path)
-        self.queries_editor = code.load(editor_path)
+        self.queries_codebase = code.parse(codebase_path)
+        self.queries_editor = code.parse(editor_path)
 
         self.logic_codebase = logic.parse(self.queries_codebase)
         self.logic_editor = logic.parse(self.queries_editor)

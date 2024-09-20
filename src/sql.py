@@ -114,7 +114,7 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     return False
 
 
-def parse_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.Node]]:
+def decode_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.Node]]:
     if node.type == "function_call":
         name = node.named_children[0].text.decode("utf-8").capitalize()
         # taking children of the `attribute` node
@@ -129,13 +129,13 @@ def parse_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.N
     return False
 
 
-def parse_column(node: tree_sitter.Node) -> dict[str, str, str]:
+def decode_column(node: tree_sitter.Node) -> dict[str, str, str]:
     """Parse column from `<database>.<table>.<column>` into dictionary"""
     *_, dataset, table, column = (None, None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table, "column": column}
 
 
-def parse_table(node: tree_sitter.Node) -> dict[str, str]:
+def decode_table(node: tree_sitter.Node) -> dict[str, str]:
     """Parse column from `<database>.<table>.<column>` into dictionary"""
     *_, dataset, table = (None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table}
@@ -146,18 +146,3 @@ def parse(text: bytes) -> tree_sitter.Tree:
     parser.language = language
     tree = parser.parse(text)
     return tree
-
-
-def parse_files(path: str) -> dict[Path, tree_sitter.Tree]:
-    """Load all sql files from `path` into dict `{<file Path>: <sql tree>, ...}`"""
-    root = Path(path)
-
-    if root.is_file():
-        paths = [root]
-        root = root.parent
-    else:
-        paths = list(root.glob("**/*.sql"))
-
-    files = {f.relative_to(root): parse(f.read_bytes()) for f in paths}
-
-    return files
