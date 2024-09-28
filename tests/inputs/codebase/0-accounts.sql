@@ -95,7 +95,7 @@ FROM (
         accounts.name,
         accounts.industry,
         accounts.country,
-        CASE
+        CASE -- Logical Error #1: correct option
             WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
             WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
             ELSE NULL

@@ -11,12 +11,7 @@ def json_minify(string: str) -> str:
     return string
 
 
-def prettify(obj, fn: callable) -> str:
-    output_simp = fn(obj)
-    output_json = json.dumps(output_simp, indent=2)
+def prettify(obj) -> str:
+    output_json = json.dumps(obj, indent=2)
     output_mini = json_minify(output_json)
     return output_mini
-
-
-def pprint(obj, fn: callable):
-    print(prettify(obj, fn))

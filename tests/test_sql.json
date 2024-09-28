@@ -1,5 +1,5 @@
 {
-  "0-accounts.sql": {
+  "/Users/ilyakochik/Developer/refining-company/backend/tests/inputs/codebase/0-accounts.sql": {
     "root": [
       { "source_file": [
           { "comment": [] },
@@ -654,6 +654,7 @@
                                                   { "_aliasable_expression": [
                                                       { "casewhen_expression": [
                                                           { "CASE": [] },
+                                                          { "comment": [] },
                                                           { "casewhen_clause": [
                                                               { "WHEN_MATCHED": [] },
                                                               { "binary_expression": [
@@ -764,7 +765,7 @@
                                       { "AS": [] },
                                       { "identifier": "t" } ] } ] } ] } ] } ] } ] } ] },
           { ";": [] } ] } ] },
-  "1-revenue.sql": {
+  "/Users/ilyakochik/Developer/refining-company/backend/tests/inputs/codebase/1-revenue.sql": {
     "root": [
       { "source_file": [
           { "comment": [] },
@@ -791,6 +792,7 @@
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
                                   { "CASE": [] },
+                                  { "comment": [] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
@@ -991,10 +993,11 @@
                           { "_aliasable_expression": [
                               { "casewhen_expression": [
                                   { "CASE": [] },
+                                  { "comment": [] },
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier": "c.region" },
+                                          { "identifier": "countries.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
@@ -1007,7 +1010,7 @@
                                   { "casewhen_clause": [
                                       { "WHEN_MATCHED": [] },
                                       { "binary_expression": [
-                                          { "identifier": "c.region" },
+                                          { "identifier": "countries.region" },
                                           { "IN": [] },
                                           { "struct": [
                                               { "(": [] },
@@ -1146,9 +1149,7 @@
                                       { "LEFT": [] } ] },
                                   { "JOIN": [] },
                                   { "from_item": [
-                                      { "identifier": "countries" },
-                                      { "as_alias": [
-                                          { "identifier": "c" } ] } ] },
+                                      { "identifier": "countries" } ] },
                                   { "join_condition": [
                                       { "USING": [] },
                                       { "(": [] },

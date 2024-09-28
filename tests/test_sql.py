@@ -9,7 +9,7 @@ into a dictionary (by using only some of the fields)with the simplify() function
 with benchmark that is stored in the output.json
 """
 
-GOLDEN_MASTER_FILE = Path(__file__).with_suffix(".json")
+TRUE_SNAPSHOT = Path(__file__).with_suffix(".json")
 
 
 def simplify(obj) -> dict | list | str:
@@ -18,9 +18,11 @@ def simplify(obj) -> dict | list | str:
 
     if isinstance(obj, sql.Node):
         keys = [obj.grammar_name]
-        if sql.is_type(obj, "@constant"):
-            return {":".join(keys): obj.text.decode("utf-8")}
-        return {":".join(keys): [simplify(child) for child in obj.children]}
+        # TODO: Should capture only meta types that are used by code.py later and should do so recursively
+        if sql.is_type(obj, {"identifier", "string", "number"}):
+            return {":".join(keys): simplify(obj.text)}
+        else:
+            return {":".join(keys): [simplify(child) for child in obj.children]}
 
     if isinstance(obj, dict):
         return {str(key): simplify(value) for key, value in obj.items()}
@@ -39,19 +41,22 @@ def simplify(obj) -> dict | list | str:
 
 def test_parse_files(paths: dict[str, Path]):
     try:
-        output = simplify(sql.load(paths["codebase"]))
+        output = run(paths)
     except Exception as e:
         assert False, "Parsing failed: {e}"
 
-    master = json.load(GOLDEN_MASTER_FILE.open("r"))
+    master = json.load(TRUE_SNAPSHOT.open("r"))
     diff = DeepDiff(output, master)
     assert not diff, f"Parsing incorrect:\n{diff}"
 
 
-def update_snapshots(paths: dict[str, Path]):
-    global GOLDEN_MASTER_FILE
+def run(inputs):
+    files = inputs["codebase"].glob("**/*.sql")
+    result = {str(file): sql.parse(file.read_bytes()) for file in files}
+    return simplify(result)
 
-    output = simplify(sql.load(paths["codebase"]))
-    output_json = json.dumps(output, indent=2)
-    output_mini = utils.json_minify(output_json)
-    GOLDEN_MASTER_FILE.write_text(output_mini)
+
+def update_snapshots(paths: dict[str, Path]):
+    global TRUE_SNAPSHOT
+    result = utils.prettify(run(paths))
+    TRUE_SNAPSHOT.write_text(result)
