@@ -1,9 +1,6 @@
-from pathlib import Path
 import tree_sitter
 from tree_sitter import Tree, Node
 import tree_sitter_sql_bigquery
-
-__all__ = ["Tree", "Node"]
 
 language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
 # BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql

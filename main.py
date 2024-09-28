@@ -3,7 +3,7 @@ import textwrap
 
 
 if __name__ == "__main__":
-    session = src.kernel.Session(
+    session = src.session.Session(
         codebase_path=".submodules/playground/code/codebase",
         editor_path=".submodules/playground/code/editor.sql",
     )

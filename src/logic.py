@@ -1,8 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from collections import defaultdict
 import Levenshtein
 from src import code
-from collections import defaultdict
+
 
 """
 We take in the the whole codebase and construct a computational query tree, we then create a mapping between columns and 

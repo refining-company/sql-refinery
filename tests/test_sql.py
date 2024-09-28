@@ -18,7 +18,7 @@ def simplify(obj) -> dict | list | str:
 
     if isinstance(obj, sql.Node):
         keys = [obj.grammar_name]
-        if obj.type in ("identifier", "number", "string"):
+        if sql.is_type(obj, "@constant"):
             return {":".join(keys): obj.text.decode("utf-8")}
         return {":".join(keys): [simplify(child) for child in obj.children]}
 
