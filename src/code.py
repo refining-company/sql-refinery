@@ -86,8 +86,14 @@ class Tree:
 
 
 def parse(path: str) -> Tree:
-    """Load codebase from `path`"""
-    files = sql.parse(path)
+    root = Path(path)
+    if root.is_file():
+        paths = [root]
+        root = root.parent
+    else:
+        paths = list(root.glob("**/*.sql"))
+
+    files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
     queries = sum([sql_to_code_tree(file, tree.root_node) for file, tree in files.items()], [])
     codebase = Tree(files=files, queries=queries)
 
