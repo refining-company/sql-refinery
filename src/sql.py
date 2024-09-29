@@ -60,55 +60,80 @@ def find_alias(node: tree_sitter.Node) -> str:
 def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     """Check node type against tree-sitter types and meta types"""
     types = [types] if isinstance(types, str) else types
-
-    for _type in types:
-        # meta types
-        if (_type == "@scope") and node.type in {"query_expr"}:
-            return True
-
-        if (_type == "@query") and node.type in {"query_expr"} and node.named_child(0).type in {"select"}:
-            return True
-
-        # BUG: `USING (account_id, date_month)` is captured incorrectly
-        if (_type == "@table") and (node.type == "identifier" and node.parent.type in {"from_item"}):
-            return True
-
-        # BUG: `USING (account_id, date_month)` is captured incorrectly
-        if (
-            (_type == "@expression")
-            and node.type not in {"as_alias", "(", ")", "identifier"}
-            and node.parent.type in {"select_expression", "join_condition", "grouping_item", "order_by_clause_body"}
-        ):
-            return True
-
-        if (_type == "@column") and (
-            node.type in ["identifier", "select_all"]
-            and node.parent.type
-            not in {
-                "from_item",
-                "function_call",
-                "as_alias",
-                "drop_table_statement",
-                "create_table_statement",
-                "cte",
-            }
-        ):
-            return True
-
-        if (_type == "@alias") and (node.type == "identifier" and node.parent.type == "as_alias"):
-            return True
-
-        if (_type == "@constant") and (node.type in {"number", "string"}):
-            return True
-
-        if (_type == "@function") and (node.type in {"function_call", "binary_expression"}):
-            return True
-
-        # tree-sitter grammar type
-        if node.type == _type:
-            return True
+    if get_type(node) in types or node.type in types:
+        return True
 
     return False
+
+
+def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, original: bool = True) -> str | None:
+    """
+    Get the type of the node:
+
+    - `@...` - meta types used for further abstraction into query tree
+    - `#...` - helper types
+    - `...` - original tree_sitter types
+    """
+    node_type = node.type.lower()
+
+    if node.parent is None:
+        node_type = "@root"
+
+    elif node_type in {"query_expr"} and node.named_child(0).type in {"select"}:
+        node_type = "@query"
+    elif node_type in {"query_expr"}:
+        node_type = "@scope"
+
+    elif node_type in {"select_list"}:
+        node_type = "@columns"
+    elif node_type in {"from_clause"}:
+        node_type = "@sources"
+    elif node_type in {"group_by_clause"}:
+        node_type = "@grouping"
+    elif node_type in {"where_clause"}:
+        node_type = "@filter"
+    elif node_type in {"order_by_clause"}:
+        node_type = "@ordering"
+    elif node_type in {"join_condition"}:
+        node_type = "@join"
+
+    elif node_type not in {"as_alias", "(", ")", ",", "using", "on", "identifier"} and node.parent.type in {
+        "select_expression",
+        "join_condition",
+        "grouping_item",
+        "order_by_clause_body",
+    }:
+        node_type = "@expression"
+
+    elif node_type in {"function_call", "binary_expression"}:
+        node_type = "#function"
+
+    elif node_type in {"identifier", "select_all"} and node.parent.type not in {
+        "from_clause",
+        "from_item",
+        "function_call",
+        "as_alias",
+        "drop_table_statement",
+        "create_table_statement",
+        "cte",
+    }:
+        node_type = "@column"
+
+    elif node_type in {"identifier"} and node.parent.type in {"from_item", "from_clause"}:
+        node_type = "@table"
+
+    elif node_type in {"identifier"} and node.parent.type in {"as_alias"}:
+        node_type = "@alias"
+
+    elif node_type in {"number", "string"}:
+        node_type = "#constant"
+
+    if node_type.startswith("@") and meta:
+        return node_type
+    elif node_type.startswith("#") and helper:
+        return node_type
+    elif original:
+        return node_type
 
 
 def decode_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.Node]]:

@@ -2,6 +2,7 @@ import json
 from deepdiff import DeepDiff
 from pathlib import Path
 from src import sql, utils
+import re
 
 """
 We will take every file in the input folder, parse it with sql.parse() function and turn the parse tree
@@ -14,15 +15,26 @@ TRUE_SNAPSHOT = Path(__file__).with_suffix(".json")
 
 def simplify(obj) -> dict | list | str:
     if isinstance(obj, sql.Tree):
-        return {"root": [simplify(obj.root_node)]}
+        return [simplify(obj.root_node)]
 
     if isinstance(obj, sql.Node):
-        keys = [obj.grammar_name]
-        # TODO: Should capture only meta types that are used by code.py later and should do so recursively
-        if sql.is_type(obj, {"identifier", "string", "number"}):
-            return {":".join(keys): simplify(obj.text)}
+        node_type = sql.get_type(obj, meta=True, helper=False, original=False)
+
+        children = simplify(obj.children)  # simplify recursively
+        children = [child for child in children if child]  # filter out empty values
+        children = sum([child if isinstance(child, list) else [child] for child in children], [])  # flatten the list
+
+        if node_type:
+            key = "{} ({} at {}:{}) = {}".format(
+                node_type,
+                obj.grammar_name,
+                obj.start_point.row + 1,
+                obj.start_point.column + 1,
+                re.sub(r"\s+", " ", simplify(obj.text))[:20],
+            )
+            return {key: children}
         else:
-            return {":".join(keys): [simplify(child) for child in obj.children]}
+            return children
 
     if isinstance(obj, dict):
         return {str(key): simplify(value) for key, value in obj.items()}
@@ -33,17 +45,14 @@ def simplify(obj) -> dict | list | str:
     if isinstance(obj, bytes):
         return obj.decode("utf-8")
 
-    try:
-        return str(obj)
-    except Exception as e:
-        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+    raise TypeError(f"Object of type {type(obj)} is not simplifiable")
 
 
 def test_parse_files(paths: dict[str, Path]):
     try:
         output = run(paths)
     except Exception as e:
-        assert False, "Parsing failed: {e}"
+        assert False, f"Parsing failed: {e}"
 
     master = json.load(TRUE_SNAPSHOT.open("r"))
     diff = DeepDiff(output, master)
@@ -51,8 +60,8 @@ def test_parse_files(paths: dict[str, Path]):
 
 
 def run(inputs):
-    files = inputs["codebase"].glob("**/*.sql")
-    result = {str(file): sql.parse(file.read_bytes()) for file in files}
+    files = inputs["inputs"].glob("**/*.sql")
+    result = {file: sql.parse(file.read_bytes()) for file in files}
     return simplify(result)
 
 

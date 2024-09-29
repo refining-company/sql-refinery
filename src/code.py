@@ -44,9 +44,10 @@ class Op:
         def node_to_str(node: sql.Node) -> str:
             if node in nodes_to_col:
                 result = str(nodes_to_col[node])
-            elif sql.is_type(node, "@constant"):
+            elif sql.is_type(node, "#constant"):
+                # FIXME: not sure we need capturing this, probably there is a way around in src.code.op.__str__
                 result = node.text.decode("utf-8")
-            elif sql.is_type(node, "@function"):
+            elif sql.is_type(node, "#function"):
                 parsed = sql.decode_function(node)
                 result = "{}({})".format(parsed["name"], ", ".join(map(node_to_str, parsed["args"])))
             else:
