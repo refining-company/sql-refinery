@@ -6,3 +6,6 @@ dependencies:
   - python=3.12
   - deepdiff
   - python-levenshtein
+  - pip:
+      - tree-sitter==0.22.3
+      - tree-sitter-sql-bigquery @ git+https://github.com/ilyakochik/tree-sitter-sql-bigquery
