@@ -1,5 +1,5 @@
 {
-  "/Users/ilyakochik/Developer/refining-company/backend/tests/inputs/editor.sql": [
+  "editor.sql": [
     { "@root (source_file at 1:1) = -- CASE: Different g": [
         { "@query (query_expr at 3:1) = SELECT date(date_mon": [
             { "@columns (select_list at 4:5) = date(date_month, 'st": [
@@ -43,7 +43,7 @@
                 { "@column (identifier at 24:10) = date_year": [] },
                 { "@column (identifier at 24:21) = macro_region": [] },
                 { "@column (identifier at 24:35) = industry_it": [] } ] } ] } ] } ],
-  "/Users/ilyakochik/Developer/refining-company/backend/tests/inputs/codebase/0-accounts.sql": [
+  "codebase/0-accounts.sql": [
     { "@root (source_file at 1:1) = -- FOUNDATIONAL TABL": [
         { "@scope (query_expr at 7:1) = WITH RECURSIVE date_": [
             { "@scope (query_expr at 8:5) = SELECT date(MIN(CASE": [
@@ -231,7 +231,7 @@
                         { "@join (join_condition at 111:31) = USING (country)": [
                             { "@column (identifier at 111:38) = country": [] } ] } ] } ] },
                 { "@alias (identifier at 112:6) = t": [] } ] } ] } ] } ],
-  "/Users/ilyakochik/Developer/refining-company/backend/tests/inputs/codebase/1-revenue.sql": [
+  "codebase/1-revenue.sql": [
     { "@root (source_file at 1:1) = -- REVENUE REPORTS -": [
         { "@query (query_expr at 5:1) = SELECT date(date_mon": [
             { "@columns (select_list at 6:5) = date(date_month, 'st": [

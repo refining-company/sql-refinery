@@ -10,8 +10,6 @@ traverse them resolving column names in the process, in the end the whole codeba
 represented in form of a tree of each query in the database which itself is a query tree
 """
 
-__all__ = ["Tree", "Query", "Table", "Op", "Column"]
-
 
 @dataclass
 class Column:
@@ -68,7 +66,7 @@ class Table:
     alias: str = None
 
     def __str__(self) -> str:
-        return "Table({}.{}{})".format(self.dataset, self.table, f" as {self.alias}" if self.alias else "")
+        return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
 
 
 @dataclass

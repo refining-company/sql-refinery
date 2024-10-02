@@ -49,6 +49,8 @@ def simplify(obj) -> dict | list | str:
 
 
 def test_parse_files(paths: dict[str, Path]):
+    global TRUE_SNAPSHOT
+
     try:
         output = run(paths)
     except Exception as e:
@@ -61,7 +63,7 @@ def test_parse_files(paths: dict[str, Path]):
 
 def run(inputs):
     files = inputs["inputs"].glob("**/*.sql")
-    result = {file: sql.parse(file.read_bytes()) for file in files}
+    result = {file.relative_to(inputs["inputs"]): sql.parse(file.read_bytes()) for file in files}
     return simplify(result)
 
 

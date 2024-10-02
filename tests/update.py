@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 import shutil
-import tests.test_codebase
+import tests.test_code
 import tests.test_logic
 import tests.test_sql
 import tests.conftest
@@ -14,9 +14,9 @@ def update(origin: Path | str):
     print("Using new test inputs {}".format(str(origin)))
 
     update_funcs = [
-        # tests.test_codebase.update_snapshots,
-        # tests.test_logic.update_snapshots,
-        tests.test_sql.update_snapshots,
+        tests.test_logic.update_snapshots,
+        # tests.test_code.update_snapshots,
+        # tests.test_sql.update_snapshots,
     ]
 
     paths = tests.conftest.get_paths()
