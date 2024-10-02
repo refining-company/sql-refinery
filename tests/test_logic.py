@@ -1,30 +1,26 @@
 import json
 from deepdiff import DeepDiff
 from pathlib import Path
-from src import logic, utils
+from src import session, utils, logic
+from tests import test_code
 
-GOLDEN_MASTER_FILE = Path(__file__).with_suffix(".json")
+TRUE_SNAPSHOT = Path(__file__).with_suffix(".json")
 
 
 def simplify(obj) -> dict | list | str:
-    if isinstance(obj, list) and all(isinstance(item, logic.Alternative) for item in obj):
-        codebase_suggestions = {}
-        if len(obj) > 1:
-            codebase_suggestions = {
-                "Suggestion:score-{}:freq-{}:{}".format(obj[1].score, obj[1].freq, obj[1].expression): [
-                    "File:{}:({}:{}):({})".format(file, start[0], start[1], end)
-                    for suggestion in obj[1:]
-                    for file, start, end in suggestion.file
-                ]
-            }
-
+    if isinstance(obj, logic.Map):
         return {
-            "input": {
-                "\n".join(
-                    "File:{}:{}:{}, End:{}".format(file, start[0], start[1], end) for file, start, end in obj[0].file
-                ): obj[0].expression,
-            },
-            "suggestions": codebase_suggestions,
+            "tree": simplify(obj.tree),
+            "all_queries": simplify(obj.all_queries),
+            "all_ops": test_code.simplify(obj.all_ops),
+        }
+
+    if isinstance(obj, logic.Alternative):
+        return {
+            "op": test_code.simplify(obj.op),
+            "alt": test_code.simplify(obj.alt),
+            "reliability": obj.reliability,
+            "similarity": round(obj.similarity, 2),
         }
 
     if isinstance(obj, dict):
@@ -36,31 +32,33 @@ def simplify(obj) -> dict | list | str:
     if isinstance(obj, bytes):
         return obj.decode("utf-8")
 
-    try:
-        return str(obj)
-    except Exception as e:
-        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")
+    return f"<{obj.__class__.__name__}>"
 
 
 def test_logic(paths: dict[str, Path]):
-    try:
-        logic_ = logic.Logic(paths["codebase"])
-        output = logic_.compare_codebases(paths["editor"])
-        output = simplify(output)
-    except Exception as _:
-        assert False, "Parsing of Codebase: failed"
+    global TRUE_SNAPSHOT
 
-    master = json.load(GOLDEN_MASTER_FILE.open("r"))
+    try:
+        output = run(paths)
+    except Exception as e:
+        assert False, f"Parsing failed: {e}"
+
+    master = json.load(TRUE_SNAPSHOT.open("r"))
     diff = DeepDiff(output, master)
-    assert not diff, "Test failed with error {}".format(diff)
+    assert not diff, f"Parsing incorrect:\n{diff}"
+
+
+def run(inputs):
+    obj_session = session.Session(codebase_path=inputs["codebase"], editor_path=inputs["editor"])
+    result = {
+        "logic_codebase": obj_session.logic_codebase,
+        "logic_editor": obj_session.logic_editor,
+        "analyse_editor": obj_session.analyse_editor(),
+    }
+    return simplify(result)
 
 
 def update_snapshots(paths: dict[str, Path]):
-    global GOLDEN_MASTER_FILE
-
-    logic_ = logic.Logic(paths["codebase"])
-    output = logic_.compare_codebases(paths["editor"])
-    output = simplify(output)
-    output_json = json.dumps(output, indent=2)
-    output_mini = utils.json_minify(output_json)
-    GOLDEN_MASTER_FILE.write_text(output_mini)
+    global TRUE_SNAPSHOT
+    result = utils.prettify(run(paths))
+    TRUE_SNAPSHOT.write_text(result)

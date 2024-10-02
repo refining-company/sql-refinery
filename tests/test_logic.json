@@ -1,72 +1,571 @@
-[
-  { "input": { "File:editor.sql:4:5, End:(4, 38)": "date(date_month, 'start of year')" },
-    "suggestions": {} },
-  { "input": { "File:editor.sql:6:5, End:(11, 8)": "CASE\n        WHEN countries.region IN ('Americas') THEN 'AMER'\n        WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN countries.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
-    "suggestions": {
-      "Suggestion:score-0.7493403693931399:freq-3:CASE\n        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END": [
-        "File:1-revenue.sql:(7:5):((11, 8))",
-        "File:1-revenue.sql:(33:5):((37, 8))",
-        "File:0-accounts.sql:(98:9):((102, 12))" ] } },
-  { "input": { "File:editor.sql:13:5, End:(13, 63)": "IIF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')" },
-    "suggestions": {
-      "Suggestion:score-0.8854961832061069:freq-1:IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')": [
-        "File:1-revenue.sql:(39:5):((39, 71))" ] } },
-  { "input": { "File:editor.sql:14:5, End:(14, 20)": "SUM(accounts_revenue.revenue)" },
-    "suggestions": {} },
-  { "input": { "File:editor.sql:15:5, End:(15, 34)": "COUNT(DISTINCT accounts_revenue.account_id)" },
-    "suggestions": {
-      "Suggestion:score-0.728813559322034:freq-1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:(20:5):((20, 52))" ] } },
-  { "input": { "File:editor.sql:16:5, End:(16, 52)": "SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)" },
-    "suggestions": {
-      "Suggestion:score-0.728813559322034:freq-1:COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:(19:5):((19, 34))" ] } },
-  { "input": { "File:codebase/0-accounts.sql:28:5, End:(28, 37)": "revenue / contract_duration_days" },
-    "suggestions": {
-      "Suggestion:score-0.9411764705882353:freq-1:revenue_aux / contract_duration_days": [
-        "File:0-accounts.sql:(30:5):((30, 41))",
-        "File:0-accounts.sql:(29:5):((29, 42))" ] } },
-  { "input": { "File:codebase/0-accounts.sql:29:5, End:(29, 42)": "revenue_core / contract_duration_days" },
-    "suggestions": {
-      "Suggestion:score-0.927536231884058:freq-1:revenue / contract_duration_days": [
-        "File:0-accounts.sql:(28:5):((28, 37))",
-        "File:0-accounts.sql:(30:5):((30, 41))" ] } },
-  { "input": { "File:codebase/0-accounts.sql:30:5, End:(30, 41)": "revenue_aux / contract_duration_days" },
-    "suggestions": {
-      "Suggestion:score-0.9411764705882353:freq-1:revenue / contract_duration_days": [
-        "File:0-accounts.sql:(28:5):((28, 37))",
-        "File:0-accounts.sql:(29:5):((29, 42))" ] } },
-  { "input": { "File:codebase/0-accounts.sql:54:5, End:(54, 17)": "AVG(t.deals)" },
-    "suggestions": {} },
-  { "input": { "File:codebase/0-accounts.sql:55:5, End:(55, 24)": "SUM(t.revenue_core)" },
-    "suggestions": {} },
-  { "input": { "File:codebase/0-accounts.sql:56:5, End:(56, 23)": "SUM(t.revenue_aux)" },
-    "suggestions": {} },
-  { "input": { "File:codebase/0-accounts.sql:57:5, End:(57, 19)": "SUM(t.revenue)" },
-    "suggestions": {} },
-  { "input": { "File:codebase/0-accounts.sql:81:5, End:(86, 8)": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:6:5, End:(6, 38)": "date(date_month, 'start of year')" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:7:5, End:(11, 8)": "CASE\n        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:12:5, End:(16, 8)": "CASE \n        WHEN accounts.industry = 'Information Technology' THEN 'Tech'\n        WHEN accounts.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:18:5, End:(18, 20)": "SUM(accounts_revenue.revenue)" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:19:5, End:(19, 34)": "COUNT(DISTINCT accounts_revenue.account_id)" },
-    "suggestions": {
-      "Suggestion:score-0.728813559322034:freq-1:SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:(20:5):((20, 52))" ] } },
-  { "input": { "File:codebase/1-revenue.sql:20:5, End:(20, 52)": "SUM(accounts_revenue.revenue) / COUNT(DISTINCT accounts_revenue.account_id)" },
-    "suggestions": {
-      "Suggestion:score-0.728813559322034:freq-1:COUNT(DISTINCT accounts_revenue.account_id)": [
-        "File:1-revenue.sql:(19:5):((19, 34))" ] } },
-  { "input": { "File:codebase/1-revenue.sql:33:5, End:(37, 8)": "CASE\n        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:39:5, End:(39, 71)": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:40:5, End:(45, 8)": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" },
-    "suggestions": {} },
-  { "input": { "File:codebase/1-revenue.sql:46:5, End:(46, 34)": "SUM(accounts_revenue.revenue)" },
-    "suggestions": {} } ]
+{
+  "logic_codebase": {
+    "tree": "<Tree>",
+    "all_queries": [
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>",
+      "<Query>" ],
+    "all_ops": {
+      "('Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.revenue)', 'Column(?.?.contract_duration_days)'}))": [
+        { "Op at 0-accounts.sql:28:5 = Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+            "columns": [
+              { "Column(?.?.revenue)": [
+                  "revenue" ] },
+              { "Column(?.?.contract_duration_days)": [
+                  "contract_duration_days",
+                  "contract_duration_days",
+                  "contract_duration_days" ] } ],
+            "alias": "revenue_day" } } ],
+      "('Op(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.revenue_core)', 'Column(?.?.contract_duration_days)'}))": [
+        { "Op at 0-accounts.sql:29:5 = Op(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+            "columns": [
+              { "Column(?.?.revenue_core)": [
+                  "revenue_core" ] },
+              { "Column(?.?.contract_duration_days)": [
+                  "contract_duration_days",
+                  "contract_duration_days",
+                  "contract_duration_days" ] } ],
+            "alias": "revenue_core_day" } } ],
+      "('Op(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.revenue_aux)', 'Column(?.?.contract_duration_days)'}))": [
+        { "Op at 0-accounts.sql:30:5 = Op(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+            "columns": [
+              { "Column(?.?.revenue_aux)": [
+                  "revenue_aux" ] },
+              { "Column(?.?.contract_duration_days)": [
+                  "contract_duration_days",
+                  "contract_duration_days",
+                  "contract_duration_days" ] } ],
+            "alias": "revenue_aux_day" } } ],
+      "('Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', frozenset({'Column(?.deals.contract_end_date)', 'Column(?.deals.contract_start_date)'}))": [
+        { "Op at 0-accounts.sql:37:9 = Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+            "columns": [
+              { "Column(?.deals.contract_end_date)": [
+                  "d.contract_end_date",
+                  "d.contract_end_date",
+                  "d.contract_end_date" ] },
+              { "Column(?.deals.contract_start_date)": [
+                  "d.contract_start_date",
+                  "d.contract_start_date",
+                  "d.contract_start_date" ] } ],
+            "alias": "contract_duration_days" } },
+        { "Op at 0-accounts.sql:37:9 = Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+            "columns": [
+              { "Column(?.deals.contract_end_date)": [
+                  "d.contract_end_date",
+                  "d.contract_end_date",
+                  "d.contract_end_date" ] },
+              { "Column(?.deals.contract_start_date)": [
+                  "d.contract_start_date",
+                  "d.contract_start_date",
+                  "d.contract_start_date" ] } ],
+            "alias": "contract_duration_days" } },
+        { "Op at 0-accounts.sql:37:9 = Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+            "columns": [
+              { "Column(?.deals.contract_end_date)": [
+                  "d.contract_end_date",
+                  "d.contract_end_date",
+                  "d.contract_end_date" ] },
+              { "Column(?.deals.contract_start_date)": [
+                  "d.contract_start_date",
+                  "d.contract_start_date",
+                  "d.contract_start_date" ] } ],
+            "alias": "contract_duration_days" } } ],
+      "(\"Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))\", frozenset({'Column(?.orders.value)', 'Column(?.orders.product)'}))": [
+        { "Op at 0-accounts.sql:38:9 = Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [
+              { "Column(?.orders.product)": [
+                  "o.product",
+                  "o.product" ] },
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue_core" } },
+        { "Op at 0-accounts.sql:38:9 = Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [
+              { "Column(?.orders.product)": [
+                  "o.product",
+                  "o.product" ] },
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue_core" } },
+        { "Op at 0-accounts.sql:38:9 = Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [
+              { "Column(?.orders.product)": [
+                  "o.product",
+                  "o.product" ] },
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue_core" } } ],
+      "(\"Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))\", frozenset({'Column(?.orders.value)', 'Column(?.orders.product)'}))": [
+        { "Op at 0-accounts.sql:39:9 = Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [
+              { "Column(?.orders.product)": [
+                  "o.product",
+                  "o.product" ] },
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue_aux" } },
+        { "Op at 0-accounts.sql:39:9 = Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [
+              { "Column(?.orders.product)": [
+                  "o.product",
+                  "o.product" ] },
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue_aux" } },
+        { "Op at 0-accounts.sql:39:9 = Op(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [
+              { "Column(?.orders.product)": [
+                  "o.product",
+                  "o.product" ] },
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue_aux" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.orders.value))))', frozenset({'Column(?.orders.value)'}))": [
+        { "Op at 0-accounts.sql:40:9 = Op(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+            "columns": [
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue" } },
+        { "Op at 0-accounts.sql:40:9 = Op(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+            "columns": [
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue" } },
+        { "Op at 0-accounts.sql:40:9 = Op(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+            "columns": [
+              { "Column(?.orders.value)": [
+                  "o.value",
+                  "o.value",
+                  "o.value" ] } ],
+            "alias": "revenue" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.t.deals))))', frozenset({'Column(?.t.deals)'}))": [
+        { "Op at 0-accounts.sql:54:5 = Op(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+            "columns": [
+              { "Column(?.t.deals)": [
+                  "t.deals" ] } ],
+            "alias": "deals" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.t.revenue_core))))', frozenset({'Column(?.t.revenue_core)'}))": [
+        { "Op at 0-accounts.sql:55:5 = Op(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+            "columns": [
+              { "Column(?.t.revenue_core)": [
+                  "t.revenue_core" ] } ],
+            "alias": "revenue_core" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))', frozenset({'Column(?.t.revenue_aux)'}))": [
+        { "Op at 0-accounts.sql:56:5 = Op(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+            "columns": [
+              { "Column(?.t.revenue_aux)": [
+                  "t.revenue_aux" ] } ],
+            "alias": "revenue_aux" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.t.revenue))))', frozenset({'Column(?.t.revenue)'}))": [
+        { "Op at 0-accounts.sql:57:5 = Op(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+            "columns": [
+              { "Column(?.t.revenue)": [
+                  "t.revenue" ] } ],
+            "alias": "revenue" } } ],
+      "(\"Op(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))\", frozenset({'Column(?.?.date_day)'}))": [
+        { "Op at 0-accounts.sql:61:9 = Op(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+            "columns": [
+              { "Column(?.?.date_day)": [
+                  "date_day" ] } ],
+            "alias": "date_month" } },
+        { "Op at 0-accounts.sql:61:9 = Op(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+            "columns": [
+              { "Column(?.?.date_day)": [
+                  "date_day" ] } ],
+            "alias": "date_month" } },
+        { "Op at 0-accounts.sql:61:9 = Op(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+            "columns": [
+              { "Column(?.?.date_day)": [
+                  "date_day" ] } ],
+            "alias": "date_month" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))', frozenset({'Column(?.deals_signed.deal_id)'}))": [
+        { "Op at 0-accounts.sql:63:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+            "columns": [
+              { "Column(?.deals_signed.deal_id)": [
+                  "ds.deal_id" ] } ],
+            "alias": "deals" } },
+        { "Op at 0-accounts.sql:63:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+            "columns": [
+              { "Column(?.deals_signed.deal_id)": [
+                  "ds.deal_id" ] } ],
+            "alias": "deals" } },
+        { "Op at 0-accounts.sql:63:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+            "columns": [
+              { "Column(?.deals_signed.deal_id)": [
+                  "ds.deal_id" ] } ],
+            "alias": "deals" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))', frozenset({'Column(?.deals_signed.revenue_core_day)'}))": [
+        { "Op at 0-accounts.sql:64:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_core_day)": [
+                  "ds.revenue_core_day" ] } ],
+            "alias": "revenue_core" } },
+        { "Op at 0-accounts.sql:64:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_core_day)": [
+                  "ds.revenue_core_day" ] } ],
+            "alias": "revenue_core" } },
+        { "Op at 0-accounts.sql:64:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_core_day)": [
+                  "ds.revenue_core_day" ] } ],
+            "alias": "revenue_core" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))', frozenset({'Column(?.deals_signed.revenue_aux_day)'}))": [
+        { "Op at 0-accounts.sql:65:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_aux_day)": [
+                  "ds.revenue_aux_day" ] } ],
+            "alias": "revenue_aux" } },
+        { "Op at 0-accounts.sql:65:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_aux_day)": [
+                  "ds.revenue_aux_day" ] } ],
+            "alias": "revenue_aux" } },
+        { "Op at 0-accounts.sql:65:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_aux_day)": [
+                  "ds.revenue_aux_day" ] } ],
+            "alias": "revenue_aux" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))', frozenset({'Column(?.deals_signed.revenue_day)'}))": [
+        { "Op at 0-accounts.sql:66:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_day)": [
+                  "ds.revenue_day" ] } ],
+            "alias": "revenue" } },
+        { "Op at 0-accounts.sql:66:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_day)": [
+                  "ds.revenue_day" ] } ],
+            "alias": "revenue" } },
+        { "Op at 0-accounts.sql:66:9 = Op(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+            "columns": [
+              { "Column(?.deals_signed.revenue_day)": [
+                  "ds.revenue_day" ] } ],
+            "alias": "revenue" } } ],
+      "('Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', frozenset({'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)', 'Column(?.date_ranges.date_day)'}))": [
+        { "Op at 0-accounts.sql:69:17 = Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+            "columns": [
+              { "Column(?.date_ranges.date_day)": [
+                  "dr.date_day",
+                  "dr.date_day",
+                  "dr.date_day",
+                  "dr.date_day" ] },
+              { "Column(?.deals_signed.contract_start_date)": [
+                  "ds.contract_start_date" ] },
+              { "Column(?.deals_signed.contract_end_date)": [
+                  "ds.contract_end_date" ] } ],
+            "alias": null } },
+        { "Op at 0-accounts.sql:69:17 = Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+            "columns": [
+              { "Column(?.date_ranges.date_day)": [
+                  "dr.date_day",
+                  "dr.date_day",
+                  "dr.date_day",
+                  "dr.date_day" ] },
+              { "Column(?.deals_signed.contract_start_date)": [
+                  "ds.contract_start_date" ] },
+              { "Column(?.deals_signed.contract_end_date)": [
+                  "ds.contract_end_date" ] } ],
+            "alias": null } },
+        { "Op at 0-accounts.sql:69:17 = Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+            "columns": [
+              { "Column(?.date_ranges.date_day)": [
+                  "dr.date_day",
+                  "dr.date_day",
+                  "dr.date_day",
+                  "dr.date_day" ] },
+              { "Column(?.deals_signed.contract_start_date)": [
+                  "ds.contract_start_date" ] },
+              { "Column(?.deals_signed.contract_end_date)": [
+                  "ds.contract_end_date" ] } ],
+            "alias": null } } ],
+      "(\"Op(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))\", frozenset({'Column(?.t.revenue_12m)'}))": [
+        { "Op at 0-accounts.sql:81:5 = Op(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.t.revenue_12m)": [
+                  "t.revenue_12m",
+                  "t.revenue_12m",
+                  "t.revenue_12m",
+                  "t.revenue_12m" ] } ],
+            "alias": "account_size" } } ],
+      "(\"Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))\", frozenset({'Column(?.countries.region)'}))": [
+        { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } },
+        { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } },
+        { "Op at 1-revenue.sql:7:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } },
+        { "Op at 1-revenue.sql:33:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "region",
+                  "countries.region",
+                  "countries.region",
+                  "region" ] } ],
+            "alias": "cluster" } },
+        { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', frozenset({'Column(?.accounts.revenue)', 'Column(?.accounts.account_id)', 'Column(?.accounts.date_month)'}))": [
+        { "Op at 0-accounts.sql:104:9 = Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+            "columns": [
+              { "Column(?.accounts.revenue)": [
+                  "revenue",
+                  "revenue" ] },
+              { "Column(?.accounts.account_id)": [
+                  "account_id",
+                  "account_id",
+                  "account_id" ] },
+              { "Column(?.accounts.date_month)": [
+                  "date_month",
+                  "date_month" ] } ],
+            "alias": "revenue_12m" } },
+        { "Op at 0-accounts.sql:104:9 = Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+            "columns": [
+              { "Column(?.accounts.revenue)": [
+                  "revenue",
+                  "revenue" ] },
+              { "Column(?.accounts.account_id)": [
+                  "account_id",
+                  "account_id",
+                  "account_id" ] },
+              { "Column(?.accounts.date_month)": [
+                  "date_month",
+                  "date_month" ] } ],
+            "alias": "revenue_12m" } },
+        { "Op at 0-accounts.sql:104:9 = Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+            "columns": [
+              { "Column(?.accounts.revenue)": [
+                  "revenue",
+                  "revenue" ] },
+              { "Column(?.accounts.account_id)": [
+                  "account_id",
+                  "account_id",
+                  "account_id" ] },
+              { "Column(?.accounts.date_month)": [
+                  "date_month",
+                  "date_month" ] } ],
+            "alias": "revenue_12m" } } ],
+      "(\"Op(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))\", frozenset({'Column(?.?.date_month)'}))": [
+        { "Op at 1-revenue.sql:6:5 = Op(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+            "columns": [
+              { "Column(?.?.date_month)": [
+                  "date_month",
+                  "date_month" ] } ],
+            "alias": "date_year" } } ],
+      "(\"Op(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))\", frozenset({'Column(?.accounts.industry)'}))": [
+        { "Op at 1-revenue.sql:12:5 = Op(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+            "columns": [
+              { "Column(?.accounts.industry)": [
+                  "a.industry",
+                  "a.industry" ] } ],
+            "alias": "industry_cluster" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))', frozenset({'Column(?.accounts_revenue.revenue)'}))": [
+        { "Op at 1-revenue.sql:18:5 = Op(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.revenue)": [
+                  "ar.revenue",
+                  "ar.revenue" ] } ],
+            "alias": "revenue" } },
+        { "Op at 1-revenue.sql:46:5 = Op(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.revenue)": [
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue" ] } ],
+            "alias": "revenue_12m" } } ],
+      "('Op(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.account_id)'}))": [
+        { "Op at 1-revenue.sql:19:5 = Op(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.account_id)": [
+                  "ar.account_id",
+                  "ar.account_id" ] } ],
+            "alias": "accounts" } } ],
+      "('Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.revenue)', 'Column(?.accounts_revenue.account_id)'}))": [
+        { "Op at 1-revenue.sql:20:5 = Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.revenue)": [
+                  "ar.revenue",
+                  "ar.revenue" ] },
+              { "Column(?.accounts_revenue.account_id)": [
+                  "ar.account_id",
+                  "ar.account_id" ] } ],
+            "alias": "revenue_per_account" } } ],
+      "(\"Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))\", frozenset({'Column(?.accounts.industry)'}))": [
+        { "Op at 1-revenue.sql:39:5 = Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+            "columns": [
+              { "Column(?.accounts.industry)": [
+                  "accounts.industry",
+                  "accounts.industry",
+                  "accounts.industry" ] } ],
+            "alias": "industry_tech" } } ],
+      "(\"Op(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))\", frozenset({'Column(?.accounts_revenue.revenue)'}))": [
+        { "Op at 1-revenue.sql:40:5 = Op(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.accounts_revenue.revenue)": [
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue",
+                  "accounts_revenue.revenue" ] } ],
+            "alias": "account_size" } } ] } },
+  "logic_editor": {
+    "tree": "<Tree>",
+    "all_queries": [
+      "<Query>" ],
+    "all_ops": {
+      "(\"Op(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))\", frozenset({'Column(?.?.date_month)'}))": [
+        { "Op at editor.sql:4:5 = Op(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+            "columns": [
+              { "Column(?.?.date_month)": [
+                  "date_month",
+                  "date_month" ] } ],
+            "alias": "date_year" } } ],
+      "(\"Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))\", frozenset({'Column(?.countries.region)'}))": [
+        { "Op at editor.sql:5:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "macro_region" } } ],
+      "(\"Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))\", frozenset({'Column(?.accounts.industry)'}))": [
+        { "Op at editor.sql:11:5 = Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+            "columns": [
+              { "Column(?.accounts.industry)": [
+                  "a.industry",
+                  "a.industry" ] } ],
+            "alias": null } } ],
+      "('Op(Select_expression)', frozenset({'Column(?.accounts.industry)'}))": [
+        { "Op at editor.sql:11:63 = Op(Select_expression)": {
+            "columns": [
+              { "Column(?.accounts.industry)": [
+                  "a.industry",
+                  "a.industry" ] } ],
+            "alias": "industry_it" } } ],
+      "('Op(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))', frozenset({'Column(?.accounts_revenue.revenue)'}))": [
+        { "Op at editor.sql:13:5 = Op(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.revenue)": [
+                  "ar.revenue",
+                  "ar.revenue" ] } ],
+            "alias": "revenue" } } ],
+      "('Op(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.account_id)'}))": [
+        { "Op at editor.sql:14:5 = Op(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.account_id)": [
+                  "ar.account_id",
+                  "ar.account_id" ] } ],
+            "alias": "accounts" } } ],
+      "('Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.revenue)', 'Column(?.accounts_revenue.account_id)'}))": [
+        { "Op at editor.sql:15:5 = Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+            "columns": [
+              { "Column(?.accounts_revenue.revenue)": [
+                  "ar.revenue",
+                  "ar.revenue" ] },
+              { "Column(?.accounts_revenue.account_id)": [
+                  "ar.account_id",
+                  "ar.account_id" ] } ],
+            "alias": "revenue_per_account" } } ] } },
+  "analyse_editor": [
+    { "op": {
+        "Op at editor.sql:5:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+          "columns": [
+            { "Column(?.countries.region)": [
+                "c.region",
+                "c.region",
+                "c.region" ] } ],
+          "alias": "macro_region" } },
+      "alt": [
+        { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } },
+        { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } },
+        { "Op at 1-revenue.sql:7:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } },
+        { "Op at 1-revenue.sql:33:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "region",
+                  "countries.region",
+                  "countries.region",
+                  "region" ] } ],
+            "alias": "cluster" } },
+        { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [
+              { "Column(?.countries.region)": [
+                  "c.region",
+                  "c.region" ] } ],
+            "alias": "region_cluster" } } ],
+      "reliability": 5,
+      "similarity": 0.78 },
+    { "op": {
+        "Op at editor.sql:11:5 = Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+          "columns": [
+            { "Column(?.accounts.industry)": [
+                "a.industry",
+                "a.industry" ] } ],
+          "alias": null } },
+      "alt": [
+        { "Op at 1-revenue.sql:39:5 = Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+            "columns": [
+              { "Column(?.accounts.industry)": [
+                  "accounts.industry",
+                  "accounts.industry",
+                  "accounts.industry" ] } ],
+            "alias": "industry_tech" } } ],
+      "reliability": 1,
+      "similarity": 0.94 } ] }
