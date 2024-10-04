@@ -14,7 +14,7 @@
       "<Query>",
       "<Query>" ],
     "all_ops": {
-      "('Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.revenue)', 'Column(?.?.contract_duration_days)'}))": [
+      "('Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.contract_duration_days)', 'Column(?.?.revenue)'}))": [
         { "Op at 0-accounts.sql:28:5 = Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               { "Column(?.?.revenue)": [
@@ -266,7 +266,7 @@
               { "Column(?.deals_signed.revenue_day)": [
                   "ds.revenue_day" ] } ],
             "alias": "revenue" } } ],
-      "('Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', frozenset({'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)', 'Column(?.date_ranges.date_day)'}))": [
+      "('Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', frozenset({'Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)'}))": [
         { "Op at 0-accounts.sql:69:17 = Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               { "Column(?.date_ranges.date_day)": [

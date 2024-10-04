@@ -12,7 +12,9 @@ def simplify(obj) -> dict | list | str:
         return {
             "tree": simplify(obj.tree),
             "all_queries": simplify(obj.all_queries),
-            "all_ops": test_code.simplify(obj.all_ops),
+            "all_ops": test_code.simplify(
+                obj.all_ops
+            ),  # BUG: all_ops has frozen set that doesn't have guaranteed order when converted to string
         }
 
     if isinstance(obj, logic.Alternative):
@@ -24,13 +26,16 @@ def simplify(obj) -> dict | list | str:
         }
 
     if isinstance(obj, dict):
-        return {str(key): simplify(value) for key, value in obj.items()}
+        return {simplify(key): simplify(value) for key, value in obj.items()}
 
     if isinstance(obj, list):
         return [simplify(item) for item in obj]
 
     if isinstance(obj, bytes):
         return obj.decode("utf-8")
+
+    if isinstance(obj, str):
+        return obj
 
     return f"<{obj.__class__.__name__}>"
 

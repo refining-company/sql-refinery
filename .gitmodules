@@ -2,7 +2,3 @@
 	path = .submodules/playground
 	url = https://github.com/refining-company/playground.git
 	branch = main
-[submodule ".submodules/tree-sitter-sql-bigquery"]
-	path = .submodules/tree-sitter-sql-bigquery
-	url = https://github.com/ilyakochik/tree-sitter-sql-bigquery.git
-	branch = main
