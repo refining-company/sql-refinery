@@ -93,7 +93,7 @@ def parse(path: str) -> Tree:
         paths = list(root.glob("**/*.sql"))
 
     files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
-    queries = sum([sql_to_code_tree(file, tree.root_node) for file, tree in files.items()], [])
+    queries = sum([parse(file, tree.root_node) for file, tree in files.items()], [])
     codebase = Tree(files=files, queries=queries)
 
     return codebase
@@ -112,7 +112,7 @@ def parse(path: str) -> Tree:
 ### TODO: think and tell me what about table mapping
 
 
-def sql_to_code_tree(file: str, node: sql.Node) -> list[Query]:
+def parse(file: str, node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -159,67 +159,8 @@ def sql_to_code_tree(file: str, node: sql.Node) -> list[Query]:
                     op_cols.append(nodes_columns[col_node])
             ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
-        subqueries = sql_to_code_tree(file, select_node)
+        subqueries = parse(file, select_node)
         query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)
 
     return queries
-
-
-### HELPERS
-
-
-def simplify(obj) -> dict | list | str:
-    if isinstance(obj, Tree):
-        return {
-            "files": [{"File:{}".format(str(file)): []} for file in obj.files.keys()],
-            "queries": [simplify(query) for query in obj.queries],
-        }
-
-    if isinstance(obj, Query):
-        query = {
-            "Query:{}:{}:{}".format(obj.file, obj.node.start_point.row + 1, obj.node.start_point.column + 1): {
-                "ops": [simplify(op) for op in obj.ops]
-            }
-        }
-        return query
-
-    if isinstance(obj, Table):
-        return {str(obj): []}
-
-    if isinstance(obj, Op):
-        op = {
-            "{} at {}:{}:{}".format(
-                op,
-                op.file,
-                op.node.start_point.row + 1,
-                op.node.start_point.column + 1,
-            ): simplify(obj.columns)
-        }
-        return op
-
-    if isinstance(obj, Column):
-        return str(obj)
-
-    if isinstance(obj, sql.Tree):
-        return {"root": [simplify(obj.root_node)]}
-
-    if isinstance(obj, sql.Node):
-        keys = [obj.grammar_name]
-        if obj.type in ("identifier", "number", "string"):
-            return {":".join(keys): obj.text.decode("utf-8")}
-        return {":".join(keys): [simplify(child) for child in obj.children]}
-
-    if isinstance(obj, dict):
-        return {str(key): simplify(value) for key, value in obj.items()}
-
-    if isinstance(obj, list):
-        return [simplify(item) for item in obj]
-
-    if isinstance(obj, bytes):
-        return obj.decode("utf-8")
-
-    try:
-        return str(obj)
-    except Exception as e:
-        raise TypeError(f"Object of type {type(obj)} is not simplifiable: {e}")

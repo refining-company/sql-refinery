@@ -46,7 +46,7 @@ def simplify(obj) -> dict | list | str:
     raise TypeError(f"Object of type {type(obj)} is not simplifiable")
 
 
-def test_parse_files(paths: dict[str, Path]):
+def test_sql(paths: dict[str, Path]):
     global TRUE_SNAPSHOT
     output = run(paths)
     assert output == TRUE_SNAPSHOT.read_text()
