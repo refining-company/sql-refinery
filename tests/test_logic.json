@@ -14,7 +14,7 @@
       "<Query>",
       "<Query>" ],
     "all_ops": {
-      "('Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.contract_duration_days)', 'Column(?.?.revenue)'}))": [
+      "('Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.revenue)', 'Column(?.?.contract_duration_days)'}))": [
         { "Op at 0-accounts.sql:28:5 = Op(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               { "Column(?.?.revenue)": [
@@ -24,7 +24,7 @@
                   "contract_duration_days",
                   "contract_duration_days" ] } ],
             "alias": "revenue_day" } } ],
-      "('Op(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.revenue_core)', 'Column(?.?.contract_duration_days)'}))": [
+      "('Op(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', frozenset({'Column(?.?.contract_duration_days)', 'Column(?.?.revenue_core)'}))": [
         { "Op at 0-accounts.sql:29:5 = Op(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               { "Column(?.?.revenue_core)": [
@@ -44,7 +44,7 @@
                   "contract_duration_days",
                   "contract_duration_days" ] } ],
             "alias": "revenue_aux_day" } } ],
-      "('Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', frozenset({'Column(?.deals.contract_end_date)', 'Column(?.deals.contract_start_date)'}))": [
+      "('Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', frozenset({'Column(?.deals.contract_start_date)', 'Column(?.deals.contract_end_date)'}))": [
         { "Op at 0-accounts.sql:37:9 = Op(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               { "Column(?.deals.contract_end_date)": [
@@ -266,7 +266,7 @@
               { "Column(?.deals_signed.revenue_day)": [
                   "ds.revenue_day" ] } ],
             "alias": "revenue" } } ],
-      "('Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', frozenset({'Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)'}))": [
+      "('Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', frozenset({'Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_start_date)', 'Column(?.deals_signed.contract_end_date)'}))": [
         { "Op at 0-accounts.sql:69:17 = Op(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               { "Column(?.date_ranges.date_day)": [
@@ -345,7 +345,7 @@
                   "c.region",
                   "c.region" ] } ],
             "alias": "region_cluster" } } ],
-      "('Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', frozenset({'Column(?.accounts.revenue)', 'Column(?.accounts.account_id)', 'Column(?.accounts.date_month)'}))": [
+      "('Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', frozenset({'Column(?.accounts.account_id)', 'Column(?.accounts.date_month)', 'Column(?.accounts.revenue)'}))": [
         { "Op at 0-accounts.sql:104:9 = Op(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               { "Column(?.accounts.revenue)": [
@@ -422,7 +422,7 @@
                   "ar.account_id",
                   "ar.account_id" ] } ],
             "alias": "accounts" } } ],
-      "('Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.revenue)', 'Column(?.accounts_revenue.account_id)'}))": [
+      "('Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.account_id)', 'Column(?.accounts_revenue.revenue)'}))": [
         { "Op at 1-revenue.sql:20:5 = Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               { "Column(?.accounts_revenue.revenue)": [
@@ -498,7 +498,7 @@
                   "ar.account_id",
                   "ar.account_id" ] } ],
             "alias": "accounts" } } ],
-      "('Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.revenue)', 'Column(?.accounts_revenue.account_id)'}))": [
+      "('Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', frozenset({'Column(?.accounts_revenue.account_id)', 'Column(?.accounts_revenue.revenue)'}))": [
         { "Op at editor.sql:15:5 = Op(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               { "Column(?.accounts_revenue.revenue)": [

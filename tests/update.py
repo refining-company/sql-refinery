@@ -15,8 +15,8 @@ def update(origin: Path | str):
 
     update_funcs = [
         tests.test_logic.update_snapshots,
-        # tests.test_code.update_snapshots,
-        # tests.test_sql.update_snapshots,
+        tests.test_code.update_snapshots,
+        tests.test_sql.update_snapshots,
     ]
 
     paths = tests.conftest.get_paths()

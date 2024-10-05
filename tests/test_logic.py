@@ -1,5 +1,3 @@
-import json
-from deepdiff import DeepDiff
 from pathlib import Path
 from src import session, utils, logic
 from tests import test_code
@@ -42,15 +40,8 @@ def simplify(obj) -> dict | list | str:
 
 def test_logic(paths: dict[str, Path]):
     global TRUE_SNAPSHOT
-
-    try:
-        output = run(paths)
-    except Exception as e:
-        assert False, f"Parsing failed: {e}"
-
-    master = json.load(TRUE_SNAPSHOT.open("r"))
-    diff = DeepDiff(output, master)
-    assert not diff, f"Parsing incorrect:\n{diff}"
+    output = run(paths)
+    assert output == TRUE_SNAPSHOT.read_text()
 
 
 def run(inputs):
@@ -60,10 +51,10 @@ def run(inputs):
         "logic_editor": obj_session.logic_editor,
         "analyse_editor": obj_session.analyse_editor(),
     }
-    return simplify(result)
+    return utils.prettify(simplify(result))
 
 
 def update_snapshots(paths: dict[str, Path]):
     global TRUE_SNAPSHOT
-    result = utils.prettify(run(paths))
+    result = run(paths)
     TRUE_SNAPSHOT.write_text(result)

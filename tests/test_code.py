@@ -1,5 +1,3 @@
-import json
-from deepdiff import DeepDiff
 from pathlib import Path
 from src import code, utils, sql
 
@@ -67,23 +65,16 @@ def simplify(obj) -> dict | list | str:
 
 def test_code(paths: dict[str, Path]):
     global TRUE_SNAPSHOT
-
-    try:
-        output = run(paths)
-    except Exception as e:
-        assert False, f"Parsing failed: {e}"
-
-    master = json.load(TRUE_SNAPSHOT.open("r"))
-    diff = DeepDiff(output, master)
-    assert not diff, f"Parsing incorrect:\n{diff}"
+    output = run(paths)
+    assert output == TRUE_SNAPSHOT.read_text()
 
 
 def run(inputs):
     result = code.parse(inputs["codebase"])
-    return simplify(result)
+    return utils.prettify(simplify(result))
 
 
 def update_snapshots(paths: dict[str, Path]):
     global TRUE_SNAPSHOT
-    result = utils.prettify(run(paths))
+    result = run(paths)
     TRUE_SNAPSHOT.write_text(result)
