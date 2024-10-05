@@ -321,7 +321,7 @@
                     "t.revenue_12m",
                     "t.revenue_12m" ] } ],
               "alias": "account_size" } },
-          { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
@@ -346,7 +346,7 @@
           { "Table(?.countries as c)": "countries" },
           { "Query at 0-accounts.sql:88:5": {
               "ops": [
-                { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                     "columns": [
                       { "Column(?.countries.region)": [
                           "c.region",
@@ -373,7 +373,7 @@
         "alias": null } },
     { "Query at 0-accounts.sql:88:5": {
         "ops": [
-          { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          { "Op at 0-accounts.sql:98:9 = Op(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
@@ -405,7 +405,7 @@
                     "date_month",
                     "date_month" ] } ],
               "alias": "date_year" } },
-          { "Op at 1-revenue.sql:7:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          { "Op at 1-revenue.sql:7:5 = Op(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
@@ -446,13 +446,11 @@
         "alias": null } },
     { "Query at 1-revenue.sql:30:1": {
         "ops": [
-          { "Op at 1-revenue.sql:33:5 = Op(Casewhen_expression(Comment, Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          { "Op at 1-revenue.sql:33:5 = Op(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
-                    "region",
-                    "countries.region",
-                    "countries.region",
-                    "region" ] } ],
+                    "c.region",
+                    "c.region" ] } ],
               "alias": "cluster" } },
           { "Op at 1-revenue.sql:39:5 = Op(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
               "columns": [
@@ -482,5 +480,5 @@
         "sources": [
           { "Table(?.accounts)": "accounts" },
           { "Table(?.accounts_revenue)": "accounts_revenue" },
-          { "Table(?.countries)": "countries" } ],
+          { "Table(?.countries as c)": "countries" } ],
         "alias": null } } ] }

@@ -4,7 +4,7 @@
 
 SELECT 
     date(date_month, 'start of year') AS date_year,
-    CASE -- Logical Error #1: correct option
+    CASE
         WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
         WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
         ELSE NULL
@@ -30,9 +30,9 @@ ORDER BY date_year, region_cluster, industry_cluster;
 SELECT
     accounts.name,
     region,
-    CASE -- Logical Error #1: correct option
-        WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'
-        WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'
+    CASE
+        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
+        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
         ELSE NULL
     END AS cluster,
     accounts.industry AS industry,
@@ -46,6 +46,6 @@ SELECT
     SUM(accounts_revenue.revenue) AS revenue_12m
 FROM accounts
     LEFT JOIN accounts_revenue USING (account_id)
-    LEFT JOIN countries USING (country)
+    LEFT JOIN countries c USING (country)
 WHERE accounts_revenue.date_month BETWEEN DATE('now', '-12 months') AND DATE('now')
 GROUP BY accounts.name, region, accounts.industry;

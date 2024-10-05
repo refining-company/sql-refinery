@@ -58,7 +58,7 @@ def get_all_ops(queries: list[code.Query]) -> dict[tuple[str, set[str]], code.Op
     all_ops = defaultdict(list)
     for query in queries:
         for op in query.ops:
-            op_key = (str(op), frozenset(map(str, op.columns)))
+            op_key = (str(op), tuple(sorted(map(str, op.columns))))
             all_ops[op_key].append(op)
 
     return dict(all_ops)
@@ -69,7 +69,10 @@ def compare(this: Map, that: Map, threshold=0.7) -> list[Alternative]:
     for this_id, this_ops in this.all_ops.items():
         for that_id, that_ops in that.all_ops.items():
             sim_ops = Levenshtein.ratio(this_id[0], that_id[0])
-            sim_cols = len(this_id[1].intersection(that_id[1])) / len(this_id[1].union(that_id[1]))
+
+            this_set = set(this_id[1])
+            that_set = set(that_id[1])
+            sim_cols = len(this_set & that_set) / len(this_set | that_set)
             sim_total = sim_ops * sim_cols
 
             if threshold < sim_total < 1:
