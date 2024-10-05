@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "alexcvzz.vscode-sqlite",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "github.copilot",
+    "github.copilot-chat",
+    "github.copilot-workspace",
+    "github.vscode-pull-request-github",
+    "gruntfuggly.todo-tree",
+    "ms-python.black-formatter",
+    "ms-python.debugpy",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-vscode.extension-test-runner",
+    "ms-vscode.vscode-speech"
+  ]
+}
