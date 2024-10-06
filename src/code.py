@@ -93,7 +93,7 @@ def parse(path: str) -> Tree:
         paths = list(root.glob("**/*.sql"))
 
     files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
-    queries = sum([parse(file, tree.root_node) for file, tree in files.items()], [])
+    queries = sum([parse_sql_to_query(file, tree.root_node) for file, tree in files.items()], [])
     codebase = Tree(files=files, queries=queries)
 
     return codebase
@@ -112,7 +112,7 @@ def parse(path: str) -> Tree:
 ### TODO: think and tell me what about table mapping
 
 
-def parse(file: str, node: sql.Node) -> list[Query]:
+def parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -159,7 +159,7 @@ def parse(file: str, node: sql.Node) -> list[Query]:
                     op_cols.append(nodes_columns[col_node])
             ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
-        subqueries = parse(file, select_node)
+        subqueries = parse_sql_to_query(file, select_node)
         query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
         queries.append(query)
 

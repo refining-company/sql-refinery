@@ -4,8 +4,8 @@ import textwrap
 
 if __name__ == "__main__":
     session = src.session.Session(
-        codebase_path=".submodules/playground/code/codebase",
-        editor_path=".submodules/playground/code/editor.sql",
+        codebase_path="./tests/inputs/codebase/",
+        editor_path="./tests/inputs/editor.sql",
     )
     suggestions = session.analyse_editor()
 
