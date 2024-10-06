@@ -1,5 +1,0 @@
-#!/bin/sh
-# .github/hooks/post-checkout
-
-# Run the script to update the conda environment file
-.github/hooks/post-checkout-update-env.sh

@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - deepdiff
-  - pytest
-  - python=3.12
-  - pip
-  - python-levenshtein

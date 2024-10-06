@@ -1,5 +1,0 @@
-#!/bin/sh
-# .github/hooks/pre-commit
-
-# Run the script to update the conda environment file
-.github/hooks/pre-commit-update-env.sh
