@@ -55,7 +55,7 @@ def test_sql(paths: dict[str, Path]):
 def run(inputs):
     files = inputs["inputs"].glob("**/*.sql")
     result = {file.relative_to(inputs["inputs"]): sql.parse(file.read_bytes()) for file in files}
-    return utils.prettify(simplify(result))
+    return utils.pformat(simplify(result))
 
 
 def update_snapshots(paths: dict[str, Path]):

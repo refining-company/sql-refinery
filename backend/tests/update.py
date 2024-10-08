@@ -3,21 +3,18 @@ from pathlib import Path
 import shutil
 import tests.test_code
 import tests.test_logic
+import tests.test_snapshots
 import tests.test_sql
 import tests.conftest
 
 
-def update(origin: Path | str):
+def copy(origin: Path | str):
+    raise NotImplemented("Need to rewrite test updating functionality")
+
     path = Path(origin)
     if not path.exists():
         raise FileNotFoundError("Provided path does not exist")
     print("Using new test inputs {}".format(str(origin)))
-
-    update_funcs = [
-        tests.test_logic.update_snapshots,
-        tests.test_code.update_snapshots,
-        tests.test_sql.update_snapshots,
-    ]
 
     paths = tests.conftest.get_paths()
     if paths["inputs"].exists():
@@ -26,6 +23,16 @@ def update(origin: Path | str):
 
     print("Test inputs copied to {}".format(paths["inputs"]))
     shutil.copytree(origin, paths["inputs"])
+
+
+def update():
+    update_funcs = [
+        # tests.test_logic.update_snapshots,
+        # tests.test_code.update_snapshots,
+        # tests.test_sql.update_snapshots,
+        tests.test_snapshots.update_snapshots
+    ]
+    paths = tests.conftest.get_paths()
 
     print("Updating snapshots...")
     for func in update_funcs:
@@ -36,6 +43,5 @@ def update(origin: Path | str):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        update(sys.argv[1])
-    else:
-        print("Please provide the path to the codebase")
+        copy(sys.argv[1])
+    update()

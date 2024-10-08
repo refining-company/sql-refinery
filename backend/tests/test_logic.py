@@ -11,14 +11,14 @@ def simplify(obj) -> dict | list | str:
             "tree": simplify(obj.tree),
             "all_queries": simplify(obj.all_queries),
             "all_ops": test_code.simplify(
-                obj.all_ops
+                obj.all_expressions
             ),  # BUG: all_ops has frozen set that doesn't have guaranteed order when converted to string
         }
 
     if isinstance(obj, logic.Alternative):
         return {
-            "op": test_code.simplify(obj.op),
-            "alt": test_code.simplify(obj.alt),
+            "op": test_code.simplify(obj.this),
+            "alt": test_code.simplify(obj.others),
             "reliability": obj.reliability,
             "similarity": round(obj.similarity, 2),
         }
@@ -51,7 +51,7 @@ def run(inputs):
         "logic_editor": obj_session.logic_editor,
         "analyse_editor": obj_session.analyse_editor(),
     }
-    return utils.prettify(simplify(result))
+    return utils.pformat(simplify(result))
 
 
 def update_snapshots(paths: dict[str, Path]):

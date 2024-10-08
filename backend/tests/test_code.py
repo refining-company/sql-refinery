@@ -21,14 +21,14 @@ def simplify(obj) -> dict | list | str:
     if isinstance(obj, code.Query):
         query = {
             "Query at {}:{}:{}".format(obj.file, obj.node.start_point.row + 1, obj.node.start_point.column + 1): {
-                "ops": simplify(obj.ops),
+                "ops": simplify(obj.expressions),
                 "sources": simplify(obj.sources),
                 "alias": obj.alias,
             }
         }
         return query
 
-    if isinstance(obj, code.Op):
+    if isinstance(obj, code.Expression):
         op = {
             "Op at {}:{}:{} = {}".format(
                 obj.file,
@@ -71,7 +71,7 @@ def test_code(paths: dict[str, Path]):
 
 def run(inputs):
     result = code.parse(inputs["codebase"])
-    return utils.prettify(simplify(result))
+    return utils.pformat(simplify(result))
 
 
 def update_snapshots(paths: dict[str, Path]):
