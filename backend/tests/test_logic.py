@@ -45,7 +45,7 @@ def test_logic(paths: dict[str, Path]):
 
 
 def run(inputs):
-    obj_session = session.Session(codebase_path=inputs["codebase"], editor_path=inputs["editor"])
+    obj_session = session.Session(**inputs["init"])
     result = {
         "logic_codebase": obj_session.logic_codebase,
         "logic_editor": obj_session.logic_editor,

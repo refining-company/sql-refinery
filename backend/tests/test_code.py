@@ -70,7 +70,7 @@ def test_code(paths: dict[str, Path]):
 
 
 def run(inputs):
-    result = code.parse(inputs["codebase"])
+    result = code.parse(inputs["init"]["codebase_path"])
     return utils.pformat(simplify(result))
 
 
