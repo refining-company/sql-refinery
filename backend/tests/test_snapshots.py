@@ -14,19 +14,19 @@ from tests import utils
 def capture_snapshots(init):
     captured = defaultdict(list)
 
-    def _intercept(fn: callable, simplify: callable):
+    def _intercept(target: callable, simplify: callable) -> callable:
         """
-        Intercept outputs and translate into simple text representation
+        Wrapper that intercepts outputs of `target` function and translate into simple text representation
         using `simplify` to convert into basic types
         and `utils.pformat` to convert into compact JSON
         """
 
-        @wraps(fn)
+        @wraps(target)
         def wrapper(*args, **kwargs):
-            result = fn(*args, **kwargs)
+            result = target(*args, **kwargs)
 
-            module = inspect.getmodule(fn)
-            key = f"{module.__name__}.{fn.__name__}"
+            module = inspect.getmodule(target)
+            key = f"{module.__name__}.{target.__name__}"
             simplified_result = utils.pformat(simplify(result))
             captured[key].append(simplified_result)
 
@@ -66,14 +66,22 @@ def capture_snapshots(init):
 
 
 def update_snapshots(config: dict[str, Path]):
+    print("Generating snapshots...")
     captured_snapshots = capture_snapshots(config["init"])
+    print("\t", "Generated")
 
+    print("Deleting old files...")
     for file in config["true_snapshots"].glob("**/*"):
+        print("\t", f"Deleted {file.name}")
         file.unlink()
 
+    print("Writing new files...")
     for key, snapshot in captured_snapshots.items():
         snapshot_file = config["true_snapshots"] / f"{key}.json"
         snapshot_file.write_text(snapshot)
+        print("\t", f"Wrote {snapshot_file.name}")
+
+    print("Snapshots updated.")
 
 
 def test_snapshots(config: dict[str, Path]):
