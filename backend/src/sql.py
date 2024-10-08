@@ -1,8 +1,6 @@
 import tree_sitter
 import tree_sitter_sql_bigquery
 from tree_sitter import Tree, Node
-from tests.utils import capture_snapshot
-from tests.test_sql import simplify
 
 _language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
 # BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql

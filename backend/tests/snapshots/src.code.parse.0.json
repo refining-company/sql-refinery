@@ -4,8 +4,8 @@
     "1-revenue.sql": "<Tree>" },
   "queries": [
     { "Query at 0-accounts.sql:26:1": {
-        "ops": [
-          { "Op at 0-accounts.sql:28:5 = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        "expressions": [
+          { "Expression at 0-accounts.sql:28:5 = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
               "columns": [
                 { "Column(?.?.revenue)": [
                     "revenue" ] },
@@ -14,7 +14,7 @@
                     "contract_duration_days",
                     "contract_duration_days" ] } ],
               "alias": "revenue_day" } },
-          { "Op at 0-accounts.sql:29:5 = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+          { "Expression at 0-accounts.sql:29:5 = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
               "columns": [
                 { "Column(?.?.revenue_core)": [
                     "revenue_core" ] },
@@ -23,7 +23,7 @@
                     "contract_duration_days",
                     "contract_duration_days" ] } ],
               "alias": "revenue_core_day" } },
-          { "Op at 0-accounts.sql:30:5 = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+          { "Expression at 0-accounts.sql:30:5 = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
               "columns": [
                 { "Column(?.?.revenue_aux)": [
                     "revenue_aux" ] },
@@ -32,7 +32,7 @@
                     "contract_duration_days",
                     "contract_duration_days" ] } ],
               "alias": "revenue_aux_day" } },
-          { "Op at 0-accounts.sql:37:9 = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+          { "Expression at 0-accounts.sql:37:9 = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
               "columns": [
                 { "Column(?.deals.contract_end_date)": [
                     "d.contract_end_date",
@@ -43,7 +43,7 @@
                     "d.contract_start_date",
                     "d.contract_start_date" ] } ],
               "alias": "contract_duration_days" } },
-          { "Op at 0-accounts.sql:38:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+          { "Expression at 0-accounts.sql:38:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
               "columns": [
                 { "Column(?.orders.product)": [
                     "o.product",
@@ -53,7 +53,7 @@
                     "o.value",
                     "o.value" ] } ],
               "alias": "revenue_core" } },
-          { "Op at 0-accounts.sql:39:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+          { "Expression at 0-accounts.sql:39:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
               "columns": [
                 { "Column(?.orders.product)": [
                     "o.product",
@@ -63,7 +63,7 @@
                     "o.value",
                     "o.value" ] } ],
               "alias": "revenue_aux" } },
-          { "Op at 0-accounts.sql:40:9 = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+          { "Expression at 0-accounts.sql:40:9 = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
               "columns": [
                 { "Column(?.orders.value)": [
                     "o.value",
@@ -74,8 +74,8 @@
           { "Table(?.orders as o)": "orders" },
           { "Table(?.deals as d)": "deals" },
           { "Query at 0-accounts.sql:32:5": {
-              "ops": [
-                { "Op at 0-accounts.sql:37:9 = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+              "expressions": [
+                { "Expression at 0-accounts.sql:37:9 = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                     "columns": [
                       { "Column(?.deals.contract_end_date)": [
                           "d.contract_end_date",
@@ -86,7 +86,7 @@
                           "d.contract_start_date",
                           "d.contract_start_date" ] } ],
                     "alias": "contract_duration_days" } },
-                { "Op at 0-accounts.sql:38:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                { "Expression at 0-accounts.sql:38:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                     "columns": [
                       { "Column(?.orders.product)": [
                           "o.product",
@@ -96,7 +96,7 @@
                           "o.value",
                           "o.value" ] } ],
                     "alias": "revenue_core" } },
-                { "Op at 0-accounts.sql:39:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                { "Expression at 0-accounts.sql:39:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                     "columns": [
                       { "Column(?.orders.product)": [
                           "o.product",
@@ -106,7 +106,7 @@
                           "o.value",
                           "o.value" ] } ],
                     "alias": "revenue_aux" } },
-                { "Op at 0-accounts.sql:40:9 = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                { "Expression at 0-accounts.sql:40:9 = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                     "columns": [
                       { "Column(?.orders.value)": [
                           "o.value",
@@ -119,8 +119,8 @@
               "alias": null } } ],
         "alias": null } },
     { "Query at 0-accounts.sql:32:5": {
-        "ops": [
-          { "Op at 0-accounts.sql:37:9 = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        "expressions": [
+          { "Expression at 0-accounts.sql:37:9 = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
               "columns": [
                 { "Column(?.deals.contract_end_date)": [
                     "d.contract_end_date",
@@ -131,7 +131,7 @@
                     "d.contract_start_date",
                     "d.contract_start_date" ] } ],
               "alias": "contract_duration_days" } },
-          { "Op at 0-accounts.sql:38:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+          { "Expression at 0-accounts.sql:38:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
               "columns": [
                 { "Column(?.orders.product)": [
                     "o.product",
@@ -141,7 +141,7 @@
                     "o.value",
                     "o.value" ] } ],
               "alias": "revenue_core" } },
-          { "Op at 0-accounts.sql:39:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+          { "Expression at 0-accounts.sql:39:9 = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
               "columns": [
                 { "Column(?.orders.product)": [
                     "o.product",
@@ -151,7 +151,7 @@
                     "o.value",
                     "o.value" ] } ],
               "alias": "revenue_aux" } },
-          { "Op at 0-accounts.sql:40:9 = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+          { "Expression at 0-accounts.sql:40:9 = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
               "columns": [
                 { "Column(?.orders.value)": [
                     "o.value",
@@ -163,53 +163,53 @@
           { "Table(?.deals as d)": "deals" } ],
         "alias": null } },
     { "Query at 0-accounts.sql:51:1": {
-        "ops": [
-          { "Op at 0-accounts.sql:54:5 = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        "expressions": [
+          { "Expression at 0-accounts.sql:54:5 = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
               "columns": [
                 { "Column(?.t.deals)": [
                     "t.deals" ] } ],
               "alias": "deals" } },
-          { "Op at 0-accounts.sql:55:5 = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+          { "Expression at 0-accounts.sql:55:5 = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
               "columns": [
                 { "Column(?.t.revenue_core)": [
                     "t.revenue_core" ] } ],
               "alias": "revenue_core" } },
-          { "Op at 0-accounts.sql:56:5 = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+          { "Expression at 0-accounts.sql:56:5 = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
               "columns": [
                 { "Column(?.t.revenue_aux)": [
                     "t.revenue_aux" ] } ],
               "alias": "revenue_aux" } },
-          { "Op at 0-accounts.sql:57:5 = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+          { "Expression at 0-accounts.sql:57:5 = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
               "columns": [
                 { "Column(?.t.revenue)": [
                     "t.revenue" ] } ],
               "alias": "revenue" } },
-          { "Op at 0-accounts.sql:61:9 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+          { "Expression at 0-accounts.sql:61:9 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
               "columns": [
                 { "Column(?.?.date_day)": [
                     "date_day" ] } ],
               "alias": "date_month" } },
-          { "Op at 0-accounts.sql:63:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+          { "Expression at 0-accounts.sql:63:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
               "columns": [
                 { "Column(?.deals_signed.deal_id)": [
                     "ds.deal_id" ] } ],
               "alias": "deals" } },
-          { "Op at 0-accounts.sql:64:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+          { "Expression at 0-accounts.sql:64:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
               "columns": [
                 { "Column(?.deals_signed.revenue_core_day)": [
                     "ds.revenue_core_day" ] } ],
               "alias": "revenue_core" } },
-          { "Op at 0-accounts.sql:65:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+          { "Expression at 0-accounts.sql:65:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
               "columns": [
                 { "Column(?.deals_signed.revenue_aux_day)": [
                     "ds.revenue_aux_day" ] } ],
               "alias": "revenue_aux" } },
-          { "Op at 0-accounts.sql:66:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+          { "Expression at 0-accounts.sql:66:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
               "columns": [
                 { "Column(?.deals_signed.revenue_day)": [
                     "ds.revenue_day" ] } ],
               "alias": "revenue" } },
-          { "Op at 0-accounts.sql:69:17 = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+          { "Expression at 0-accounts.sql:69:17 = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
               "columns": [
                 { "Column(?.date_ranges.date_day)": [
                     "dr.date_day",
@@ -225,33 +225,33 @@
           { "Table(?.date_ranges as dr)": "date_ranges" },
           { "Table(?.deals_signed as ds)": "deals_signed" },
           { "Query at 0-accounts.sql:59:5": {
-              "ops": [
-                { "Op at 0-accounts.sql:61:9 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+              "expressions": [
+                { "Expression at 0-accounts.sql:61:9 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                     "columns": [
                       { "Column(?.?.date_day)": [
                           "date_day" ] } ],
                     "alias": "date_month" } },
-                { "Op at 0-accounts.sql:63:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                { "Expression at 0-accounts.sql:63:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                     "columns": [
                       { "Column(?.deals_signed.deal_id)": [
                           "ds.deal_id" ] } ],
                     "alias": "deals" } },
-                { "Op at 0-accounts.sql:64:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                { "Expression at 0-accounts.sql:64:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                     "columns": [
                       { "Column(?.deals_signed.revenue_core_day)": [
                           "ds.revenue_core_day" ] } ],
                     "alias": "revenue_core" } },
-                { "Op at 0-accounts.sql:65:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                { "Expression at 0-accounts.sql:65:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                     "columns": [
                       { "Column(?.deals_signed.revenue_aux_day)": [
                           "ds.revenue_aux_day" ] } ],
                     "alias": "revenue_aux" } },
-                { "Op at 0-accounts.sql:66:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                { "Expression at 0-accounts.sql:66:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                     "columns": [
                       { "Column(?.deals_signed.revenue_day)": [
                           "ds.revenue_day" ] } ],
                     "alias": "revenue" } },
-                { "Op at 0-accounts.sql:69:17 = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                { "Expression at 0-accounts.sql:69:17 = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                     "columns": [
                       { "Column(?.date_ranges.date_day)": [
                           "dr.date_day",
@@ -269,33 +269,33 @@
               "alias": null } } ],
         "alias": null } },
     { "Query at 0-accounts.sql:59:5": {
-        "ops": [
-          { "Op at 0-accounts.sql:61:9 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        "expressions": [
+          { "Expression at 0-accounts.sql:61:9 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
               "columns": [
                 { "Column(?.?.date_day)": [
                     "date_day" ] } ],
               "alias": "date_month" } },
-          { "Op at 0-accounts.sql:63:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+          { "Expression at 0-accounts.sql:63:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
               "columns": [
                 { "Column(?.deals_signed.deal_id)": [
                     "ds.deal_id" ] } ],
               "alias": "deals" } },
-          { "Op at 0-accounts.sql:64:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+          { "Expression at 0-accounts.sql:64:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
               "columns": [
                 { "Column(?.deals_signed.revenue_core_day)": [
                     "ds.revenue_core_day" ] } ],
               "alias": "revenue_core" } },
-          { "Op at 0-accounts.sql:65:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+          { "Expression at 0-accounts.sql:65:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
               "columns": [
                 { "Column(?.deals_signed.revenue_aux_day)": [
                     "ds.revenue_aux_day" ] } ],
               "alias": "revenue_aux" } },
-          { "Op at 0-accounts.sql:66:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+          { "Expression at 0-accounts.sql:66:9 = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
               "columns": [
                 { "Column(?.deals_signed.revenue_day)": [
                     "ds.revenue_day" ] } ],
               "alias": "revenue" } },
-          { "Op at 0-accounts.sql:69:17 = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+          { "Expression at 0-accounts.sql:69:17 = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
               "columns": [
                 { "Column(?.date_ranges.date_day)": [
                     "dr.date_day",
@@ -312,8 +312,8 @@
           { "Table(?.deals_signed as ds)": "deals_signed" } ],
         "alias": null } },
     { "Query at 0-accounts.sql:79:1": {
-        "ops": [
-          { "Op at 0-accounts.sql:81:5 = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        "expressions": [
+          { "Expression at 0-accounts.sql:81:5 = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.t.revenue_12m)": [
                     "t.revenue_12m",
@@ -321,13 +321,13 @@
                     "t.revenue_12m",
                     "t.revenue_12m" ] } ],
               "alias": "account_size" } },
-          { "Op at 0-accounts.sql:98:9 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          { "Expression at 0-accounts.sql:98:9 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
                     "c.region" ] } ],
               "alias": "region_cluster" } },
-          { "Op at 0-accounts.sql:104:9 = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+          { "Expression at 0-accounts.sql:104:9 = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
               "columns": [
                 { "Column(?.accounts.revenue)": [
                     "revenue",
@@ -345,14 +345,14 @@
           { "Table(?.accounts)": "accounts" },
           { "Table(?.countries as c)": "countries" },
           { "Query at 0-accounts.sql:88:5": {
-              "ops": [
-                { "Op at 0-accounts.sql:98:9 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              "expressions": [
+                { "Expression at 0-accounts.sql:98:9 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                     "columns": [
                       { "Column(?.countries.region)": [
                           "c.region",
                           "c.region" ] } ],
                     "alias": "region_cluster" } },
-                { "Op at 0-accounts.sql:104:9 = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                { "Expression at 0-accounts.sql:104:9 = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                     "columns": [
                       { "Column(?.accounts.revenue)": [
                           "revenue",
@@ -372,14 +372,14 @@
               "alias": null } } ],
         "alias": null } },
     { "Query at 0-accounts.sql:88:5": {
-        "ops": [
-          { "Op at 0-accounts.sql:98:9 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        "expressions": [
+          { "Expression at 0-accounts.sql:98:9 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
                     "c.region" ] } ],
               "alias": "region_cluster" } },
-          { "Op at 0-accounts.sql:104:9 = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+          { "Expression at 0-accounts.sql:104:9 = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
               "columns": [
                 { "Column(?.accounts.revenue)": [
                     "revenue",
@@ -398,38 +398,38 @@
           { "Table(?.countries as c)": "countries" } ],
         "alias": null } },
     { "Query at 1-revenue.sql:5:1": {
-        "ops": [
-          { "Op at 1-revenue.sql:6:5 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        "expressions": [
+          { "Expression at 1-revenue.sql:6:5 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
               "columns": [
                 { "Column(?.?.date_month)": [
                     "date_month",
                     "date_month" ] } ],
               "alias": "date_year" } },
-          { "Op at 1-revenue.sql:7:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          { "Expression at 1-revenue.sql:7:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
                     "c.region" ] } ],
               "alias": "region_cluster" } },
-          { "Op at 1-revenue.sql:12:5 = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+          { "Expression at 1-revenue.sql:12:5 = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
               "columns": [
                 { "Column(?.accounts.industry)": [
                     "a.industry",
                     "a.industry" ] } ],
               "alias": "industry_cluster" } },
-          { "Op at 1-revenue.sql:18:5 = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+          { "Expression at 1-revenue.sql:18:5 = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
               "columns": [
                 { "Column(?.accounts_revenue.revenue)": [
                     "ar.revenue",
                     "ar.revenue" ] } ],
               "alias": "revenue" } },
-          { "Op at 1-revenue.sql:19:5 = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+          { "Expression at 1-revenue.sql:19:5 = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
               "columns": [
                 { "Column(?.accounts_revenue.account_id)": [
                     "ar.account_id",
                     "ar.account_id" ] } ],
               "alias": "accounts" } },
-          { "Op at 1-revenue.sql:20:5 = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+          { "Expression at 1-revenue.sql:20:5 = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
               "columns": [
                 { "Column(?.accounts_revenue.revenue)": [
                     "ar.revenue",
@@ -445,21 +445,21 @@
           { "Table(?.accounts_360 as a360)": "accounts_360" } ],
         "alias": null } },
     { "Query at 1-revenue.sql:30:1": {
-        "ops": [
-          { "Op at 1-revenue.sql:33:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        "expressions": [
+          { "Expression at 1-revenue.sql:33:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
                     "c.region" ] } ],
               "alias": "cluster" } },
-          { "Op at 1-revenue.sql:39:5 = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+          { "Expression at 1-revenue.sql:39:5 = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
               "columns": [
                 { "Column(?.accounts.industry)": [
                     "accounts.industry",
                     "accounts.industry",
                     "accounts.industry" ] } ],
               "alias": "industry_tech" } },
-          { "Op at 1-revenue.sql:40:5 = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+          { "Expression at 1-revenue.sql:40:5 = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.accounts_revenue.revenue)": [
                     "accounts_revenue.revenue",
@@ -468,7 +468,7 @@
                     "accounts_revenue.revenue",
                     "accounts_revenue.revenue" ] } ],
               "alias": "account_size" } },
-          { "Op at 1-revenue.sql:46:5 = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+          { "Expression at 1-revenue.sql:46:5 = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
               "columns": [
                 { "Column(?.accounts_revenue.revenue)": [
                     "accounts_revenue.revenue",

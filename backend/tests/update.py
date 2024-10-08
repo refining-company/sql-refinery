@@ -1,10 +1,7 @@
 import sys
 from pathlib import Path
 import shutil
-import tests.test_code
-import tests.test_logic
 import tests.test_snapshots
-import tests.test_sql
 import tests.conftest
 
 
@@ -26,12 +23,7 @@ def copy(origin: Path | str):
 
 
 def update():
-    update_funcs = [
-        # tests.test_logic.update_snapshots,
-        # tests.test_code.update_snapshots,
-        # tests.test_sql.update_snapshots,
-        tests.test_snapshots.update_snapshots
-    ]
+    update_funcs = [tests.test_snapshots.update_snapshots]
     paths = tests.conftest.get_paths()
 
     print("Updating snapshots...")

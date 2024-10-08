@@ -13,7 +13,7 @@ def get_paths() -> dict[str, Path]:
 
 
 @pytest.fixture(scope="session")
-def paths() -> dict[str, Path]:
+def config() -> dict[str, Path]:
     return get_paths()
 
 
