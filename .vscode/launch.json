@@ -5,10 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python Debugger: Program",
+      "name": "Python Debugger: Server",
       "type": "debugpy",
       "request": "launch",
-      "program": "main.py",
+      "module": "src.server",
+      "cwd": "${workspaceFolder}/backend",
+      "args": ["./tests/inputs/codebase/", "./tests/inputs/editor.sql"],
       "console": "integratedTerminal",
       "justMyCode": false
     },
@@ -17,7 +19,8 @@
       "type": "debugpy",
       "request": "launch",
       "module": "tests.update",
-      "args": [".submodules/playground/code"],
+      "cwd": "${workspaceFolder}/backend",
+      // "args": [".submodules/playground/code"],
       "console": "integratedTerminal",
       "env": {
         "PYTHONPATH": "${workspaceFolder}"

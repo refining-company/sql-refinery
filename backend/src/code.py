@@ -29,7 +29,7 @@ class Column:
 
 
 @dataclass
-class Op:
+class Expression:
     file: Path  # TODO: add root to all objects
     node: sql.Node
     columns: list[Column] = None
@@ -55,7 +55,7 @@ class Op:
 
             return result
 
-        return "Op({})".format(node_to_str(self.node))
+        return "Expression({})".format(node_to_str(self.node))
 
 
 @dataclass
@@ -74,7 +74,7 @@ class Query:
     file: str
     node: sql.Node
     sources: list[Table | Query] = None
-    ops: list[Op] = None
+    expressions: list[Expression] = None
     alias: str = None
 
 
@@ -93,7 +93,7 @@ def parse(path: str) -> Tree:
         paths = list(root.glob("**/*.sql"))
 
     files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
-    queries = sum([parse_sql_to_query(file, tree.root_node) for file, tree in files.items()], [])
+    queries = sum([_parse_sql_to_query(file, tree.root_node) for file, tree in files.items()], [])
     codebase = Tree(files=files, queries=queries)
 
     return codebase
@@ -112,7 +112,7 @@ def parse(path: str) -> Tree:
 ### TODO: think and tell me what about table mapping
 
 
-def parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
+def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
     """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
@@ -157,10 +157,10 @@ def parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
             for col_node in sql.find_desc(op_node.parent, "@column"):
                 if nodes_columns[col_node] not in op_cols:
                     op_cols.append(nodes_columns[col_node])
-            ops.append(Op(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
+            ops.append(Expression(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
-        subqueries = parse_sql_to_query(file, select_node)
-        query = Query(file=file, node=select_node, sources=tables + subqueries, ops=ops)
+        subqueries = _parse_sql_to_query(file, select_node)
+        query = Query(file=file, node=select_node, sources=tables + subqueries, expressions=ops)
         queries.append(query)
 
     return queries

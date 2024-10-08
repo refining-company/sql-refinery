@@ -3,10 +3,13 @@
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": ["-q", "--tb=short"],
   "black-formatter.args": ["-l", "120"],
+  "[json]": {
+    "editor.defaultFormatter": null
+  },
   "files.exclude": {
     "**/.conda": true,
     "**/__pycache__": true,
     "**/.pytest_cache": true,
-    ".venv": true,
+    ".venv": true
   }
 }

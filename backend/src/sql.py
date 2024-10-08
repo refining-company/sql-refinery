@@ -1,8 +1,10 @@
 import tree_sitter
-from tree_sitter import Tree, Node
 import tree_sitter_sql_bigquery
+from tree_sitter import Tree, Node
+from tests.utils import capture_snapshot
+from tests.test_sql import simplify
 
-language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
+_language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
 # BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql
 
 
@@ -165,6 +167,6 @@ def decode_table(node: tree_sitter.Node) -> dict[str, str]:
 
 def parse(text: bytes) -> tree_sitter.Tree:
     parser = tree_sitter.Parser()
-    parser.language = language
+    parser.language = _language
     tree = parser.parse(text)
     return tree

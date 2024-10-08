@@ -11,7 +11,7 @@ def json_minify(string: str) -> str:
     return string
 
 
-def prettify(obj) -> str:
+def pformat(obj) -> str:
     output_json = json.dumps(obj, indent=2)
     output_mini = json_minify(output_json)
     return output_mini
