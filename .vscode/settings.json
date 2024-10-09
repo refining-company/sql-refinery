@@ -19,6 +19,5 @@
         "dist": true
     },
     "typescript.tsc.autoDetect": "off",
-    "prettier.semi": true,
-    "prettier.tabWidth": 4
+    "prettier.semi": true
 }
