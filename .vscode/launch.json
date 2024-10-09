@@ -20,19 +20,16 @@
       "request": "launch",
       "module": "tests.update",
       "cwd": "${workspaceFolder}/backend",
-      // "args": [".submodules/playground/code"],
-      "console": "integratedTerminal",
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}"
-      }
+      "console": "integratedTerminal"
     },
     {
-      "name": "VS Code extension: run",
+      "name": "VS Code extension: debug",
       "type": "extensionHost",
       "request": "launch",
       "args": ["--extensionDevelopmentPath=${workspaceFolder}/frontend-vscode"],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
+      "preLaunchTask": "${defaultBuildTask}",
+      "cwd": "${workspaceFolder}/frontend-vscode"
     }
   ]
 }
