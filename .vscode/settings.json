@@ -10,6 +10,14 @@
     "**/.conda": true,
     "**/__pycache__": true,
     "**/.pytest_cache": true,
-    ".venv": true
-  }
+    "**/.venv": true,
+    "**/node_modules": true,
+    "out": false,
+    "dist": false
+  },
+  "search.exclude": {
+    "out": true,
+    "dist": true
+  },
+  "typescript.tsc.autoDetect": "off"
 }

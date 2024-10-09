@@ -2,6 +2,7 @@
   "recommendations": [
     "alexcvzz.vscode-sqlite",
     "dbaeumer.vscode-eslint",
+    "connor4312.esbuild-problem-matchers",
     "esbenp.prettier-vscode",
     "github.copilot",
     "github.copilot-chat",

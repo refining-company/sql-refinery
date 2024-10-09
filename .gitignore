@@ -158,3 +158,6 @@ cython_debug/
 
 # MacOS system files
 .DS_Store
+
+# NodeJS and TypeScript
+node_modules/
