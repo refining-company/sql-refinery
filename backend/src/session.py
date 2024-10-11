@@ -11,16 +11,19 @@ class Session:
     logic_codebase: logic.Map
     logic_editor: logic.Map
 
-    def __init__(self): ...
+    _inconsistencies: dict[str, list[logic.Alternative]]
+
+    def __init__(self):
+        self._inconsistencies = {}
 
     def load_codebase(self, codebase_path: str):
         self.path_codebase = Path(codebase_path).resolve()
         self.queries_codebase = code.parse(path=self.path_codebase)
         self.logic_codebase = logic.parse(self.queries_codebase)
 
-    def analyse_document(self, contents: str) -> list[logic.Alternative]:
+    def find_inconsistencies(self, contents: str, uri: str) -> list[logic.Alternative]:
         self.queries_editor = code.parse(contents=contents)
         self.logic_editor = logic.parse(self.queries_editor)
-        suggestions = logic.compare(self.logic_editor, self.logic_codebase)
+        self._inconsistencies[uri] = logic.compare(self.logic_editor, self.logic_codebase)
 
-        return suggestions
+        return self._inconsistencies[uri]

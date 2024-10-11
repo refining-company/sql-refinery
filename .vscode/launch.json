@@ -7,7 +7,7 @@
     {
       "name": "VS Code and Server: debug",
       "configurations": [
-        "Server: attach debug (hidden)",
+        // "Server: attach debug (hidden)",
         "VS Code: debug (hidden)"
       ],
       "presentation": { "order": 1 }

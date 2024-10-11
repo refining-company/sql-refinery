@@ -1,11 +1,6 @@
 import sys
 import logging
 from pathlib import Path
-from collections import defaultdict
-
-import sys
-import logging
-from pathlib import Path
 
 import pygls.server
 import lsprotocol.types as lsp
@@ -21,11 +16,10 @@ pygls.server.logger.addHandler(handler)
 # TODO take from package configs
 server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
 session = src.session.Session()
-all_inconsistencies = defaultdict(list)
 
 
 def analyse(document: str, uri: str = None) -> list[lsp.Diagnostic]:
-    inconsistencies = session.analyse_document(contents=document)
+    inconsistencies = session.find_inconsistencies(contents=document, uri=uri)
 
     diagnostics = []
     for inc in inconsistencies:
@@ -36,9 +30,7 @@ def analyse(document: str, uri: str = None) -> list[lsp.Diagnostic]:
             code="Inconsistency",
             severity=lsp.DiagnosticSeverity.Information,
         )
-
         diagnostics.append(diagnostic)
-        all_inconsistencies[uri].append(inc)
 
     return diagnostics
 
@@ -65,7 +57,7 @@ def code_lens_provider(params: lsp.CodeLensParams):
     code_lenses = []
 
     # Retrieve diagnostics for the document
-    inconsistencies = all_inconsistencies.get(document_uri, [])
+    inconsistencies = session._inconsistencies.get(document_uri, [])
     for inc in inconsistencies:
         title = f"Alternatives found: {len(inc.others)}"
         range = lsp.Range(lsp.Position(*inc.this.node.start_point), lsp.Position(*inc.this.node.end_point))
@@ -73,19 +65,18 @@ def code_lens_provider(params: lsp.CodeLensParams):
         for other in inc.others:
             location_uri = (session.path_codebase / other.file).resolve().as_uri()
             location_range = lsp.Range(lsp.Position(*other.node.start_point), lsp.Position(*other.node.end_point))
-            other_locations.append(lsp.Location(uri=location_uri, range=location_range))
+            other_locations.append({"uri": location_uri, "position": location_range.start})
 
         # Create the CodeLens entry
         code_lens = lsp.CodeLens(
             range=range,
             command=lsp.Command(
                 title=title,
-                command="editor.action.peekLocations",
-                arguments=[document_uri, range, other_locations, "peek"],
+                command="sqlRefinery.peekLocations",
+                arguments=[document_uri, range.end, other_locations, "peek"],
             ),
         )
         code_lenses.append(code_lens)
-
     return code_lenses
 
 
