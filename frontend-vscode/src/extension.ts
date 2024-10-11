@@ -1,27 +1,90 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as path from 'path';
+import {
+  LanguageClient,
+  LanguageClientOptions,
+  ServerOptions,
+  TransportKind,
+} from 'vscode-languageclient/node';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
-  console.log('Congratulations, your extension "sql-refinery" is now active!');
+export async function activate(context: vscode.ExtensionContext) {
+  let pythonExecutable: string;
+  let venvPath: string;
+  if (process.platform === 'win32') {
+    pythonExecutable = context.asAbsolutePath(
+      path.join('..', 'backend', '.venv', 'Scripts', 'python.exe')
+    );
+    venvPath = context.asAbsolutePath(
+      path.join('..', 'backend', '.venv', 'Scripts')
+    );
+  } else {
+    pythonExecutable = context.asAbsolutePath(
+      path.join('..', 'backend', '.venv', 'bin', 'python')
+    );
+    venvPath = context.asAbsolutePath(
+      path.join('..', 'backend', '.venv', 'bin')
+    );
+  }
 
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
-  const disposable = vscode.commands.registerCommand(
-    'sql-refinery.helloWorld',
-    () => {
-      // The code you place here will be executed every time your command is executed
-      // Display a message box to the user
-      vscode.window.showInformationMessage('Hello World from SQL Refinery!');
-    }
+  const serverScript = context.asAbsolutePath(
+    path.join('..', 'backend', 'src', 'server.py')
   );
 
-  context.subscriptions.push(disposable);
+  const cwd = context.asAbsolutePath(path.join('..', 'backend'));
+  const env = { ...process.env };
+  env.VIRTUAL_ENV = context.asAbsolutePath(path.join('..', 'backend', '.venv'));
+  env.PATH = `${venvPath}${path.delimiter}${env.PATH}`;
+
+  if (env.PYTHONPATH) {
+    env.PYTHONPATH = `${cwd}${path.delimiter}${env.PYTHONPATH}`;
+  } else {
+    env.PYTHONPATH = cwd;
+  }
+
+  const serverOptions: ServerOptions = {
+    command: pythonExecutable,
+    args: [
+      '-u',
+      // '-Xfrozen_modules=off',
+      // '-m',
+      // 'debugpy',
+      // '--listen',
+      // '5678',
+      // '--wait-for-client',
+      serverScript,
+      '../tests/inputs/codebase/',
+      '../tests/inputs/editor.sql',
+    ],
+    options: {
+      env: env,
+      cwd: cwd,
+    },
+    transport: TransportKind.stdio,
+  };
+  const outputChannel = vscode.window.createOutputChannel('SQL Refinery', {
+    log: true,
+  });
+  const clientOptions: LanguageClientOptions = {
+    documentSelector: [{ scheme: 'file', language: 'sql' }],
+    synchronize: { configurationSection: 'sql' },
+    outputChannel: outputChannel,
+    traceOutputChannel: outputChannel,
+  };
+  const client = new LanguageClient(
+    'sqlRefinery',
+    'SQL Refinery',
+    serverOptions,
+    clientOptions
+  );
+  outputChannel.info('Client started');
+
+  await client.start();
+  outputChannel.info('Server started');
+  context.subscriptions.push({ dispose: () => client.stop() });
 }
 
 // This method is called when your extension is deactivated

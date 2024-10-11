@@ -1,8 +1,25 @@
 from pathlib import Path
 import textwrap
 import sys
+import logging
+
+import pygls.server
+from lsprotocol.types import (
+    TEXT_DOCUMENT_DID_OPEN,
+    DidOpenTextDocumentParams,
+    TextDocumentItem,
+)
 
 from src import session
+
+
+# TODO take from package configs
+pygls.server.logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(sys.stderr)
+handler.setLevel(logging.DEBUG)
+pygls.server.logger.addHandler(handler)
+
+server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
 
 
 def main(codebase_path: str | Path, editor_path: str | Path):
@@ -25,10 +42,21 @@ def main(codebase_path: str | Path, editor_path: str | Path):
                 freq=suggestion.reliability,
                 score=suggestion.similarity,
                 alts=textwrap.indent("\n\n".join(n.node.text.decode("utf-8") for n in suggestion.others), prefix="\t"),
-            )
+            ),
+            file=sys.stderr,
         )
 
 
-if __name__ == "__main__":
+def did_open(ls: pygls.server.LanguageServer, params: DidOpenTextDocumentParams):
+    text_document: TextDocumentItem = params.text_document
+    print(f"Opened file: {text_document.uri}", file=sys.stderr)
+    print(f"Server arguments: {sys.argv}", file=sys.stderr)
     if len(sys.argv) >= 2:
         main(sys.argv[1], sys.argv[2])
+
+
+server.feature(TEXT_DOCUMENT_DID_OPEN)(did_open)
+
+if __name__ == "__main__":
+    print(f"Starting server", file=sys.stderr)
+    server.start_io()
