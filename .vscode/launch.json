@@ -10,7 +10,6 @@
         "Server: attach debug (hidden)",
         "VS Code: debug (hidden)"
       ],
-      "stopAll": true,
       "presentation": { "order": 1 }
     }
   ],
@@ -25,7 +24,8 @@
         "--no-sandbox",
         "file:${workspaceFolder}/backend/tests/inputs/editor.sql"
       ],
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "outFiles": ["${workspaceFolder}/frontend-vscode/dist/**/*.js"],
+      "sourceMaps": true,
       "preLaunchTask": "${defaultBuildTask}",
       "cwd": "${workspaceFolder}/frontend-vscode",
       "presentation": { "hidden": true }

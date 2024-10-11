@@ -53,7 +53,7 @@ def capture_snapshots(init):
     )
 
     # run the pipeline
-    server.main(**init)
+    server.analyse(**init)
 
     captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
     return captured

@@ -19,7 +19,6 @@ export async function activate(context: vscode.ExtensionContext) {
   outputChannel.clear();
 
   // Spawning sub-process with debugger and server
-  outputChannel.info('Starting client');
   const backendPath = context.asAbsolutePath(path.join('..', 'backend'));
   const serverOptions: ServerOptions = {
     command:
@@ -48,13 +47,16 @@ export async function activate(context: vscode.ExtensionContext) {
     clientOptions
   );
 
-  client.start();
+  setImmediate(async () => {
+    outputChannel.info('Starting client');
+    await client.start();
+    outputChannel.info('Server started');
+  });
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {
-  if (!client) {
-    return undefined;
+export async function deactivate() {
+  if (client) {
+    await client.stop();
   }
-  return client.stop();
 }

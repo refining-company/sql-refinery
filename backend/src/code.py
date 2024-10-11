@@ -84,9 +84,8 @@ class Tree:
     queries: list[Query]
 
 
-def parse(path: str = None, contents: str = None) -> Tree:
+def parse(path: Path = None, contents: str = None) -> Tree:
     if path:
-        path = Path(path)
         if path.is_dir():
             paths = list(path.glob("**/*.sql"))
             root = path

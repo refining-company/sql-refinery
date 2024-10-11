@@ -1,44 +1,59 @@
 # Setup
 
-1. Initialise Environment
+TODO: On refresh (either VS Code with extension, or debugging) the VSCode debugpy does not restart.
+Server debugpy failes to connect to VSCode debugpy and crashes. This in turn crashes the
+extension
 
-   Initialise sub-modules, create Conda environment, set up Git pre-commit hook updating `environment.yml`
+TODO: I changed the code to
 
-   ```sh
-   ./setup.sh
-   ```
+```
+@server.feature(lsp.TEXT_DOCUMENT_CODE_LENS)
+def code_lens_provider(params: lsp.CodeLensParams):
+    document_uri = params.text_document.uri
+    code_lenses = []
 
-# Overview
+    # Retrieve diagnostics for the document
+    suggestions = all_suggestions.get(document_uri, [])
+    for suggestion in suggestions:
+        title = f"Similar code snippets: {len(suggestion.others)} found"
+        diagnostic_range = lsp.Range(
+            start=lsp.Position(
+                line=suggestion.this.node.start_point.row,
+                character=suggestion.this.node.start_point.column,
+            ),
+            end=lsp.Position(
+                line=suggestion.this.node.end_point.row,
+                character=suggestion.this.node.end_point.column,
+            ),
+        )
+        locations = []
+        for other in suggestion.others:
+            location_uri = (session.path_codebase / other.file).resolve().as_uri()
+            location_range = lsp.Range(
+                start=lsp.Position(line=other.node.start_point.row, character=other.node.start_point.column),
+                end=lsp.Position(line=other.node.end_point.row, character=other.node.end_point.column),
+            )
+            locations.append(lsp.Location(uri=location_uri, range=location_range))
 
-**`src/`** contains the entire logic.
+        # Create the CodeLens entry
+        code_lens = lsp.CodeLens(
+            range=diagnostic_range,
+            command=lsp.Command(
+                title=title,
+                command="editor.action.peekLocations",
+                arguments=[document_uri, diagnostic_range, locations, "peek"],
+            ),
+        )
+        code_lenses.append(code_lens)
 
-- `sql.py` is in the lowest level. It abstracts some of the tree-sitter complexity
-  by adding new node types (with "@" prefix) and helper functions.
+        # Optionally, store the alternatives for use in a command
+        code_lens_data[(document_uri, diagnostic_range.start.line, diagnostic_range.start.character)] = (
+            suggestion.others
+        )
 
-  In the future, it should be able to provide an interface for all SQL dialects.
+    return code_lenses
+```
 
-- `db.py` (doesn't exist yet) is in the lowest level too. It should abstract DB
-  connectivity.
+Now I'm getting a popup in VS Code where I debug it that says
 
-- `codebase.py` should link together the abstracted code AST (via `sql.py`) and the data
-  model (via `db.py`) to create a computational tree.
-
-- `checker.py` is the error checker that will use `codebase.py` to analyze computations
-  and find similar but not exact matches, highlighting them as errors.
-
-**`tests/`** will be for the unit tests. The approach will be similar to the one used by
-[tree-sitter](https://github.com/ilyakochik/tree-sitter-sql-bigquery/blob/main/test/corpus/analytic_function.txt):
-
-- For each package in `src/`, there will be a corresponding package in `tests/` (e.g., `tests/sql/`).
-
-- In each test package, there will be some input data (e.g., `tests/sql/input.sql` file with multiple SQL
-  statements).
-
-- The test file (e.g., `tests/sql/test_sql.py`) should be able to test a few key functions. For that:
-
-  - It should be able to generate a reference answer (e.g., `sql.Tree` pickle of `sql.parse()`) and save
-    it as `output.pickle`.
-
-  - To run the test, it will run `sql.parse()` on `tests/sql/input.sql` and compare outputs
-    with `output.pickle`. Each element in `output.pickle` should be treated as an independent test (e.g., by
-    using [fixtures](https://docs.pytest.org/en/7.1.x/how-to/parametrize.html)).
+`argument does not match one of these constraints: arg instanceof constraint, arg.constructor === constraint, nor constraint(arg) === true`
