@@ -20,7 +20,9 @@ export async function activate(context: vscode.ExtensionContext) {
   // Spawning sub-process with debugger and server
   const backendPath = context.asAbsolutePath(path.join('..', 'backend'));
   const serverOptions: ServerOptions = {
-    command: 'source .venv/bin/activate && python -m src.server',
+    command:
+      // 'source .venv/bin/activate && python -Xfrozen_modules=off -m debugpy --listen 5678 -m src.server',
+      'source .venv/bin/activate && python -Xfrozen_modules=off -m src.server',
     args: ['./tests/inputs/codebase/'],
     options: {
       cwd: backendPath,

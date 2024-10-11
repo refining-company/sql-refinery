@@ -7,7 +7,7 @@
     {
       "name": "VS Code and Server: debug",
       "configurations": [
-        // "Server: attach debug (hidden)",
+        "Server: attach debug (hidden)",
         "VS Code: debug (hidden)"
       ],
       "presentation": { "order": 1 }
@@ -35,7 +35,8 @@
       "type": "debugpy",
       "request": "attach",
       "listen": { "host": "localhost", "port": 5678 },
-      "presentation": { "hidden": true }
+      "presentation": { "hidden": true },
+      "justMyCode": false
     },
     {
       "name": "Server: standalone debug",
