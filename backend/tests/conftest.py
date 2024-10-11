@@ -9,7 +9,10 @@ def get_paths() -> dict[str, Path]:
     editor_file = inputs_dir / "editor.sql"
     codebase_dir = inputs_dir / "codebase"
 
-    return {"init": {"editor_path": editor_file, "codebase_path": codebase_dir}, "true_snapshots": root / "snapshots"}
+    return {
+        "init": {"editor_contents": editor_file.read_text(), "codebase_path": codebase_dir},
+        "true_snapshots": root / "snapshots",
+    }
 
 
 @pytest.fixture(scope="session")

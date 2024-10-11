@@ -43,7 +43,11 @@
       "request": "launch",
       "module": "src.server",
       "cwd": "${workspaceFolder}/backend",
-      "args": ["./tests/inputs/codebase/", "./tests/inputs/editor.sql"],
+      "args": [
+        "./tests/inputs/codebase/",
+        "./tests/inputs/editor.sql",
+        "--standalone"
+      ],
       "console": "integratedTerminal"
     },
 

@@ -1,7 +1,7 @@
-from pathlib import Path
 import textwrap
 import sys
 import logging
+from pathlib import Path
 
 import pygls.server
 import lsprotocol.types as lsp
@@ -18,9 +18,11 @@ pygls.server.logger.addHandler(handler)
 server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
 
 
-def main(codebase_path: str | Path, editor_path: str | Path):
-    current_session = session.Session(codebase_path=codebase_path, editor_path=editor_path)
-    suggestions = current_session.analyse_editor()
+def main(codebase_path: str, document: str):
+    print(f"Analysing codebase {codebase_path} and document '{document[:100]}'", file=sys.stderr)
+
+    current_session = session.Session(codebase_path=codebase_path)
+    suggestions = current_session.analyse_document(contents=document)
 
     # debug output
     for suggestion in suggestions:
@@ -47,12 +49,14 @@ def main(codebase_path: str | Path, editor_path: str | Path):
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
     print(f"Opened file: {document.uri}", file=sys.stderr)
+    main(sys.argv[1], document.source)
 
 
 @server.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
-def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
+def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
-    print(f"Changed file: {document.source}", file=sys.stderr)
+    print(f"Changed file", file=sys.stderr)
+    main(sys.argv[1], document.source)
 
 
 # def did_open(ls: pygls.server.LanguageServer, params: DidOpenTextDocumentParams):
@@ -64,5 +68,9 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 
 
 if __name__ == "__main__":
-    print(f"Starting server", file=sys.stderr)
-    server.start_io()
+    if "--standalone" in sys.argv:
+        print(f"Standalone debugging", file=sys.stderr)
+        main(sys.argv[1], Path(sys.argv[2]).read_text())
+    else:
+        print(f"Starting server with params {sys.argv}", file=sys.stderr)
+        server.start_io()

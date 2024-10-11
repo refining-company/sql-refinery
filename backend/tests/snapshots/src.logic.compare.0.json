@@ -1,6 +1,6 @@
 [
   { "this": {
-      "Expression at editor.sql:6:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+      "Expression at _document:6:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
         "columns": [
           { "Column(?.countries.region)": [
               "c.region",
@@ -41,7 +41,7 @@
     "reliability": 5,
     "similarity": 0.78 },
   { "this": {
-      "Expression at editor.sql:13:5 = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+      "Expression at _document:13:5 = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
         "columns": [
           { "Column(?.accounts.industry)": [
               "a.industry",

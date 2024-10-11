@@ -24,7 +24,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const serverOptions: ServerOptions = {
     command:
       'source .venv/bin/activate && python -Xfrozen_modules=off -m debugpy --connect 5678 -m src.server',
-    args: ['../tests/inputs/codebase/', '../tests/inputs/editor.sql'],
+    args: ['./tests/inputs/codebase/'],
     options: {
       cwd: backendPath,
       shell: true,
