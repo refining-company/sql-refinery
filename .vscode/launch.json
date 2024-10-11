@@ -19,7 +19,12 @@
       "name": "VS Code: debug (hidden)",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}/frontend-vscode"],
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/frontend-vscode",
+        "--disable-extensions",
+        "--no-sandbox",
+        "file:${workspaceFolder}/backend/tests/inputs/editor.sql"
+      ],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}",
       "cwd": "${workspaceFolder}/frontend-vscode",
