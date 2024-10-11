@@ -12,65 +12,32 @@ import {
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
-  let pythonExecutable: string;
-  let venvPath: string;
-  if (process.platform === 'win32') {
-    pythonExecutable = context.asAbsolutePath(
-      path.join('..', 'backend', '.venv', 'Scripts', 'python.exe')
-    );
-    venvPath = context.asAbsolutePath(
-      path.join('..', 'backend', '.venv', 'Scripts')
-    );
-  } else {
-    pythonExecutable = context.asAbsolutePath(
-      path.join('..', 'backend', '.venv', 'bin', 'python')
-    );
-    venvPath = context.asAbsolutePath(
-      path.join('..', 'backend', '.venv', 'bin')
-    );
-  }
-
-  const serverScript = context.asAbsolutePath(
-    path.join('..', 'backend', 'src', 'server.py')
-  );
-
-  const cwd = context.asAbsolutePath(path.join('..', 'backend'));
-  const env = { ...process.env };
-  env.VIRTUAL_ENV = context.asAbsolutePath(path.join('..', 'backend', '.venv'));
-  env.PATH = `${venvPath}${path.delimiter}${env.PATH}`;
-
-  if (env.PYTHONPATH) {
-    env.PYTHONPATH = `${cwd}${path.delimiter}${env.PYTHONPATH}`;
-  } else {
-    env.PYTHONPATH = cwd;
-  }
-
-  const serverOptions: ServerOptions = {
-    command: pythonExecutable,
-    args: [
-      '-u',
-      // '-Xfrozen_modules=off',
-      // '-m',
-      // 'debugpy',
-      // '--listen',
-      // '5678',
-      // '--wait-for-client',
-      serverScript,
-      '../tests/inputs/codebase/',
-      '../tests/inputs/editor.sql',
-    ],
-    options: {
-      env: env,
-      cwd: cwd,
-    },
-    transport: TransportKind.stdio,
-  };
+  // Configuring output channel for debugging
   const outputChannel = vscode.window.createOutputChannel('SQL Refinery', {
     log: true,
   });
+  outputChannel.clear();
+
+  // Spawning sub-process with debugger and server
+  outputChannel.info('Starting client');
+  const backendPath = context.asAbsolutePath(path.join('..', 'backend'));
+  const serverOptions: ServerOptions = {
+    command:
+      'source .venv/bin/activate && python -Xfrozen_modules=off -m debugpy --connect 5678 -m src.server',
+    args: ['../tests/inputs/codebase/', '../tests/inputs/editor.sql'],
+    options: {
+      cwd: backendPath,
+      shell: true,
+    },
+    transport: TransportKind.stdio,
+  };
   const clientOptions: LanguageClientOptions = {
-    documentSelector: [{ scheme: 'file', language: 'sql' }],
-    synchronize: { configurationSection: 'sql' },
+    documentSelector: [
+      { scheme: 'file', language: 'sql' },
+      { scheme: 'untitled', language: 'sql' },
+      { scheme: 'vscode-notebook', language: 'sql' },
+      { scheme: 'vscode-notebook-cell', language: 'sql' },
+    ],
     outputChannel: outputChannel,
     traceOutputChannel: outputChannel,
   };
@@ -80,10 +47,8 @@ export async function activate(context: vscode.ExtensionContext) {
     serverOptions,
     clientOptions
   );
-  outputChannel.info('Client started');
 
   await client.start();
-  outputChannel.info('Server started');
   context.subscriptions.push({ dispose: () => client.stop() });
 }
 

@@ -7,13 +7,11 @@
     {
       "name": "VS Code and Server: debug",
       "configurations": [
-        "VS Code: debug (hidden)",
-        "Server: attach debug (hidden)"
+        "Server: attach debug (hidden)",
+        "VS Code: debug (hidden)"
       ],
       "stopAll": true,
-      "presentation": {
-        "order": 1
-      }
+      "presentation": { "order": 1 }
     }
   ],
   "configurations": [
@@ -25,24 +23,14 @@
       "outFiles": ["${workspaceFolder}/dist/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}",
       "cwd": "${workspaceFolder}/frontend-vscode",
-      "presentation": {
-        "hidden": true
-      }
+      "presentation": { "hidden": true }
     },
     {
       "name": "Server: attach debug (hidden)",
       "type": "debugpy",
       "request": "attach",
-      "connect": { "host": "localhost", "port": 5678 },
-      "pathMappings": [
-        {
-          "localRoot": "${workspaceFolder}/backend",
-          "remoteRoot": "${workspaceFolder}/backend"
-        }
-      ],
-      "presentation": {
-        "hidden": true
-      }
+      "listen": { "host": "localhost", "port": 5678 },
+      "presentation": { "hidden": true }
     },
     {
       "name": "Server: standalone debug",
@@ -53,6 +41,7 @@
       "args": ["./tests/inputs/codebase/", "./tests/inputs/editor.sql"],
       "console": "integratedTerminal"
     },
+
     {
       "name": "Server: create tests",
       "type": "debugpy",
