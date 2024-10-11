@@ -4,11 +4,7 @@ import sys
 import logging
 
 import pygls.server
-from lsprotocol.types import (
-    TEXT_DOCUMENT_DID_OPEN,
-    DidOpenTextDocumentParams,
-    TextDocumentItem,
-)
+import lsprotocol.types as lsp
 
 from src import session
 
@@ -47,15 +43,25 @@ def main(codebase_path: str | Path, editor_path: str | Path):
         )
 
 
-def did_open(ls: pygls.server.LanguageServer, params: DidOpenTextDocumentParams):
-    text_document: TextDocumentItem = params.text_document
-    print(f"Opened file: {text_document.uri}", file=sys.stderr)
-    print(f"Server arguments: {sys.argv}", file=sys.stderr)
-    if len(sys.argv) >= 2:
-        main(sys.argv[1], sys.argv[2])
+@server.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
+def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
+    document = server.workspace.get_text_document(params.text_document.uri)
+    print(f"Opened file: {document.uri}", file=sys.stderr)
 
 
-server.feature(TEXT_DOCUMENT_DID_OPEN)(did_open)
+@server.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
+def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
+    document = server.workspace.get_text_document(params.text_document.uri)
+    print(f"Changed file: {document.source}", file=sys.stderr)
+
+
+# def did_open(ls: pygls.server.LanguageServer, params: DidOpenTextDocumentParams):
+#     text_document: TextDocumentItem = params.text_document
+#     print(f"Opened file: {text_document.uri}", file=sys.stderr)
+#     print(f"Server arguments: {sys.argv}", file=sys.stderr)
+#     if len(sys.argv) >= 2:
+#         main(sys.argv[1], sys.argv[2])
+
 
 if __name__ == "__main__":
     print(f"Starting server", file=sys.stderr)

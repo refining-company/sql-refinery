@@ -9,8 +9,8 @@ import {
   TransportKind,
 } from 'vscode-languageclient/node';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+let client: LanguageClient;
+
 export async function activate(context: vscode.ExtensionContext) {
   // Configuring output channel for debugging
   const outputChannel = vscode.window.createOutputChannel('SQL Refinery', {
@@ -48,9 +48,13 @@ export async function activate(context: vscode.ExtensionContext) {
     clientOptions
   );
 
-  await client.start();
-  context.subscriptions.push({ dispose: () => client.stop() });
+  client.start();
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  if (!client) {
+    return undefined;
+  }
+  return client.stop();
+}
