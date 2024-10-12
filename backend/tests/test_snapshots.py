@@ -45,21 +45,15 @@ def capture_snapshots(init):
     )
     logic.parse = _intercept(
         logic.parse,
-        simplify=partial(
-            simplify,
-            terminal=(sql.Node, sql.Tree, code.Tree, code.Query),
-        ),
+        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
     )
     logic.compare = _intercept(
         logic.compare,
-        simplify=partial(
-            simplify,
-            terminal=(sql.Node, sql.Tree, code.Tree, code.Query),
-        ),
+        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
     )
 
     # run the pipeline
-    server.main(**init)
+    server.analyse(**init)
 
     captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
     return captured

@@ -84,19 +84,23 @@ class Tree:
     queries: list[Query]
 
 
-def parse(path: str) -> Tree:
-    root = Path(path)
-    if root.is_file():
-        paths = [root]
-        root = root.parent
-    else:
-        paths = list(root.glob("**/*.sql"))
+def parse(path: Path = None, contents: str = None) -> Tree:
+    if path:
+        if path.is_dir():
+            paths = list(path.glob("**/*.sql"))
+            root = path
+        else:
+            paths = [path]
+            root = path.parent
+        files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
 
-    files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
+    if contents:
+        files = {"_document": sql.parse(contents.encode())}
+
     queries = sum([_parse_sql_to_query(file, tree.root_node) for file, tree in files.items()], [])
-    codebase = Tree(files=files, queries=queries)
+    code_tree = Tree(files=files, queries=queries)
 
-    return codebase
+    return code_tree
 
 
 ### TODO: make sure all identifiers are minimally resolved:

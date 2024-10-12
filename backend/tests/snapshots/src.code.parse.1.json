@@ -1,40 +1,40 @@
 {
-  "files": { "editor.sql": "<Tree>" },
+  "files": { "_document": "<Tree>" },
   "queries": [
-    { "Query at editor.sql:3:1": {
+    { "Query at _document:3:1": {
         "expressions": [
-          { "Expression at editor.sql:4:5 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+          { "Expression at _document:4:5 = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
               "columns": [
                 { "Column(?.?.date_month)": [
                     "date_month",
                     "date_month" ] } ],
               "alias": "date_year" } },
-          { "Expression at editor.sql:6:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+          { "Expression at _document:6:5 = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
               "columns": [
                 { "Column(?.countries.region)": [
                     "c.region",
                     "c.region",
                     "c.region" ] } ],
               "alias": "macro_region" } },
-          { "Expression at editor.sql:13:5 = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+          { "Expression at _document:13:5 = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
               "columns": [
                 { "Column(?.accounts.industry)": [
                     "a.industry",
                     "a.industry" ] } ],
               "alias": "industry_it" } },
-          { "Expression at editor.sql:14:5 = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+          { "Expression at _document:14:5 = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
               "columns": [
                 { "Column(?.accounts_revenue.revenue)": [
                     "ar.revenue",
                     "ar.revenue" ] } ],
               "alias": "revenue" } },
-          { "Expression at editor.sql:15:5 = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+          { "Expression at _document:15:5 = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
               "columns": [
                 { "Column(?.accounts_revenue.account_id)": [
                     "ar.account_id",
                     "ar.account_id" ] } ],
               "alias": "accounts" } },
-          { "Expression at editor.sql:16:5 = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+          { "Expression at _document:16:5 = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
               "columns": [
                 { "Column(?.accounts_revenue.revenue)": [
                     "ar.revenue",

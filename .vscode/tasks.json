@@ -5,7 +5,7 @@
   "tasks": [
     {
       "label": "watch",
-      "dependsOn": ["npm: watch:tsc", "npm: watch:esbuild"],
+      "dependsOn": ["npm: watch:rebuild", "npm: watch:tstypes"],
       "presentation": {
         "reveal": "never"
       },
@@ -15,47 +15,51 @@
       }
     },
     {
+      "label": "watch-tests",
+      "dependsOn": ["npm: watch", "npm: watch-tests"]
+    },
+    {
+      "label": "npm: watch:rebuild",
       "type": "npm",
-      "script": "watch:esbuild",
+      "script": "watch:rebuild",
       "group": "build",
       "problemMatcher": "$esbuild-watch",
       "isBackground": true,
-      "label": "npm: watch:esbuild",
       "presentation": {
         "group": "watch",
         "reveal": "never"
       },
-      "options": { "cwd": "${workspaceFolder}/frontend-vscode" }
+      "options": {
+        "cwd": "${workspaceFolder}/frontend-vscode"
+      }
     },
     {
+      "label": "npm: watch:tstypes",
       "type": "npm",
-      "script": "watch:tsc",
-      "group": "build",
+      "script": "watch:tstypes",
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
-      "label": "npm: watch:tsc",
       "presentation": {
         "group": "watch",
         "reveal": "never"
       },
-      "options": { "cwd": "${workspaceFolder}/frontend-vscode" }
+      "options": {
+        "cwd": "${workspaceFolder}/frontend-vscode"
+      }
     },
     {
+      "label": "npm: watch-tests",
       "type": "npm",
       "script": "watch-tests",
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {
-        "reveal": "never",
-        "group": "watchers"
+        "group": "watch",
+        "reveal": "never"
       },
-      "group": "build",
-      "options": { "cwd": "${workspaceFolder}/frontend-vscode" }
-    },
-    {
-      "label": "tasks: watch-tests",
-      "dependsOn": ["npm: watch", "npm: watch-tests"],
-      "problemMatcher": []
+      "options": {
+        "cwd": "${workspaceFolder}/frontend-vscode"
+      }
     }
   ]
 }
