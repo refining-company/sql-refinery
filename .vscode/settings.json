@@ -1,8 +1,10 @@
 {
+  // Python testing
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": ["-q", "--tb=short"],
-  "black-formatter.args": ["-l", "120"],
+
+  // VSCode file explorer
   "files.exclude": {
     "**/.conda": true,
     "**/__pycache__": true,
@@ -16,6 +18,13 @@
     "out": true,
     "dist": true
   },
+
+  // Formatting
+  "black-formatter.args": ["-l", "120"],
   "typescript.tsc.autoDetect": "off",
-  "prettier.semi": true
+  "prettier.printWidth": 120,
+  "prettier.semi": true,
+  "[markdown]": {
+    "prettier.proseWrap": "always"
+  }
 }
