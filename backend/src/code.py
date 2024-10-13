@@ -1,6 +1,8 @@
 from __future__ import annotations
 from pathlib import Path
 from dataclasses import dataclass
+from collections import defaultdict
+
 from src import sql
 
 """
@@ -82,6 +84,8 @@ class Query:
 class Tree:
     files: dict[str, sql.Tree]
     queries: list[Query]
+    all_queries: list[Query] = None
+    all_expressions: dict[tuple[str, set[str]], Expression] = None
 
 
 def parse(path: Path = None, contents: str = None) -> Tree:
@@ -98,7 +102,9 @@ def parse(path: Path = None, contents: str = None) -> Tree:
         files = {"_document": sql.parse(contents.encode())}
 
     queries = sum([_parse_sql_to_query(file, tree.root_node) for file, tree in files.items()], [])
-    code_tree = Tree(files=files, queries=queries)
+    all_queries = _get_all_queries(queries)
+    all_expressions = _get_all_expressions(all_queries)
+    code_tree = Tree(files=files, queries=queries, all_queries=all_queries, all_expressions=all_expressions)
 
     return code_tree
 
@@ -168,3 +174,20 @@ def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
         queries.append(query)
 
     return queries
+
+
+def _get_all_queries(queries: list[Query]) -> list[Query]:
+    nested_queries = []
+    for query in queries:
+        nested_queries += _get_all_queries([s for s in query.sources if isinstance(s, Query)])
+    return queries + nested_queries
+
+
+def _get_all_expressions(queries: list[Query]) -> dict[tuple[str, set[str]], Expression]:
+    all_expressions = defaultdict(list)
+    for query in queries:
+        for expression in query.expressions:
+            op_key = (str(expression), tuple(sorted(map(str, expression.columns))))
+            all_expressions[op_key].append(expression)
+
+    return dict(all_expressions)

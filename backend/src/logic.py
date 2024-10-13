@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from collections import defaultdict
+
 import Levenshtein
 from src import code
 
@@ -24,32 +24,6 @@ class Alternative:
 @dataclass
 class Map:
     tree: code.Tree = None
-    all_queries: list[code.Query] = None
-    all_expressions: dict[tuple[str, set[str]], code.Expression] = None
-
-
-def parse(tree: code.Tree) -> Map:
-    all_queries = get_all_queries(tree.queries)
-    all_expressions = get_all_expressions(all_queries)
-
-    return Map(tree=tree, all_queries=all_queries, all_expressions=all_expressions)
-
-
-def get_all_queries(queries: list[code.Query]) -> list[code.Query]:
-    nested_queries = []
-    for query in queries:
-        nested_queries += get_all_queries([s for s in query.sources if isinstance(s, code.Query)])
-    return queries + nested_queries
-
-
-def get_all_expressions(queries: list[code.Query]) -> dict[tuple[str, set[str]], code.Expression]:
-    all_expressions = defaultdict(list)
-    for query in queries:
-        for expression in query.expressions:
-            op_key = (str(expression), tuple(sorted(map(str, expression.columns))))
-            all_expressions[op_key].append(expression)
-
-    return dict(all_expressions)
 
 
 def compare(this: Map, that: Map, threshold=0.7) -> list[Alternative]:

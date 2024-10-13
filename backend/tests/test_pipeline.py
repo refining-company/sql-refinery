@@ -43,10 +43,6 @@ def capture_snapshots(init):
         code.parse,
         simplify=partial(simplify, terminal=(sql.Node, sql.Tree)),
     )
-    logic.parse = _intercept(
-        logic.parse,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
-    )
     logic.compare = _intercept(
         logic.compare,
         simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
