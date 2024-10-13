@@ -18,7 +18,7 @@ pygls.server.logger.addHandler(handler)
 
 # TODO take from package configs
 server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
-session = src.session.Session()
+session = src.workspace.Workspace()
 
 
 def analyse(document: str, uri: str = None) -> list[lsp.Diagnostic]:

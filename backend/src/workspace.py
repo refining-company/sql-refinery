@@ -3,7 +3,7 @@ from src import code
 from src import logic
 
 
-class Session:
+class Workspace:
     path_codebase: Path
     queries_codebase: code.Tree
     queries_editor: code.Tree
