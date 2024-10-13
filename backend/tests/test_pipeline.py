@@ -78,7 +78,7 @@ def update_snapshots(config: dict):
     print("Snapshots updated.")
 
 
-def test_snapshots(config: dict[str, Path]):
+def test_pipeline(config: dict[str, Path]):
     captured_snapshots = capture_snapshots(config)
 
     true_snapshot_files = list(config["true_snapshots"].glob("**/*"))
