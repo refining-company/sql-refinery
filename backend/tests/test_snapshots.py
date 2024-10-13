@@ -53,15 +53,15 @@ def capture_snapshots(init):
     )
 
     # run the pipeline
-    server.analyse(**init)
+    server.main(**init["server:main"])
 
     captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
     return captured
 
 
-def update_snapshots(config: dict[str, Path]):
+def update_snapshots(config: dict):
     print("Generating snapshots...")
-    captured_snapshots = capture_snapshots(config["init"])
+    captured_snapshots = capture_snapshots(config)
     print("\t", "Generated")
 
     print("Deleting old files...")
@@ -79,7 +79,7 @@ def update_snapshots(config: dict[str, Path]):
 
 
 def test_snapshots(config: dict[str, Path]):
-    captured_snapshots = capture_snapshots(config["init"])
+    captured_snapshots = capture_snapshots(config)
 
     true_snapshot_files = list(config["true_snapshots"].glob("**/*"))
     true_snapshots = {file.stem: file.read_text() for file in true_snapshot_files}

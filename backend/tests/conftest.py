@@ -10,7 +10,7 @@ def get_paths() -> dict[str, Path]:
     codebase_dir = inputs_dir / "codebase"
 
     return {
-        "init": {"editor_contents": editor_file.read_text(), "codebase_path": codebase_dir},
+        "server:main": {"codebase_path": codebase_dir, "analyse_path": editor_file},
         "true_snapshots": root / "snapshots",
     }
 

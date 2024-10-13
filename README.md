@@ -29,3 +29,5 @@
    - `code.Tree` should have different inner representation, maybe like mapping not like two independend lists.
 
    - `code` datastructures should have `__repr__` that will make a readable preview.
+
+   - Implement proper logging with `logger` instead of `print`

@@ -6,10 +6,7 @@
   "compounds": [
     {
       "name": "VS Code and Server: debug",
-      "configurations": [
-        "Server: attach debug (hidden)",
-        "VS Code: debug (hidden)"
-      ],
+      "configurations": ["Server: attach debug (hidden)", "VS Code: debug (hidden)"],
       "presentation": { "order": 1 }
     }
   ],
@@ -45,9 +42,10 @@
       "module": "src.server",
       "cwd": "${workspaceFolder}/backend",
       "args": [
-        "./tests/inputs/codebase/",
-        "./tests/inputs/editor.sql",
-        "--standalone"
+        "--codebase-path",
+        "${workspaceFolder}/backend/tests/inputs/codebase/",
+        "--analyse-path",
+        "${workspaceFolder}/backend/tests/inputs/editor.sql"
       ],
       "console": "integratedTerminal"
     },

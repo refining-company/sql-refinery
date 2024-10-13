@@ -1,12 +1,14 @@
 import sys
 import logging
+import argparse
 from pathlib import Path
 
 import pygls.server
 import lsprotocol.types as lsp
 
 import src
-import src._debug
+
+# import src._debug
 
 
 pygls.server.logger.setLevel(logging.DEBUG)
@@ -81,12 +83,31 @@ def code_lens_provider(params: lsp.CodeLensParams):
     return code_lenses
 
 
-if __name__ == "__main__":
-    session.load_codebase(sys.argv[1])
+def main(codebase_path: str = None, analyse_path: str = None, start_debug: bool = False, start_server: bool = False):
+    if start_debug:
+        print(f"Starting custom debugger", file=sys.stderr)
+        import src._debug
 
-    if "--standalone" in sys.argv:
-        print(f"Standalone debugging", file=sys.stderr)
-        analyse(Path(sys.argv[2]).read_text())
-    else:
+    if codebase_path:
+        print(f"Loading codebase from {codebase_path}", file=sys.stderr)
+        session.load_codebase(codebase_path)
+
+    if analyse_path:
+        print(f"Analysing document from {analyse_path}", file=sys.stderr)
+        analyse_path = Path(analyse_path)
+        print(analyse(analyse_path.read_text(), uri=analyse_path.as_uri()))
+
+    if start_server:
         print(f"Starting server with params {sys.argv}", file=sys.stderr)
         server.start_io()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Process command-line arguments.")
+    parser.add_argument("--codebase-path", type=str, required=False, help="Path to codebase")
+    parser.add_argument("--analyse-path", type=str, required=False, help="Path to editor")
+    parser.add_argument("--start-debug", action="store_true", help="Strart custom debugger")
+    parser.add_argument("--start-server", action="store_true", help="Start language server")
+    args = parser.parse_args()
+
+    main(**vars(args))

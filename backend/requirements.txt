@@ -1,5 +1,6 @@
 attrs==24.2.0
 cattrs==24.1.2
+debugpy==1.8.7
 iniconfig==2.0.0
 Levenshtein==0.26.0
 lsprotocol==2023.0.1

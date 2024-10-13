@@ -2,7 +2,7 @@
   // Python testing
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["-q", "--tb=short"],
+  "python.testing.pytestArgs": ["--quiet", "--tb=short", "--pdb"],
 
   // VSCode file explorer
   "files.exclude": {

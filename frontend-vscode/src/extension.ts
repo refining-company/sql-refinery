@@ -1,12 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 import * as vscode from 'vscode';
 import * as path from 'path';
-import {
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-  TransportKind,
-} from 'vscode-languageclient/node';
+import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 
 let client: LanguageClient;
 
@@ -23,12 +18,11 @@ export async function activate(context: vscode.ExtensionContext) {
     command:
       // 'source .venv/bin/activate && python -Xfrozen_modules=off -m debugpy --listen 5678 -m src.server',
       'source .venv/bin/activate && python -Xfrozen_modules=off -m src.server',
-    args: ['./tests/inputs/codebase/'],
+    args: ['--codebase-path', 'tests/inputs/codebase/', '--start-server', '--start-debug'],
     options: {
       cwd: backendPath,
       shell: true,
     },
-    transport: TransportKind.stdio,
   };
 
   const clientOptions: LanguageClientOptions = {
@@ -42,12 +36,7 @@ export async function activate(context: vscode.ExtensionContext) {
     traceOutputChannel: outputChannel,
   };
 
-  client = new LanguageClient(
-    'sqlRefinery',
-    'SQL Refinery',
-    serverOptions,
-    clientOptions
-  );
+  client = new LanguageClient('sqlRefinery', 'SQL Refinery', serverOptions, clientOptions);
 
   setImmediate(async () => {
     outputChannel.info('Starting client');
@@ -62,10 +51,8 @@ function wrapPeekLocation(context: vscode.ExtensionContext) {
   type RawPosition = { line: number; character: number };
   type RawLocation = { uri: string; position: RawPosition };
 
-  const mkPosition = (raw: RawPosition) =>
-    new vscode.Position(raw.line, raw.character);
-  const mkLocation = (raw: RawLocation) =>
-    new vscode.Location(vscode.Uri.parse(raw.uri), mkPosition(raw.position));
+  const mkPosition = (raw: RawPosition) => new vscode.Position(raw.line, raw.character);
+  const mkLocation = (raw: RawLocation) => new vscode.Location(vscode.Uri.parse(raw.uri), mkPosition(raw.position));
 
   const disposable = vscode.commands.registerCommand(
     'sqlRefinery.peekLocations',
@@ -73,13 +60,7 @@ function wrapPeekLocation(context: vscode.ExtensionContext) {
       const uri = vscode.Uri.parse(rawUri);
       const position = mkPosition(rawPosition);
       const locations = rawLocations.map(mkLocation);
-      await vscode.commands.executeCommand(
-        'editor.action.peekLocations',
-        uri,
-        position,
-        locations,
-        action
-      );
+      await vscode.commands.executeCommand('editor.action.peekLocations', uri, position, locations, action);
     }
   );
   context.subscriptions.push(disposable);
