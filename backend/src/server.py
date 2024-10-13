@@ -8,8 +8,6 @@ import lsprotocol.types as lsp
 
 import src
 
-# import src._debug
-
 
 pygls.server.logger.setLevel(logging.DEBUG)
 handler = logging.StreamHandler(sys.stderr)

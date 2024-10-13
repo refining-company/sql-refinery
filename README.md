@@ -25,7 +25,7 @@
 
 2. Clean up minor bits.
 
-   - `logic` should be changed to `Inconsistencies`. `Session` should be changed to `Workspace`.
+   - `logic` should be changed to `Inconsistencies`.
 
    - `code` datastructures should have location (`uri` + `start_position` + `end_position`).
 
