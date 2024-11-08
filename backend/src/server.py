@@ -1,3 +1,5 @@
+"""Language server"""
+
 import sys
 import logging
 import argparse

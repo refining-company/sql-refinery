@@ -1,3 +1,15 @@
+"""Abstraction layer over SQL parsing of byte strings for various dialects.
+
+Uses tree-sitter library.
+
+Tntroduces additional types to simplify the further processing of the parse trees across different SQL dialects.
+- `@...` - meta types used for further abstraction into query tree
+- `#...` - helper types
+- `...` - original tree_sitter types
+
+These additional types are implemented with hard-coded rules.
+"""
+
 import tree_sitter
 import tree_sitter_sql_bigquery
 from tree_sitter import Tree, Node
@@ -7,7 +19,6 @@ _language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
 
 
 def find_desc(node: tree_sitter.Node, types: str | list[str], local: bool = True) -> list[tree_sitter.Node]:
-    """Find descendants"""
     # TODO: migrate to Tree.walk() https://github.com/tree-sitter/py-tree-sitter/blob/master/examples/walk_tree.py
     # TODO: maybe redo with queries like
     #       (function_call function: (identifier) @ignore)
@@ -29,7 +40,6 @@ def find_desc(node: tree_sitter.Node, types: str | list[str], local: bool = True
 
 
 def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True) -> tree_sitter.Node:
-    """Find first matching ascendant"""
     if node.parent is None:
         return None
 
@@ -45,7 +55,6 @@ def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True)
 
 # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
 def find_alias(node: tree_sitter.Node) -> str:
-    """Find alias name"""
     if not is_type(node, ["@table", "@expression"]):
         return None
 
@@ -58,7 +67,6 @@ def find_alias(node: tree_sitter.Node) -> str:
 
 
 def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
-    """Check node type against tree-sitter types and meta types"""
     types = [types] if isinstance(types, str) else types
     if get_type(node) in types or node.type in types:
         return True
@@ -67,13 +75,6 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
 
 
 def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, original: bool = True) -> str | None:
-    """
-    Get the type of the node:
-
-    - `@...` - meta types used for further abstraction into query tree
-    - `#...` - helper types
-    - `...` - original tree_sitter types
-    """
     node_type = node.type.lower()
 
     if node.parent is None:
@@ -152,13 +153,11 @@ def decode_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.
 
 
 def decode_column(node: tree_sitter.Node) -> dict[str, str, str]:
-    """Parse column from `<database>.<table>.<column>` into dictionary"""
     *_, dataset, table, column = (None, None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table, "column": column}
 
 
 def decode_table(node: tree_sitter.Node) -> dict[str, str]:
-    """Parse column from `<database>.<table>.<column>` into dictionary"""
     *_, dataset, table = (None, None) + tuple(node.text.decode("utf-8").split("."))
     return {"dataset": dataset, "table": table}
 

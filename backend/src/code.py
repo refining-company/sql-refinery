@@ -1,16 +1,19 @@
+"""Process SQL parse tree into Code tree
+
+It takes tree-sitter sql.Tree and sql.Node and constructs a new fixed data structure:
+- tree
+- query
+- table
+- expression
+- column
+"""
+
 from __future__ import annotations
 from pathlib import Path
 from dataclasses import dataclass
 from collections import defaultdict
 
 from src import sql
-
-"""
-We will take in all sql files and parse the queries into tree-sitter trees,
-afterwards we convert them into query trees containing all relveant information and 
-traverse them resolving column names in the process, in the end the whole codebase is 
-represented in form of a tree of each query in the database which itself is a query tree
-"""
 
 
 @dataclass
@@ -123,18 +126,16 @@ def parse(path: Path = None, contents: str = None) -> Tree:
 
 
 def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
-    """Create list of queries trees from parse tree"""
     queries = []
     for select_node in sql.find_desc(node, "@query"):
+
         # Capture tables
         tables = []
         for n in sql.find_desc(select_node, "@table"):
             tables.append(Table(node=n, **sql.decode_table(n), alias=sql.find_alias(n)))
-
         # Capture columns
         nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
 
-        # Resolve columns
         tables_aliases = {t.alias: t for t in tables}
         for col, path in nodes_columns.items():
             table = None
@@ -145,6 +146,7 @@ def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
             if table:
                 path["table"] = table.table
                 path["dataset"] = table.dataset
+
             # TODO: resolve using data model (when no table is specified in JOIN but could be inferred)
             # TODO: resolve when different datasets/catalogs
             # TODO: resolve `*` into columns

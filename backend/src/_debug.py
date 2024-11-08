@@ -1,9 +1,6 @@
-"""
-Patch for Debugpy:
+"""Custom patch for debugpy to handle debugging in a multi-threaded environment.
 
-- When VSCode debugpy listens to incoming connection it terminates when backend restarts. This in turn crashes frontend
-- When VSCode debugpy connects to backend process, it causes an issue with fork() and multi-threading
-"""
+It addresses issues with VSCode's debugpy when dealing with forked processes and ensures the backend can connect to the debugger without crashing the frontend."""
 
 import sys
 import debugpy

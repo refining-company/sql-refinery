@@ -1,3 +1,6 @@
+"""Workspace manages the code online and offline analysis
+"""
+
 from pathlib import Path
 from src import code
 from src import logic

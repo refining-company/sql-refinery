@@ -1,16 +1,25 @@
+"""Analyse code tree to find experssions with potentially flawed business logic
+
+- Find expressions that look similar but not exact
+- It is likely these expressions are alternative implementations of the same business logic
+- This drives inconsistency that's hard to debug:
+
+    ```sql
+    IF revenue > 3000 THEN ... as priority
+    ```
+
+    vs
+
+    ```sql
+    IF revenue > 2500 THEN ... as priority
+    ```
+"""
+
 from __future__ import annotations
 from dataclasses import dataclass
 
 import Levenshtein
 from src import code
-
-
-"""
-We take in the the whole codebase and construct a computational query tree, we then create a mapping between columns and 
-expressions that use that column, afterwards when we input an expression from the editor we search which operations in the 
-codebase use the same column, then measure how similar the texts of the expressions are and based on the similarity and the 
-frequency we suggest an expression from the codebase.  
-"""
 
 
 @dataclass
