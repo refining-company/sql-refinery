@@ -122,7 +122,7 @@ def simplify(obj, terminal=()) -> dict | list | str:
 
     if isinstance(obj, code.Query):
         return {
-            f"Query at {obj.file}:{obj.node.start_point.row + 1}:{obj.node.start_point.column + 1}": {
+            repr(obj): {
                 "expressions": simplify(obj.expressions, terminal),
                 "sources": simplify(obj.sources, terminal),
                 "alias": obj.alias,
@@ -131,17 +131,17 @@ def simplify(obj, terminal=()) -> dict | list | str:
 
     if isinstance(obj, code.Expression):
         return {
-            f"Expression at {obj.file}:{obj.node.start_point.row + 1}:{obj.node.start_point.column + 1} = {str(obj)}": {
+            f"{repr(obj)} = {str(obj)}": {
                 "columns": simplify(obj.columns, terminal),
                 "alias": obj.alias,
             }
         }
 
     if isinstance(obj, code.Column):
-        return {str(obj): simplify(obj.nodes, terminal)}
+        return {repr(obj): simplify(obj.nodes, terminal)}
 
     if isinstance(obj, code.Table):
-        return {str(obj): simplify(obj.node, terminal)}
+        return {repr(obj): simplify(obj.node, terminal)}
 
     if isinstance(obj, sql.Tree):
         return [simplify(obj.root_node)]

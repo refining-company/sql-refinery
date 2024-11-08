@@ -37,7 +37,7 @@
 
    - `code.Tree` should have different inner representation, maybe like mapping not like two independend lists.
 
-   - `code` datastructures should have `__repr__` that will make a readable preview.
+   - update `test_pipeline.py:simplify()` to run through all fields of dataclasses and simplify them recursively.
 
    - `code` data structures should have `__hash__` potentially from making a `frozen` dataclass.
 

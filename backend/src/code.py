@@ -40,6 +40,9 @@ class Expression:
     columns: list[Column] = None
     alias: str = None
 
+    def __repr__(self) -> str:
+        return "Expression({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
+
     def __str__(self) -> str:
         # TODO: maybe should be a different method
         nodes_to_col = {node: column for column in self.columns for node in column.nodes}
@@ -70,6 +73,11 @@ class Table:
     table: str = None
     alias: str = None
 
+    def __repr__(self) -> str:
+        return "Table({}.{}{})".format(
+            self.dataset or "?", self.table, " as {}".format(self.alias) if self.alias else ""
+        )
+
     def __str__(self) -> str:
         return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
 
@@ -82,6 +90,9 @@ class Query:
     expressions: list[Expression] = None
     alias: str = None
 
+    def __repr__(self) -> str:
+        return "Query({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
+
 
 @dataclass
 class Tree:
@@ -89,6 +100,9 @@ class Tree:
     queries: list[Query]
     all_queries: list[Query] = None
     all_expressions: dict[tuple[str, set[str]], Expression] = None
+
+    def __repr__(self) -> str:
+        return "Tree(files={}, queries={})".format(list(self.files.keys()), self.queries)
 
 
 def parse(path: Path = None, contents: str = None) -> Tree:
