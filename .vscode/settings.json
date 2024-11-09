@@ -4,6 +4,9 @@
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": ["--quiet", "--tb=short", "--pdb"],
 
+  // Python linting
+  "python.analysis.typeCheckingMode": "basic",
+
   // VSCode file explorer
   "files.exclude": {
     "**/.conda": true,

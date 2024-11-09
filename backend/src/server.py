@@ -21,7 +21,7 @@ server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-de
 session = src.workspace.Workspace()
 
 
-def analyse(document: str, uri: str = None) -> list[lsp.Diagnostic]:
+def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
     inconsistencies = session.find_inconsistencies(contents=document, uri=uri)
 
     diagnostics = []
@@ -83,7 +83,13 @@ def code_lens_provider(params: lsp.CodeLensParams):
     return code_lenses
 
 
-def main(codebase_path: str = None, analyse_path: str = None, start_debug: bool = False, start_server: bool = False):
+def main(
+    codebase_path: str | None = None,
+    analyse_path: Path | str | None = None,
+    # FIXME: make types consistent
+    start_debug: bool = False,
+    start_server: bool = False,
+):
     if start_debug:
         print(f"Starting custom debugger", file=sys.stderr)
         import src._debug

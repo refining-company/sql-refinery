@@ -2,19 +2,20 @@ from pathlib import Path
 import re
 import inspect
 from collections import defaultdict
+from typing import Callable
 from functools import wraps, partial
 
 from src import sql
 from src import code
 from src import logic
 from src import server
-from tests import utils
+import tests.utils as utils
 
 
 def capture_snapshots(init):
     captured = defaultdict(list)
 
-    def _intercept(target: callable, simplify: callable) -> callable:
+    def _intercept(target: callable, simplify: callable) -> callable:  # type: ignore
         """
         Wrapper that intercepts outputs of `target` function and translate into simple text representation
         using `simplify` to convert into basic types
@@ -26,7 +27,7 @@ def capture_snapshots(init):
             result = target(*args, **kwargs)
 
             module = inspect.getmodule(target)
-            key = f"{module.__name__}.{target.__name__}"
+            key = f"{module.__name__}.{target.__name__}"  # type: ignore
             simplified_result = utils.pformat(simplify(result))
             captured[key].append(simplified_result)
 
@@ -88,7 +89,7 @@ def test_pipeline(config: dict[str, Path]):
         assert true_snapshots[file] == captured_snapshots[file], f"Snapshots {file} are different"
 
 
-def simplify(obj, terminal=()) -> dict | list | str:
+def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
     # TODO: move some complexity into __repr__ and __str__ of the dataclasses
 
     # If the object is an instance of a terminal class, return its class name or identifier
@@ -102,8 +103,6 @@ def simplify(obj, terminal=()) -> dict | list | str:
     if isinstance(obj, logic.Map):
         return {
             "tree": simplify(obj.tree, terminal),
-            "all_queries": simplify(obj.all_queries, terminal),
-            "all_expressions": simplify(obj.all_expressions, terminal),
         }
 
     if isinstance(obj, logic.Alternative):
@@ -111,7 +110,7 @@ def simplify(obj, terminal=()) -> dict | list | str:
             "this": simplify(obj.this, terminal),
             "others": simplify(obj.others, terminal),
             "reliability": obj.reliability,
-            "similarity": round(obj.similarity, 2),
+            "similarity": obj.similarity,
         }
 
     if isinstance(obj, code.Tree):
@@ -150,7 +149,7 @@ def simplify(obj, terminal=()) -> dict | list | str:
         node_type = sql.get_type(obj, meta=True, helper=False, original=False)
 
         children = simplify(obj.children, terminal)  # simplify recursively
-        children = [child for child in children if child]  # filter out empty values
+        children = [child for child in children if child]  # filter out empty values # type: ignore
         children = sum([child if isinstance(child, list) else [child] for child in children], [])  # flatten the list
 
         if node_type:
@@ -159,7 +158,7 @@ def simplify(obj, terminal=()) -> dict | list | str:
                 obj.grammar_name,
                 obj.start_point.row + 1,
                 obj.start_point.column + 1,
-                re.sub(r"\s+", " ", simplify(obj.text, terminal))[:20],
+                re.sub(r"\s+", " ", simplify(obj.text, terminal))[:20],  # type: ignore
             )
             return {key: children}
         else:
@@ -173,7 +172,7 @@ def simplify(obj, terminal=()) -> dict | list | str:
         return [simplify(item, terminal) for item in obj]
 
     if isinstance(obj, tuple):
-        return tuple(simplify(item, terminal) for item in obj)
+        return tuple(simplify(item, terminal) for item in obj)  # type: ignore
 
     if isinstance(obj, Path):
         return str(obj)

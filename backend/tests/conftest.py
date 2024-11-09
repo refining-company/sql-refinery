@@ -3,7 +3,7 @@ from pathlib import Path
 import difflib
 
 
-def get_paths() -> dict[str, Path]:
+def get_paths() -> dict:
     root = Path(__file__).parent
     inputs_dir = root / "inputs"
     editor_file = inputs_dir / "editor.sql"

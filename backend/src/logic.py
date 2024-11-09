@@ -16,7 +16,7 @@
 """
 
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import Levenshtein
 from src import code
@@ -24,18 +24,18 @@ from src import code
 
 @dataclass
 class Alternative:
-    this: code.Expression = None
-    others: list[code.Expression] = None
-    reliability: int = None
-    similarity: float = None
+    this: code.Expression
+    others: list[code.Expression] = field(default_factory=list)
+    reliability: int | None = None
+    similarity: float | None = None
 
 
 @dataclass
 class Map:
-    tree: code.Tree = None
+    tree: code.Tree | None = None
 
 
-def compare(this: Map, that: Map, threshold=0.7) -> list[Alternative]:
+def compare(this: code.Tree, that: code.Tree, threshold: float = 0.7) -> list[Alternative]:
     alternatives = []
     for this_id, this_exprs in this.all_expressions.items():
         for that_id, that_exprs in that.all_expressions.items():

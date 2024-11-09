@@ -10,7 +10,7 @@ It takes tree-sitter sql.Tree and sql.Node and constructs a new fixed data struc
 
 from __future__ import annotations
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from collections import defaultdict
 
 from src import sql
@@ -19,9 +19,9 @@ from src import sql
 @dataclass
 class Column:
     nodes: list[sql.Node]
-    dataset: str = None
-    table: str = None
-    column: str = None
+    dataset: str | None = None
+    table: str | None = None
+    column: str | None = None
 
     def __repr__(self) -> str:
         return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
@@ -29,16 +29,16 @@ class Column:
     def __str__(self) -> str:
         return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
 
-    def __hash__(self) -> tuple[str, str, str]:
+    def __hash__(self) -> int:
         return hash("{}.{}.{}".format(self.dataset, self.table, self.column))
 
 
 @dataclass
 class Expression:
-    file: Path  # TODO: add root to all objects
+    file: str  # TODO: add root to all objects
     node: sql.Node
-    columns: list[Column] = None
-    alias: str = None
+    columns: list[Column] = field(default_factory=list)
+    alias: str | None = None
 
     def __repr__(self) -> str:
         return "Expression({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
@@ -52,10 +52,10 @@ class Expression:
                 result = str(nodes_to_col[node])
             elif sql.is_type(node, "#constant"):
                 # FIXME: not sure we need capturing this, probably there is a way around in src.code.op.__str__
-                result = node.text.decode("utf-8")
+                result = node.text.decode("utf-8")  # type: ignore
             elif sql.is_type(node, "#function"):
-                parsed = sql.decode_function(node)
-                result = "{}({})".format(parsed["name"], ", ".join(map(node_to_str, parsed["args"])))
+                parsed_name, parsed_args = sql.decode_function(node)
+                result = "{}({})".format(parsed_name, ", ".join(map(node_to_str, parsed_args)))
             else:
                 result = node.type.capitalize()
                 if len(node.children):
@@ -69,9 +69,9 @@ class Expression:
 @dataclass
 class Table:
     node: sql.Node
-    dataset: str = None
-    table: str = None
-    alias: str = None
+    dataset: str | None = None
+    table: str | None = None
+    alias: str | None = None
 
     def __repr__(self) -> str:
         return "Table({}.{}{})".format(
@@ -86,9 +86,9 @@ class Table:
 class Query:
     file: str
     node: sql.Node
-    sources: list[Table | Query] = None
-    expressions: list[Expression] = None
-    alias: str = None
+    sources: list[Table | Query] = field(default_factory=list)
+    expressions: list[Expression] = field(default_factory=list)
+    alias: str | None = None
 
     def __repr__(self) -> str:
         return "Query({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
@@ -96,16 +96,18 @@ class Query:
 
 @dataclass
 class Tree:
-    files: dict[str, sql.Tree]
-    queries: list[Query]
-    all_queries: list[Query] = None
-    all_expressions: dict[tuple[str, set[str]], Expression] = None
+    files: dict[str, sql.Tree] = field(default_factory=dict)
+    queries: list[Query] = field(default_factory=list)
+    all_queries: list[Query] = field(default_factory=list)
+    all_expressions: dict[tuple[str, set[str]], list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
         return "Tree(files={}, queries={})".format(list(self.files.keys()), self.queries)
 
 
-def parse(path: Path = None, contents: str = None) -> Tree:
+def parse(path: Path | None = None, contents: str | None = None) -> Tree:
+    files = {}
+
     if path:
         if path.is_dir():
             paths = list(path.glob("**/*.sql"))
@@ -113,7 +115,7 @@ def parse(path: Path = None, contents: str = None) -> Tree:
         else:
             paths = [path]
             root = path.parent
-        files = {f.relative_to(root): sql.parse(f.read_bytes()) for f in paths}
+        files = {str(f.relative_to(root)): sql.parse(f.read_bytes()) for f in paths}
 
     if contents:
         files = {"_document": sql.parse(contents.encode())}
@@ -180,7 +182,7 @@ def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
         ops = []
         for op_node in sql.find_desc(select_node, "@expression"):
             op_cols = []
-            for col_node in sql.find_desc(op_node.parent, "@column"):
+            for col_node in sql.find_desc(op_node.parent, "@column"):  # type: ignore
                 if nodes_columns[col_node] not in op_cols:
                     op_cols.append(nodes_columns[col_node])
             ops.append(Expression(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
@@ -199,7 +201,7 @@ def _get_all_queries(queries: list[Query]) -> list[Query]:
     return queries + nested_queries
 
 
-def _get_all_expressions(queries: list[Query]) -> dict[tuple[str, set[str]], Expression]:
+def _get_all_expressions(queries: list[Query]) -> dict[tuple[str, set[str]], list[Expression]]:
     all_expressions = defaultdict(list)
     for query in queries:
         for expression in query.expressions:

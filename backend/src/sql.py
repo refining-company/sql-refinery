@@ -39,7 +39,7 @@ def find_desc(node: tree_sitter.Node, types: str | list[str], local: bool = True
     return results
 
 
-def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True) -> tree_sitter.Node:
+def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True) -> tree_sitter.Node | None:
     if node.parent is None:
         return None
 
@@ -54,14 +54,14 @@ def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True)
 
 
 # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
-def find_alias(node: tree_sitter.Node) -> str:
+def find_alias(node: tree_sitter.Node) -> str | None:
     if not is_type(node, ["@table", "@expression"]):
         return None
 
     if node.next_named_sibling:
         alias_node = find_desc(node.next_named_sibling, "@alias")
         if len(alias_node):
-            return alias_node[0].text.decode("utf-8")
+            return alias_node[0].text.decode("utf-8")  # type: ignore
 
     return None
 
@@ -80,9 +80,9 @@ def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, ori
     if node.parent is None:
         node_type = "@root"
 
-    elif node_type in {"query_expr"} and node.named_child(0).type in {"select"}:
+    elif node_type == "query_expr" and node.named_children[0] and node.named_children[0].type in {"select"}:
         node_type = "@query"
-    elif node_type in {"query_expr"}:
+    elif node_type == "query_expr":
         node_type = "@scope"
 
     elif node_type in {"select_list"}:
@@ -137,28 +137,28 @@ def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, ori
         return node_type
 
 
-def decode_function(node: tree_sitter.Node) -> dict[str, str | list[tree_sitter.Node]]:
+def decode_function(node: tree_sitter.Node) -> tuple[str, list[tree_sitter.Node]]:
     if node.type == "function_call":
-        name = node.named_children[0].text.decode("utf-8").capitalize()
+        name = node.named_children[0].text.decode("utf-8").capitalize()  # type: ignore
         # taking children of the `attribute` node
         args = sum([child.named_children for child in node.named_children[1:]], [])
-        return {"name": name, "args": args}
+        return name, args
 
     if node.type == "binary_expression":
-        name = node.children[1].text.decode("utf-8").capitalize()
+        name = node.children[1].text.decode("utf-8").capitalize()  # type: ignore
         args = node.named_children
-        return {"name": name, "args": args}
+        return name, args
 
-    return False
+    assert False, "Node type is not #function"
 
 
-def decode_column(node: tree_sitter.Node) -> dict[str, str, str]:
-    *_, dataset, table, column = (None, None, None) + tuple(node.text.decode("utf-8").split("."))
+def decode_column(node: tree_sitter.Node) -> dict[str, str | None]:
+    *_, dataset, table, column = (None, None, None) + tuple(node.text.decode("utf-8").split("."))  # type: ignore
     return {"dataset": dataset, "table": table, "column": column}
 
 
-def decode_table(node: tree_sitter.Node) -> dict[str, str]:
-    *_, dataset, table = (None, None) + tuple(node.text.decode("utf-8").split("."))
+def decode_table(node: tree_sitter.Node) -> dict[str, str | None]:
+    *_, dataset, table = (None, None) + tuple(node.text.decode("utf-8").split("."))  # type: ignore
     return {"dataset": dataset, "table": table}
 
 
