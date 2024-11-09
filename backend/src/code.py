@@ -19,9 +19,9 @@ from src import sql
 @dataclass
 class Column:
     nodes: list[sql.Node]
-    dataset: str | None = None
-    table: str | None = None
-    column: str | None = None
+    dataset: str | None
+    table: str | None
+    column: str | None
 
     def __repr__(self) -> str:
         return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
@@ -37,8 +37,8 @@ class Column:
 class Expression:
     file: str  # TODO: add root to all objects
     node: sql.Node
-    columns: list[Column] = field(default_factory=list)
-    alias: str | None = None
+    columns: list[Column]
+    alias: str | None
 
     def __repr__(self) -> str:
         return "Expression({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
@@ -69,9 +69,9 @@ class Expression:
 @dataclass
 class Table:
     node: sql.Node
-    dataset: str | None = None
-    table: str | None = None
-    alias: str | None = None
+    dataset: str | None
+    table: str | None
+    alias: str | None
 
     def __repr__(self) -> str:
         return "Table({}.{}{})".format(
@@ -86,9 +86,9 @@ class Table:
 class Query:
     file: str
     node: sql.Node
-    sources: list[Table | Query] = field(default_factory=list)
-    expressions: list[Expression] = field(default_factory=list)
-    alias: str | None = None
+    sources: list[Table | Query]
+    expressions: list[Expression]
+    alias: str | None
 
     def __repr__(self) -> str:
         return "Query({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
@@ -96,10 +96,10 @@ class Query:
 
 @dataclass
 class Tree:
-    files: dict[str, sql.Tree] = field(default_factory=dict)
-    queries: list[Query] = field(default_factory=list)
-    all_queries: list[Query] = field(default_factory=list)
-    all_expressions: dict[tuple[str, set[str]], list[Expression]] = field(default_factory=dict)
+    files: dict[str, sql.Tree]
+    queries: list[Query]
+    all_queries: list[Query]
+    all_expressions: dict[tuple[str, set[str]], list[Expression]]
 
     def __repr__(self) -> str:
         return "Tree(files={}, queries={})".format(list(self.files.keys()), self.queries)
@@ -188,7 +188,8 @@ def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
             ops.append(Expression(file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
         subqueries = _parse_sql_to_query(file, select_node)
-        query = Query(file=file, node=select_node, sources=tables + subqueries, expressions=ops)
+        # FIXME: check if alias is needed at all in Query
+        query = Query(file=file, node=select_node, sources=tables + subqueries, expressions=ops, alias=None)
         queries.append(query)
 
     return queries

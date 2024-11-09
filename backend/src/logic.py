@@ -30,11 +30,6 @@ class Alternative:
     similarity: float
 
 
-@dataclass
-class Map:
-    tree: code.Tree | None = None
-
-
 def compare(this: code.Tree, that: code.Tree, threshold: float = 0.7) -> list[Alternative]:
     alternatives = []
     for this_id, this_exprs in this.all_expressions.items():

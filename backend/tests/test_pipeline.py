@@ -100,11 +100,6 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
         return f"<{obj.__class__.__name__}>"
 
     # Custom expansion logic for specific classes
-    if isinstance(obj, logic.Map):
-        return {
-            "tree": simplify(obj.tree, terminal),
-        }
-
     if isinstance(obj, logic.Alternative):
         return {
             "this": simplify(obj.this, terminal),
