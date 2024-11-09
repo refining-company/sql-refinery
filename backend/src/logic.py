@@ -25,9 +25,9 @@ from src import code
 @dataclass
 class Alternative:
     this: code.Expression
-    others: list[code.Expression] = field(default_factory=list)
-    reliability: int | None = None
-    similarity: float | None = None
+    others: list[code.Expression]
+    reliability: int
+    similarity: float
 
 
 @dataclass

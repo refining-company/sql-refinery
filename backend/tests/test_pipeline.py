@@ -109,8 +109,8 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
         return {
             "this": simplify(obj.this, terminal),
             "others": simplify(obj.others, terminal),
-            "reliability": obj.reliability,
-            "similarity": obj.similarity,
+            "reliability": simplify(obj.reliability, terminal),
+            "similarity": simplify(obj.similarity, terminal),
         }
 
     if isinstance(obj, code.Tree):
@@ -180,7 +180,10 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
     if isinstance(obj, bytes):
         return obj.decode("utf-8")
 
-    if isinstance(obj, (str, int, float, bool, type(None))):
+    if isinstance(obj, float):
+        return round(obj, 2)
+
+    if isinstance(obj, (str, int, bool, type(None))):
         return obj
 
     # Fallback for other types
