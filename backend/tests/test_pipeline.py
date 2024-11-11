@@ -1,8 +1,8 @@
-from pathlib import Path
 import re
 import inspect
+import pytest
+from pathlib import Path
 from collections import defaultdict
-from typing import Callable
 from functools import wraps, partial
 
 from src import sql
@@ -10,83 +10,7 @@ from src import code
 from src import logic
 from src import server
 import tests.utils as utils
-
-
-def capture_snapshots(init):
-    captured = defaultdict(list)
-
-    def _intercept(target: callable, simplify: callable) -> callable:  # type: ignore
-        """
-        Wrapper that intercepts outputs of `target` function and translate into simple text representation
-        using `simplify` to convert into basic types
-        and `utils.pformat` to convert into compact JSON
-        """
-
-        @wraps(target)
-        def wrapper(*args, **kwargs):
-            result = target(*args, **kwargs)
-
-            module = inspect.getmodule(target)
-            key = f"{module.__name__}.{target.__name__}"  # type: ignore
-            simplified_result = utils.pformat(simplify(result))
-            captured[key].append(simplified_result)
-
-            return result
-
-        return wrapper
-
-    # patching functions of interest and running the pipeline
-    sql.parse = _intercept(
-        sql.parse,
-        simplify=simplify,
-    )
-    code.parse = _intercept(
-        code.parse,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree)),
-    )
-    logic.compare = _intercept(
-        logic.compare,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
-    )
-
-    # run the pipeline
-    server.main(**init["server:main"])
-
-    captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
-    return captured
-
-
-def update_snapshots(config: dict):
-    print("Generating snapshots...")
-    captured_snapshots = capture_snapshots(config)
-    print("\t", "Generated")
-
-    print("Deleting old files...")
-    for file in config["true_snapshots"].glob("**/*"):
-        print("\t", f"Deleted {file.name}")
-        file.unlink()
-
-    print("Writing new files...")
-    for key, snapshot in captured_snapshots.items():
-        snapshot_file = config["true_snapshots"] / f"{key}.json"
-        snapshot_file.write_text(snapshot)
-        print("\t", f"Wrote {snapshot_file.name}")
-
-    print("Snapshots updated.")
-
-
-def test_pipeline(config: dict[str, Path]):
-    captured_snapshots = capture_snapshots(config)
-
-    true_snapshot_files = list(config["true_snapshots"].glob("**/*"))
-    true_snapshots = {file.stem: file.read_text() for file in true_snapshot_files}
-
-    files = true_snapshots.keys() | captured_snapshots.keys()
-
-    for file in files:
-        assert file in true_snapshots, f"Unrecognised snapshot captured: {file} is not found in true snapshots"
-        assert file in captured_snapshots, f"Snapshot was not provided: {file} is not found in captured snapshots"
-        assert true_snapshots[file] == captured_snapshots[file], f"Snapshots {file} are different"
+import tests.conftest as conftest
 
 
 def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
@@ -183,3 +107,91 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
 
     # Fallback for other types
     return f"<{obj.__class__.__name__}>"
+
+
+def capture_snapshots(init):
+    captured = defaultdict(list)
+
+    def _intercept(target: callable, simplify: callable) -> callable:  # type: ignore
+        """
+        Wrapper that intercepts outputs of `target` function and translate into simple text representation
+        using `simplify` to convert into basic types
+        and `utils.pformat` to convert into compact JSON
+        """
+
+        @wraps(target)
+        def wrapper(*args, **kwargs):
+            result = target(*args, **kwargs)
+
+            module = inspect.getmodule(target)
+            key = f"{module.__name__}.{target.__name__}"  # type: ignore
+            simplified_result = utils.pformat(simplify(result))
+            captured[key].append(simplified_result)
+
+            return result
+
+        return wrapper
+
+    # patching functions of interest and running the pipeline
+    sql.parse = _intercept(
+        sql.parse,
+        simplify=simplify,
+    )
+    code.parse = _intercept(
+        code.parse,
+        simplify=partial(simplify, terminal=(sql.Node, sql.Tree)),
+    )
+    logic.compare = _intercept(
+        logic.compare,
+        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
+    )
+
+    # run the pipeline
+    server.main(**init["server:main"])
+
+    captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
+    return captured
+
+
+def update_snapshots(config: dict):
+    print("Generating snapshots...")
+    captured_snapshots = capture_snapshots(config)
+    print("\t", "Generated")
+
+    print("Deleting old files...")
+    for file in config["true_snapshots"].glob("**/*"):
+        print("\t", f"Deleted {file.name}")
+        file.unlink()
+
+    print("Writing new files...")
+    for key, snapshot in captured_snapshots.items():
+        snapshot_file = config["true_snapshots"] / f"{key}.json"
+        snapshot_file.write_text(snapshot)
+        print("\t", f"Wrote {snapshot_file.name}")
+
+    print("Snapshots updated.")
+
+
+def read_snapshots(path: Path):
+    return {file.stem: file.read_text() for file in path.glob("**/*")}
+
+
+def get_test_params():
+    config = conftest.get_paths()
+    captured = capture_snapshots(config)
+    correct = read_snapshots(config["true_snapshots"])
+
+    params = [pytest.param(key, captured, correct, id=key) for key in list(correct.keys())]
+    params += [pytest.param(None, captured, correct, id="Unexpected")]
+
+    return params
+
+
+@pytest.mark.parametrize("name,captured,correct", get_test_params())
+def test_pipeline(name: str, captured: dict, correct: dict):
+    if name:
+        assert name in captured, f"Snapshot '{name}' was not captured"
+        assert correct[name] == captured[name], f"Snapshots '{name}' are different"
+    else:
+        extra_snapshots = set(captured) - set(correct)
+        assert not extra_snapshots, f"Unexpected snapshots captured: {extra_snapshots}"

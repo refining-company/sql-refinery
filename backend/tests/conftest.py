@@ -15,11 +15,6 @@ def get_paths() -> dict:
     }
 
 
-@pytest.fixture(scope="session")
-def config() -> dict[str, Path]:
-    return get_paths()
-
-
 def pytest_assertrepr_compare(op, left, right):
     if isinstance(left, str) and isinstance(right, str) and op == "==" and (left + right).count("\n") >= 5:
         diff = list(difflib.unified_diff(left.splitlines(), right.splitlines(), lineterm="", n=0))

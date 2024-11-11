@@ -2,7 +2,7 @@
   // Python testing
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["--quiet", "--tb=short", "--pdb"],
+  "python.testing.pytestArgs": ["--quiet", "--tb=short"],
 
   // Python linting
   "python.analysis.typeCheckingMode": "basic",

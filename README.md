@@ -2,8 +2,6 @@
 
 0. Priority
 
-   - `test_pipeline` testing should have one test per file and one test on top to make sure number of snapshots match.
-
    - `Workspace` should manage file parsing pipeline. For that it should have
      `pipeline = [sql.parse, code.parse, logic.parse]` and `load_codebase` should moves files through each stage.
      `pipeline(i)` should depend only on the `pipeline(i-1)`.
