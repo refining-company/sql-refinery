@@ -96,36 +96,35 @@ class Query:
 
 @dataclass
 class Tree:
-    files: dict[str, sql.Tree]
-    queries: list[Query]
-    all_queries: list[Query]
-    all_expressions: dict[tuple[str, set[str]], list[Expression]]
+    files: dict[str, sql.Tree] = field(default_factory=dict)
+    queries: list[Query] = field(default_factory=list)
+    all_queries: list[Query] = field(default_factory=list)
+    all_expressions: dict[tuple[str, set[str]], list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
-        return "Tree(files={}, queries={})".format(list(self.files.keys()), self.queries)
+        return "Tree({})".format(", ".join(map(str, self.queries)))
 
 
-def parse(path: Path | None = None, contents: str | None = None) -> Tree:
-    files = {}
+def from_dir(dir: Path) -> Tree:
+    tree = Tree()
+    for file in dir.glob("**/*.sql"):
+        tree = ingest(tree, str(file.relative_to(dir)), file.read_text())
+    return tree
 
-    if path:
-        if path.is_dir():
-            paths = list(path.glob("**/*.sql"))
-            root = path
-        else:
-            paths = [path]
-            root = path.parent
-        files = {str(f.relative_to(root)): sql.parse(f.read_bytes()) for f in paths}
 
-    if contents:
-        files = {"_document": sql.parse(contents.encode())}
+def ingest(tree: Tree, name: str, content: str) -> Tree:
+    parse_tree = sql.parse(content.encode())
+    new_files = {name: parse_tree}
+    new_queries = _parse_sql_to_query(name, parse_tree.root_node)
+    new_all_queries = _get_all_queries(new_queries)
+    new_all_expressions = _get_all_expressions(new_all_queries)
 
-    queries = sum([_parse_sql_to_query(file, tree.root_node) for file, tree in files.items()], [])
-    all_queries = _get_all_queries(queries)
-    all_expressions = _get_all_expressions(all_queries)
-    code_tree = Tree(files=files, queries=queries, all_queries=all_queries, all_expressions=all_expressions)
-
-    return code_tree
+    return Tree(
+        files=tree.files | new_files,
+        queries=tree.queries + new_queries,
+        all_queries=tree.all_queries + new_all_queries,
+        all_expressions=tree.all_expressions | new_all_expressions,
+    )
 
 
 ### TODO: make sure all identifiers are minimally resolved:
@@ -149,6 +148,7 @@ def _parse_sql_to_query(file: str, node: sql.Node) -> list[Query]:
         tables = []
         for n in sql.find_desc(select_node, "@table"):
             tables.append(Table(node=n, **sql.decode_table(n), alias=sql.find_alias(n)))
+
         # Capture columns
         nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
 

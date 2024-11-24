@@ -1,6 +1,6 @@
 [
   { "this": {
-      "Expression(_document:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+      "Expression(editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
         "columns": [
           { "Column(?.countries.region)": [
               "c.region",
@@ -8,18 +8,6 @@
               "c.region" ] } ],
         "alias": "macro_region" } },
     "others": [
-      { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
-          "columns": [
-            { "Column(?.countries.region)": [
-                "c.region",
-                "c.region" ] } ],
-          "alias": "region_cluster" } },
-      { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
-          "columns": [
-            { "Column(?.countries.region)": [
-                "c.region",
-                "c.region" ] } ],
-          "alias": "region_cluster" } },
       { "Expression(1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
           "columns": [
             { "Column(?.countries.region)": [
@@ -31,17 +19,11 @@
             { "Column(?.countries.region)": [
                 "c.region",
                 "c.region" ] } ],
-          "alias": "cluster" } },
-      { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
-          "columns": [
-            { "Column(?.countries.region)": [
-                "c.region",
-                "c.region" ] } ],
-          "alias": "region_cluster" } } ],
-    "reliability": 5,
+          "alias": "cluster" } } ],
+    "reliability": 2,
     "similarity": 0.78 },
   { "this": {
-      "Expression(_document:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+      "Expression(editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
         "columns": [
           { "Column(?.accounts.industry)": [
               "a.industry",

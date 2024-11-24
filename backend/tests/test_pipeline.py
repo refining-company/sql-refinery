@@ -137,8 +137,8 @@ def capture_snapshots(init):
         sql.parse,
         simplify=simplify,
     )
-    code.parse = _intercept(
-        code.parse,
+    code.ingest = _intercept(
+        code.ingest,
         simplify=partial(simplify, terminal=(sql.Node, sql.Tree)),
     )
     logic.compare = _intercept(
@@ -149,8 +149,8 @@ def capture_snapshots(init):
     # run the pipeline
     server.main(**init["server:main"])
 
-    captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
-    return captured
+    # captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
+    return {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
 
 
 def update_snapshots(config: dict):
@@ -182,7 +182,7 @@ def get_test_params():
     correct = read_snapshots(config["true_snapshots"])
 
     params = [pytest.param(key, captured, correct, id=key) for key in list(correct.keys())]
-    params += [pytest.param(None, captured, correct, id="Unexpected")]
+    params += [pytest.param(None, captured, correct, id="inexpected")]
 
     return params
 

@@ -16,12 +16,13 @@ class Workspace:
     def __init__(self):
         self._inconsistencies = {}
 
-    def load_codebase(self, codebase_path: str):
-        self.path_codebase = Path(codebase_path).resolve()
-        self.queries_codebase = code.parse(path=self.path_codebase)
+    def load_codebase(self, path: str):
+        self.path_codebase = Path(path).resolve()
+        assert self.path_codebase.is_dir(), f"Path to codebase '{path}' is not a directory"
+        self.queries_codebase = code.from_dir(self.path_codebase)
 
-    def find_inconsistencies(self, contents: str, uri: str) -> list[logic.Alternative]:
-        self.queries_editor = code.parse(contents=contents)
+    def find_inconsistencies(self, uri: str, contents: str) -> list[logic.Alternative]:
+        self.queries_editor = code.ingest(code.Tree(), Path(uri).name, contents)
         self._inconsistencies[uri] = logic.compare(self.queries_editor, self.queries_codebase)
 
         return self._inconsistencies[uri]

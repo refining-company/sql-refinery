@@ -6,6 +6,7 @@
 
   // Python linting
   "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.exclude": ["**/.venv", "**/.pyenv"],
 
   // VSCode file explorer
   "files.exclude": {
