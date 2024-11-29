@@ -2,6 +2,8 @@
 
 0. Priority
 
+   - `Workspace` should create and maintain one `code.Tree` and `logic` should compare one file against the rest.
+
    - `Workspace` should manage file parsing pipeline. For that it should have
      `pipeline = [sql.parse, code.parse, logic.parse]` and `load_codebase` should moves files through each stage.
      `pipeline(i)` should depend only on the `pipeline(i-1)`.

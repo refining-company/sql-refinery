@@ -95,14 +95,23 @@ class Query:
 
 
 @dataclass
-class Tree:
-    files: dict[str, sql.Tree] = field(default_factory=dict)
+class File:
+    name: str
+    tree: sql.Tree
     queries: list[Query] = field(default_factory=list)
+
+    def __repr__(self) -> str:
+        return "File({}:{})".format(self.name, ", ".join(map(str, self.queries)))
+
+
+@dataclass
+class Tree:
+    files: list[File] = field(default_factory=list)
     all_queries: list[Query] = field(default_factory=list)
     all_expressions: dict[tuple[str, set[str]], list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
-        return "Tree({})".format(", ".join(map(str, self.queries)))
+        return "Tree({})".format(", ".join(map(str, self.files)))
 
 
 def from_dir(dir: Path) -> Tree:
@@ -114,14 +123,13 @@ def from_dir(dir: Path) -> Tree:
 
 def ingest(tree: Tree, name: str, content: str) -> Tree:
     parse_tree = sql.parse(content.encode())
-    new_files = {name: parse_tree}
     new_queries = _parse_sql_to_query(name, parse_tree.root_node)
+    new_file = File(name=name, tree=parse_tree, queries=new_queries)
     new_all_queries = _get_all_queries(new_queries)
     new_all_expressions = _get_all_expressions(new_all_queries)
 
     return Tree(
-        files=tree.files | new_files,
-        queries=tree.queries + new_queries,
+        files=tree.files + [new_file],
         all_queries=tree.all_queries + new_all_queries,
         all_expressions=tree.all_expressions | new_all_expressions,
     )
