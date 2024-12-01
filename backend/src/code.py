@@ -98,7 +98,6 @@ class Query:
 
     sources: list[Table | Query]
     expressions: list[Expression]
-    alias: str | None
 
     def __repr__(self) -> str:
         return "Query({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
@@ -107,8 +106,7 @@ class Query:
 @dataclass
 class Tree:
     files: dict[str, list[Query]] = field(default_factory=dict)
-    all_queries: list[Query] = field(default_factory=list)
-    all_expressions: dict[tuple[str, tuple[str]], list[Expression]] = field(default_factory=dict)
+    all_expressions: dict[tuple[str, frozenset[str]], list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
         return "Tree({})".format(", ".join(map(str, self.files)))
@@ -123,28 +121,13 @@ def from_dir(dir: Path) -> Tree:
 
 def ingest(tree: Tree, name: str, content: str) -> Tree:
     parse_tree = sql.parse(content.encode())
-    new_queries = _parse_node_to_query(parse_tree.root_node, tree, name)
-    new_all_queries = _get_all_queries(new_queries)
-    new_all_expressions = _get_all_expressions(new_all_queries)
+    queries_tree = _parse_node_to_query(parse_tree.root_node, tree, name)
+    new_all_expressions = _get_all_expressions(queries_tree)
 
     return Tree(
-        files=tree.files | {name: new_queries},
-        all_queries=tree.all_queries + new_all_queries,
+        files=tree.files | {name: queries_tree},
         all_expressions=tree.all_expressions | new_all_expressions,
     )
-
-
-### TODO: make sure all identifiers are minimally resolved:
-### it takes sql files, and makes a Database object that contains a tree of queries
-### each query would have columns and tables that have:
-###    - aliases resolved (so e.g. a.id becomes account.id)
-###    - tables resolved if no JOINS (e.g. SELECT id FROM accounts -> accounts.id)
-
-### TODO: capture all expressions and identifiers
-### so in checker.py we can find similar experessions it will creat this
-###  sort of a mapping {<column name> : [all expressions that use it]}
-
-### TODO: think and tell me what about table mapping
 
 
 def _parse_node_to_query(node: sql.Node, tree: Tree, file: str) -> list[Query]:
@@ -195,25 +178,30 @@ def _parse_node_to_query(node: sql.Node, tree: Tree, file: str) -> list[Query]:
             ops.append(Expression(tree=tree, file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
 
         subqueries = _parse_node_to_query(select_node, tree=tree, file=file)
-        # FIXME: check if alias is needed at all in Query
-        query = Query(tree=tree, file=file, node=select_node, sources=tables + subqueries, expressions=ops, alias=None)
+        query = Query(tree=tree, file=file, node=select_node, sources=tables + subqueries, expressions=ops)
         queries.append(query)
 
     return queries
 
 
-def _get_all_queries(queries: list[Query]) -> list[Query]:
-    nested_queries = []
-    for query in queries:
-        nested_queries += _get_all_queries([s for s in query.sources if isinstance(s, Query)])
-    return queries + nested_queries
+def _get_all_expressions(queries: list[Query]) -> dict[tuple[str, frozenset[str]], list[Expression]]:
+    """
+    Recursively finds all expressions from a `queries` and aggregates into a dictionary
+    this will be used by logic.compare() to find similar expressions
 
+       `tuple(expression_as_str, expression_columns_as_str_sorted) = [expression1, expression2, ...]`
+    """
 
-def _get_all_expressions(queries: list[Query]) -> dict[tuple[str, tuple[str]], list[Expression]]:
     all_expressions = defaultdict(list)
     for query in queries:
+        # Process expressions in current query
         for expression in query.expressions:
-            op_key = (str(expression), tuple(sorted(map(str, expression.columns))))
+            op_key = (str(expression), frozenset(map(str, expression.columns)))
             all_expressions[op_key].append(expression)
+
+        # Recursively process subqueries
+        nested_expressions = _get_all_expressions([s for s in query.sources if isinstance(s, Query)])
+        for key, expressions in nested_expressions.items():
+            all_expressions[key].extend(expressions)
 
     return dict(all_expressions)

@@ -40,9 +40,7 @@ def compare(this: str, tree: code.Tree, threshold: float = 0.7) -> list[Alternat
         for that_id, that_exprs in that_all_expressions.items():
             sim_exprs = Levenshtein.ratio(this_id[0], that_id[0])
 
-            this_set = set(this_id[1])
-            that_set = set(that_id[1])
-            sim_cols = len(this_set & that_set) / len(this_set | that_set)
+            sim_cols = len(this_id[1] & that_id[1]) / len(this_id[1] | that_id[1])
             sim_total = sim_exprs * sim_cols
 
             if threshold < sim_total < 1:

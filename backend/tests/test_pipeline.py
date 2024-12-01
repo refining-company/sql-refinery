@@ -35,7 +35,6 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
     if isinstance(obj, code.Tree):
         return {
             "files": simplify(obj.files, terminal),
-            "all_queries": simplify(obj.all_queries, terminal),
             "all_expressions": simplify(obj.all_expressions, terminal),
         }
 
@@ -44,7 +43,6 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
             repr(obj): {
                 "expressions": simplify(obj.expressions, terminal),
                 "sources": simplify(obj.sources, terminal),
-                "alias": obj.alias,
             }
         }
 
@@ -91,7 +89,7 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
     if isinstance(obj, list):
         return [simplify(item, terminal) for item in obj]
 
-    if isinstance(obj, tuple):
+    if isinstance(obj, (tuple, set, frozenset)):
         return tuple(simplify(item, terminal) for item in obj)  # type: ignore
 
     if isinstance(obj, Path):
