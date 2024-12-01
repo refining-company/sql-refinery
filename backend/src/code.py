@@ -16,11 +16,11 @@ from collections import defaultdict
 from src import sql
 
 
-@dataclass
+@dataclass(frozen=True)
 class Column:
-    file: str
-    tree: Tree
-    nodes: list[sql.Node]
+    _file: str
+    _tree: Tree
+    _nodes: list[sql.Node]
 
     dataset: str | None
     table: str | None
@@ -36,21 +36,23 @@ class Column:
         return hash("{}.{}.{}".format(self.dataset, self.table, self.column))
 
 
-@dataclass
+@dataclass(frozen=True)
 class Expression:
-    file: str
-    tree: Tree
-    node: sql.Node
+    _file: str
+    _tree: Tree
+    _node: sql.Node
 
     columns: list[Column]
     alias: str | None
 
     def __repr__(self) -> str:
-        return "Expression({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
+        return "Expression({}:{}:{})".format(
+            self._file, self._node.start_point.row + 1, self._node.start_point.column + 1
+        )
 
     def __str__(self) -> str:
         # TODO: maybe should be a different method
-        nodes_to_col = {node: column for column in self.columns for node in column.nodes}
+        nodes_to_col = {node: column for column in self.columns for node in column._nodes}
 
         def node_to_str(node: sql.Node) -> str:
             if node in nodes_to_col:
@@ -68,14 +70,14 @@ class Expression:
 
             return result
 
-        return "Expression({})".format(node_to_str(self.node))
+        return "Expression({})".format(node_to_str(self._node))
 
 
-@dataclass
+@dataclass(frozen=True)
 class Table:
-    file: str
-    tree: Tree
-    node: sql.Node
+    _file: str
+    _tree: Tree
+    _node: sql.Node
 
     dataset: str | None
     table: str | None
@@ -90,20 +92,20 @@ class Table:
         return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
 
 
-@dataclass
+@dataclass(frozen=True)
 class Query:
-    file: str
-    tree: Tree
-    node: sql.Node
+    _file: str
+    _tree: Tree
+    _node: sql.Node
 
     sources: list[Table | Query]
     expressions: list[Expression]
 
     def __repr__(self) -> str:
-        return "Query({}:{}:{})".format(self.file, self.node.start_point.row + 1, self.node.start_point.column + 1)
+        return "Query({}:{}:{})".format(self._file, self._node.start_point.row + 1, self._node.start_point.column + 1)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Tree:
     files: dict[str, list[Query]] = field(default_factory=dict)
     all_expressions: dict[tuple[str, frozenset[str]], list[Expression]] = field(default_factory=dict)
@@ -137,7 +139,7 @@ def _parse_node_to_query(node: sql.Node, tree: Tree, file: str) -> list[Query]:
         # Capture tables
         tables = []
         for n in sql.find_desc(select_node, "@table"):
-            tables.append(Table(node=n, tree=tree, file=file, **sql.decode_table(n), alias=sql.find_alias(n)))
+            tables.append(Table(_node=n, _tree=tree, _file=file, **sql.decode_table(n), alias=sql.find_alias(n)))
 
         # Capture columns
         nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
@@ -165,20 +167,22 @@ def _parse_node_to_query(node: sql.Node, tree: Tree, file: str) -> list[Query]:
         # Create columns
         columns = []
         for (d, t, c), n in columns_nodes.items():
-            columns.append(Column(nodes=n, tree=tree, file=file, dataset=d, table=t, column=c))
+            columns.append(Column(_nodes=n, _tree=tree, _file=file, dataset=d, table=t, column=c))
 
         # Capture ops
-        nodes_columns = {n: col for col in columns for n in col.nodes}
+        nodes_columns = {n: col for col in columns for n in col._nodes}
         ops = []
         for op_node in sql.find_desc(select_node, "@expression"):
             op_cols = []
             for col_node in sql.find_desc(op_node.parent, "@column"):  # type: ignore
                 if nodes_columns[col_node] not in op_cols:
                     op_cols.append(nodes_columns[col_node])
-            ops.append(Expression(tree=tree, file=file, node=op_node, columns=op_cols, alias=sql.find_alias(op_node)))
+            ops.append(
+                Expression(_tree=tree, _file=file, _node=op_node, columns=op_cols, alias=sql.find_alias(op_node))
+            )
 
         subqueries = _parse_node_to_query(select_node, tree=tree, file=file)
-        query = Query(tree=tree, file=file, node=select_node, sources=tables + subqueries, expressions=ops)
+        query = Query(_tree=tree, _file=file, _node=select_node, sources=tables + subqueries, expressions=ops)
         queries.append(query)
 
     return queries

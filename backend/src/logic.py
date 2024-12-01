@@ -22,18 +22,21 @@ import Levenshtein
 from src import code
 
 
-@dataclass
+@dataclass(frozen=True)
 class Alternative:
     this: code.Expression
     others: list[code.Expression]
     reliability: int
     similarity: float
 
+    def __repr__(self) -> str:
+        return "Alternative({}:{})".format(repr(self.this), ", ".join(map(repr, self.others)))
+
 
 def compare(this: str, tree: code.Tree, threshold: float = 0.7) -> list[Alternative]:
     # TODO: change all_expressions to be a dict of {(file, id): [expr]}} and simplify compare function
-    this_all_expressions = {k: v for k, v in tree.all_expressions.items() if any(expr.file == this for expr in v)}
-    that_all_expressions = {k: v for k, v in tree.all_expressions.items() if all(expr.file != this for expr in v)}
+    this_all_expressions = {k: v for k, v in tree.all_expressions.items() if any(expr._file == this for expr in v)}
+    that_all_expressions = {k: v for k, v in tree.all_expressions.items() if all(expr._file != this for expr in v)}
 
     alternatives = []
     for this_id, this_exprs in this_all_expressions.items():

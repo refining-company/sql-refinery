@@ -4,6 +4,7 @@ import pytest
 from pathlib import Path
 from collections import defaultdict
 from functools import wraps, partial
+import dataclasses
 
 from src import sql
 from src import code
@@ -13,7 +14,7 @@ import tests.utils as utils
 import tests.conftest as conftest
 
 
-def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
+def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
     # TODO: move some complexity into __repr__ and __str__ of the dataclasses
 
     # If the object is an instance of a terminal class, return its class name or identifier
@@ -25,22 +26,20 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
 
     # Custom expansion logic for specific classes
     if isinstance(obj, logic.Alternative):
-        return {
-            "this": simplify(obj.this, terminal),
-            "others": simplify(obj.others, terminal),
-            "reliability": simplify(obj.reliability, terminal),
-            "similarity": simplify(obj.similarity, terminal),
-        }
+        fields = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+        return {f"{repr(obj)} = {str(obj)}": simplify(fields, terminal)}
 
     if isinstance(obj, code.Tree):
         return {
-            "files": simplify(obj.files, terminal),
-            "all_expressions": simplify(obj.all_expressions, terminal),
+            f"{repr(obj)} = {str(obj)}": {
+                "files": simplify(obj.files, terminal),
+                "all_expressions": simplify(obj.all_expressions, terminal),
+            }
         }
 
     if isinstance(obj, code.Query):
         return {
-            repr(obj): {
+            f"{repr(obj)} = {str(obj)}": {
                 "expressions": simplify(obj.expressions, terminal),
                 "sources": simplify(obj.sources, terminal),
             }
@@ -55,10 +54,10 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
         }
 
     if isinstance(obj, code.Column):
-        return {repr(obj): simplify(obj.nodes, terminal)}
+        return {repr(obj): simplify(obj._nodes, terminal)}
 
     if isinstance(obj, code.Table):
-        return {repr(obj): simplify(obj.node, terminal)}
+        return {repr(obj): simplify(obj._node, terminal)}
 
     if isinstance(obj, sql.Tree):
         return [simplify(obj.root_node)]
@@ -89,8 +88,11 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
     if isinstance(obj, list):
         return [simplify(item, terminal) for item in obj]
 
-    if isinstance(obj, (tuple, set, frozenset)):
-        return tuple(simplify(item, terminal) for item in obj)  # type: ignore
+    if isinstance(obj, tuple):
+        return tuple(simplify(item, terminal) for item in obj)
+
+    if isinstance(obj, (set, frozenset)):
+        return tuple(sorted((simplify(item, terminal) for item in obj), key=str))
 
     if isinstance(obj, Path):
         return str(obj)

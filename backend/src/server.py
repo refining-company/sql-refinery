@@ -26,7 +26,7 @@ def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
 
     diagnostics = []
     for inc in inconsistencies:
-        range = lsp.Range(lsp.Position(*inc.this.node.start_point), lsp.Position(*inc.this.node.end_point))
+        range = lsp.Range(lsp.Position(*inc.this._node.start_point), lsp.Position(*inc.this._node.end_point))
         diagnostic = lsp.Diagnostic(
             range=range,
             message=f"Alternative expressions found in the codebase",
@@ -63,11 +63,11 @@ def code_lens_provider(params: lsp.CodeLensParams):
     inconsistencies = session._inconsistencies.get(document_uri, [])
     for inc in inconsistencies:
         title = f"Alternatives found: {len(inc.others)}"
-        range = lsp.Range(lsp.Position(*inc.this.node.start_point), lsp.Position(*inc.this.node.end_point))
+        range = lsp.Range(lsp.Position(*inc.this._node.start_point), lsp.Position(*inc.this._node.end_point))
         other_locations = []
         for other in inc.others:
-            location_uri = (session.path_codebase / other.file).resolve().as_uri()
-            location_range = lsp.Range(lsp.Position(*other.node.start_point), lsp.Position(*other.node.end_point))
+            location_uri = (session.path_codebase / other._file).resolve().as_uri()
+            location_range = lsp.Range(lsp.Position(*other._node.start_point), lsp.Position(*other._node.end_point))
             other_locations.append({"uri": location_uri, "position": location_range.start})
 
         # Create the CodeLens entry
