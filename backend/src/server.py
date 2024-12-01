@@ -22,7 +22,7 @@ session = src.workspace.Workspace()
 
 
 def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
-    inconsistencies = session.find_inconsistencies(contents=document, uri=uri)
+    inconsistencies = session.find_inconsistencies(content=document, uri=uri)
 
     diagnostics = []
     for inc in inconsistencies:

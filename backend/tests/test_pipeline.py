@@ -35,6 +35,8 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
     if isinstance(obj, code.Tree):
         return {
             "files": simplify(obj.files, terminal),
+            "all_queries": simplify(obj.all_queries, terminal),
+            "all_expressions": simplify(obj.all_expressions, terminal),
         }
 
     if isinstance(obj, code.Query):
@@ -59,9 +61,6 @@ def simplify(obj, terminal=()) -> dict | list | str | int | float | bool | None:
 
     if isinstance(obj, code.Table):
         return {repr(obj): simplify(obj.node, terminal)}
-
-    if isinstance(obj, code.File):
-        return {repr(obj): {"queries": simplify(obj.queries, terminal)}}
 
     if isinstance(obj, sql.Tree):
         return [simplify(obj.root_node)]

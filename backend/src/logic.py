@@ -30,10 +30,14 @@ class Alternative:
     similarity: float
 
 
-def compare(this: code.Tree, that: code.Tree, threshold: float = 0.7) -> list[Alternative]:
+def compare(this: str, tree: code.Tree, threshold: float = 0.7) -> list[Alternative]:
+    # TODO: change all_expressions to be a dict of {(file, id): [expr]}} and simplify compare function
+    this_all_expressions = {k: v for k, v in tree.all_expressions.items() if any(expr.file == this for expr in v)}
+    that_all_expressions = {k: v for k, v in tree.all_expressions.items() if all(expr.file != this for expr in v)}
+
     alternatives = []
-    for this_id, this_exprs in this.all_expressions.items():
-        for that_id, that_exprs in that.all_expressions.items():
+    for this_id, this_exprs in this_all_expressions.items():
+        for that_id, that_exprs in that_all_expressions.items():
             sim_exprs = Levenshtein.ratio(this_id[0], that_id[0])
 
             this_set = set(this_id[1])
