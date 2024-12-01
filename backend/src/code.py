@@ -105,110 +105,108 @@ class Query:
         return "Query({}:{}:{})".format(self._file, self._node.start_point.row + 1, self._node.start_point.column + 1)
 
 
-@dataclass(frozen=True)
+@dataclass()
 class Tree:
     files: dict[str, list[Query]] = field(default_factory=dict)
-    all_expressions: dict[tuple[str, frozenset[str]], list[Expression]] = field(default_factory=dict)
+    index: dict[type, list[Query | Expression | Column | Table]] = field(default_factory=dict)
+    map_key_to_expr: dict[tuple[str, frozenset[str]], list[Expression]] = field(default_factory=dict)
+    map_file_to_expr: dict[str, list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
         return "Tree({})".format(", ".join(map(str, self.files)))
+
+    def ingest(self, name: str, content: str) -> Tree:
+        parse_tree = sql.parse(content.encode())
+        self.files[name] = self._parse_node(parse_tree.root_node, name)
+        self.map_key_to_expr |= _map_key_to_expr(self.index[Expression])  # type: ignore
+        self.map_file_to_expr |= _map_file_to_expr(self.index[Expression])  # type: ignore
+
+        return self
+
+    def _make(self, cls, *args, **kwargs) -> object:
+        obj = cls(_tree=self, *args, **kwargs)
+        self.index.setdefault(cls, []).append(obj)
+        return obj
+
+    def _parse_node(self, node: sql.Node, file: str) -> list[Query]:
+        queries = []
+        for select_node in sql.find_desc(node, "@query"):
+
+            # Capture tables
+            tables = []
+            for n in sql.find_desc(select_node, "@table"):
+                tables.append(self._make(Table, _node=n, _file=file, **sql.decode_table(n), alias=sql.find_alias(n)))
+
+            # Capture columns
+            nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
+
+            tables_aliases = {t.alias: t for t in tables}
+            for col, path in nodes_columns.items():
+                table = None
+                if path["table"] in tables_aliases:
+                    table = tables_aliases[path["table"]]
+                if not path["table"] and len(tables) == 1:
+                    table = tables[0]
+                if table:
+                    path["table"] = table.table
+                    path["dataset"] = table.dataset
+
+                # TODO: resolve using data model (when no table is specified in JOIN but could be inferred)
+                # TODO: resolve when different datasets/catalogs
+                # TODO: resolve `*` into columns
+
+            # Squash multiple column nodes into single column object
+            columns_nodes = {}
+            for k, v in nodes_columns.items():
+                columns_nodes.setdefault(tuple(v.values()), []).append(k)
+
+            # Create columns
+            columns = []
+            for (d, t, c), n in columns_nodes.items():
+                columns.append(self._make(Column, _nodes=n, _file=file, dataset=d, table=t, column=c))
+
+            # Capture ops
+            nodes_columns = {n: col for col in columns for n in col._nodes}
+            ops = []
+            for op_node in sql.find_desc(select_node, "@expression"):
+                op_cols = []
+                for col_node in sql.find_desc(op_node.parent, "@column"):  # type: ignore
+                    if nodes_columns[col_node] not in op_cols:
+                        op_cols.append(nodes_columns[col_node])
+                ops.append(
+                    self._make(Expression, _file=file, _node=op_node, columns=op_cols, alias=sql.find_alias(op_node))
+                )
+
+            subqueries = self._parse_node(select_node, file=file)
+            query = self._make(Query, _file=file, _node=select_node, sources=tables + subqueries, expressions=ops)
+            queries.append(query)
+
+        return queries
 
 
 def from_dir(dir: Path) -> Tree:
     tree = Tree()
     for file in dir.glob("**/*.sql"):
-        tree = ingest(tree, str(file.relative_to(dir)), file.read_text())
+        tree.ingest(str(file.relative_to(dir)), file.read_text())
     return tree
-
-
-def ingest(tree: Tree, name: str, content: str) -> Tree:
-    parse_tree = sql.parse(content.encode())
-    queries_tree = _parse_node_to_query(parse_tree.root_node, tree, name)
-    new_all_expressions = _get_all_expressions(queries_tree)
-
-    return Tree(
-        files=tree.files | {name: queries_tree},
-        all_expressions=tree.all_expressions | new_all_expressions,
-    )
 
 
 # BUG: Fix WITH RECURSIVE queries capture
 
 
-def _parse_node_to_query(node: sql.Node, tree: Tree, file: str) -> list[Query]:
-    queries = []
-    for select_node in sql.find_desc(node, "@query"):
+def _map_key_to_expr(exprs: list[Expression]) -> dict[tuple[str, frozenset[str]], list[Expression]]:
+    mapped = defaultdict(list)
+    for expr in exprs:
+        op_key = (str(expr), frozenset(map(str, expr.columns)))
+        mapped[op_key].append(expr)
 
-        # Capture tables
-        tables = []
-        for n in sql.find_desc(select_node, "@table"):
-            tables.append(Table(_node=n, _tree=tree, _file=file, **sql.decode_table(n), alias=sql.find_alias(n)))
-
-        # Capture columns
-        nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
-
-        tables_aliases = {t.alias: t for t in tables}
-        for col, path in nodes_columns.items():
-            table = None
-            if path["table"] in tables_aliases:
-                table = tables_aliases[path["table"]]
-            if not path["table"] and len(tables) == 1:
-                table = tables[0]
-            if table:
-                path["table"] = table.table
-                path["dataset"] = table.dataset
-
-            # TODO: resolve using data model (when no table is specified in JOIN but could be inferred)
-            # TODO: resolve when different datasets/catalogs
-            # TODO: resolve `*` into columns
-
-        # Squash multiple column nodes into single column object
-        columns_nodes = {}
-        for k, v in nodes_columns.items():
-            columns_nodes.setdefault(tuple(v.values()), []).append(k)
-
-        # Create columns
-        columns = []
-        for (d, t, c), n in columns_nodes.items():
-            columns.append(Column(_nodes=n, _tree=tree, _file=file, dataset=d, table=t, column=c))
-
-        # Capture ops
-        nodes_columns = {n: col for col in columns for n in col._nodes}
-        ops = []
-        for op_node in sql.find_desc(select_node, "@expression"):
-            op_cols = []
-            for col_node in sql.find_desc(op_node.parent, "@column"):  # type: ignore
-                if nodes_columns[col_node] not in op_cols:
-                    op_cols.append(nodes_columns[col_node])
-            ops.append(
-                Expression(_tree=tree, _file=file, _node=op_node, columns=op_cols, alias=sql.find_alias(op_node))
-            )
-
-        subqueries = _parse_node_to_query(select_node, tree=tree, file=file)
-        query = Query(_tree=tree, _file=file, _node=select_node, sources=tables + subqueries, expressions=ops)
-        queries.append(query)
-
-    return queries
+    return dict(mapped)
 
 
-def _get_all_expressions(queries: list[Query]) -> dict[tuple[str, frozenset[str]], list[Expression]]:
-    """
-    Recursively finds all expressions from a `queries` and aggregates into a dictionary
-    this will be used by logic.compare() to find similar expressions
+def _map_file_to_expr(exprs: list[Expression]) -> dict[str, list[Expression]]:
+    mapped = defaultdict(list)
+    for expr in exprs:
+        op_key = expr._file
+        mapped[op_key].append(expr)
 
-       `tuple(expression_as_str, expression_columns_as_str_sorted) = [expression1, expression2, ...]`
-    """
-
-    all_expressions = defaultdict(list)
-    for query in queries:
-        # Process expressions in current query
-        for expression in query.expressions:
-            op_key = (str(expression), frozenset(map(str, expression.columns)))
-            all_expressions[op_key].append(expression)
-
-        # Recursively process subqueries
-        nested_expressions = _get_all_expressions([s for s in query.sources if isinstance(s, Query)])
-        for key, expressions in nested_expressions.items():
-            all_expressions[key].extend(expressions)
-
-    return dict(all_expressions)
+    return dict(mapped)

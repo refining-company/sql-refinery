@@ -34,27 +34,25 @@ class Alternative:
 
 
 def compare(this: str, tree: code.Tree, threshold: float = 0.7) -> list[Alternative]:
-    # TODO: change all_expressions to be a dict of {(file, id): [expr]}} and simplify compare function
-    this_all_expressions = {k: v for k, v in tree.all_expressions.items() if any(expr._file == this for expr in v)}
-    that_all_expressions = {k: v for k, v in tree.all_expressions.items() if all(expr._file != this for expr in v)}
-
     alternatives = []
-    for this_id, this_exprs in this_all_expressions.items():
-        for that_id, that_exprs in that_all_expressions.items():
-            sim_exprs = Levenshtein.ratio(this_id[0], that_id[0])
 
+    for this_expr in tree.map_file_to_expr[this]:
+        # FIXME: calculate hash just in one place
+        this_id = (str(this_expr), frozenset(map(str, this_expr.columns)))
+        for that_id, that_exprs in tree.map_key_to_expr.items():
+            # FIXME: explicitly skip this_expr =
+            sim_exprs = Levenshtein.ratio(this_id[0], that_id[0])
             sim_cols = len(this_id[1] & that_id[1]) / len(this_id[1] | that_id[1])
             sim_total = sim_exprs * sim_cols
 
             if threshold < sim_total < 1:
-                for expr in this_exprs:
-                    alternatives.append(
-                        Alternative(
-                            reliability=len(that_exprs),
-                            similarity=sim_total,
-                            this=expr,
-                            others=that_exprs,
-                        )
+                alternatives.append(
+                    Alternative(
+                        reliability=len(that_exprs),
+                        similarity=sim_total,
+                        this=this_expr,
+                        others=that_exprs,
                     )
+                )
 
     return alternatives

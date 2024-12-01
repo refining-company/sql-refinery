@@ -77,6 +77,9 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
     if isinstance(obj, (str, int, bool, type(None))):
         return obj
 
+    if isinstance(obj, type):
+        return f"<{obj.__name__}>"
+
     # Fallback for other types
     return f"<{obj.__class__.__name__}>"
 
@@ -109,8 +112,8 @@ def capture_snapshots(init):
         sql.parse,
         simplify=simplify,
     )
-    code.ingest = _intercept(
-        code.ingest,
+    code.Tree.ingest = _intercept(
+        code.Tree.ingest,
         simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Column, code.Table)),
     )
     logic.compare = _intercept(

@@ -22,6 +22,6 @@ class Workspace:
 
     def find_inconsistencies(self, uri: str, content: str) -> list[logic.Alternative]:
         editor_file = Path(uri).name
-        self.tree = code.ingest(tree=self.tree, name=editor_file, content=content)
+        self.tree.ingest(name=editor_file, content=content)
         self._inconsistencies[uri] = logic.compare(editor_file, self.tree)
         return self._inconsistencies[uri]
