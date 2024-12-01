@@ -15,50 +15,21 @@ import tests.conftest as conftest
 
 
 def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
-    # TODO: move some complexity into __repr__ and __str__ of the dataclasses
-
-    # If the object is an instance of a terminal class, return its class name or identifier
+    # If the object is an instance of a terminal class
     if isinstance(obj, terminal):
         if isinstance(obj, sql.Node):
             return simplify(obj.text, terminal)
+        if isinstance(obj, (logic.Alternative, code.Tree, code.Query, code.Expression, code.Column, code.Table)):
+            return repr(obj)
 
         return f"<{obj.__class__.__name__}>"
 
-    # Custom expansion logic for specific classes
-    if isinstance(obj, logic.Alternative):
-        fields = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
-        return {f"{repr(obj)} = {str(obj)}": simplify(fields, terminal)}
+    # Custom expansion logic for custom data structures
+    if isinstance(obj, (logic.Alternative, code.Tree, code.Query, code.Expression, code.Column, code.Table)):
+        obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+        return {f"{repr(obj)} = {str(obj)}": simplify(obj_dict, terminal)}
 
-    if isinstance(obj, code.Tree):
-        return {
-            f"{repr(obj)} = {str(obj)}": {
-                "files": simplify(obj.files, terminal),
-                "all_expressions": simplify(obj.all_expressions, terminal),
-            }
-        }
-
-    if isinstance(obj, code.Query):
-        return {
-            f"{repr(obj)} = {str(obj)}": {
-                "expressions": simplify(obj.expressions, terminal),
-                "sources": simplify(obj.sources, terminal),
-            }
-        }
-
-    if isinstance(obj, code.Expression):
-        return {
-            f"{repr(obj)} = {str(obj)}": {
-                "columns": simplify(obj.columns, terminal),
-                "alias": obj.alias,
-            }
-        }
-
-    if isinstance(obj, code.Column):
-        return {repr(obj): simplify(obj._nodes, terminal)}
-
-    if isinstance(obj, code.Table):
-        return {repr(obj): simplify(obj._node, terminal)}
-
+    # Custom expansion logic for tree-sitter objects
     if isinstance(obj, sql.Tree):
         return [simplify(obj.root_node)]
 
@@ -140,11 +111,11 @@ def capture_snapshots(init):
     )
     code.ingest = _intercept(
         code.ingest,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree)),
+        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Column, code.Table)),
     )
     logic.compare = _intercept(
         logic.compare,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query)),
+        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table)),
     )
 
     # run the pipeline

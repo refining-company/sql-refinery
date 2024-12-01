@@ -3,745 +3,228 @@
     "files": {
       "0-accounts.sql": [
         { "Query(0-accounts.sql:26:1) = Query(0-accounts.sql:26:1)": {
-            "expressions": [
-              { "Expression(0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
-                  "columns": [
-                    { "Column(?.?.revenue)": [
-                        "revenue" ] },
-                    { "Column(?.?.contract_duration_days)": [
-                        "contract_duration_days",
-                        "contract_duration_days",
-                        "contract_duration_days" ] } ],
-                  "alias": "revenue_day" } },
-              { "Expression(0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
-                  "columns": [
-                    { "Column(?.?.revenue_core)": [
-                        "revenue_core" ] },
-                    { "Column(?.?.contract_duration_days)": [
-                        "contract_duration_days",
-                        "contract_duration_days",
-                        "contract_duration_days" ] } ],
-                  "alias": "revenue_core_day" } },
-              { "Expression(0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
-                  "columns": [
-                    { "Column(?.?.revenue_aux)": [
-                        "revenue_aux" ] },
-                    { "Column(?.?.contract_duration_days)": [
-                        "contract_duration_days",
-                        "contract_duration_days",
-                        "contract_duration_days" ] } ],
-                  "alias": "revenue_aux_day" } },
-              { "Expression(0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
-                  "columns": [
-                    { "Column(?.deals.contract_end_date)": [
-                        "d.contract_end_date",
-                        "d.contract_end_date",
-                        "d.contract_end_date" ] },
-                    { "Column(?.deals.contract_start_date)": [
-                        "d.contract_start_date",
-                        "d.contract_start_date",
-                        "d.contract_start_date" ] } ],
-                  "alias": "contract_duration_days" } },
-              { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
-                  "columns": [
-                    { "Column(?.orders.product)": [
-                        "o.product",
-                        "o.product" ] },
-                    { "Column(?.orders.value)": [
-                        "o.value",
-                        "o.value",
-                        "o.value" ] } ],
-                  "alias": "revenue_core" } },
-              { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
-                  "columns": [
-                    { "Column(?.orders.product)": [
-                        "o.product",
-                        "o.product" ] },
-                    { "Column(?.orders.value)": [
-                        "o.value",
-                        "o.value",
-                        "o.value" ] } ],
-                  "alias": "revenue_aux" } },
-              { "Expression(0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
-                  "columns": [
-                    { "Column(?.orders.value)": [
-                        "o.value",
-                        "o.value",
-                        "o.value" ] } ],
-                  "alias": "revenue" } } ],
             "sources": [
-              { "Table(?.orders as o)": "orders" },
-              { "Table(?.deals as d)": "deals" },
               { "Query(0-accounts.sql:32:5) = Query(0-accounts.sql:32:5)": {
+                  "sources": [
+                    "Table(?.orders as o)",
+                    "Table(?.deals as d)" ],
                   "expressions": [
                     { "Expression(0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
-                          { "Column(?.deals.contract_end_date)": [
-                              "d.contract_end_date",
-                              "d.contract_end_date",
-                              "d.contract_end_date" ] },
-                          { "Column(?.deals.contract_start_date)": [
-                              "d.contract_start_date",
-                              "d.contract_start_date",
-                              "d.contract_start_date" ] } ],
+                          "Column(?.deals.contract_end_date)",
+                          "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
                     { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
-                          { "Column(?.orders.product)": [
-                              "o.product",
-                              "o.product" ] },
-                          { "Column(?.orders.value)": [
-                              "o.value",
-                              "o.value",
-                              "o.value" ] } ],
+                          "Column(?.orders.product)",
+                          "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
                     { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
-                          { "Column(?.orders.product)": [
-                              "o.product",
-                              "o.product" ] },
-                          { "Column(?.orders.value)": [
-                              "o.value",
-                              "o.value",
-                              "o.value" ] } ],
+                          "Column(?.orders.product)",
+                          "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
                     { "Expression(0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
-                          { "Column(?.orders.value)": [
-                              "o.value",
-                              "o.value",
-                              "o.value" ] } ],
-                        "alias": "revenue" } } ],
-                  "sources": [
-                    { "Table(?.orders as o)": "orders" },
-                    { "Table(?.deals as d)": "deals" } ] } } ] } },
-        { "Query(0-accounts.sql:32:5) = Query(0-accounts.sql:32:5)": {
+                          "Column(?.orders.value)" ],
+                        "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+              { "Expression(0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
-                    { "Column(?.deals.contract_end_date)": [
-                        "d.contract_end_date",
-                        "d.contract_end_date",
-                        "d.contract_end_date" ] },
-                    { "Column(?.deals.contract_start_date)": [
-                        "d.contract_start_date",
-                        "d.contract_start_date",
-                        "d.contract_start_date" ] } ],
-                  "alias": "contract_duration_days" } },
-              { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    "Column(?.?.revenue)",
+                    "Column(?.?.contract_duration_days)" ],
+                  "alias": "revenue_day" } },
+              { "Expression(0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
-                    { "Column(?.orders.product)": [
-                        "o.product",
-                        "o.product" ] },
-                    { "Column(?.orders.value)": [
-                        "o.value",
-                        "o.value",
-                        "o.value" ] } ],
-                  "alias": "revenue_core" } },
-              { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    "Column(?.?.revenue_core)",
+                    "Column(?.?.contract_duration_days)" ],
+                  "alias": "revenue_core_day" } },
+              { "Expression(0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
-                    { "Column(?.orders.product)": [
-                        "o.product",
-                        "o.product" ] },
-                    { "Column(?.orders.value)": [
-                        "o.value",
-                        "o.value",
-                        "o.value" ] } ],
-                  "alias": "revenue_aux" } },
-              { "Expression(0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
-                  "columns": [
-                    { "Column(?.orders.value)": [
-                        "o.value",
-                        "o.value",
-                        "o.value" ] } ],
-                  "alias": "revenue" } } ],
-            "sources": [
-              { "Table(?.orders as o)": "orders" },
-              { "Table(?.deals as d)": "deals" } ] } },
+                    "Column(?.?.revenue_aux)",
+                    "Column(?.?.contract_duration_days)" ],
+                  "alias": "revenue_aux_day" } } ] } },
         { "Query(0-accounts.sql:51:1) = Query(0-accounts.sql:51:1)": {
-            "expressions": [
-              { "Expression(0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
-                  "columns": [
-                    { "Column(?.t.deals)": [
-                        "t.deals" ] } ],
-                  "alias": "deals" } },
-              { "Expression(0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
-                  "columns": [
-                    { "Column(?.t.revenue_core)": [
-                        "t.revenue_core" ] } ],
-                  "alias": "revenue_core" } },
-              { "Expression(0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
-                  "columns": [
-                    { "Column(?.t.revenue_aux)": [
-                        "t.revenue_aux" ] } ],
-                  "alias": "revenue_aux" } },
-              { "Expression(0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
-                  "columns": [
-                    { "Column(?.t.revenue)": [
-                        "t.revenue" ] } ],
-                  "alias": "revenue" } },
-              { "Expression(0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
-                  "columns": [
-                    { "Column(?.?.date_day)": [
-                        "date_day" ] } ],
-                  "alias": "date_month" } },
-              { "Expression(0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
-                  "columns": [
-                    { "Column(?.deals_signed.deal_id)": [
-                        "ds.deal_id" ] } ],
-                  "alias": "deals" } },
-              { "Expression(0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
-                  "columns": [
-                    { "Column(?.deals_signed.revenue_core_day)": [
-                        "ds.revenue_core_day" ] } ],
-                  "alias": "revenue_core" } },
-              { "Expression(0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
-                  "columns": [
-                    { "Column(?.deals_signed.revenue_aux_day)": [
-                        "ds.revenue_aux_day" ] } ],
-                  "alias": "revenue_aux" } },
-              { "Expression(0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
-                  "columns": [
-                    { "Column(?.deals_signed.revenue_day)": [
-                        "ds.revenue_day" ] } ],
-                  "alias": "revenue" } },
-              { "Expression(0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
-                  "columns": [
-                    { "Column(?.date_ranges.date_day)": [
-                        "dr.date_day",
-                        "dr.date_day",
-                        "dr.date_day",
-                        "dr.date_day" ] },
-                    { "Column(?.deals_signed.contract_start_date)": [
-                        "ds.contract_start_date" ] },
-                    { "Column(?.deals_signed.contract_end_date)": [
-                        "ds.contract_end_date" ] } ],
-                  "alias": null } } ],
             "sources": [
-              { "Table(?.date_ranges as dr)": "date_ranges" },
-              { "Table(?.deals_signed as ds)": "deals_signed" },
               { "Query(0-accounts.sql:59:5) = Query(0-accounts.sql:59:5)": {
+                  "sources": [
+                    "Table(?.date_ranges as dr)",
+                    "Table(?.deals_signed as ds)" ],
                   "expressions": [
                     { "Expression(0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
-                          { "Column(?.?.date_day)": [
-                              "date_day" ] } ],
+                          "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
                     { "Expression(0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
-                          { "Column(?.deals_signed.deal_id)": [
-                              "ds.deal_id" ] } ],
+                          "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
                     { "Expression(0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
-                          { "Column(?.deals_signed.revenue_core_day)": [
-                              "ds.revenue_core_day" ] } ],
+                          "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
                     { "Expression(0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
-                          { "Column(?.deals_signed.revenue_aux_day)": [
-                              "ds.revenue_aux_day" ] } ],
+                          "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
                     { "Expression(0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
-                          { "Column(?.deals_signed.revenue_day)": [
-                              "ds.revenue_day" ] } ],
+                          "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
                     { "Expression(0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
-                          { "Column(?.date_ranges.date_day)": [
-                              "dr.date_day",
-                              "dr.date_day",
-                              "dr.date_day",
-                              "dr.date_day" ] },
-                          { "Column(?.deals_signed.contract_start_date)": [
-                              "ds.contract_start_date" ] },
-                          { "Column(?.deals_signed.contract_end_date)": [
-                              "ds.contract_end_date" ] } ],
-                        "alias": null } } ],
-                  "sources": [
-                    { "Table(?.date_ranges as dr)": "date_ranges" },
-                    { "Table(?.deals_signed as ds)": "deals_signed" } ] } } ] } },
-        { "Query(0-accounts.sql:59:5) = Query(0-accounts.sql:59:5)": {
+                          "Column(?.date_ranges.date_day)",
+                          "Column(?.deals_signed.contract_start_date)",
+                          "Column(?.deals_signed.contract_end_date)" ],
+                        "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+              { "Expression(0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
-                    { "Column(?.?.date_day)": [
-                        "date_day" ] } ],
-                  "alias": "date_month" } },
-              { "Expression(0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
-                  "columns": [
-                    { "Column(?.deals_signed.deal_id)": [
-                        "ds.deal_id" ] } ],
+                    "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+              { "Expression(0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
-                    { "Column(?.deals_signed.revenue_core_day)": [
-                        "ds.revenue_core_day" ] } ],
+                    "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+              { "Expression(0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
-                    { "Column(?.deals_signed.revenue_aux_day)": [
-                        "ds.revenue_aux_day" ] } ],
+                    "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+              { "Expression(0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
-                    { "Column(?.deals_signed.revenue_day)": [
-                        "ds.revenue_day" ] } ],
-                  "alias": "revenue" } },
-              { "Expression(0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
-                  "columns": [
-                    { "Column(?.date_ranges.date_day)": [
-                        "dr.date_day",
-                        "dr.date_day",
-                        "dr.date_day",
-                        "dr.date_day" ] },
-                    { "Column(?.deals_signed.contract_start_date)": [
-                        "ds.contract_start_date" ] },
-                    { "Column(?.deals_signed.contract_end_date)": [
-                        "ds.contract_end_date" ] } ],
-                  "alias": null } } ],
-            "sources": [
-              { "Table(?.date_ranges as dr)": "date_ranges" },
-              { "Table(?.deals_signed as ds)": "deals_signed" } ] } },
+                    "Column(?.t.revenue)" ],
+                  "alias": "revenue" } } ] } },
         { "Query(0-accounts.sql:79:1) = Query(0-accounts.sql:79:1)": {
-            "expressions": [
-              { "Expression(0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
-                  "columns": [
-                    { "Column(?.t.revenue_12m)": [
-                        "t.revenue_12m",
-                        "t.revenue_12m",
-                        "t.revenue_12m",
-                        "t.revenue_12m" ] } ],
-                  "alias": "account_size" } },
-              { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
-                  "columns": [
-                    { "Column(?.countries.region)": [
-                        "c.region",
-                        "c.region" ] } ],
-                  "alias": "region_cluster" } },
-              { "Expression(0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
-                  "columns": [
-                    { "Column(?.accounts.revenue)": [
-                        "revenue",
-                        "revenue" ] },
-                    { "Column(?.accounts.account_id)": [
-                        "account_id",
-                        "account_id",
-                        "account_id" ] },
-                    { "Column(?.accounts.date_month)": [
-                        "date_month",
-                        "date_month" ] } ],
-                  "alias": "revenue_12m" } } ],
             "sources": [
-              { "Table(?.accounts_revenue)": "accounts_revenue" },
-              { "Table(?.accounts)": "accounts" },
-              { "Table(?.countries as c)": "countries" },
               { "Query(0-accounts.sql:88:5) = Query(0-accounts.sql:88:5)": {
+                  "sources": [
+                    "Table(?.accounts_revenue)",
+                    "Table(?.accounts)",
+                    "Table(?.countries as c)" ],
                   "expressions": [
                     { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
-                          { "Column(?.countries.region)": [
-                              "c.region",
-                              "c.region" ] } ],
+                          "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
                     { "Expression(0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
-                          { "Column(?.accounts.revenue)": [
-                              "revenue",
-                              "revenue" ] },
-                          { "Column(?.accounts.account_id)": [
-                              "account_id",
-                              "account_id",
-                              "account_id" ] },
-                          { "Column(?.accounts.date_month)": [
-                              "date_month",
-                              "date_month" ] } ],
-                        "alias": "revenue_12m" } } ],
-                  "sources": [
-                    { "Table(?.accounts_revenue)": "accounts_revenue" },
-                    { "Table(?.accounts)": "accounts" },
-                    { "Table(?.countries as c)": "countries" } ] } } ] } },
-        { "Query(0-accounts.sql:88:5) = Query(0-accounts.sql:88:5)": {
+                          "Column(?.accounts.revenue)",
+                          "Column(?.accounts.account_id)",
+                          "Column(?.accounts.date_month)" ],
+                        "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
-                    { "Column(?.countries.region)": [
-                        "c.region",
-                        "c.region" ] } ],
-                  "alias": "region_cluster" } },
-              { "Expression(0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
-                  "columns": [
-                    { "Column(?.accounts.revenue)": [
-                        "revenue",
-                        "revenue" ] },
-                    { "Column(?.accounts.account_id)": [
-                        "account_id",
-                        "account_id",
-                        "account_id" ] },
-                    { "Column(?.accounts.date_month)": [
-                        "date_month",
-                        "date_month" ] } ],
-                  "alias": "revenue_12m" } } ],
-            "sources": [
-              { "Table(?.accounts_revenue)": "accounts_revenue" },
-              { "Table(?.accounts)": "accounts" },
-              { "Table(?.countries as c)": "countries" } ] } } ] },
+                    "Column(?.t.revenue_12m)" ],
+                  "alias": "account_size" } } ] } } ] },
     "all_expressions": {
       "('Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue)'))": [
         { "Expression(0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
-              { "Column(?.?.revenue)": [
-                  "revenue" ] },
-              { "Column(?.?.contract_duration_days)": [
-                  "contract_duration_days",
-                  "contract_duration_days",
-                  "contract_duration_days" ] } ],
+              "Column(?.?.revenue)",
+              "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_core)'))": [
         { "Expression(0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
-              { "Column(?.?.revenue_core)": [
-                  "revenue_core" ] },
-              { "Column(?.?.contract_duration_days)": [
-                  "contract_duration_days",
-                  "contract_duration_days",
-                  "contract_duration_days" ] } ],
+              "Column(?.?.revenue_core)",
+              "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_aux)'))": [
         { "Expression(0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
-              { "Column(?.?.revenue_aux)": [
-                  "revenue_aux" ] },
-              { "Column(?.?.contract_duration_days)": [
-                  "contract_duration_days",
-                  "contract_duration_days",
-                  "contract_duration_days" ] } ],
+              "Column(?.?.revenue_aux)",
+              "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } } ],
       "('Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', ('Column(?.deals.contract_end_date)', 'Column(?.deals.contract_start_date)'))": [
         { "Expression(0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
-              { "Column(?.deals.contract_end_date)": [
-                  "d.contract_end_date",
-                  "d.contract_end_date",
-                  "d.contract_end_date" ] },
-              { "Column(?.deals.contract_start_date)": [
-                  "d.contract_start_date",
-                  "d.contract_start_date",
-                  "d.contract_start_date" ] } ],
-            "alias": "contract_duration_days" } },
-        { "Expression(0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
-            "columns": [
-              { "Column(?.deals.contract_end_date)": [
-                  "d.contract_end_date",
-                  "d.contract_end_date",
-                  "d.contract_end_date" ] },
-              { "Column(?.deals.contract_start_date)": [
-                  "d.contract_start_date",
-                  "d.contract_start_date",
-                  "d.contract_start_date" ] } ],
-            "alias": "contract_duration_days" } },
-        { "Expression(0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
-            "columns": [
-              { "Column(?.deals.contract_end_date)": [
-                  "d.contract_end_date",
-                  "d.contract_end_date",
-                  "d.contract_end_date" ] },
-              { "Column(?.deals.contract_start_date)": [
-                  "d.contract_start_date",
-                  "d.contract_start_date",
-                  "d.contract_start_date" ] } ],
+              "Column(?.deals.contract_end_date)",
+              "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
         { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
-              { "Column(?.orders.product)": [
-                  "o.product",
-                  "o.product" ] },
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
-            "alias": "revenue_core" } },
-        { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
-            "columns": [
-              { "Column(?.orders.product)": [
-                  "o.product",
-                  "o.product" ] },
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
-            "alias": "revenue_core" } },
-        { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
-            "columns": [
-              { "Column(?.orders.product)": [
-                  "o.product",
-                  "o.product" ] },
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
+              "Column(?.orders.product)",
+              "Column(?.orders.value)" ],
             "alias": "revenue_core" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
         { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
-              { "Column(?.orders.product)": [
-                  "o.product",
-                  "o.product" ] },
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
-            "alias": "revenue_aux" } },
-        { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
-            "columns": [
-              { "Column(?.orders.product)": [
-                  "o.product",
-                  "o.product" ] },
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
-            "alias": "revenue_aux" } },
-        { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
-            "columns": [
-              { "Column(?.orders.product)": [
-                  "o.product",
-                  "o.product" ] },
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
+              "Column(?.orders.product)",
+              "Column(?.orders.value)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.orders.value))))', ('Column(?.orders.value)',))": [
         { "Expression(0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
-            "alias": "revenue" } },
-        { "Expression(0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
-            "columns": [
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
-            "alias": "revenue" } },
-        { "Expression(0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
-            "columns": [
-              { "Column(?.orders.value)": [
-                  "o.value",
-                  "o.value",
-                  "o.value" ] } ],
+              "Column(?.orders.value)" ],
             "alias": "revenue" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.deals))))', ('Column(?.t.deals)',))": [
         { "Expression(0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
-              { "Column(?.t.deals)": [
-                  "t.deals" ] } ],
+              "Column(?.t.deals)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))', ('Column(?.t.revenue_core)',))": [
         { "Expression(0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
-              { "Column(?.t.revenue_core)": [
-                  "t.revenue_core" ] } ],
+              "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))', ('Column(?.t.revenue_aux)',))": [
         { "Expression(0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
-              { "Column(?.t.revenue_aux)": [
-                  "t.revenue_aux" ] } ],
+              "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))', ('Column(?.t.revenue)',))": [
         { "Expression(0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
-              { "Column(?.t.revenue)": [
-                  "t.revenue" ] } ],
+              "Column(?.t.revenue)" ],
             "alias": "revenue" } } ],
       "(\"Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))\", ('Column(?.?.date_day)',))": [
         { "Expression(0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
-              { "Column(?.?.date_day)": [
-                  "date_day" ] } ],
-            "alias": "date_month" } },
-        { "Expression(0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
-            "columns": [
-              { "Column(?.?.date_day)": [
-                  "date_day" ] } ],
-            "alias": "date_month" } },
-        { "Expression(0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
-            "columns": [
-              { "Column(?.?.date_day)": [
-                  "date_day" ] } ],
+              "Column(?.?.date_day)" ],
             "alias": "date_month" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))', ('Column(?.deals_signed.deal_id)',))": [
         { "Expression(0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
-              { "Column(?.deals_signed.deal_id)": [
-                  "ds.deal_id" ] } ],
-            "alias": "deals" } },
-        { "Expression(0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
-            "columns": [
-              { "Column(?.deals_signed.deal_id)": [
-                  "ds.deal_id" ] } ],
-            "alias": "deals" } },
-        { "Expression(0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
-            "columns": [
-              { "Column(?.deals_signed.deal_id)": [
-                  "ds.deal_id" ] } ],
+              "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))', ('Column(?.deals_signed.revenue_core_day)',))": [
         { "Expression(0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
-              { "Column(?.deals_signed.revenue_core_day)": [
-                  "ds.revenue_core_day" ] } ],
-            "alias": "revenue_core" } },
-        { "Expression(0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
-            "columns": [
-              { "Column(?.deals_signed.revenue_core_day)": [
-                  "ds.revenue_core_day" ] } ],
-            "alias": "revenue_core" } },
-        { "Expression(0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
-            "columns": [
-              { "Column(?.deals_signed.revenue_core_day)": [
-                  "ds.revenue_core_day" ] } ],
+              "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))', ('Column(?.deals_signed.revenue_aux_day)',))": [
         { "Expression(0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
-              { "Column(?.deals_signed.revenue_aux_day)": [
-                  "ds.revenue_aux_day" ] } ],
-            "alias": "revenue_aux" } },
-        { "Expression(0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
-            "columns": [
-              { "Column(?.deals_signed.revenue_aux_day)": [
-                  "ds.revenue_aux_day" ] } ],
-            "alias": "revenue_aux" } },
-        { "Expression(0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
-            "columns": [
-              { "Column(?.deals_signed.revenue_aux_day)": [
-                  "ds.revenue_aux_day" ] } ],
+              "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))', ('Column(?.deals_signed.revenue_day)',))": [
         { "Expression(0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
-              { "Column(?.deals_signed.revenue_day)": [
-                  "ds.revenue_day" ] } ],
-            "alias": "revenue" } },
-        { "Expression(0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
-            "columns": [
-              { "Column(?.deals_signed.revenue_day)": [
-                  "ds.revenue_day" ] } ],
-            "alias": "revenue" } },
-        { "Expression(0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
-            "columns": [
-              { "Column(?.deals_signed.revenue_day)": [
-                  "ds.revenue_day" ] } ],
+              "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } } ],
       "('Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', ('Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)'))": [
         { "Expression(0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
-              { "Column(?.date_ranges.date_day)": [
-                  "dr.date_day",
-                  "dr.date_day",
-                  "dr.date_day",
-                  "dr.date_day" ] },
-              { "Column(?.deals_signed.contract_start_date)": [
-                  "ds.contract_start_date" ] },
-              { "Column(?.deals_signed.contract_end_date)": [
-                  "ds.contract_end_date" ] } ],
-            "alias": null } },
-        { "Expression(0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
-            "columns": [
-              { "Column(?.date_ranges.date_day)": [
-                  "dr.date_day",
-                  "dr.date_day",
-                  "dr.date_day",
-                  "dr.date_day" ] },
-              { "Column(?.deals_signed.contract_start_date)": [
-                  "ds.contract_start_date" ] },
-              { "Column(?.deals_signed.contract_end_date)": [
-                  "ds.contract_end_date" ] } ],
-            "alias": null } },
-        { "Expression(0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
-            "columns": [
-              { "Column(?.date_ranges.date_day)": [
-                  "dr.date_day",
-                  "dr.date_day",
-                  "dr.date_day",
-                  "dr.date_day" ] },
-              { "Column(?.deals_signed.contract_start_date)": [
-                  "ds.contract_start_date" ] },
-              { "Column(?.deals_signed.contract_end_date)": [
-                  "ds.contract_end_date" ] } ],
+              "Column(?.date_ranges.date_day)",
+              "Column(?.deals_signed.contract_start_date)",
+              "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))\", ('Column(?.t.revenue_12m)',))": [
         { "Expression(0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
-              { "Column(?.t.revenue_12m)": [
-                  "t.revenue_12m",
-                  "t.revenue_12m",
-                  "t.revenue_12m",
-                  "t.revenue_12m" ] } ],
+              "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))\", ('Column(?.countries.region)',))": [
         { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
-              { "Column(?.countries.region)": [
-                  "c.region",
-                  "c.region" ] } ],
-            "alias": "region_cluster" } },
-        { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
-            "columns": [
-              { "Column(?.countries.region)": [
-                  "c.region",
-                  "c.region" ] } ],
-            "alias": "region_cluster" } },
-        { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
-            "columns": [
-              { "Column(?.countries.region)": [
-                  "c.region",
-                  "c.region" ] } ],
+              "Column(?.countries.region)" ],
             "alias": "region_cluster" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', ('Column(?.accounts.account_id)', 'Column(?.accounts.date_month)', 'Column(?.accounts.revenue)'))": [
         { "Expression(0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
-              { "Column(?.accounts.revenue)": [
-                  "revenue",
-                  "revenue" ] },
-              { "Column(?.accounts.account_id)": [
-                  "account_id",
-                  "account_id",
-                  "account_id" ] },
-              { "Column(?.accounts.date_month)": [
-                  "date_month",
-                  "date_month" ] } ],
-            "alias": "revenue_12m" } },
-        { "Expression(0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
-            "columns": [
-              { "Column(?.accounts.revenue)": [
-                  "revenue",
-                  "revenue" ] },
-              { "Column(?.accounts.account_id)": [
-                  "account_id",
-                  "account_id",
-                  "account_id" ] },
-              { "Column(?.accounts.date_month)": [
-                  "date_month",
-                  "date_month" ] } ],
-            "alias": "revenue_12m" } },
-        { "Expression(0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
-            "columns": [
-              { "Column(?.accounts.revenue)": [
-                  "revenue",
-                  "revenue" ] },
-              { "Column(?.accounts.account_id)": [
-                  "account_id",
-                  "account_id",
-                  "account_id" ] },
-              { "Column(?.accounts.date_month)": [
-                  "date_month",
-                  "date_month" ] } ],
+              "Column(?.accounts.revenue)",
+              "Column(?.accounts.account_id)",
+              "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } } ] } } }

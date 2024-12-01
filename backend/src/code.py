@@ -132,6 +132,9 @@ def ingest(tree: Tree, name: str, content: str) -> Tree:
     )
 
 
+# BUG: Fix WITH RECURSIVE queries capture
+
+
 def _parse_node_to_query(node: sql.Node, tree: Tree, file: str) -> list[Query]:
     queries = []
     for select_node in sql.find_desc(node, "@query"):

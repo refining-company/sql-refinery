@@ -30,11 +30,9 @@ def find_desc(node: tree_sitter.Node, types: str | list[str], local: bool = True
         if is_type(child, types):
             results.append(child)
 
-        # go outside of scope
-        if local and is_type(child, types="@scope"):
-            continue
-
-        results += find_desc(child, types, local)
+        # go outside of local scope
+        if not (local and is_type(child, types=["@scope", "@query"])):
+            results += find_desc(child, types, local)
 
     return results
 
@@ -44,7 +42,7 @@ def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True)
         return None
 
     # going outside of scope
-    if local and is_type(node, types="@scope"):
+    if local and is_type(node, types=["@scope", "@query"]):
         return None
 
     if is_type(node.parent, types):
@@ -74,6 +72,7 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     return False
 
 
+# find 
 def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, original: bool = True) -> str | None:
     node_type = node.type.lower()
 
