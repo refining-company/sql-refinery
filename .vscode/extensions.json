@@ -12,7 +12,6 @@
     "ms-python.debugpy",
     "ms-python.python",
     "ms-python.vscode-pylance",
-    "ms-vscode.extension-test-runner",
-    "ms-vscode.vscode-speech"
+    "ms-vscode.extension-test-runner"
   ]
 }
