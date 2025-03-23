@@ -3,6 +3,7 @@
 import sys
 import argparse
 import urllib.parse
+from pathlib import Path
 
 import pygls.server
 import lsprotocol.types as lsp
@@ -17,11 +18,14 @@ server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-de
 session = workspace.Workspace()
 
 
-def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
-    inconsistencies = session.find_inconsistencies(content=document, uri=uri)
+def analyse_document(uri: str) -> tuple[list[lsp.Diagnostic], list[lsp.CodeLens]]:
+    """UI for find_inconsistencies"""
+    inconsistencies = session.find_inconsistencies(path=get_path(uri))
 
     diagnostics = []
+    code_lenses = []
     for inc in inconsistencies:
+        # Create diagnostic
         range = lsp.Range(lsp.Position(*inc.this._node.start_point), lsp.Position(*inc.this._node.end_point))
         diagnostic = lsp.Diagnostic(
             range=range,
@@ -31,51 +35,50 @@ def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
         )
         diagnostics.append(diagnostic)
 
-    return diagnostics
+        # Create code lens
+        title = f"Alternatives found: {len(inc.others)}"
+        other_locations = []
+        for other in inc.others:
+            location_uri = other._file.as_uri()
+            location_range = lsp.Range(lsp.Position(*other._node.start_point), lsp.Position(*other._node.end_point))
+            other_locations.append({"uri": location_uri, "position": location_range.start})
+
+        code_lens = lsp.CodeLens(
+            range=range,
+            command=lsp.Command(
+                title=title,
+                command="sqlRefinery.peekLocations",
+                arguments=[uri, range.end, other_locations, "peek"],
+            ),
+        )
+        code_lenses.append(code_lens)
+
+    return diagnostics, code_lenses
 
 
 @server.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
     log.info(f"Opening file {document.uri}")
-    diagnostics = analyse(document.source, uri=params.text_document.uri)
+    session.ingest_file(path=get_path(document.uri), content=document.source)
+
+    diagnostics, _ = analyse_document(document.uri)
     server.publish_diagnostics(document.uri, diagnostics)
 
 
 @server.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
 def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
-    log.info("Refreshing file")
-    diagnostics = analyse(document.source, uri=params.text_document.uri)
-    server.publish_diagnostics(document.uri, diagnostics)
+    log.info(f"Updating file {document.uri}")
+    log.warning(f"File {document.uri} changed. Change handling is not implemented yet.")
 
 
 @server.feature(lsp.TEXT_DOCUMENT_CODE_LENS)
 def code_lens_provider(params: lsp.CodeLensParams):
-    document_uri = params.text_document.uri
-    code_lenses = []
+    document = server.workspace.get_text_document(params.text_document.uri)
+    log.info(f"Providing code lenses for file {document.uri}")
 
-    # Retrieve diagnostics for the document
-    inconsistencies = session._inconsistencies.get(document_uri, [])
-    for inc in inconsistencies:
-        title = f"Alternatives found: {len(inc.others)}"
-        range = lsp.Range(lsp.Position(*inc.this._node.start_point), lsp.Position(*inc.this._node.end_point))
-        other_locations = []
-        for other in inc.others:
-            location_uri = (session.path_codebase / other._file).resolve().as_uri()
-            location_range = lsp.Range(lsp.Position(*other._node.start_point), lsp.Position(*other._node.end_point))
-            other_locations.append({"uri": location_uri, "position": location_range.start})
-
-        # Create the CodeLens entry
-        code_lens = lsp.CodeLens(
-            range=range,
-            command=lsp.Command(
-                title=title,
-                command="sqlRefinery.peekLocations",
-                arguments=[document_uri, range.end, other_locations, "peek"],
-            ),
-        )
-        code_lenses.append(code_lens)
+    _, code_lenses = analyse_document(document.uri)
     return code_lenses
 
 
@@ -85,12 +88,10 @@ def initialize(params: lsp.InitializeParams) -> None:
 
     if params.workspace_folders:
         assert len(params.workspace_folders) == 1, log.error("Only one workspace folder is supported")
-        workspace_uri = params.workspace_folders[0].uri
-        workspace_path = urllib.parse.urlparse(workspace_uri).path
-        workspace_path = urllib.parse.unquote(workspace_path)
+        workspace_path = get_path(params.workspace_folders[0].uri)
 
         log.info(f"Loading workspace folder {workspace_path}")
-        session.load_codebase(workspace_path)
+        session.ingest_folder(workspace_path)
 
 
 def main(start_debug: bool = False, start_server: bool = False):
@@ -101,6 +102,13 @@ def main(start_debug: bool = False, start_server: bool = False):
     if start_server:
         log.info(f"Starting LSP server with params {sys.argv}")
         server.start_io()
+
+
+def get_path(uri: str) -> Path:
+    path = urllib.parse.urlparse(uri).path
+    path = urllib.parse.unquote(path)
+    path = Path(path)
+    return path
 
 
 if __name__ == "__main__":

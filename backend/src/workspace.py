@@ -9,23 +9,23 @@ log = logger.get(__name__)
 
 
 class Workspace:
-    path_codebase: Path
     tree: code.Tree
-    _inconsistencies: dict[str, list[logic.Alternative]]
 
     def __init__(self):
-        self._inconsistencies = {}
         self.tree = code.Tree()
 
-    def load_codebase(self, path: str):
-        self.path_codebase = Path(path).resolve()
-        assert self.path_codebase.is_dir(), f"Path to codebase '{path}' is not a directory"
-        self.tree = code.from_dir(self.path_codebase)
+    def ingest_folder(self, path: Path):
+        assert path, f"Path to codebase '{path}' is not a directory"
 
-        log.info(f"Loaded codebase from {path}")
+        for file in path.glob("**/*.sql"):
+            self.ingest_file(file, file.read_text())
 
-    def find_inconsistencies(self, uri: str, content: str) -> list[logic.Alternative]:
-        editor_file = Path(uri).name
-        self.tree.ingest(name=editor_file, content=content)
-        self._inconsistencies[uri] = logic.compare(editor_file, self.tree)
-        return self._inconsistencies[uri]
+        log.info(f"Injested folder {path}")
+
+    def ingest_file(self, path: Path, content: str):
+        self.tree.ingest_file(path=path, content=content)
+        log.info(f"Ingested file {path}")
+
+    def find_inconsistencies(self, path: Path) -> list[logic.Alternative]:
+        log.info(f"Finding inconsistencies for file {path}")
+        return logic.compare(path, self.tree)

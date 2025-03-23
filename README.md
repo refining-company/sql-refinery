@@ -4,7 +4,7 @@
 
    - Fix testing of standalone server by emulating LSP events
 
-   - `Workspace` should create and maintain one `code.Tree` and `logic` should compare one file against the rest.
+   - Try fixing debugger and devops so it restarts server on save
 
    - `Workspace` should manage file parsing pipeline. For that it should have
      `pipeline = [sql.parse, code.parse, logic.parse]` and `load_codebase` should moves files through each stage.
@@ -12,9 +12,6 @@
 
    - `Workspace` should contain entire state from all stages and make it available to functions of the pipeline
      (`sql.parse`, `code.parse`, `logic.parse`, others).
-
-   - `Workspace` should introduce `ingest_file` that runs the file through the pipeline and updates the state.
-     `load_codebase` shoule be renamed to `ingest` and use `ingest_file`.
 
 1. Backlog
 
@@ -42,5 +39,3 @@
    - update `test_pipeline.py:simplify()` to run through all fields of dataclasses and simplify them recursively.
 
    - `code` data structures should have `__hash__` potentially from making a `frozen` dataclass.
-
-   - Implement proper logging with `logger` instead of `print`.

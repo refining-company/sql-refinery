@@ -16,7 +16,9 @@
 """
 
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+from pathlib import Path
 
 import Levenshtein
 from src import code
@@ -33,7 +35,7 @@ class Alternative:
         return "Alternative({}:{})".format(repr(self.this), ", ".join(map(repr, self.others)))
 
 
-def compare(this: str, tree: code.Tree, threshold: float = 0.7) -> list[Alternative]:
+def compare(this: Path, tree: code.Tree, threshold: float = 0.7) -> list[Alternative]:
     alternatives = []
 
     for this_expr in tree.map_file_to_expr[this]:

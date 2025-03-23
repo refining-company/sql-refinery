@@ -18,7 +18,7 @@ from src import sql
 
 @dataclass(frozen=True)
 class Column:
-    _file: str
+    _file: Path
     _tree: Tree
     _nodes: list[sql.Node]
 
@@ -38,7 +38,7 @@ class Column:
 
 @dataclass(frozen=True)
 class Expression:
-    _file: str
+    _file: Path
     _tree: Tree
     _node: sql.Node
 
@@ -75,7 +75,7 @@ class Expression:
 
 @dataclass(frozen=True)
 class Table:
-    _file: str
+    _file: Path
     _tree: Tree
     _node: sql.Node
 
@@ -94,7 +94,7 @@ class Table:
 
 @dataclass(frozen=True)
 class Query:
-    _file: str
+    _file: Path
     _tree: Tree
     _node: sql.Node
 
@@ -107,17 +107,17 @@ class Query:
 
 @dataclass()
 class Tree:
-    files: dict[str, list[Query]] = field(default_factory=dict)
+    files: dict[Path, list[Query]] = field(default_factory=dict)
     index: dict[type, list[Query | Expression | Column | Table]] = field(default_factory=dict)
     map_key_to_expr: dict[tuple[str, frozenset[str]], list[Expression]] = field(default_factory=dict)
-    map_file_to_expr: dict[str, list[Expression]] = field(default_factory=dict)
+    map_file_to_expr: dict[Path, list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
         return "Tree({})".format(", ".join(map(str, self.files)))
 
-    def ingest(self, name: str, content: str) -> Tree:
+    def ingest_file(self, path: Path, content: str) -> Tree:
         parse_tree = sql.parse(content.encode())
-        self.files[name] = self._parse_node(parse_tree.root_node, name)
+        self.files[path] = self._parse_node(parse_tree.root_node, path)
         self.map_key_to_expr |= _map_key_to_expr(self.index[Expression])  # type: ignore
         self.map_file_to_expr |= _map_file_to_expr(self.index[Expression])  # type: ignore
 
@@ -128,7 +128,7 @@ class Tree:
         self.index.setdefault(cls, []).append(obj)
         return obj
 
-    def _parse_node(self, node: sql.Node, file: str) -> list[Query]:
+    def _parse_node(self, node: sql.Node, file: Path) -> list[Query]:
         queries = []
         for select_node in sql.find_desc(node, "@query"):
 
@@ -182,13 +182,6 @@ class Tree:
             queries.append(query)
 
         return queries
-
-
-def from_dir(dir: Path) -> Tree:
-    tree = Tree()
-    for file in dir.glob("**/*.sql"):
-        tree.ingest(str(file.relative_to(dir)), file.read_text())
-    return tree
 
 
 # BUG: Fix WITH RECURSIVE queries capture
