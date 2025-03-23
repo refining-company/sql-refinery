@@ -1,6 +1,6 @@
-"""Workspace manages the code online and offline analysis
-"""
+"""Workspace manages the code online and offline analysis"""
 
+import sys
 from pathlib import Path
 from src import code
 from src import logic
@@ -19,6 +19,8 @@ class Workspace:
         self.path_codebase = Path(path).resolve()
         assert self.path_codebase.is_dir(), f"Path to codebase '{path}' is not a directory"
         self.tree = code.from_dir(self.path_codebase)
+
+        print(f"Loaded codebase from {path}", file=sys.stderr)
 
     def find_inconsistencies(self, uri: str, content: str) -> list[logic.Alternative]:
         editor_file = Path(uri).name

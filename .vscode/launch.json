@@ -16,15 +16,14 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}/frontend-vscode",
         "--disable-extensions",
-        "--no-sandbox",
+        "--extensionDevelopmentPath=${workspaceFolder}/frontend-vscode",
+        "--folder-uri=${workspaceFolder}/backend/tests/inputs/codebase/",
         "file:${workspaceFolder}/backend/tests/inputs/editor.sql"
       ],
       "outFiles": ["${workspaceFolder}/frontend-vscode/dist/**/*.js"],
       "sourceMaps": true,
       "preLaunchTask": "${defaultBuildTask}",
-      "cwd": "${workspaceFolder}/frontend-vscode",
       "presentation": { "hidden": true }
     },
     {

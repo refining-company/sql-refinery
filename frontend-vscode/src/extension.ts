@@ -18,7 +18,7 @@ export async function activate(context: vscode.ExtensionContext) {
     command:
       // 'source .venv/bin/activate && python -Xfrozen_modules=off -m debugpy --listen 5678 -m src.server',
       'source .venv/bin/activate && python -Xfrozen_modules=off -m src.server',
-    args: ['--codebase-path', 'tests/inputs/codebase/', '--start-server', '--start-debug'],
+    args: ['--start-server', '--start-debug'],
     options: {
       cwd: backendPath,
       shell: true,

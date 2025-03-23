@@ -3,7 +3,9 @@
 import sys
 import logging
 import argparse
+import urllib.parse
 from pathlib import Path
+
 
 import pygls.server
 import lsprotocol.types as lsp
@@ -41,7 +43,7 @@ def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
 @server.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
-    print(f"Opened file: {document.uri}", file=sys.stderr)
+    print(f"Opening file {document.uri}", file=sys.stderr)
     diagnostics = analyse(document.source, uri=params.text_document.uri)
     server.publish_diagnostics(document.uri, diagnostics)
 
@@ -49,7 +51,7 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 @server.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
 def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
-    print(f"Changed file", file=sys.stderr)
+    print(f"Refreshing file ", file=sys.stderr)
     diagnostics = analyse(document.source, uri=params.text_document.uri)
     server.publish_diagnostics(document.uri, diagnostics)
 
@@ -83,36 +85,33 @@ def code_lens_provider(params: lsp.CodeLensParams):
     return code_lenses
 
 
-def main(
-    codebase_path: str | None = None,
-    analyse_path: Path | str | None = None,
-    # FIXME: make types consistent
-    start_debug: bool = False,
-    start_server: bool = False,
-):
+@server.feature(lsp.INITIALIZE)
+def initialize(params: lsp.InitializeParams) -> None:
+    print("Initializing LSP server", file=sys.stderr)
+
+    if params.workspace_folders:
+        assert len(params.workspace_folders) == 1, "Only one workspace folder is supported"
+        workspace_uri = params.workspace_folders[0].uri
+        workspace_path = urllib.parse.urlparse(workspace_uri).path
+        workspace_path = urllib.parse.unquote(workspace_path)
+
+        print(f"Loading workspace folder {workspace_path}", file=sys.stderr)
+        session.load_codebase(workspace_path)
+
+
+def main(start_debug: bool = False, start_server: bool = False):
     if start_debug:
         print(f"Starting custom debugger", file=sys.stderr)
         import src._debug
 
-    if codebase_path:
-        print(f"Loading codebase from {codebase_path}", file=sys.stderr)
-        session.load_codebase(codebase_path)
-
-    if analyse_path:
-        print(f"Analysing document from {analyse_path}", file=sys.stderr)
-        analyse_path = Path(analyse_path)
-        print(analyse(analyse_path.read_text(), uri=analyse_path.as_uri()))
-
     if start_server:
-        print(f"Starting server with params {sys.argv}", file=sys.stderr)
+        print(f"Starting LSP server with params {sys.argv}", file=sys.stderr)
         server.start_io()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Process command-line arguments.")
-    parser.add_argument("--codebase-path", type=str, required=False, help="Path to codebase")
-    parser.add_argument("--analyse-path", type=str, required=False, help="Path to editor")
-    parser.add_argument("--start-debug", action="store_true", help="Strart custom debugger")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--start-debug", action="store_true", help="Start custom debugger")
     parser.add_argument("--start-server", action="store_true", help="Start language server")
     args = parser.parse_args()
 
