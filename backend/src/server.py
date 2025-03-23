@@ -1,26 +1,20 @@
-"""Language server"""
+"""LSP Server"""
 
 import sys
-import logging
 import argparse
 import urllib.parse
-from pathlib import Path
-
 
 import pygls.server
 import lsprotocol.types as lsp
 
-import src
+from src import logger
+from src import workspace
 
-
-pygls.server.logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler(sys.stderr)
-handler.setLevel(logging.DEBUG)
-pygls.server.logger.addHandler(handler)
+log = logger.get(__name__)
 
 # TODO take from package configs
 server = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
-session = src.workspace.Workspace()
+session = workspace.Workspace()
 
 
 def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
@@ -43,7 +37,7 @@ def analyse(document: str, uri: str) -> list[lsp.Diagnostic]:
 @server.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
-    print(f"Opening file {document.uri}", file=sys.stderr)
+    log.info(f"Opening file {document.uri}")
     diagnostics = analyse(document.source, uri=params.text_document.uri)
     server.publish_diagnostics(document.uri, diagnostics)
 
@@ -51,7 +45,7 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 @server.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
 def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
     document = server.workspace.get_text_document(params.text_document.uri)
-    print(f"Refreshing file ", file=sys.stderr)
+    log.info("Refreshing file")
     diagnostics = analyse(document.source, uri=params.text_document.uri)
     server.publish_diagnostics(document.uri, diagnostics)
 
@@ -87,25 +81,25 @@ def code_lens_provider(params: lsp.CodeLensParams):
 
 @server.feature(lsp.INITIALIZE)
 def initialize(params: lsp.InitializeParams) -> None:
-    print("Initializing LSP server", file=sys.stderr)
+    log.info("Initializing LSP server")
 
     if params.workspace_folders:
-        assert len(params.workspace_folders) == 1, "Only one workspace folder is supported"
+        assert len(params.workspace_folders) == 1, log.error("Only one workspace folder is supported")
         workspace_uri = params.workspace_folders[0].uri
         workspace_path = urllib.parse.urlparse(workspace_uri).path
         workspace_path = urllib.parse.unquote(workspace_path)
 
-        print(f"Loading workspace folder {workspace_path}", file=sys.stderr)
+        log.info(f"Loading workspace folder {workspace_path}")
         session.load_codebase(workspace_path)
 
 
 def main(start_debug: bool = False, start_server: bool = False):
     if start_debug:
-        print(f"Starting custom debugger", file=sys.stderr)
+        log.info("Starting custom debugger")
         import src._debug
 
     if start_server:
-        print(f"Starting LSP server with params {sys.argv}", file=sys.stderr)
+        log.info(f"Starting LSP server with params {sys.argv}")
         server.start_io()
 
 

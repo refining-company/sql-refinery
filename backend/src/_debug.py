@@ -6,20 +6,23 @@ It addresses issues with VSCode's debugpy when dealing with forked processes and
 import sys
 import debugpy
 import time
+import src
+
+log = src.logger.get(__name__)
 
 
 def connect_debugpy(host="localhost", port=5678, retry_interval=1, max_retries=10):
     for attempt in range(max_retries):
         try:
-            print(f"Attempting to connect to debug server: Attempt {attempt + 1}/{max_retries}", file=sys.stderr)
+            log.info(f"Attempting to connect to debug server {attempt + 1} of {max_retries} attempts")
             debugpy.connect((host, port))
-            print("Started custom debugger", file=sys.stderr)
+            log.info("Started custom debugger")
             break
         except ConnectionRefusedError:
-            print(f"Failed to connect. Retrying in {retry_interval} seconds...", file=sys.stderr)
+            log.error(f"Failed to connect. Retrying in {retry_interval} seconds...")
             time.sleep(retry_interval)
     else:
-        print(f"Failed to connect after {max_retries} attempts.", file=sys.stderr)
+        log.error(f"Failed to connect after {max_retries} attempts")
 
 
 connect_debugpy()

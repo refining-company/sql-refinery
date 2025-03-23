@@ -1,1 +1,1 @@
-from src import workspace, logic, code, sql
+from src import workspace, logic, code, sql, logger

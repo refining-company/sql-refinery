@@ -2,7 +2,7 @@
 
 0. Priority
 
-   - Fix logging and configs of `frontend-vscode`
+   - Fix testing of standalone server by emulating LSP events
 
    - `Workspace` should create and maintain one `code.Tree` and `logic` should compare one file against the rest.
 

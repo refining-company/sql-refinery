@@ -1,28 +1,22 @@
-// The module 'vscode' contains the VS Code extensibility API
+// Entry point for the extension
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { Logger } from './logger';
 
 let client: LanguageClient;
+let log: Logger;
 
 export async function activate(context: vscode.ExtensionContext) {
-  // Configuring output channel for debugging
-  const outputChannel = vscode.window.createOutputChannel('SQL Refinery', {
-    log: true,
-  });
-  outputChannel.clear();
+  Logger.init('SQL Refinery');
+  log = new Logger(path.parse(__filename).name);
 
   // Spawning sub-process with debugger and server
   const backendPath = context.asAbsolutePath(path.join('..', 'backend'));
   const serverOptions: ServerOptions = {
-    command:
-      // 'source .venv/bin/activate && python -Xfrozen_modules=off -m debugpy --listen 5678 -m src.server',
-      'source .venv/bin/activate && python -Xfrozen_modules=off -m src.server',
+    command: 'source .venv/bin/activate && python -u -Xfrozen_modules=off -m src.server',
     args: ['--start-server', '--start-debug'],
-    options: {
-      cwd: backendPath,
-      shell: true,
-    },
+    options: { cwd: backendPath, shell: true },
   };
 
   const clientOptions: LanguageClientOptions = {
@@ -32,17 +26,17 @@ export async function activate(context: vscode.ExtensionContext) {
       { scheme: 'vscode-notebook', language: 'sql' },
       { scheme: 'vscode-notebook-cell', language: 'sql' },
     ],
-    outputChannel: outputChannel,
-    traceOutputChannel: outputChannel,
+    outputChannel: Logger.outputChannel,
+    traceOutputChannel: Logger.outputChannel,
   };
 
   client = new LanguageClient('sqlRefinery', 'SQL Refinery', serverOptions, clientOptions);
 
   setImmediate(async () => {
-    outputChannel.info('Starting client');
+    log.info('LanguageClient starting');
     await client.start();
-    outputChannel.info('Server started');
   });
+
   wrapPeekLocation(context);
 }
 
