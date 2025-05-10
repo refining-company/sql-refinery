@@ -1,33 +1,33 @@
 [
-  { "Alternative(Expression(editor.sql:6:5):Expression(0-accounts.sql:98:9), Expression(1-revenue.sql:7:5), Expression(1-revenue.sql:33:5)) = Alternative(Expression(editor.sql:6:5):Expression(0-accounts.sql:98:9), Expression(1-revenue.sql:7:5), Expression(1-revenue.sql:33:5))": {
+  { "Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5)) = Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5))": {
       "this": {
-        "Expression(editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+        "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
           "columns": [
             "Column(?.countries.region)" ],
           "alias": "macro_region" } },
       "others": [
-        { "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } } ],
       "reliability": 3,
       "similarity": 0.78 } },
-  { "Alternative(Expression(editor.sql:13:5):Expression(1-revenue.sql:39:5)) = Alternative(Expression(editor.sql:13:5):Expression(1-revenue.sql:39:5))": {
+  { "Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5)) = Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5))": {
       "this": {
-        "Expression(editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+        "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
           "columns": [
             "Column(?.accounts.industry)" ],
           "alias": "industry_it" } },
       "others": [
-        { "Expression(1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } } ],

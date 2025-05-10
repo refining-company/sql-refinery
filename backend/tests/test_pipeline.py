@@ -1,5 +1,4 @@
 import re
-import inspect
 import pytest
 from pathlib import Path
 from collections import defaultdict
@@ -10,8 +9,10 @@ from src import sql
 from src import code
 from src import logic
 from src import server
+from src import logger
 import tests.utils as utils
-import tests.conftest as conftest
+
+log = logger.get(__name__)
 
 
 def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
@@ -84,89 +85,122 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
     return f"<{obj.__class__.__name__}>"
 
 
-def capture_snapshots(init):
+def scenario():
+    """Defines and executes the specific test steps using server.session."""
+    tests_root_dir = Path(__file__).parent
+    inputs_dir = tests_root_dir / "inputs"
+    codebase_dir = inputs_dir / "codebase"
+    editor_file_path = inputs_dir / "editor.sql"
+
+    log.info("Starting scenario execution...")
+    server.session.ingest_folder(codebase_dir)
+    server.session.ingest_file(path=editor_file_path, content=editor_file_path.read_text())
+    server.session.find_inconsistencies(path=editor_file_path)
+    log.info("Scenario execution finished.")
+
+
+def capture_snapshots() -> dict:
+    """Patches target functions, runs the scenario, and captures their outputs."""
     captured = defaultdict(list)
 
-    def _intercept(target: callable, simplify: callable) -> callable:  # type: ignore
+    def _intercept(target: callable, fn: callable) -> callable:  # type: ignore
         """
         Wrapper that intercepts outputs of `target` function and translate into simple text representation
-        using `simplify` to convert into basic types
+        using `fn` to convert into basic types
         and `utils.pformat` to convert into compact JSON
         """
 
         @wraps(target)
         def wrapper(*args, **kwargs):
             result = target(*args, **kwargs)
-
-            module = inspect.getmodule(target)
-            key = f"{module.__name__}.{target.__name__}"  # type: ignore
-            simplified_result = utils.pformat(simplify(result))
+            key = f"{target.__module__}.{target.__name__}"
+            simplified_result = utils.pformat(fn(result))
             captured[key].append(simplified_result)
-
             return result
 
         return wrapper
 
-    # patching functions of interest and running the pipeline
-    sql.parse = _intercept(
-        sql.parse,
-        simplify=simplify,
-    )
-    code.Tree.ingest_file = _intercept(
-        code.Tree.ingest_file,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Column, code.Table)),
-    )
-    logic.compare = _intercept(
-        logic.compare,
-        simplify=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table)),
-    )
+    _sql_parse = sql.parse
+    _ingest_file = code.Tree.ingest_file
+    _logic_compare = logic.compare
 
-    # run the pipeline
-    server.main(**init["server:main"])
+    try:
+        sql.parse = _intercept(sql.parse, fn=simplify)
+        code.Tree.ingest_file = _intercept(
+            code.Tree.ingest_file,
+            fn=partial(simplify, terminal=(sql.Node, sql.Tree, code.Column, code.Table)),
+        )
+        logic.compare = _intercept(
+            logic.compare,
+            fn=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table)),
+        )
 
-    # captured = {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
+        server.session.tree = code.Tree()
+        scenario()
+    finally:
+        sql.parse = _sql_parse
+        code.Tree.ingest_file = _ingest_file
+        logic.compare = _logic_compare
+
     return {f"{k}.{i}": v[i] for k, v in captured.items() for i in range(len(v))}
 
 
-def update_snapshots(config: dict):
+def update_snapshots():
+    """Generates and updates snapshots based on the current scenario execution."""
     print("Generating snapshots...")
-    captured_snapshots = capture_snapshots(config)
+    server.session.tree = code.Tree()  # Reset state for this specific run
+    captured_snapshots = capture_snapshots()
     print("\t", "Generated")
 
+    snapshot_dir = Path(__file__).parent / "snapshots"
     print("Deleting old files...")
-    for file in config["true_snapshots"].glob("**/*"):
-        print("\t", f"Deleted {file.name}")
-        file.unlink()
+    if snapshot_dir.exists():
+        for file_path in snapshot_dir.glob("**/*"):
+            if file_path.is_file():
+                print("\t", f"Deleted {file_path.name}")
+                file_path.unlink()
+    else:
+        snapshot_dir.mkdir(parents=True, exist_ok=True)
 
     print("Writing new files...")
-    for key, snapshot in captured_snapshots.items():
-        snapshot_file = config["true_snapshots"] / f"{key}.json"
-        snapshot_file.write_text(snapshot)
+    for key, snapshot_data in captured_snapshots.items():
+        snapshot_file = snapshot_dir / f"{key}.json"
+        snapshot_file.write_text(snapshot_data)
         print("\t", f"Wrote {snapshot_file.name}")
 
     print("Snapshots updated.")
 
 
-def read_snapshots(path: Path):
-    return {file.stem: file.read_text() for file in path.glob("**/*")}
-
-
 def get_test_params():
-    config = conftest.get_paths()
-    captured = capture_snapshots(config)
-    correct = read_snapshots(config["true_snapshots"])
+    """Prepares parameters for the pytest test_pipeline function by capturing current outputs."""
+    log.debug("Resetting server.session.tree before get_test_params's capture_snapshots call")
+    server.session.tree = code.Tree()  # Reset state for this specific run
+    captured_data = capture_snapshots()
 
-    params = [pytest.param(key, captured, correct, id=key) for key in list(correct.keys())]
-    params += [pytest.param(None, captured, correct, id="inexpected")]
+    snapshot_dir = Path(__file__).parent / "snapshots"
+    correct_data = {file.stem: file.read_text() for file in snapshot_dir.glob("**/*.json") if file.is_file()}
+
+    params = [pytest.param(key, captured_data, correct_data, id=key) for key in list(correct_data.keys())]
+    params.append(pytest.param(None, captured_data, correct_data, id="check_new_or_missing_snapshots"))
 
     return params
 
 
 @pytest.mark.parametrize("name,captured,correct", get_test_params())
 def test_pipeline(name: str, captured: dict, correct: dict):
-    if name:
-        assert name in captured, f"Snapshot '{name}' was not captured"
+    """Compares captured snapshots against correct ones, or checks for new/missing snapshots."""
+    if name:  # This is for an existing snapshot
+        assert name in captured, f"Snapshot '{name}' was not captured (expected based on existing snapshot files)"
         assert correct[name] == captured[name], f"Snapshots '{name}' are different"
-    else:
-        extra_snapshots = set(captured) - set(correct)
-        assert not extra_snapshots, f"Unexpected snapshots captured: {extra_snapshots}"
+    else:  # This is for the 'check_new_or_missing_snapshots' parameter
+        extra_captured_keys = set(captured.keys()) - set(correct.keys())
+        assert not extra_captured_keys, f"Unexpected new snapshots captured: {extra_captured_keys}"
+
+        missing_keys = set(correct.keys()) - set(captured.keys())
+        assert (
+            not missing_keys
+        ), f"Snapshots missing (were present in snapshot files but not re-captured): {missing_keys}"
+
+
+if __name__ == "__main__":
+    update_snapshots()

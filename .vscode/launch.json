@@ -53,7 +53,7 @@
       "name": "Server: create tests",
       "type": "debugpy",
       "request": "launch",
-      "module": "tests.update",
+      "module": "tests.test_pipeline",
       "cwd": "${workspaceFolder}/backend",
       "console": "integratedTerminal"
     }
