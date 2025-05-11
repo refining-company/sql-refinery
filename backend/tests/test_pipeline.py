@@ -1,3 +1,20 @@
+"""
+Test Pipeline Architecture
+
+This module implements a snapshot-based testing approach for SQL analysis:
+
+1. Test Organization:
+   - scenario() - Defines the business logic test cases with clear ownership of its state
+   - capture_snapshots() - Non-intrusive harness that intercepts function outputs
+   - Snapshots are stored as JSON files capturing the exact structure of important outputs
+
+2. Key Design Principles:
+   - Tests own their state management (scenario resets workspace)
+   - Function interception through monkey patching isolates what's being tested
+   - Complex objects are simplified to comparable structures
+   - Separation between snapshot generation and verification
+"""
+
 import re
 import pytest
 from pathlib import Path
@@ -86,16 +103,17 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
 
 
 def scenario():
-    """Defines and executes the specific test steps using server.session."""
+    """Business logic test sequence with full ownership of state management."""
     tests_root_dir = Path(__file__).parent
     inputs_dir = tests_root_dir / "inputs"
     codebase_dir = inputs_dir / "codebase"
     editor_file_path = inputs_dir / "editor.sql"
 
     log.info("Starting scenario execution...")
-    server.session.ingest_folder(codebase_dir)
-    server.session.ingest_file(path=editor_file_path, content=editor_file_path.read_text())
-    server.session.find_inconsistencies(path=editor_file_path)
+    workspace = server.get_workspace(new=True)  # Start with a fresh workspace
+    workspace.ingest_folder(codebase_dir)
+    workspace.ingest_file(path=editor_file_path, content=editor_file_path.read_text())
+    workspace.find_inconsistencies(path=editor_file_path)
     log.info("Scenario execution finished.")
 
 
@@ -106,8 +124,7 @@ def capture_snapshots() -> dict:
     def _intercept(target: callable, fn: callable) -> callable:  # type: ignore
         """
         Wrapper that intercepts outputs of `target` function and translate into simple text representation
-        using `fn` to convert into basic types
-        and `utils.pformat` to convert into compact JSON
+        using `fn` to convert into basic types and `utils.pformat` to convert into compact JSON
         """
 
         @wraps(target)
@@ -135,8 +152,7 @@ def capture_snapshots() -> dict:
             fn=partial(simplify, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table)),
         )
 
-        server.session.tree = code.Tree()
-        scenario()
+        scenario()  # The scenario handles its own workspace setup
     finally:
         sql.parse = _sql_parse
         code.Tree.ingest_file = _ingest_file
@@ -147,34 +163,31 @@ def capture_snapshots() -> dict:
 
 def update_snapshots():
     """Generates and updates snapshots based on the current scenario execution."""
-    print("Generating snapshots...")
-    server.session.tree = code.Tree()  # Reset state for this specific run
+    log.info("Generating snapshots...")
     captured_snapshots = capture_snapshots()
-    print("\t", "Generated")
+    log.info("\tGenerated")
 
     snapshot_dir = Path(__file__).parent / "snapshots"
-    print("Deleting old files...")
+    log.info("Deleting old files...")
     if snapshot_dir.exists():
         for file_path in snapshot_dir.glob("**/*"):
             if file_path.is_file():
-                print("\t", f"Deleted {file_path.name}")
+                log.info(f"\tDeleted {file_path.name}")
                 file_path.unlink()
     else:
         snapshot_dir.mkdir(parents=True, exist_ok=True)
 
-    print("Writing new files...")
+    log.info("Writing new files...")
     for key, snapshot_data in captured_snapshots.items():
         snapshot_file = snapshot_dir / f"{key}.json"
         snapshot_file.write_text(snapshot_data)
-        print("\t", f"Wrote {snapshot_file.name}")
+        log.info(f"\tWrote {snapshot_file.name}")
 
-    print("Snapshots updated.")
+    log.info("Snapshots updated.")
 
 
 def get_test_params():
     """Prepares parameters for the pytest test_pipeline function by capturing current outputs."""
-    log.debug("Resetting server.session.tree before get_test_params's capture_snapshots call")
-    server.session.tree = code.Tree()  # Reset state for this specific run
     captured_data = capture_snapshots()
 
     snapshot_dir = Path(__file__).parent / "snapshots"
@@ -188,18 +201,16 @@ def get_test_params():
 
 @pytest.mark.parametrize("name,captured,correct", get_test_params())
 def test_pipeline(name: str, captured: dict, correct: dict):
-    """Compares captured snapshots against correct ones, or checks for new/missing snapshots."""
+    """Compares captured snapshots against correct ones, or checks for new or missing snapshots"""
     if name:  # This is for an existing snapshot
         assert name in captured, f"Snapshot '{name}' was not captured (expected based on existing snapshot files)"
         assert correct[name] == captured[name], f"Snapshots '{name}' are different"
-    else:  # This is for the 'check_new_or_missing_snapshots' parameter
-        extra_captured_keys = set(captured.keys()) - set(correct.keys())
-        assert not extra_captured_keys, f"Unexpected new snapshots captured: {extra_captured_keys}"
+    else:  # This is for missing or new snapshots
+        extra_keys = set(captured.keys()) - set(correct.keys())
+        assert not extra_keys, f"Unexpected snapshots captured: {extra_keys}"
 
         missing_keys = set(correct.keys()) - set(captured.keys())
-        assert (
-            not missing_keys
-        ), f"Snapshots missing (were present in snapshot files but not re-captured): {missing_keys}"
+        assert not missing_keys, f"Missing snapshots that were captured earlier: {missing_keys}"
 
 
 if __name__ == "__main__":

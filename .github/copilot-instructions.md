@@ -2,41 +2,23 @@
 
 ## About This Repository
 
-This project is a Copilot for business intelligence analysts who work on large SQL codebases. It aims to enhance their
-productivity and streamline SQL development workflows.
+SQL Refining is a Copilot for SQL analysts working with large codebases:
 
-1.  **Backend**: A Python-based application that containes all the logic for SQL analysis.
-2.  **Frontend**: A TypeScript VS Code extension. Provides the user interface using Language Server Protocol (LSP).
+1. **Backend**: Python analysis engine in `backend/src/` (Python 3.12.7, entry: `server.py`)
+2. **Frontend**: VS Code extension in `frontend-vscode/src/` using LSP (Node 20.18.0, entry: `extension.ts`)
 
-## Backend (Python)
+## Design Philosophy
 
-- Located in `backend/src/`, entry point is `backend/src/server.py`.
-- Uses Python 3.12.7.
-- Pay attention to dependencies listed in `backend/requirements.txt`.
-- Tests are located in `backend/tests/`, and uses `pytest` framework.
-
-## Frontend (TypeScript)
-
-- Located `frontend-vscode/src/`, entry point is `frontend-vscode/src/extension.ts`.
-- Uses Node v20.18.0.
-- Pay attention to dependencies listed in`package.json`
-- Tests are located in `frontend-vscode/src/test/`.
-
-## Coding Conventions
-
-- Use `black` for Python code formatting and `prettier` for TypeScript.
-- Write clear and concise commit messages. Use prefixes `feature:`, `refactor:`, `fix:`, `docs:`, `setup:`.
-- Do not write inline comments, unless it is a critical business logic.
-- Do not remove existing comments, unless they are outdated or incorrect.
-- Use latest Python, Node and TypeScript features.
-- Use a shorter variable naming whenever possible. For callable parameters use `fn`.
+- **Component Design**: Single responsibility, self-managed state, concise interfaces (`fn` for callables)
+- **Error Strategy**: Use assertions for invariants, prefer crashes with clear messages over defensive code
+- **Documentation**: Self-documenting code over comments, docstrings only for explaining "why"
+- **Style**: Latest language features, minimal globals, initialization where state is used
+- **Testing**: Self-contained tests manage their own state, non-intrusive harnesses, separated business logic
 
 ## Development Process
 
-Follow these steps, ask for my confirmation at each step, and iterate until the task is complete:
-
-1. Take in my request, understand the codebase, come up with one or several solutions.
-2. Suggest naming conventions, code structure, and any other relevant details.
-3. Implement the solution, then check if code could be simplified or made more elegant.
-4. Find the correspoinding launch configuration in `launch.json` and run the code using python module launch.
-5. Analyse the output, if there are errors or unexpected results, debug the code and propose improvements
+1. **Understand First**: Analyze codebase structure, state ownership, and component boundaries
+2. **Design Simply**: Propose the most elegant solution, with alternatives for significant trade-offs
+3. **Implement Cleanly**: Write concise code following design principles, then simplify further
+4. **Verify Thoroughly**: Run tests that respect the separation between logic and test harnesses
+5. **Iterate Based on Feedback**: Reconsider approaches and look for additional simplifications
