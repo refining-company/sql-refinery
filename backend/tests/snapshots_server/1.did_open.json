@@ -1,0 +1,8 @@
+{
+  "request": {
+    "text_document": {
+      "uri": "file:///Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql",
+      "language_id": "sql",
+      "version": 1,
+      "text": "-- CASE: Different groupings or thresholds applied to columns\n\nSELECT \n    date(date_month, 'start of year') AS date_year,\n    -- This should cause an error\n    CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END AS macro_region,\n    -- This should case an error\n    IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue ar\n    LEFT JOIN accounts a USING (account_id)\n    LEFT JOIN countries c USING (country)\nWHERE\n    -- This is appropriate, user can do ad-hoc filters for any subsets\n    a.industry IN ('Information Technology', 'Telecommunication Services')\n    -- This is appropriate, user can take any period\n    AND date_month BETWEEN DATE('now', '-24 months') AND DATE('now')\nGROUP BY date_year, macro_region, industry_it" } },
+  "response": null }

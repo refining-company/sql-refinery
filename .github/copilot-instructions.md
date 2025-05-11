@@ -29,5 +29,3 @@ SQL Refining is a Copilot for SQL analysts working with large codebases.
 1. **Understand First**: Analyze codebase structure, state ownership, and component boundaries
 2. **Design Simply**: Propose the most elegant solution; include alternatives for significant trade-offs
 3. **Implement Cleanly**: Write concise code following design principles, then simplify further
-4. **Verify Thoroughly**: Run tests that respect the separation between logic and test harnesses
-5. **Iterate Based on Feedback**: Reconsider approaches and look for additional simplifications

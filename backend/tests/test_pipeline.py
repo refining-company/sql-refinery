@@ -37,16 +37,16 @@ log = logger.get(__name__)
 
 def scenario():
     """Business logic test sequence with full ownership of state management."""
-    tests_root_dir = Path(__file__).parent
-    inputs_dir = tests_root_dir / "inputs"
-    codebase_dir = inputs_dir / "codebase"
-    editor_file_path = inputs_dir / "editor.sql"
+    dir_root = Path(__file__).parent
+    dir_inputs = dir_root / "inputs"
+    dir_codebase = dir_inputs / "codebase"
+    file_editor = dir_inputs / "editor.sql"
 
     log.info("Starting scenario execution...")
     workspace = server.get_workspace(new=True)  # Start with a fresh workspace
-    workspace.ingest_folder(codebase_dir)
-    workspace.ingest_file(path=editor_file_path, content=editor_file_path.read_text())
-    workspace.find_inconsistencies(path=editor_file_path)
+    workspace.ingest_folder(dir_codebase)
+    workspace.ingest_file(path=file_editor, content=file_editor.read_text())
+    workspace.find_inconsistencies(path=file_editor)
     log.info("Scenario execution finished.")
 
 
@@ -176,7 +176,7 @@ def update_snapshots():
     captured_snapshots = capture_snapshots()
     log.info("\tGenerated")
 
-    snapshot_dir = Path(__file__).parent / "snapshots"
+    snapshot_dir = Path(__file__).parent / "snapshots_pipeline"
     log.info("Deleting old files...")
     if snapshot_dir.exists():
         for file_path in snapshot_dir.glob("**/*"):
@@ -202,7 +202,7 @@ def get_test_params():
     """Prepares parameters for the pytest test_pipeline function by capturing current outputs."""
     captured_data = capture_snapshots()
 
-    snapshot_dir = Path(__file__).parent / "snapshots"
+    snapshot_dir = Path(__file__).parent / "snapshots_pipeline"
     correct_data = {file.stem: file.read_text() for file in snapshot_dir.glob("**/*.json") if file.is_file()}
 
     params = [pytest.param(key, captured_data, correct_data, id=key) for key in list(correct_data.keys())]
