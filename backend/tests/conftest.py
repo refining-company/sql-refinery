@@ -1,18 +1,4 @@
-import pytest
-from pathlib import Path
 import difflib
-
-
-def get_paths() -> dict:
-    root = Path(__file__).parent
-    inputs_dir = root / "inputs"
-    editor_file = inputs_dir / "editor.sql"
-    codebase_dir = inputs_dir / "codebase"
-
-    return {
-        "server:main": {"codebase_path": codebase_dir, "analyse_path": editor_file},
-        "true_snapshots": root / "snapshots",
-    }
 
 
 def pytest_assertrepr_compare(op, left, right):

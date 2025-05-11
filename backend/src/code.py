@@ -1,14 +1,18 @@
-"""Process SQL parse tree into Code tree
+"""
+Pipeline — Code AST Abstraction
 
-It takes tree-sitter sql.Tree and sql.Node and constructs a new fixed data structure:
-- tree
-- query
-- table
-- expression
-- column
+Architecture:
+- Pipeline: Code AST abstraction (this module)
+- Server: LSP server (server.py)
+- Frontend: VS Code extension (frontend-vscode)
+
+This module provides:
+- Data classes for Table, Column, Expression, Query, and Tree
+- Logic to transform raw tree-sitter nodes into a structured code AST
 """
 
 from __future__ import annotations
+
 from pathlib import Path
 from dataclasses import dataclass, field
 from collections import defaultdict

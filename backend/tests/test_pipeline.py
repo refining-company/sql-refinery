@@ -32,6 +32,9 @@ import tests.utils as utils
 log = logger.get(__name__)
 
 
+# Helper functions
+
+
 def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
     # If the object is an instance of a terminal class
     if isinstance(obj, terminal):
@@ -102,19 +105,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
     return f"<{obj.__class__.__name__}>"
 
 
-def scenario():
-    """Business logic test sequence with full ownership of state management."""
-    tests_root_dir = Path(__file__).parent
-    inputs_dir = tests_root_dir / "inputs"
-    codebase_dir = inputs_dir / "codebase"
-    editor_file_path = inputs_dir / "editor.sql"
-
-    log.info("Starting scenario execution...")
-    workspace = server.get_workspace(new=True)  # Start with a fresh workspace
-    workspace.ingest_folder(codebase_dir)
-    workspace.ingest_file(path=editor_file_path, content=editor_file_path.read_text())
-    workspace.find_inconsistencies(path=editor_file_path)
-    log.info("Scenario execution finished.")
+# Snapshot lifecycle functions
 
 
 def capture_snapshots() -> dict:
@@ -186,6 +177,9 @@ def update_snapshots():
     log.info("Snapshots updated.")
 
 
+# Pytest harness
+
+
 def get_test_params():
     """Prepares parameters for the pytest test_pipeline function by capturing current outputs."""
     captured_data = capture_snapshots()
@@ -213,5 +207,24 @@ def test_pipeline(name: str, captured: dict, correct: dict):
         assert not missing_keys, f"Missing snapshots that were captured earlier: {missing_keys}"
 
 
+# Main test scenario
+
+
+def scenario():
+    """Business logic test sequence with full ownership of state management."""
+    tests_root_dir = Path(__file__).parent
+    inputs_dir = tests_root_dir / "inputs"
+    codebase_dir = inputs_dir / "codebase"
+    editor_file_path = inputs_dir / "editor.sql"
+
+    log.info("Starting scenario execution...")
+    workspace = server.get_workspace(new=True)  # Start with a fresh workspace
+    workspace.ingest_folder(codebase_dir)
+    workspace.ingest_file(path=editor_file_path, content=editor_file_path.read_text())
+    workspace.find_inconsistencies(path=editor_file_path)
+    log.info("Scenario execution finished.")
+
+
+# Create new golden snapshots from CLI
 if __name__ == "__main__":
     update_snapshots()

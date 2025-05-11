@@ -1,4 +1,15 @@
-"""Workspace manages the code online and offline analysis"""
+"""
+Pipeline — Workspace & Logic Analysis
+
+Architecture:
+- Pipeline: SQL parsing, Code AST abstraction, Workspace & Logic Analysis (this module)
+- Server: LSP server (server.py)
+- Frontend: VS Code extension (frontend-vscode)
+
+This module provides:
+- `Workspace` to ingest SQL files/folders into a code tree
+- Entry point for finding cross-file inconsistencies via `logic.compare`
+"""
 
 from pathlib import Path
 from src import logic

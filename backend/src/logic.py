@@ -1,15 +1,25 @@
-"""Analyse code tree to find experssions with potentially flawed business logic
+"""
+SQL Refining — Backend Component (Stage 1c: Workspace & Logic Analysis)
 
-- Find expressions that look similar but not exact
-- It is likely these expressions are alternative implementations of the same business logic
-- This drives inconsistency that's hard to debug:
+Architecture Overview:
+1. Backend pipeline:
+   a) SQL parsing (sql.py)
+   b) Code AST abstraction (code.py)
+   c) Workspace & logic analysis (workspace.py, logic.py)
+2. LSP server (server.py) transforms pipeline outputs into LSP diagnostics and code lenses
+3. VS Code frontend (frontend-vscode) visualizes and interacts with LSP features
 
+This module provides:
+- `Alternative`, representing groups of similar expressions with similarity and reliability
+- `compare()`, which finds expressions with potentially flawed or duplicated business logic
+
+Analysis description:
+- Find expressions that look similar but not exact; likely alternative implementations of the same business logic
+- Drives diagnostics for inconsistencies such as:
     ```sql
     IF revenue > 3000 THEN ... as priority
     ```
-
     vs
-
     ```sql
     IF revenue > 2500 THEN ... as priority
     ```

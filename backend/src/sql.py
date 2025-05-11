@@ -1,13 +1,18 @@
-"""Abstraction layer over SQL parsing of byte strings for various dialects.
+"""
+Pipeline — SQL Parsing
 
-Uses tree-sitter library.
+Architecture:
+- Pipeline: SQL parsing (this module)
+- Server: LSP server (server.py)
+- Frontend: VS Code extension (frontend-vscode)
 
-Tntroduces additional types to simplify the further processing of the parse trees across different SQL dialects.
-- `@...` - meta types used for further abstraction into query tree
-- `#...` - helper types
-- `...` - original tree_sitter types
-
-These additional types are implemented with hard-coded rules.
+This module provides:
+- A thin abstraction over tree-sitter parsing
+- Meta-types and helper functions (@query, @table, @column, etc.)
+  `@...` - meta types used for further abstraction into query tree
+  `#...` - helper types
+  `...` - original tree_sitter types
+- `parse()`, `find_desc()`, and related utilities to normalize dialect differences
 """
 
 import tree_sitter
@@ -72,7 +77,7 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     return False
 
 
-# find 
+# find
 def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, original: bool = True) -> str | None:
     node_type = node.type.lower()
 

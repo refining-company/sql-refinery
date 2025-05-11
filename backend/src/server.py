@@ -1,4 +1,16 @@
-"""LSP Server"""
+"""
+Server — LSP Server
+
+Architecture:
+- Pipeline: SQL parsing, Code AST abstraction, Workspace & logic analysis
+- Server: LSP server (this module)
+- Frontend: VS Code extension (frontend-vscode)
+
+This module provides:
+- A pygls-based LanguageServer
+- Handlers for open/change, diagnostics and code-lens requests
+- Translation from `Workspace` outputs into LSP types
+"""
 
 import sys
 import argparse
