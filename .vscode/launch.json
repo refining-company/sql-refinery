@@ -48,12 +48,12 @@
       ],
       "console": "integratedTerminal"
     },
-
     {
-      "name": "Server: create tests",
+      "name": "Server: initialise tests",
       "type": "debugpy",
       "request": "launch",
-      "module": "tests.test_pipeline",
+      "module": "pytest",
+      "args": ["--snapshot-update"],
       "cwd": "${workspaceFolder}/backend",
       "console": "integratedTerminal"
     }

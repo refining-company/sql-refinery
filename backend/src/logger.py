@@ -9,7 +9,7 @@ class FlushStreamHandler(logging.StreamHandler):
     # FIXME: This ensures each message is flushed to stderr immediately, however is ugly and likely the bug is on the VSCode end
     def emit(self, record):
         super().emit(record)
-        sys.stderr.write(" ")
+        sys.stderr.write("")
         self.flush()
 
 

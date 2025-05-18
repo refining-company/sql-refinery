@@ -18,6 +18,7 @@ SQL Refining is a Copilot for SQL analysts working with large codebases.
 
 ### Design Philosophy
 
+- **Simplicity**: Use as few lines as possible, use most pythonic way, avoid unnecessary code I didn't ask for
 - **Component Design**: Single responsibility, self-managed state, concise interfaces (`fn` for callables)
 - **Error Strategy**: Use assertions for invariants; prefer crashes with clear messages over defensive code
 - **Documentation**: Self-documenting code over comments; docstrings only for explaining “why”

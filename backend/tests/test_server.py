@@ -1,172 +1,150 @@
 """
 Pytest harness for the in-process LSP server scenario.
-
-This module implements a snapshot-based testing approach for LSP server:
-
-1. scenario() - Defines simulated user actions as (request, response) steps
-2. capture_snapshots() - Captures each step into JSON snapshots under snapshots_server
-3. Test harness parametrizes over those snapshots for regression testing
 """
 
+from functools import wraps
+from itertools import chain
 from pathlib import Path
-import dataclasses
+
 import pytest
 import lsprotocol.types as lsp
-import src.server
-import attrs
+import pygls.workspace
+import pygls.server
 
-import tests.utils as utils
+import src.server
 from src import logger
 
 log = logger.get(__name__)
 
 
-def simplify(obj: object) -> dict | list | tuple | str | int | float | bool | None:
-    """
-    Convert complex LSP objects to simple JSON-serializable structures.
-    Handles attrs-based LSP objects properly.
-    """
-    # Handle basic types directly
-    if obj is None or isinstance(obj, (str, int, float, bool)):
-        return obj
-
-    # Handle special types
-    if isinstance(obj, Path):
-        return str(obj)
-
-    # Handle attrs objects (LSP types use attrs)
-    if attrs.has(obj.__class__):
-        return simplify(attrs.asdict(obj))
-
-    # Handle dataclasses as fallback
-    if dataclasses.is_dataclass(obj):
-        return simplify(dataclasses.asdict(obj))  # type: ignore
-
-    # Handle collections
-    if isinstance(obj, dict):
-        return {str(k): simplify(v) for k, v in obj.items()}
-
-    if isinstance(obj, (list, tuple)):
-        return [simplify(item) for item in obj]
-
-    if isinstance(obj, (set, frozenset)):
-        return sorted([simplify(item) for item in obj], key=str)
-
-    # Last resort: return class name
-    return f"<{obj.__class__.__name__}>"
-
-
-# Main test scenario
 def scenario():
-    """
-    Perform initialize, open, analyse-document steps, yielding (desc, req, resp) tuples.
-    """
+    """Perform LSP server testing steps and yield results."""
     dir_root = Path(__file__).parent
     dir_inputs = dir_root / "inputs"
-    dir_codebase = dir_inputs / "codebase"
     file_editor = dir_inputs / "editor.sql"
+    codebase_dir = dir_inputs / "codebase"
 
     # Step 0: initialize
     init_req = lsp.InitializeParams(
         capabilities=lsp.ClientCapabilities(),
-        workspace_folders=[lsp.WorkspaceFolder(name=dir_codebase.name, uri=dir_codebase.as_uri())],
+        workspace_folders=[lsp.WorkspaceFolder(name=codebase_dir.name, uri=codebase_dir.as_uri())],
     )
-    src.server.lspserver.lsp.lsp_initialize(init_req)  # This would trigger lspserver.initialize()
-    yield "initialize", init_req, None
+    init_resp = src.server.lspserver.lsp.lsp_initialize(init_req)
+    yield "Initialise", (init_req, init_resp)
 
-    # Step 1: open document
-    open_req = lsp.DidOpenTextDocumentParams(
-        text_document=lsp.TextDocumentItem(
-            uri=file_editor.as_uri(), language_id="sql", version=1, text=file_editor.read_text()
+    # Step 1: open document - capture diagnostics
+    diag_resp = []
+    _publish_diagnostics = src.server.lspserver.publish_diagnostics
+    src.server.lspserver.publish_diagnostics = _intercept(lambda uri, diagnostics: diagnostics, diag_resp)
+    try:
+        open_req = lsp.DidOpenTextDocumentParams(
+            text_document=lsp.TextDocumentItem(
+                uri=file_editor.as_uri(), language_id="sql", version=1, text=file_editor.read_text()
+            )
         )
-    )
-    src.server.did_open(open_req)
-    yield "did_open", open_req, None
+        src.server.did_open(open_req)
+    finally:
+        src.server.lspserver.publish_diagnostics = _publish_diagnostics
+
+    yield "Open document", (open_req, list(chain.from_iterable(diag_resp)))
 
     # Step 2: get-code-lenses
     lens_req = lsp.CodeLensParams(text_document=lsp.TextDocumentIdentifier(file_editor.as_uri()))
-    lens_resp = src.server.code_lens_provider(lens_req)
-    yield "code_lens_provider", lens_req, lens_resp
+    yield "Get code lenses", (lens_req, src.server.code_lens_provider(lens_req))
 
-    # Step 3: final-sql (from server workspace)
+    # Step 3: get document content
     doc = src.server.lspserver.workspace.get_text_document(file_editor.as_uri())
-    final_sql = getattr(doc, "source", None)
-    yield "get_text_document", None, final_sql
+    yield "Get final document", doc
 
 
-# Snapshot lifecycle functions
+def simplify(obj, lspserver: pygls.server.LanguageServer):
+    match obj:
+        # Copmlex request-response pairs
+
+        case [lsp.InitializeParams(workspace_folders=folders), lsp.InitializeResult()]:
+            folder_names = [f.name for f in folders or []]
+            return f"Initialize with workspace folders: `{', '.join(folder_names)}`"
+
+        case [lsp.DidOpenTextDocumentParams(text_document=doc_id), list() as diagnostics]:
+            doc_uri = simplify(doc_id.uri, lspserver)
+            result = [f"Document opened: `{simplify(doc_id.uri, lspserver)}`"]
+
+            result += ["Found " + str(len(diagnostics)) + " diagnostics:"]
+            doc_id = lspserver.workspace.get_text_document(doc_id.uri)
+            for diag in diagnostics:
+                result += [f"- `{doc_uri}:{simplify(diag.range, lspserver)}` {diag.message} "]
+                result += ["  ```sql"]
+                result += ["".join(doc_id.lines[diag.range.start.line : diag.range.end.line + 1]) + "  ```\n"]
+
+            return "\n".join(result)
+
+        case [lsp.CodeLensParams(text_document=doc_id), list() as codelenses]:
+            doc_uri = simplify(doc_id.uri, lspserver)
+            result = [f"Code lens requested for: `{doc_uri}`"]
+            result += [f"Found {len(codelenses)} code lenses:"]
+
+            doc_id = lspserver.workspace.get_text_document(doc_id.uri)
+            for lens in codelenses:
+                range_len = lens.range.end.line - lens.range.start.line + 1
+
+                result += [f"- `{doc_uri}:{simplify(lens.range, lspserver)}` {lens.command.title}"]
+                result += ["  ```sql"]
+                result += ["".join(doc_id.lines[lens.range.start.line : lens.range.start.line + range_len]) + "  ```\n"]
+
+                for loc in lens.command.arguments[2]:
+                    doc_alt = lspserver.workspace.get_text_document(loc["uri"])
+
+                    pos = loc["position"]
+                    result += [f"  - `{simplify(loc["uri"], lspserver)}:{pos.line}:{pos.character}`"]
+                    result += ["    ```sql"]
+                    result += ["".join(doc_alt.lines[pos.line : pos.line + range_len]) + "    ```\n"]
+
+            return "\n".join(result)
+
+        # Atomic cases
+
+        case str() if obj.startswith("file://"):
+            return Path(obj.replace("file://", "")).name
+
+        case pygls.workspace.TextDocument() as doc_id:
+            return f"`{simplify(doc_id.uri, lspserver)}`\n```sql\n{doc_id.source}\n```"
+
+        case lsp.Range(start=start, end=end):
+            return f"{start.line}:{start.character}-{end.line}:{end.character}"
+
+        case _ if not obj:
+            return ""
+
+        case _:
+            return str(obj)
 
 
-def capture_snapshots() -> dict:
-    """
-    Run scenario steps, capture request/response for each step as JSON strings.
-    """
-    captured = {}
-    for idx, (desc, req, resp) in enumerate(scenario()):
-        key = f"{idx}.{desc}"
-        snapshot = {"request": simplify(req), "response": simplify(resp)}
-        captured[key] = utils.pformat(snapshot)
-    return captured
+def _intercept(target, captures: list):
+    """Creates a decorator that intercepts calls to the target function."""
+
+    @wraps(target)
+    def wrapper(*args, **kwargs):
+        result = target(*args, **kwargs)
+        captures.append(result)
+        return result
+
+    return wrapper
 
 
-def update_snapshots():
-    """
-    Generates and updates snapshots based on the current scenario execution.
-    """
-    log.info("Generating snapshots...")
-    captured_snapshots = capture_snapshots()
-    log.info("\tGenerated")
+@pytest.fixture(scope="module")
+def captured_outputs():
+    """Run scenario steps and convert them to snapshot format."""
+    output = ["# Testing Server"]
 
-    snap_dir = Path(__file__).parent / "snapshots_server"
-    log.info("Deleting old files...")
-    if snap_dir.exists():
-        for file_path in snap_dir.glob("*.json"):
-            log.info(f"\tDeleted {file_path.name}")
-            file_path.unlink()
-    else:
-        snap_dir.mkdir(parents=True, exist_ok=True)
+    for idx, (name, result) in enumerate(scenario()):
+        output += [f"## STEP {idx}: {name}"]
+        output += [simplify(result, src.server.lspserver)]
+        output += ["\n"]
 
-    log.info("Writing new files...")
-    for key, snapshot_data in captured_snapshots.items():
-        snapshot_file = snap_dir / f"{key}.json"
-        snapshot_file.write_text(snapshot_data)
-        log.info(f"\tWrote {snapshot_file.name}")
-
-    log.info("Snapshots updated.")
+    return "\n".join(output)
 
 
-# Pytest harness
-
-
-def get_test_params():
-    """
-    Prepares parameters for pytest by capturing current snapshots and loading golden files.
-    """
-    captured = capture_snapshots()
-    snap_dir = Path(__file__).parent / "snapshots_server"
-    correct = {file.stem: file.read_text() for file in snap_dir.glob("*.json")}
-
-    params = [pytest.param(name, captured, correct, id=name) for name in correct]
-    params.append(pytest.param(None, captured, correct, id="#new_or_missing"))
-    return params
-
-
-@pytest.mark.parametrize("name,captured,correct", get_test_params())
-def test_server(name, captured, correct):
-    """
-    Compares captured snapshots against correct ones, or checks for new/missing snapshots.
-    """
-    if name:
-        assert name in captured, f"Snapshot '{name}' was not captured"
-        assert correct[name] == captured[name], f"Snapshots '{name}' are different"
-    else:
-        extra_keys = set(captured.keys()) - set(correct.keys())
-        assert not extra_keys, f"Unexpected snapshots captured: {extra_keys}"
-
-        missing_keys = set(correct.keys()) - set(captured.keys())
-        assert not missing_keys, f"Missing snapshots that were captured earlier: {missing_keys}"
-
-
-# Create new golden snapshots from CLI
-if __name__ == "__main__":
-    update_snapshots()
+def test_server(snapshot, captured_outputs):
+    snapshot.snapshot_dir = Path(__file__).parent / "snapshots"
+    (snapshot.snapshot_dir / "test_server.last.md").write_text(captured_outputs)
+    snapshot.assert_match(captured_outputs, "test_server.true.md")
