@@ -85,19 +85,19 @@ def simplify(obj, lspserver: pygls.server.LanguageServer):
 
             doc_id = lspserver.workspace.get_text_document(doc_id.uri)
             for lens in codelenses:
-                range_len = lens.range.end.line - lens.range.start.line + 1
-
                 result += [f"- `{doc_uri}:{simplify(lens.range, lspserver)}` {lens.command.title}"]
                 result += ["  ```sql"]
-                result += ["".join(doc_id.lines[lens.range.start.line : lens.range.start.line + range_len]) + "  ```\n"]
+                result += ["".join(doc_id.lines[lens.range.start.line : lens.range.end.line + 1]) + "  ```\n"]
 
                 for loc in lens.command.arguments[2]:
                     doc_alt = lspserver.workspace.get_text_document(loc["uri"])
 
-                    pos = loc["position"]
-                    result += [f"  - `{simplify(loc["uri"], lspserver)}:{pos.line}:{pos.character}`"]
+                    result += [f"  - `{simplify(loc["uri"], lspserver)}:{simplify(loc["range"], lspserver)}`"]
+                    result += []
                     result += ["    ```sql"]
-                    result += ["".join(doc_alt.lines[pos.line : pos.line + range_len]) + "    ```\n"]
+                    result += [
+                        "".join(doc_alt.lines[loc["range"].start.line : loc["range"].end.line + 1]) + "    ```\n"
+                    ]
 
             return "\n".join(result)
 

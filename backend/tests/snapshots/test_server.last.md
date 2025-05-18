@@ -36,34 +36,31 @@ Found 2 code lenses:
     END AS macro_region,
   ```
 
-  - `0-accounts.sql:97:8`
+  - `0-accounts.sql:97:8-101:11`
     ```sql
         CASE
             WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
             WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
             ELSE NULL
         END AS region_cluster,
-        accounts.priority,
     ```
 
-  - `1-revenue.sql:6:4`
+  - `1-revenue.sql:6:4-10:7`
     ```sql
     CASE
         WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
         WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
         ELSE NULL
     END AS region_cluster,
-    CASE 
     ```
 
-  - `1-revenue.sql:32:4`
+  - `1-revenue.sql:32:4-36:7`
     ```sql
     CASE
         WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
         WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
         ELSE NULL
     END AS cluster,
-    accounts.industry AS industry,
     ```
 
 - `editor.sql:12:4-12:62` Alternatives found: 1
@@ -71,7 +68,7 @@ Found 2 code lenses:
     IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,
   ```
 
-  - `1-revenue.sql:38:4`
+  - `1-revenue.sql:38:4-38:70`
     ```sql
     IIF(accounts.industry = 'Information Technology', 'Tech', 'Other') AS industry_tech,
     ```

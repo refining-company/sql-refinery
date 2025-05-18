@@ -63,7 +63,7 @@ def analyse_document(uri: str) -> tuple[list[lsp.Diagnostic], list[lsp.CodeLens]
         for other in inc.others:
             location_uri = other._file.as_uri()
             location_range = lsp.Range(lsp.Position(*other._node.start_point), lsp.Position(*other._node.end_point))
-            other_locations.append({"uri": location_uri, "position": location_range.start})
+            other_locations.append({"uri": location_uri, "position": location_range.start, "range": location_range})
 
         code_lens = lsp.CodeLens(
             range=range,
