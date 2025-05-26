@@ -1,32 +1,88 @@
 {
-  // Python testing
-  "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["-v", "--maxfail=1"],
-
-  // Python linting
-  "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.exclude": ["**/.venv", "**/.pyenv", "~/.pyenv"],
-
-  // VSCode file explorer
+  // File explorer exclusions
   "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
     "**/.conda": true,
     "**/__pycache__": true,
     "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
     "**/.venv": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
     "**/node_modules": true,
     "out": false,
     "dist": false
   },
+
+  // Search exclusions
   "search.exclude": {
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/__pycache__": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
     "out": true,
     "dist": true
   },
 
-  // Formatting
-  "black-formatter.args": ["-l", "120"],
+  // Python configuration
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+  
+  // Python testing configuration
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.cwd": "${workspaceFolder}/backend",
+  "python.testing.pytestPath": "pytest",
+  "python.testing.pytestArgs": ["-c", "${workspaceFolder}/backend/pyproject.toml"],
+
+  // Python analysis
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.exclude": [
+    "**/.venv",
+    "**/.pyenv",
+    "~/.pyenv",
+    "**/__pycache__",
+    "**/node_modules",
+    "**/.mypy_cache"
+  ],
+
+  // Black formatter
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.ruff": "explicit"
+    }
+  },
+
+  // Black configuration
+  "black-formatter.args": ["--config", "${workspaceFolder}/backend/pyproject.toml"],
+
+  // Ruff configuration
+  "ruff.configuration": "${workspaceFolder}/backend/pyproject.toml",
+
+  // MyPy configuration
+  "mypy-type-checker.args": ["--config-file", "${workspaceFolder}/backend/pyproject.toml"],
+
+  // TypeScript
   "typescript.tsc.autoDetect": "off",
+
+  // Prettier - if no prettier config file exists
   "prettier.printWidth": 120,
   "prettier.semi": true,
-  "prettier.proseWrap": "always"
+  "[markdown]": {
+    "prettier.proseWrap": "always"
+  },
+
+  // Formatting
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
 }

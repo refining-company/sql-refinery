@@ -1,18 +1,19 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "compounds": [
     {
-      "name": "VS Code and Server: debug",
-      "configurations": ["Server: attach debug (hidden)", "VS Code: debug (hidden)"],
-      "presentation": { "order": 1 }
+      "name": "Frontend + Backend: Debug",
+      "configurations": ["Frontend: Run Extension", "Backend: Attach Debug"],
+      "presentation": {
+        "order": 1,
+        "group": "compound"
+      }
     }
   ],
   "configurations": [
+    // Frontend configurations
     {
-      "name": "VS Code: debug (hidden)",
+      "name": "Frontend: Run Extension",
       "type": "extensionHost",
       "request": "launch",
       "args": [
@@ -23,38 +24,26 @@
       ],
       "outFiles": ["${workspaceFolder}/frontend-vscode/dist/**/*.js"],
       "sourceMaps": true,
-      "preLaunchTask": "${defaultBuildTask}",
+      "preLaunchTask": "watch",
       "presentation": { "hidden": true }
     },
+
+    // Backend configurations
     {
-      "name": "Server: attach debug (hidden)",
+      "name": "Backend: Attach Debug",
       "type": "debugpy",
       "request": "attach",
       "listen": { "host": "localhost", "port": 5678 },
-      "presentation": { "hidden": true },
-      "justMyCode": false
+      "justMyCode": false,
+      "presentation": { "hidden": true }
     },
     {
-      "name": "Server: standalone debug",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "src.server",
-      "cwd": "${workspaceFolder}/backend",
-      "args": [
-        "--codebase-path",
-        "${workspaceFolder}/backend/tests/inputs/codebase/",
-        "--analyse-path",
-        "${workspaceFolder}/backend/tests/inputs/editor.sql"
-      ],
-      "console": "integratedTerminal"
-    },
-    {
-      "name": "Server: initialise tests",
+      "name": "Backend: Initialize Tests",
       "type": "debugpy",
       "request": "launch",
       "module": "pytest",
-      "args": ["--snapshot-update"],
       "cwd": "${workspaceFolder}/backend",
+      "args": ["--snapshot-update"],
       "console": "integratedTerminal"
     }
   ]
