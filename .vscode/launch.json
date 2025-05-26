@@ -4,10 +4,7 @@
     {
       "name": "Frontend + Backend: Debug",
       "configurations": ["Frontend: Run Extension", "Backend: Attach Debug"],
-      "presentation": {
-        "order": 1,
-        "group": "compound"
-      }
+      "presentation": { "order": 1, "group": "compound" }
     }
   ],
   "configurations": [

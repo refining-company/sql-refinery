@@ -11,11 +11,10 @@ export async function activate(context: vscode.ExtensionContext) {
   Logger.init('SQL Refinery');
   log = new Logger(path.parse(__filename).name);
 
-  // Spawning sub-process with debugger and server
+  // Spawning sub-process with LSP agent connecting to recording server
   const backendPath = context.asAbsolutePath(path.join('..', 'backend'));
   const serverOptions: ServerOptions = {
-    command: 'source .venv/bin/activate && python -u -Xfrozen_modules=off -m src.server',
-    args: ['--start-server', '--start-debug'],
+    command: 'poetry run python -m src.server --start-server --start-debug',
     options: { cwd: backendPath, shell: true },
   };
 

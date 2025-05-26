@@ -15,20 +15,17 @@ This module implements a snapshot-based testing approach for SQL analysis:
    - Separation between snapshot generation and verification
 """
 
-import re
-import pytest
-from pathlib import Path
-from collections import defaultdict
-from functools import wraps
 import dataclasses
-from typing import Callable
+import re
+from collections import defaultdict
+from collections.abc import Callable
+from functools import wraps
+from pathlib import Path
 
-from src import sql
-from src import code
-from src import logic
-from src import server
-from src import logger
+import pytest
+
 import tests.utils as utils
+from src import code, logger, logic, server, sql
 
 log = logger.get(__name__)
 
@@ -75,7 +72,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
                 node_type = sql.get_type(obj, meta=True, helper=False, original=False)
 
                 children = simplify(obj.children, terminal)  # simplify recursively
-                children = [child for child in children if child]  # filter out empty values # type: ignore
+                children = [child for child in children if child]  # filter out empty values
                 children = sum(
                     [child if isinstance(child, list) else [child] for child in children], []
                 )  # flatten the list
@@ -141,17 +138,15 @@ def captured_outputs():
     capture, captured = get_capturer()
     _sql_parse, sql.parse = capture(
         sql.parse,
-        lambda result: utils.pformat(simplify(result)),
+        lambda result: simplify(result),
     )
     _ingest_file, code.Tree.ingest_file = capture(
         code.Tree.ingest_file,
-        lambda result: utils.pformat(simplify(result, terminal=(sql.Node, sql.Tree, code.Column, code.Table))),
+        lambda result: simplify(result, terminal=(sql.Node, sql.Tree, code.Column, code.Table)),
     )
     _compare, logic.compare = capture(
         logic.compare,
-        lambda result: utils.pformat(
-            simplify(result, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table))
-        ),
+        lambda result: simplify(result, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table)),
     )
 
     try:
@@ -167,7 +162,7 @@ def captured_outputs():
         for i, value in enumerate(values):
             md_lines.append(f"# STEP: {key} {i+1}\n")
             md_lines.append("```json")
-            md_lines.append(value)
+            md_lines.append(utils.pformat(value))
             md_lines.append("```\n")
 
     return "\n".join(md_lines)

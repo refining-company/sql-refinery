@@ -37,7 +37,7 @@
   "python.testing.pytestArgs": ["-c", "${workspaceFolder}/backend/pyproject.toml"],
 
   // Python analysis
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "off",
   "python.analysis.exclude": [
     "**/.venv",
     "**/.pyenv",
