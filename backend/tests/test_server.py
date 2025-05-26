@@ -2,102 +2,88 @@
 Pytest harness for the in-process LSP server scenario.
 """
 
-from functools import wraps
-from itertools import chain
+import sys
 from pathlib import Path
 
-import pytest
 import lsprotocol.types as lsp
-import pygls.workspace
-import pygls.server
+import pytest
+import pytest_lsp
+from pytest_lsp import ClientServerConfig, LanguageClient
 
-import src.server
 from src import logger
 
 log = logger.get(__name__)
 
 
-def scenario():
+@pytest_lsp.fixture(config=ClientServerConfig(server_command=[sys.executable, "-m", "src.server", "--start-server"]))
+async def client(lsp_client: LanguageClient):
+    yield lsp_client
+    await lsp_client.shutdown_session()
+
+
+async def scenario(client: LanguageClient):
     """Perform LSP server testing steps and yield results."""
-    dir_root = Path(__file__).parent
-    dir_inputs = dir_root / "inputs"
-    file_editor = dir_inputs / "editor.sql"
-    codebase_dir = dir_inputs / "codebase"
+    # Set up folder structure
+    path_inputs = Path(__file__).parent / "inputs"
+    path_editor = path_inputs / "editor.sql"
+    path_codebase = path_inputs / "codebase"
 
-    # Step 0: initialize
-    init_req = lsp.InitializeParams(
-        capabilities=lsp.ClientCapabilities(),
-        workspace_folders=[lsp.WorkspaceFolder(name=codebase_dir.name, uri=codebase_dir.as_uri())],
-    )
-    init_resp = src.server.lspserver.lsp.lsp_initialize(init_req)
-    yield "Initialise", (init_req, init_resp)
+    # Client opens up workspace and file
+    workspace_folders = [lsp.WorkspaceFolder(name=path_codebase.name, uri=path_codebase.as_uri())]
+    editor_doc = lsp.TextDocumentItem(path_editor.as_uri(), "sql", 1, path_editor.read_text())
 
-    # Step 1: open document - capture diagnostics
-    diag_resp = []
-    _publish_diagnostics = src.server.lspserver.publish_diagnostics
-    src.server.lspserver.publish_diagnostics = _intercept(lambda uri, diagnostics: diagnostics, diag_resp)
-    try:
-        open_req = lsp.DidOpenTextDocumentParams(
-            text_document=lsp.TextDocumentItem(
-                uri=file_editor.as_uri(), language_id="sql", version=1, text=file_editor.read_text()
-            )
-        )
-        src.server.did_open(open_req)
-    finally:
-        src.server.lspserver.publish_diagnostics = _publish_diagnostics
+    # Step 0: initialize session
+    init_params = lsp.InitializeParams(capabilities=lsp.ClientCapabilities(), workspace_folders=workspace_folders)
+    init_result = await client.initialize_session(init_params)
+    yield "Initialise", (init_params, init_result)
 
-    yield "Open document", (open_req, list(chain.from_iterable(diag_resp)))
+    # Step 1: open document and wait for diagnostics
+    diag_future = client.wait_for_notification("textDocument/publishDiagnostics")
+    open_params = lsp.DidOpenTextDocumentParams(text_document=editor_doc)
+    client.text_document_did_open(open_params)
+    diagnostics = getattr(await diag_future, "diagnostics", [])
+    yield "Open document", (open_params, diagnostics)
 
     # Step 2: get-code-lenses
-    lens_req = lsp.CodeLensParams(text_document=lsp.TextDocumentIdentifier(file_editor.as_uri()))
-    yield "Get code lenses", (lens_req, src.server.code_lens_provider(lens_req))
+    lens_params = lsp.CodeLensParams(text_document=lsp.TextDocumentIdentifier(editor_doc.uri))
+    lens_result = await client.text_document_code_lens_async(lens_params)
+    yield "Get code lenses", (lens_params, lens_result, editor_doc)
 
     # Step 3: get document content
-    doc = src.server.lspserver.workspace.get_text_document(file_editor.as_uri())
-    yield "Get final document", doc
+    yield "Get final document", editor_doc
 
 
-def simplify(obj, lspserver: pygls.server.LanguageServer):
+def simplify(obj):
     match obj:
-        # Copmlex request-response pairs
+        # Complex request-response pairs
 
         case [lsp.InitializeParams(workspace_folders=folders), lsp.InitializeResult()]:
             folder_names = [f.name for f in folders or []]
             return f"Initialize with workspace folders: `{', '.join(folder_names)}`"
 
         case [lsp.DidOpenTextDocumentParams(text_document=doc_id), list() as diagnostics]:
-            doc_uri = simplify(doc_id.uri, lspserver)
-            result = [f"Document opened: `{simplify(doc_id.uri, lspserver)}`"]
+            doc_uri = simplify(doc_id.uri)
+            result = [f"Document opened: `{doc_uri}`"]
 
             result += ["Found " + str(len(diagnostics)) + " diagnostics:"]
-            doc_id = lspserver.workspace.get_text_document(doc_id.uri)
             for diag in diagnostics:
-                result += [f"- `{doc_uri}:{simplify(diag.range, lspserver)}` {diag.message} "]
+                result += [f"- `{doc_uri}:{simplify(diag.range)}` {diag.message} "]
                 result += ["  ```sql"]
-                result += ["".join(doc_id.lines[diag.range.start.line : diag.range.end.line + 1]) + "  ```\n"]
+                result += [simplify((doc_id, diag.range))]
+                result += ["  ```\n"]
 
             return "\n".join(result)
 
-        case [lsp.CodeLensParams(text_document=doc_id), list() as codelenses]:
-            doc_uri = simplify(doc_id.uri, lspserver)
+        case [lsp.CodeLensParams(text_document=doc_id), list() as codelenses, lsp.TextDocumentItem() as doc_item]:
+            doc_uri = simplify(doc_id.uri)
             result = [f"Code lens requested for: `{doc_uri}`"]
+
             result += [f"Found {len(codelenses)} code lenses:"]
-
-            doc_id = lspserver.workspace.get_text_document(doc_id.uri)
             for lens in codelenses:
-                result += [f"- `{doc_uri}:{simplify(lens.range, lspserver)}` {lens.command.title}"]
+                result += [f"- `{doc_uri}:{simplify(lens.range)}` {lens.command.title}"]
                 result += ["  ```sql"]
-                result += ["".join(doc_id.lines[lens.range.start.line : lens.range.end.line + 1]) + "  ```\n"]
-
-                for loc in lens.command.arguments[2]:
-                    doc_alt = lspserver.workspace.get_text_document(loc["uri"])
-
-                    result += [f"  - `{simplify(loc["uri"], lspserver)}:{simplify(loc["range"], lspserver)}`"]
-                    result += []
-                    result += ["    ```sql"]
-                    result += [
-                        "".join(doc_alt.lines[loc["range"].start.line : loc["range"].end.line + 1]) + "    ```\n"
-                    ]
+                result += [simplify((doc_item, lens.range))]
+                result += ["  ```\n"]
 
             return "\n".join(result)
 
@@ -106,8 +92,12 @@ def simplify(obj, lspserver: pygls.server.LanguageServer):
         case str() if obj.startswith("file://"):
             return Path(obj.replace("file://", "")).name
 
-        case pygls.workspace.TextDocument() as doc_id:
-            return f"`{simplify(doc_id.uri, lspserver)}`\n```sql\n{doc_id.source}\n```"
+        case lsp.TextDocumentItem(uri=uri, text=text):
+            return f"`{simplify(uri)}`\n```sql\n{text}\n```"
+
+        case (lsp.TextDocumentItem() as doc, lsp.Range() as range):
+            lines = doc.text.splitlines()
+            return "\n".join(lines[range.start.line : range.end.line + 1])
 
         case lsp.Range(start=start, end=end):
             return f"{start.line}:{start.character}-{end.line}:{end.character}"
@@ -119,32 +109,18 @@ def simplify(obj, lspserver: pygls.server.LanguageServer):
             return str(obj)
 
 
-def _intercept(target, captures: list):
-    """Creates a decorator that intercepts calls to the target function."""
-
-    @wraps(target)
-    def wrapper(*args, **kwargs):
-        result = target(*args, **kwargs)
-        captures.append(result)
-        return result
-
-    return wrapper
-
-
-@pytest.fixture(scope="module")
-def captured_outputs():
-    """Run scenario steps and convert them to snapshot format."""
-    output = ["# Testing Server"]
-
-    for idx, (name, result) in enumerate(scenario()):
-        output += [f"## STEP {idx}: {name}"]
-        output += [simplify(result, src.server.lspserver)]
-        output += ["\n"]
-
-    return "\n".join(output)
-
-
-def test_server(snapshot, captured_outputs):
+@pytest.mark.asyncio()
+async def test_server(client: LanguageClient, snapshot):
     snapshot.snapshot_dir = Path(__file__).parent / "snapshots"
+    result = ["# Testing Server"]
+
+    idx = 0
+    async for name, step_result in scenario(client):
+        result += [f"## STEP {idx}: {name}"]
+        result += [simplify(step_result)]
+        result += ["\n"]
+        idx += 1
+
+    captured_outputs = "\n".join(result)
     (snapshot.snapshot_dir / "test_server.last.md").write_text(captured_outputs)
     snapshot.assert_match(captured_outputs, "test_server.true.md")
