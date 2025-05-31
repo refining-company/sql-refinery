@@ -14,7 +14,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // Spawning sub-process with LSP agent connecting to recording server
   const backendPath = context.asAbsolutePath(path.join('..', 'backend'));
   const serverOptions: ServerOptions = {
-    command: 'poetry run python -m src.server --start-server --start-debug',
+    command: 'poetry run python -m src.server --start-server --start-debug --start-recording',
     options: { cwd: backendPath, shell: true },
   };
 

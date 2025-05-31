@@ -25,6 +25,21 @@ SQL Refining is a Copilot for SQL analysts working with large codebases.
 - **Style**: Leverage modern language features, minimize globals, initialize state where used
 - **Testing**: Self-contained tests manage their own state; non-intrusive harnesses; clear separation of logic
 
+### Code Style Requirements
+
+- **Remove Defensive Code**: Eliminate unnecessary if statements, guard clauses, and null checks
+- **Eliminate Unnecessary Assignments**: Avoid intermediate variables when direct usage is clearer
+- **Prefer Crashes Over Silent Failures**: Use assertions for invariants; let errors propagate with clear messages
+- **Modern Python Features**: Leverage Python 3.12+ features (match statements, union types, walrus operator)
+
+### Testing Infrastructure
+
+- **Poetry Environment**: All test commands use `poetry run python` for consistent dependency management
+- **Snapshot Testing**: `.last.md` files for debugging, `.true.md` files as golden standards
+- **LSP Session Recording**: `tests/recorder.py` patches pygls protocol for message recording in NDJSON format
+- **Replay Testing**: Raw protocol methods enable generic message replay for LSP communication testing
+- **Self-Contained Tests**: Each test manages its own state and cleanup without relying on external setup
+
 ### Development Process
 
 1. **Understand First**: Analyze codebase structure, state ownership, and component boundaries

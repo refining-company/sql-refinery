@@ -72,7 +72,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
                 node_type = sql.get_type(obj, meta=True, helper=False, original=False)
 
                 children = simplify(obj.children, terminal)  # simplify recursively
-                children = [child for child in children if child]  # filter out empty values
+                children = [child for child in children if child]  # type:ignore  # filter out empty values
                 children = sum(
                     [child if isinstance(child, list) else [child] for child in children], []
                 )  # flatten the list

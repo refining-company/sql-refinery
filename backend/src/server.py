@@ -12,20 +12,19 @@ This module provides:
 - Translation from `Workspace` outputs into LSP types
 """
 
-import sys
 import argparse
+import sys
 import urllib.parse
 from pathlib import Path
 
-import pygls.server
 import lsprotocol.types as lsp
+import pygls.server
 
 import src.logger
 import src.workspace
 
 log = src.logger.get(__name__)
 
-# TODO take from package configs
 lspserver = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
 workspace = None
 
@@ -51,7 +50,7 @@ def analyse_document(uri: str) -> tuple[list[lsp.Diagnostic], list[lsp.CodeLens]
         range = lsp.Range(lsp.Position(*inc.this._node.start_point), lsp.Position(*inc.this._node.end_point))
         diagnostic = lsp.Diagnostic(
             range=range,
-            message=f"Alternative expressions found in the codebase",
+            message="Alternative expressions found in the codebase",
             code="Inconsistency",
             severity=lsp.DiagnosticSeverity.Information,
         )
@@ -113,17 +112,25 @@ def initialize(params: lsp.InitializeParams) -> None:
     get_workspace(new=True)
 
     if params.workspace_folders:
-        assert len(params.workspace_folders) == 1, log.error("Only one workspace folder is supported")
+        assert len(params.workspace_folders) == 1, log.error("Only one workspace folder is supported")  # type:ignore
         workspace_path = get_path(params.workspace_folders[0].uri)
 
         log.info(f"Loading workspace folder {workspace_path}")
         get_workspace().ingest_folder(workspace_path)
 
 
-def start(start_debug: bool = False, start_server: bool = False):
+def start(start_debug: bool = False, start_server: bool = False, start_recording: bool = False):
     if start_debug:
         log.info("Starting custom debugger")
         import src._debug
+
+        src._debug.start()
+
+    if start_recording:
+        log.info("Starting LSP session recording")
+        import tests.recorder
+
+        tests.recorder.start()
 
     if start_server:
         log.info(f"Starting LSP server with params {sys.argv}")
@@ -133,14 +140,14 @@ def start(start_debug: bool = False, start_server: bool = False):
 def get_path(uri: str) -> Path:
     path = urllib.parse.urlparse(uri).path
     path = urllib.parse.unquote(path)
-    path = Path(path)
-    return path
+    return Path(path)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--start-debug", action="store_true", help="Start custom debugger")
     parser.add_argument("--start-server", action="store_true", help="Start language server")
+    parser.add_argument("--start-recording", action="store_true", help="Record LSP session to file")
     args = parser.parse_args()
 
     start(**vars(args))

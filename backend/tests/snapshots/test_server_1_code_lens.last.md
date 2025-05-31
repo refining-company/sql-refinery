@@ -1,0 +1,1325 @@
+# Testing Server
+
+## client->server
+```json
+{
+  "id": 0,
+  "params": {
+    "capabilities": {
+      "workspace": {
+        "applyEdit": true,
+        "workspaceEdit": {
+          "documentChanges": true,
+          "resourceOperations": [
+            "create",
+            "rename",
+            "delete" ],
+          "failureHandling": "textOnlyTransactional",
+          "normalizesLineEndings": true,
+          "changeAnnotationSupport": { "groupsOnLabel": true } },
+        "didChangeConfiguration": { "dynamicRegistration": true },
+        "didChangeWatchedFiles": {
+          "dynamicRegistration": true,
+          "relativePatternSupport": true },
+        "symbol": {
+          "dynamicRegistration": true,
+          "symbolKind": {
+            "valueSet": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26 ] },
+          "tagSupport": {
+            "valueSet": [
+              1 ] },
+          "resolveSupport": {
+            "properties": [
+              "location.range" ] } },
+        "executeCommand": { "dynamicRegistration": true },
+        "workspaceFolders": true,
+        "configuration": true,
+        "semanticTokens": { "refreshSupport": true },
+        "codeLens": { "refreshSupport": true },
+        "fileOperations": {
+          "dynamicRegistration": true,
+          "didCreate": true,
+          "willCreate": true,
+          "didRename": true,
+          "willRename": true,
+          "didDelete": true,
+          "willDelete": true },
+        "inlineValue": { "refreshSupport": true },
+        "inlayHint": { "refreshSupport": true },
+        "diagnostics": { "refreshSupport": true },
+        "foldingRange": { "refreshSupport": true } },
+      "textDocument": {
+        "synchronization": {
+          "dynamicRegistration": true,
+          "willSave": true,
+          "willSaveWaitUntil": true,
+          "didSave": true },
+        "completion": {
+          "dynamicRegistration": true,
+          "completionItem": {
+            "snippetSupport": true,
+            "commitCharactersSupport": true,
+            "documentationFormat": [
+              "markdown",
+              "plaintext" ],
+            "deprecatedSupport": true,
+            "preselectSupport": true,
+            "tagSupport": {
+              "valueSet": [
+                1 ] },
+            "insertReplaceSupport": true,
+            "resolveSupport": {
+              "properties": [
+                "documentation",
+                "detail",
+                "additionalTextEdits" ] },
+            "insertTextModeSupport": {
+              "valueSet": [
+                1,
+                2 ] },
+            "labelDetailsSupport": true },
+          "completionItemKind": {
+            "valueSet": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25 ] },
+          "insertTextMode": 2,
+          "contextSupport": true,
+          "completionList": {
+            "itemDefaults": [
+              "commitCharacters",
+              "editRange",
+              "insertTextFormat",
+              "insertTextMode",
+              "data" ] } },
+        "hover": {
+          "dynamicRegistration": true,
+          "contentFormat": [
+            "markdown",
+            "plaintext" ] },
+        "signatureHelp": {
+          "dynamicRegistration": true,
+          "signatureInformation": {
+            "documentationFormat": [
+              "markdown",
+              "plaintext" ],
+            "parameterInformation": { "labelOffsetSupport": true },
+            "activeParameterSupport": true },
+          "contextSupport": true },
+        "declaration": {
+          "dynamicRegistration": true,
+          "linkSupport": true },
+        "definition": {
+          "dynamicRegistration": true,
+          "linkSupport": true },
+        "typeDefinition": {
+          "dynamicRegistration": true,
+          "linkSupport": true },
+        "implementation": {
+          "dynamicRegistration": true,
+          "linkSupport": true },
+        "references": { "dynamicRegistration": true },
+        "documentHighlight": { "dynamicRegistration": true },
+        "documentSymbol": {
+          "dynamicRegistration": true,
+          "symbolKind": {
+            "valueSet": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26 ] },
+          "hierarchicalDocumentSymbolSupport": true,
+          "tagSupport": {
+            "valueSet": [
+              1 ] },
+          "labelSupport": true },
+        "codeAction": {
+          "dynamicRegistration": true,
+          "codeActionLiteralSupport": {
+            "codeActionKind": {
+              "valueSet": [
+                "",
+                "quickfix",
+                "refactor",
+                "refactor.extract",
+                "refactor.inline",
+                "refactor.rewrite",
+                "source",
+                "source.organizeImports" ] } },
+          "isPreferredSupport": true,
+          "disabledSupport": true,
+          "dataSupport": true,
+          "resolveSupport": {
+            "properties": [
+              "edit" ] },
+          "honorsChangeAnnotations": true },
+        "codeLens": { "dynamicRegistration": true },
+        "documentLink": {
+          "dynamicRegistration": true,
+          "tooltipSupport": true },
+        "colorProvider": { "dynamicRegistration": true },
+        "formatting": { "dynamicRegistration": true },
+        "rangeFormatting": {
+          "dynamicRegistration": true,
+          "rangesSupport": true },
+        "onTypeFormatting": { "dynamicRegistration": true },
+        "rename": {
+          "dynamicRegistration": true,
+          "prepareSupport": true,
+          "prepareSupportDefaultBehavior": 1,
+          "honorsChangeAnnotations": true },
+        "foldingRange": {
+          "dynamicRegistration": true,
+          "rangeLimit": 5000,
+          "lineFoldingOnly": true,
+          "foldingRangeKind": {
+            "valueSet": [
+              "comment",
+              "imports",
+              "region" ] },
+          "foldingRange": { "collapsedText": false } },
+        "selectionRange": { "dynamicRegistration": true },
+        "publishDiagnostics": {
+          "relatedInformation": true,
+          "tagSupport": {
+            "valueSet": [
+              1,
+              2 ] },
+          "versionSupport": false,
+          "codeDescriptionSupport": true,
+          "dataSupport": true },
+        "callHierarchy": { "dynamicRegistration": true },
+        "semanticTokens": {
+          "requests": {
+            "range": true,
+            "full": { "delta": true } },
+          "tokenTypes": [
+            "namespace",
+            "type",
+            "class",
+            "enum",
+            "interface",
+            "struct",
+            "typeParameter",
+            "parameter",
+            "variable",
+            "property",
+            "enumMember",
+            "event",
+            "function",
+            "method",
+            "macro",
+            "keyword",
+            "modifier",
+            "comment",
+            "string",
+            "number",
+            "regexp",
+            "operator",
+            "decorator" ],
+          "tokenModifiers": [
+            "declaration",
+            "definition",
+            "readonly",
+            "static",
+            "deprecated",
+            "abstract",
+            "async",
+            "modification",
+            "documentation",
+            "defaultLibrary" ],
+          "formats": [
+            "relative" ],
+          "dynamicRegistration": true,
+          "overlappingTokenSupport": false,
+          "multilineTokenSupport": false,
+          "serverCancelSupport": true,
+          "augmentsSyntaxTokens": true },
+        "linkedEditingRange": { "dynamicRegistration": true },
+        "typeHierarchy": { "dynamicRegistration": true },
+        "inlineValue": { "dynamicRegistration": true },
+        "inlayHint": {
+          "dynamicRegistration": true,
+          "resolveSupport": {
+            "properties": [
+              "tooltip",
+              "textEdits",
+              "label.tooltip",
+              "label.location",
+              "label.command" ] } },
+        "diagnostic": {
+          "dynamicRegistration": true,
+          "relatedDocumentSupport": false } },
+      "notebookDocument": {
+        "synchronization": {
+          "dynamicRegistration": true,
+          "executionSummarySupport": true } },
+      "window": {
+        "workDoneProgress": true,
+        "showMessage": {
+          "messageActionItem": { "additionalPropertiesSupport": true } },
+        "showDocument": { "support": true } },
+      "general": {
+        "staleRequestSupport": {
+          "cancel": true,
+          "retryOnContentModified": [
+            "textDocument/semanticTokens/full",
+            "textDocument/semanticTokens/range",
+            "textDocument/semanticTokens/full/delta" ] },
+        "regularExpressions": {
+          "engine": "ECMAScript",
+          "version": "ES2020" },
+        "markdown": {
+          "parser": "marked",
+          "version": "1.1.0" },
+        "positionEncodings": [
+          "utf-16" ] } },
+    "processId": 77807,
+    "rootPath": "${workspaceFolder}/tests/inputs/codebase",
+    "rootUri": "file://${workspaceFolder}/tests/inputs/codebase",
+    "workspaceFolders": [
+      { "uri": "file://${workspaceFolder}/tests/inputs/codebase",
+        "name": "codebase" } ],
+    "clientInfo": {
+      "name": "Visual Studio Code",
+      "version": "1.100.2" },
+    "locale": "en",
+    "trace": "off" },
+  "method": "initialize",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "id": 0,
+  "jsonrpc": "2.0",
+  "result": {
+    "capabilities": {
+      "positionEncoding": "utf-16",
+      "textDocumentSync": {
+        "openClose": true,
+        "change": 2,
+        "willSave": false,
+        "willSaveWaitUntil": false,
+        "save": false },
+      "codeLensProvider": {},
+      "executeCommandProvider": { "commands": [] },
+      "workspace": {
+        "workspaceFolders": {
+          "supported": true,
+          "changeNotifications": true },
+        "fileOperations": {} } },
+    "serverInfo": {
+      "name": "sql-refinery-server",
+      "version": "0.1-dev" } } }
+```
+
+## client->server
+```json
+{
+  "params": {},
+  "method": "initialized",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "params": {
+    "textDocument": {
+      "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+      "languageId": "sql",
+      "version": 1,
+      "text": "-- CASE: Different groupings or thresholds applied to columns\n\nSELECT \n    date(date_month, 'start of year') AS date_year,\n    -- This should cause an error\n    CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END AS macro_region,\n    -- This should case an error\n    IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue ar\n    LEFT JOIN accounts a USING (account_id)\n    LEFT JOIN countries c USING (country)\nWHERE\n    -- This is appropriate, user can do ad-hoc filters for any subsets\n    a.industry IN ('Information Technology', 'Telecommunication Services')\n    -- This is appropriate, user can take any period\n    AND date_month BETWEEN DATE('now', '-24 months') AND DATE('now')\nGROUP BY date_year, macro_region, industry_it" } },
+  "method": "textDocument/didOpen",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "params": {
+    "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+    "diagnostics": [
+      { "range": {
+          "start": {
+            "line": 5,
+            "character": 4 },
+          "end": {
+            "line": 10,
+            "character": 7 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 12,
+            "character": 4 },
+          "end": {
+            "line": 12,
+            "character": 62 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" } ] },
+  "method": "textDocument/publishDiagnostics",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "id": 1,
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql" } },
+  "method": "textDocument/codeLens",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "result": [
+    { "range": {
+        "start": {
+          "line": 5,
+          "character": 4 },
+        "end": {
+          "line": 10,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 3",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/editor.sql",
+          { "line": 10,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 97,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 97,
+                  "character": 8 },
+                "end": {
+                  "line": 101,
+                  "character": 11 } } },
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+              "position": {
+                "line": 6,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 6,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } },
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+              "position": {
+                "line": 32,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 32,
+                  "character": 4 },
+                "end": {
+                  "line": 36,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 12,
+          "character": 4 },
+        "end": {
+          "line": 12,
+          "character": 62 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/editor.sql",
+          { "line": 12,
+            "character": 62 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+              "position": {
+                "line": 38,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 38,
+                  "character": 4 },
+                "end": {
+                  "line": 38,
+                  "character": 70 } } } ],
+          "peek" ] } } ] }
+```
+
+## client->server
+```json
+{
+  "params": {
+    "textDocument": {
+      "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+      "languageId": "sql",
+      "version": 1,
+      "text": "-- REVENUE REPORTS\n\n-- Revenue by region, cluster, account size\n\nSELECT \n    date(date_month, 'start of year') AS date_year,\n    CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END AS region_cluster,\n    CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END AS industry_cluster,\n    a360.account_size,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue ar\n    LEFT JOIN accounts a USING (account_id)\n    LEFT JOIN countries c USING (country)\n    LEFT JOIN accounts_360 a360 USING (account_id, date_month)\nGROUP BY date_year, region_cluster, industry_cluster, a360.account_size\nORDER BY date_year, region_cluster, industry_cluster;\n\n-- Accounts snapshot performance\n\nSELECT\n    accounts.name,\n    region,\n    CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END AS cluster,\n    accounts.industry AS industry,\n    IIF(accounts.industry = 'Information Technology', 'Tech', 'Other') AS industry_tech,\n    CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END AS account_size,\n    SUM(accounts_revenue.revenue) AS revenue_12m\nFROM accounts\n    LEFT JOIN accounts_revenue USING (account_id)\n    LEFT JOIN countries c USING (country)\nWHERE accounts_revenue.date_month BETWEEN DATE('now', '-12 months') AND DATE('now')\nGROUP BY accounts.name, region, accounts.industry;" } },
+  "method": "textDocument/didOpen",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "params": {
+    "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+    "diagnostics": [
+      { "range": {
+          "start": {
+            "line": 6,
+            "character": 4 },
+          "end": {
+            "line": 10,
+            "character": 7 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 32,
+            "character": 4 },
+          "end": {
+            "line": 36,
+            "character": 7 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 38,
+            "character": 4 },
+          "end": {
+            "line": 38,
+            "character": 70 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 6,
+            "character": 4 },
+          "end": {
+            "line": 10,
+            "character": 7 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 32,
+            "character": 4 },
+          "end": {
+            "line": 36,
+            "character": 7 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 38,
+            "character": 4 },
+          "end": {
+            "line": 38,
+            "character": 70 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" } ] },
+  "method": "textDocument/publishDiagnostics",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "id": 2,
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql" } },
+  "method": "textDocument/codeLens",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "id": 2,
+  "jsonrpc": "2.0",
+  "result": [
+    { "range": {
+        "start": {
+          "line": 6,
+          "character": 4 },
+        "end": {
+          "line": 10,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 10,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 32,
+          "character": 4 },
+        "end": {
+          "line": 36,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 36,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 38,
+          "character": 4 },
+        "end": {
+          "line": 38,
+          "character": 70 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 38,
+            "character": 70 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 12,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 12,
+                  "character": 4 },
+                "end": {
+                  "line": 12,
+                  "character": 62 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 6,
+          "character": 4 },
+        "end": {
+          "line": 10,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 10,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 32,
+          "character": 4 },
+        "end": {
+          "line": 36,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 36,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 38,
+          "character": 4 },
+        "end": {
+          "line": 38,
+          "character": 70 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 38,
+            "character": 70 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 12,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 12,
+                  "character": 4 },
+                "end": {
+                  "line": 12,
+                  "character": 62 } } } ],
+          "peek" ] } } ] }
+```
+
+## client->server
+```json
+{
+  "params": {
+    "textDocument": {
+      "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+      "languageId": "sql",
+      "version": 1,
+      "text": "-- FOUNDATIONAL TABLES\n\n-- Calendar scaffolding: one day per row\n\nDROP TABLE IF EXISTS date_ranges;\nCREATE TABLE date_ranges AS\nWITH RECURSIVE date_ranges(date_day) AS (\n    SELECT \n        date(MIN(CASE WHEN d.stage_date < d.contract_start_date THEN d.stage_date ELSE d.contract_start_date END)) AS date_month\n    FROM deals d\n    UNION ALL\n    SELECT \n        date(date_day, '+1 day')\n    FROM date_ranges\n    WHERE date_day < (SELECT date(MAX(CASE WHEN d.contract_end_date > d.stage_date THEN d.contract_end_date ELSE d.stage_date END)) FROM deals d)\n)\nSELECT \n    date_day\nFROM date_ranges\nGROUP BY date_day;\n\n-- Currently active signed deals (stage=4) and daily revenue\n\nDROP TABLE IF EXISTS deals_signed;\nCREATE TABLE deals_signed AS\nSELECT \n    *,\n    revenue / contract_duration_days AS revenue_day,\n    revenue_core / contract_duration_days AS revenue_core_day,\n    revenue_aux / contract_duration_days AS revenue_aux_day\nFROM (\n    SELECT \n        d.deal_id,\n        d.account_id,\n        d.contract_start_date,\n        d.contract_end_date,\n        julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1 AS contract_duration_days,\n        SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END) AS revenue_core,\n        SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END) AS revenue_aux,\n        SUM(o.value) AS revenue\n    FROM orders o\n        JOIN deals d USING (deal_id, order_id)\n    WHERE d.stage = 4\n    GROUP BY d.deal_id, d.account_id, d.contract_start_date, d.contract_end_date\n) AS t;\n\n-- Revenue per account per month\n\nDROP TABLE IF EXISTS accounts_revenue;\nCREATE TABLE accounts_revenue AS\nSELECT \n    t.date_month,\n    t.account_id,\n    AVG(t.deals) AS deals,\n    SUM(t.revenue_core) AS revenue_core,\n    SUM(t.revenue_aux) AS revenue_aux,\n    SUM(t.revenue) AS revenue\nFROM (\n    SELECT \n        dr.date_day,\n        DATE(date_day, 'start of month') AS date_month,\n        ds.account_id,\n        COUNT(ds.deal_id) AS deals,\n        SUM(ds.revenue_core_day) AS revenue_core,\n        SUM(ds.revenue_aux_day) AS revenue_aux,\n        SUM(ds.revenue_day) AS revenue\n    FROM date_ranges dr\n        LEFT JOIN deals_signed ds \n            ON  dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)\n    GROUP BY dr.date_day, ds.account_id) t\nGROUP BY account_id, date_month;\n\n\n-- Key information by account as of now\n\nDROP TABLE IF EXISTS accounts_360;\nCREATE TABLE accounts_360 AS\nSELECT \n    t.*,\n    CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END AS account_size\nFROM (\n    SELECT \n        account_id,\n        date_month,\n        revenue,\n        revenue_core,\n        revenue_aux,\n        deals,\n        accounts.name,\n        accounts.industry,\n        accounts.country,\n        CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END AS region_cluster,\n        accounts.priority,\n        SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        ) AS revenue_12m\n    FROM accounts_revenue\n        JOIN accounts USING (account_id)\n        LEFT JOIN countries c USING (country)\n) AS t;" } },
+  "method": "textDocument/didOpen",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "params": {
+    "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+    "diagnostics": [
+      { "range": {
+          "start": {
+            "line": 37,
+            "character": 8 },
+          "end": {
+            "line": 37,
+            "character": 105 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 38,
+            "character": 8 },
+          "end": {
+            "line": 38,
+            "character": 86 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 97,
+            "character": 8 },
+          "end": {
+            "line": 101,
+            "character": 11 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 37,
+            "character": 8 },
+          "end": {
+            "line": 37,
+            "character": 105 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 38,
+            "character": 8 },
+          "end": {
+            "line": 38,
+            "character": 86 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" },
+      { "range": {
+          "start": {
+            "line": 97,
+            "character": 8 },
+          "end": {
+            "line": 101,
+            "character": 11 } },
+        "message": "Alternative expressions found in the codebase",
+        "severity": 3,
+        "code": "Inconsistency" } ] },
+  "method": "textDocument/publishDiagnostics",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "id": 3,
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql" } },
+  "method": "textDocument/codeLens",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "id": 3,
+  "jsonrpc": "2.0",
+  "result": [
+    { "range": {
+        "start": {
+          "line": 37,
+          "character": 8 },
+        "end": {
+          "line": 37,
+          "character": 105 } },
+      "command": {
+        "title": "Alternatives found: 2",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+          { "line": 37,
+            "character": 105 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 38,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 38,
+                  "character": 8 },
+                "end": {
+                  "line": 38,
+                  "character": 86 } } },
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 38,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 38,
+                  "character": 8 },
+                "end": {
+                  "line": 38,
+                  "character": 86 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 38,
+          "character": 8 },
+        "end": {
+          "line": 38,
+          "character": 86 } },
+      "command": {
+        "title": "Alternatives found: 2",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+          { "line": 38,
+            "character": 86 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 37,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 37,
+                  "character": 8 },
+                "end": {
+                  "line": 37,
+                  "character": 105 } } },
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 37,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 37,
+                  "character": 8 },
+                "end": {
+                  "line": 37,
+                  "character": 105 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 97,
+          "character": 8 },
+        "end": {
+          "line": 101,
+          "character": 11 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+          { "line": 101,
+            "character": 11 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 37,
+          "character": 8 },
+        "end": {
+          "line": 37,
+          "character": 105 } },
+      "command": {
+        "title": "Alternatives found: 2",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+          { "line": 37,
+            "character": 105 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 38,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 38,
+                  "character": 8 },
+                "end": {
+                  "line": 38,
+                  "character": 86 } } },
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 38,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 38,
+                  "character": 8 },
+                "end": {
+                  "line": 38,
+                  "character": 86 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 38,
+          "character": 8 },
+        "end": {
+          "line": 38,
+          "character": 86 } },
+      "command": {
+        "title": "Alternatives found: 2",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+          { "line": 38,
+            "character": 86 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 37,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 37,
+                  "character": 8 },
+                "end": {
+                  "line": 37,
+                  "character": 105 } } },
+            { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+              "position": {
+                "line": 37,
+                "character": 8 },
+              "range": {
+                "start": {
+                  "line": 37,
+                  "character": 8 },
+                "end": {
+                  "line": 37,
+                  "character": 105 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 97,
+          "character": 8 },
+        "end": {
+          "line": 101,
+          "character": 11 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql",
+          { "line": 101,
+            "character": 11 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } } ] }
+```
+
+## client->server
+```json
+{
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/codebase/0-accounts.sql" } },
+  "method": "textDocument/didClose",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "id": 4,
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql" } },
+  "method": "textDocument/codeLens",
+  "jsonrpc": "2.0" }
+```
+
+## server->client
+```json
+{
+  "id": 4,
+  "jsonrpc": "2.0",
+  "result": [
+    { "range": {
+        "start": {
+          "line": 6,
+          "character": 4 },
+        "end": {
+          "line": 10,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 10,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 32,
+          "character": 4 },
+        "end": {
+          "line": 36,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 36,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 38,
+          "character": 4 },
+        "end": {
+          "line": 38,
+          "character": 70 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 38,
+            "character": 70 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 12,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 12,
+                  "character": 4 },
+                "end": {
+                  "line": 12,
+                  "character": 62 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 6,
+          "character": 4 },
+        "end": {
+          "line": 10,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 10,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 32,
+          "character": 4 },
+        "end": {
+          "line": 36,
+          "character": 7 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 36,
+            "character": 7 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 5,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 4 },
+                "end": {
+                  "line": 10,
+                  "character": 7 } } } ],
+          "peek" ] } },
+    { "range": {
+        "start": {
+          "line": 38,
+          "character": 4 },
+        "end": {
+          "line": 38,
+          "character": 70 } },
+      "command": {
+        "title": "Alternatives found: 1",
+        "command": "sqlRefinery.peekLocations",
+        "arguments": [
+          "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql",
+          { "line": 38,
+            "character": 70 },
+          [
+            { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql",
+              "position": {
+                "line": 12,
+                "character": 4 },
+              "range": {
+                "start": {
+                  "line": 12,
+                  "character": 4 },
+                "end": {
+                  "line": 12,
+                  "character": 62 } } } ],
+          "peek" ] } } ] }
+```
+
+## client->server
+```json
+{
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/editor.sql" } },
+  "method": "textDocument/didClose",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "params": {
+    "textDocument": { "uri": "file://${workspaceFolder}/tests/inputs/codebase/1-revenue.sql" } },
+  "method": "textDocument/didClose",
+  "jsonrpc": "2.0" }
+```
+
+## client->server
+```json
+{
+  "id": 5,
+  "method": "shutdown",
+  "jsonrpc": "2.0",
+  "params": {} }
+```
+
+## server->client
+```json
+{
+  "id": 5,
+  "jsonrpc": "2.0",
+  "result": null }
+```

@@ -3,9 +3,10 @@
 It addresses issues with VSCode's debugpy when dealing with forked processes and ensures the backend can connect to the debugger without crashing the frontend.
 """
 
-import sys
-import debugpy
 import time
+
+import debugpy
+
 import src
 
 log = src.logger.get(__name__)
@@ -25,5 +26,6 @@ def connect_debugpy(host="localhost", port=5678, retry_interval=1, max_retries=1
         log.error(f"Failed to connect after {max_retries} attempts")
 
 
-connect_debugpy()
-debugpy.wait_for_client()
+def start():
+    connect_debugpy()
+    debugpy.wait_for_client()
