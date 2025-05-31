@@ -7,6 +7,8 @@
     "**/__pycache__": true,
     "**/.pytest_cache": true,
     "**/.mypy_cache": true,
+    "**/.claude": true,
+    "**/.ruff_cache": true,
     "**/.venv": true,
     "**/*.pyc": true,
     "**/*.pyo": true,

@@ -131,21 +131,17 @@ ENV/
 env.bak/
 venv.bak/
 .conda/
-
-# Spyder project settings
-.spyderproject
-.spyproject
+node_modules/
 
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
-
-# mypy
+# Cache
 .mypy_cache/
 .dmypy.json
 dmypy.json
+.claude
+.ruff_cache
 
 # Pyre type checker
 .pyre/
@@ -158,6 +154,3 @@ cython_debug/
 
 # MacOS system files
 .DS_Store
-
-# NodeJS and TypeScript
-node_modules/
