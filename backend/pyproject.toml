@@ -24,10 +24,9 @@ tree-sitter-sql-bigquery = {git = "https://github.com/ilyakochik/tree-sitter-sql
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.0.0"
-ruff = "^0.4.0"
+ruff = "^0.5.3"
 mypy = "^1.10.0"
 pytest-asyncio = "^0.24.0"
-pytest-cov = "^5.0.0"
 
 [tool.poetry.scripts]
 sql-refining-server = "src.server:main"
@@ -110,12 +109,3 @@ exclude = [
     "build/",
 ]
 
-[tool.coverage.run]
-branch = true
-source = ["src"]
-omit = ["*/tests/*", "*/__init__.py"]
-
-[tool.coverage.report]
-precision = 2
-show_missing = true
-skip_covered = false

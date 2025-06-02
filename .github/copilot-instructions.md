@@ -45,3 +45,35 @@ SQL Refining is a Copilot for SQL analysts working with large codebases.
 1. **Understand First**: Analyze codebase structure, state ownership, and component boundaries
 2. **Design Simply**: Propose the most elegant solution; include alternatives for significant trade-offs
 3. **Implement Cleanly**: Write concise code following design principles, then simplify further
+
+## Architecture Deep Dive
+
+### System Components
+
+1. **Data Processing Pipeline**
+   - **SQL Parser** (`sql.py`): Tree-sitter wrapper with meta-types (@query, @table, @column, @expression)
+   - **AST Builder** (`code.py`): Domain objects (Column, Expression, Table, Query, Tree) with indexing
+   - **Logic Analyzer** (`logic.py`): Expression similarity detection using Levenshtein distance (threshold: 0.7)
+
+2. **Server Infrastructure**
+   - **LSP Server** (`server.py`): pygls-based server translating analysis to LSP features
+   - **Workspace Manager** (`workspace.py`): File ingestion and analysis coordination
+   - **Protocol Features**: Diagnostics (blue squiggles), Code Lenses ("Alternatives found: N"), Peek Locations
+
+3. **Client Integration**
+   - **Extension Host** (`extension.ts`): VS Code extension spawning Python backend via Poetry
+   - **Language Client**: SQL file handling, custom commands registration
+   - **User Interface**: Inline diagnostics, clickable lenses, peek view for alternatives
+
+### Data Flow Sequence
+
+1. **Ingestion**: SQL file → LSP did_open → Workspace.ingest() → Tree.parse()
+2. **Analysis**: Tree.expressions → logic.compare() → Alternative objects with similarity scores
+3. **Presentation**: Alternatives → LSP diagnostics/lenses → VS Code UI rendering
+
+### Key Data Structures
+
+- **Tree.index**: Type-based element registry {type: [elements]}
+- **Tree.map_key_to_expr**: Expression deduplication {signature: expression}
+- **Alternative**: (expression, similarity_score, location) tuples
+- **LSP Messages**: Diagnostic ranges, CodeLens commands, Location arrays
