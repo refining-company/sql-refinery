@@ -14,8 +14,9 @@ export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
       return [];
     }
 
-    // For sql-refinery:alternatives, use 'current' as groupId
-    const groupId = 'current';
+    // Extract groupId from document name: editor.sql:inconsistency-N
+    const match = document.uri.path.match(/inconsistency-(\d+)/);
+    const groupId = match ? match[1] : 'current';
     const metadata = this.variantsProvider.getVariantMetadata(groupId);
     
     if (!metadata) {
@@ -38,21 +39,24 @@ export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
         command: 'sql-insights.peekLocations',
         arguments: [{
           locations: variant.locations,
-          groupId: 'current',
+          groupId: groupId,
           position: peekPosition
         }],
         tooltip: 'Peek at all locations where this variant appears'
       });
       codeLenses.push(locationsLens);
 
-      // Toggle diff lens
-      const variantIndex = variant.variantIndex || 1;
-      const isInDiffMode = this.variantsProvider.isInDiffMode(variantIndex);
+      // Show native diff lens
       const diffLens = new vscode.CodeLens(range, {
-        title: isInDiffMode ? '↔ Hide diff' : '↔ Show diff',
-        command: 'sql-insights.toggleDiff',
-        arguments: [{ variant, groupId: 'current', variantIndex }],
-        tooltip: isInDiffMode ? 'Hide inline diff' : 'Show inline diff'
+        title: '↔ Show diff',
+        command: 'sql-insights.showNativeDiff',
+        arguments: [{ 
+          variant, 
+          originalSQL: this.variantsProvider.getOriginalSQL(groupId),
+          groupId,
+          variantIndex: variant.variantIndex
+        }],
+        tooltip: 'Show differences in native diff editor'
       });
       codeLenses.push(diffLens);
       
@@ -60,7 +64,7 @@ export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
       const applyLens = new vscode.CodeLens(range, {
         title: '✓ Apply',
         command: 'sql-insights.applyVariant',
-        arguments: [{ variant, groupId: 'current' }],
+        arguments: [{ variant, groupId: groupId }],
         tooltip: 'Replace current SQL with this variant'
       });
       codeLenses.push(applyLens);

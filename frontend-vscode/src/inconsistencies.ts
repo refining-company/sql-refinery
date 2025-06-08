@@ -5,15 +5,40 @@ import { VariantsCodeLensProvider } from './variantsCodeLensProvider';
 import { InlineVariantsCodeLensProvider } from './inlineVariantsCodeLensProvider';
 import { createMockDiagnostics, getVariantsForGroup } from './mockData';
 
+// Diff document provider for native diff editor
+class DiffDocumentProvider implements vscode.TextDocumentContentProvider {
+  private documents = new Map<string, string>();
+
+  setContent(uri: string, content: string) {
+    this.documents.set(uri, content);
+  }
+
+  provideTextDocumentContent(uri: vscode.Uri): string {
+    return this.documents.get(uri.toString()) || '';
+  }
+
+  dispose() {
+    this.documents.clear();
+  }
+}
+
+let diffProvider: DiffDocumentProvider;
+
 let variantsProvider: VariantsProvider;
 let codeLensProvider: VariantsCodeLensProvider;
 let inlineCodeLensProvider: InlineVariantsCodeLensProvider;
 
-// Decoration types for diff visualization
+// Decoration types for diff visualization (kept for backward compatibility)
 let deletionDecorationType: vscode.TextEditorDecorationType;
 let additionDecorationType: vscode.TextEditorDecorationType;
 
 export function initInconsistencies(context: vscode.ExtensionContext) {
+  // Initialize diff provider for native diff editor
+  diffProvider = new DiffDocumentProvider();
+  context.subscriptions.push(
+    vscode.workspace.registerTextDocumentContentProvider('sql-refinery-diff', diffProvider)
+  );
+  
   setupDecorations(context);
   const diagnosticCollection = setupDiagnostics(context);
   setupProviders(context, diagnosticCollection);
@@ -112,7 +137,7 @@ function setupCommands(context: vscode.ExtensionContext) {
       const { groupId, currentRange } = args;
       const variants = getVariantsForGroup(groupId);
       
-      variantsProvider.setVariants('current', variants);
+      variantsProvider.setVariants(groupId, variants);
       
       // Store original range and document for apply command
       const activeEditor = vscode.window.activeTextEditor;
@@ -127,16 +152,21 @@ function setupCommands(context: vscode.ExtensionContext) {
         currentRange.end.character
       );
       const originalSQL = activeEditor.document.getText(originalRange);
-      variantsProvider.setOriginalSQL(originalSQL);
+      variantsProvider.setOriginalSQL(groupId, originalSQL);
       
-      context.workspaceState.update(`currentRange-current`, {
+      context.workspaceState.update(`currentRange-${groupId}`, {
         start: { line: currentRange.start.line, character: currentRange.start.character },
         end: { line: currentRange.end.line, character: currentRange.end.character },
         documentUri: activeEditor.document.uri.toString()
       });
       
-      // Open virtual document
-      const variantsUri = vscode.Uri.parse(`sql-refinery:sql-refinery:alternatives`);
+      // Create descriptive file name for virtual document
+      const currentFileName = path.basename(activeEditor.document.fileName);
+      const inconsistencyNumber = groupId;
+      const virtualFileName = `${currentFileName}:inconsistency-${inconsistencyNumber}`;
+      
+      // Open group-specific virtual document  
+      const variantsUri = vscode.Uri.parse(`sql-refinery:${virtualFileName}`);
       const doc = await vscode.workspace.openTextDocument(variantsUri);
       await vscode.window.showTextDocument(doc, {
         viewColumn: vscode.ViewColumn.Beside,
@@ -148,7 +178,7 @@ function setupCommands(context: vscode.ExtensionContext) {
     })
   );
   
-  // Apply a variant
+  // Apply an alternative
   context.subscriptions.push(
     vscode.commands.registerCommand('sql-insights.applyVariant', async (args) => {
       const data = Array.isArray(args) ? args[0] : args;
@@ -178,10 +208,6 @@ function setupCommands(context: vscode.ExtensionContext) {
       const success = await vscode.workspace.applyEdit(edit);
       
       if (success) {
-        vscode.window.showInformationMessage(
-          `Applied SQL variant from ${path.basename(variant.file)}`
-        );
-        
         // Close the variants document
         const variantsEditor = vscode.window.visibleTextEditors.find(
           editor => editor.document.uri.scheme === 'sql-refinery'
@@ -194,20 +220,57 @@ function setupCommands(context: vscode.ExtensionContext) {
     })
   );
   
-  // Toggle inline diff
+  // Show native diff editor
   context.subscriptions.push(
-    vscode.commands.registerCommand('sql-insights.toggleDiff', async (args) => {
-      const { variantIndex } = args;
+    vscode.commands.registerCommand('sql-insights.showNativeDiff', async (args) => {
+      const { variant, originalSQL, groupId, variantIndex } = args;
       
-      variantsProvider.toggleDiffMode(variantIndex);
+      if (!originalSQL || !variant || !variant.sql) {
+        vscode.window.showErrorMessage('Missing SQL content for diff comparison');
+        return;
+      }
       
-      const variantsUri = vscode.Uri.parse(`sql-refinery:sql-refinery:alternatives`);
-      variantsProvider.refresh(variantsUri);
+      // Create temporary URIs for diff
+      const timestamp = Date.now();
+      const originalUri = vscode.Uri.parse(`sql-refinery-diff:original-${timestamp}.sql`);
+      const variantUri = vscode.Uri.parse(`sql-refinery-diff:variant-${timestamp}.sql`);
       
-      setTimeout(() => applyDiffDecorations(), 100);
+      // Store content in diff provider
+      diffProvider.setContent(originalUri.toString(), originalSQL);
+      diffProvider.setContent(variantUri.toString(), variant.sql);
       
-      if (codeLensProvider) {
-        (codeLensProvider as any)._onDidChangeCodeLenses.fire();
+      try {
+        // Debug: Log the URIs and content
+        console.log('Opening diff with URIs:', originalUri.toString(), variantUri.toString());
+        console.log('Original SQL length:', originalSQL.length);
+        console.log('Variant SQL length:', variant.sql.length);
+        console.log('Variant file:', variant.file);
+        console.log('Variant line:', variant.line);
+        
+        // Create descriptive title
+        const activeEditor = vscode.window.activeTextEditor;
+        let currentFileName = activeEditor ? path.basename(activeEditor.document.fileName) : 'current';
+        
+        // If we're already in a virtual document, don't add inconsistency number again
+        if (currentFileName.includes(':inconsistency-')) {
+          // Already contains inconsistency info, use as-is
+        } else {
+          // Add inconsistency number to the original file name
+          currentFileName = `${currentFileName}:inconsistency-${groupId}`;
+        }
+        
+        const alternativeNumber = variantIndex || 1;
+        const title = `${currentFileName} ↔ alternative-${alternativeNumber}`;
+        
+        // Open native diff editor
+        await vscode.commands.executeCommand('vscode.diff', 
+          originalUri, 
+          variantUri, 
+          title
+        );
+      } catch (error) {
+        console.error('Error opening native diff editor:', error);
+        vscode.window.showErrorMessage(`Failed to open diff editor: ${error}`);
       }
     })
   );
@@ -248,6 +311,7 @@ function setupCommands(context: vscode.ExtensionContext) {
   );
 }
 
+
 // Apply diff decorations to virtual document
 function applyDiffDecorations() {
   const activeEditor = vscode.window.activeTextEditor;
@@ -255,7 +319,10 @@ function applyDiffDecorations() {
     return;
   }
   
-  const diffLines = variantsProvider.getDiffLines('current');
+  // Extract groupId from document name: editor.sql:inconsistency-N
+  const match = activeEditor.document.uri.path.match(/inconsistency-(\d+)/);
+  const groupId = match ? match[1] : 'current';
+  const diffLines = variantsProvider.getDiffLines(groupId);
   if (!diffLines || (diffLines.deletions.length === 0 && diffLines.additions.length === 0)) {
     activeEditor.setDecorations(deletionDecorationType, []);
     activeEditor.setDecorations(additionDecorationType, []);

@@ -41,14 +41,14 @@ export function createMockDiagnostics(document: vscode.TextDocument): vscode.Dia
         vscode.Uri.file('/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql'),
         new vscode.Range(97, 8, 102, 12)
       ),
-      'Variant 1'
+      'Alternative 1'
     ),
     new vscode.DiagnosticRelatedInformation(
       new vscode.Location(
         vscode.Uri.file('/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql'),
         new vscode.Range(6, 4, 11, 8)
       ),
-      'Variant 1'
+      'Alternative 1'
     )
   ];
   diagnostics.push(caseDiagnostic);
@@ -68,7 +68,7 @@ export function createMockDiagnostics(document: vscode.TextDocument): vscode.Dia
         vscode.Uri.file('/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql'),
         new vscode.Range(38, 4, 38, 60)
       ),
-      'Variant 1'
+      'Alternative 1'
     )
   ];
   diagnostics.push(industryDiagnostic);
@@ -78,7 +78,7 @@ export function createMockDiagnostics(document: vscode.TextDocument): vscode.Dia
 
 // Mock variants data as if provided by backend LSP
 export function getVariantsForGroup(groupId: string): MockVariant[] {
-  if (groupId === 'region-clustering') {
+  if (groupId === '1') {
     return [
       {
         file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql',
@@ -130,7 +130,7 @@ END`
 END`
       }
     ];
-  } else if (groupId === 'industry-classification') {
+  } else if (groupId === '2') {
     return [
       {
         file: 'Current file',

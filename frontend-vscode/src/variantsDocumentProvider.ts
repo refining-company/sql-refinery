@@ -16,8 +16,8 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   // Track which variants are showing diff
   private diffModeVariants = new Set<number>();
   
-  // Store original SQL for diff comparison
-  private originalSQL = '';
+  // Store original SQL for diff comparison per group
+  private originalSQL = new Map<string, string>();
   
   // Store diff line information for decorations (from backend)
   private diffLines = new Map<string, { deletions: number[]; additions: number[] }>();
@@ -27,17 +27,22 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   // VS Code calls this whenever it needs the document's text
   async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
     console.log('VariantsProvider called with URI:', uri.toString());
+    console.log('URI scheme:', uri.scheme);
+    console.log('URI authority:', uri.authority);
+    console.log('URI path:', uri.path);
     console.log('Available data keys:', Array.from(this.variantData.keys()));
     
-    // For sql-refinery:alternatives, use 'current' as the key
-    const variants = this.variantData.get('current') || [];
-    console.log('Found variants:', variants.length);
+    // Extract groupId from document name: editor.sql:inconsistency-N
+    const match = uri.path.match(/inconsistency-(\d+)/);
+    const groupId = match ? match[1] : 'current';
+    const variants = this.variantData.get(groupId) || [];
+    console.log('Found variants for group', groupId, ':', variants.length);
     
     if (variants.length === 0) {
-      return '-- No variants found\n-- No SQL variants were found for this group.';
+      return '-- No alternatives found\n-- No SQL alternatives were found for this group.';
     }
 
-    // Group variants by their SQL content to find distinct variants
+    // Group alternatives by their SQL content to find distinct alternatives
     const distinctVariants = new Map<string, { sql: string; locations: any[] }>();
     
     variants.forEach(v => {
@@ -54,7 +59,7 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
       });
     });
 
-    // Build a SQL document with distinct variants
+    // Build a SQL document with distinct alternatives
     const lines: string[] = [];
     const metadata: { startLine: number; endLine: number; variant: any }[] = [];
     
@@ -67,8 +72,8 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
     let variantIndex = 1;
 
     distinctVariants.forEach((data, sqlKey) => {
-      // Add variant header
-      lines.push(`-- Variant ${variantIndex}`);
+      // Add alternative header
+      lines.push(`-- Alternative ${variantIndex}`);
       const startLine = currentLine + 1;
       
       // Add the SQL content with optional diff
@@ -79,8 +84,9 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
       
       if (this.diffModeVariants.has(variantIndex)) {
         // Show diff mode - use backend-provided diff data
-        if (this.originalSQL) {
-          const backendDiffLines = getMockDiffLines(this.originalSQL, data.sql);
+        const originalSQLForGroup = this.originalSQL.get(groupId);
+        if (originalSQLForGroup) {
+          const backendDiffLines = getMockDiffLines(originalSQLForGroup, data.sql);
           
           // Add lines in diff order from backend
           backendDiffLines.forEach((diffLine) => {
@@ -97,7 +103,7 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
             }
           });
         } else {
-          // No original SQL, just show variant as additions
+          // No original SQL, just show alternative as additions
           sqlLines.forEach((line: string) => {
             const lineNumber = lines.length;
             lines.push(`+ ${line}`);
@@ -106,17 +112,17 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
         }
         
         // Store diff line info for decorations
-        this.diffLines.set('current', { deletions: deletionLines, additions: additionLines });
+        this.diffLines.set(groupId, { deletions: deletionLines, additions: additionLines });
       } else {
-        // Normal mode - just show the variant SQL
+        // Normal mode - just show the alternative SQL
         sqlLines.forEach((line: string) => lines.push(line));
       }
       
       const endLine = startLine + sqlLines.length - 1 + 
-        (this.diffModeVariants.has(variantIndex) && this.originalSQL ? 
-         this.originalSQL.trim().split('\n').length : 0);
+        (this.diffModeVariants.has(variantIndex) && this.originalSQL.get(groupId) ? 
+         this.originalSQL.get(groupId)!.trim().split('\n').length : 0);
       
-      // Create a variant object with all locations
+      // Create an alternative object with all locations
       const variantWithLocations = {
         sql: data.sql,
         locations: data.locations,
@@ -126,7 +132,7 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
       // Store metadata for code lens
       metadata.push({ startLine, endLine, variant: variantWithLocations });
       
-      // Add blank lines between variants
+      // Add blank lines between alternatives
       lines.push('');
       lines.push('');
       
@@ -135,7 +141,7 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
     });
 
     // Store metadata for code lens provider
-    this.variantMetadata.set('current', metadata);
+    this.variantMetadata.set(groupId, metadata);
 
     return lines.join('\n');
   }
@@ -146,7 +152,7 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   }
   
   
-  // Toggle diff mode for a variant
+  // Toggle diff mode for an alternative
   public toggleDiffMode(variantIndex: number): void {
     if (this.diffModeVariants.has(variantIndex)) {
       this.diffModeVariants.delete(variantIndex);
@@ -158,11 +164,16 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   }
   
   // Set original SQL for diff comparison
-  public setOriginalSQL(sql: string): void {
-    this.originalSQL = sql;
+  public setOriginalSQL(groupId: string, sql: string): void {
+    this.originalSQL.set(groupId, sql);
   }
   
-  // Check if variant is in diff mode
+  // Get original SQL for diff comparison
+  public getOriginalSQL(groupId: string): string {
+    return this.originalSQL.get(groupId) || '';
+  }
+  
+  // Check if alternative is in diff mode
   public isInDiffMode(variantIndex: number): boolean {
     return this.diffModeVariants.has(variantIndex);
   }

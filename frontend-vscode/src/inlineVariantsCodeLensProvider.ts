@@ -28,7 +28,7 @@ export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
     for (const diagnostic of diagnostics) {
       if (diagnostic.source === 'sql-refinery' && diagnostic.code === 'inconsistency') {
         // Determine groupId based on diagnostic range (mock implementation)
-        const groupId = diagnostic.range.start.line < 10 ? 'region-clustering' : 'industry-classification';
+        const groupId = diagnostic.range.start.line < 10 ? '1' : '2';
         const variants = getVariantsForGroup(groupId);
         
         // Position code lenses just above the diagnostic range
