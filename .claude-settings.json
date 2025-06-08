@@ -1,0 +1,16 @@
+{
+  "auto_approve_file_edits": true,
+  "auto_approve_read": true,
+  "allow": [
+    "Edit(**)",
+    "Read(**)",
+    "Write(**)",
+    "WebFetch(**)",
+    "Bash(poetry run*)",
+    "Bash(npm run*)"
+  ],
+  "deny": [
+    "Bash(git commit*)",
+    "Bash(git push*)"
+  ]
+}
