@@ -43,5 +43,27 @@
   "dependencies": {
     "@types/vscode": "^1.94.0",
     "vscode-languageclient": "^9.0.1"
+  },
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "sqlVariantExplorer",
+          "name": "SQL Variant Picker",
+          "when": "sqlVariantExplorer.visible"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "sql-insights.showVariantsEditor",
+        "title": "Show SQL Variants"
+      },
+      {
+        "command": "sql-insights.applyVariant",
+        "title": "Apply SQL Variant"
+      }
+    ],
+    "markdown.markdownItPlugins": true
   }
 }
