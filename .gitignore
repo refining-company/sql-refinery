@@ -12,6 +12,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+out/
 downloads/
 eggs/
 .eggs/
@@ -115,13 +116,6 @@ ipython_config.py
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
 # Environments
 .env
 .venv
@@ -133,21 +127,13 @@ venv.bak/
 .conda/
 node_modules/
 
-# Rope project settings
-.ropeproject
-
 # Cache
 .mypy_cache/
 .dmypy.json
 dmypy.json
 .claude
 .ruff_cache
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
+.vscode-test/
 
 # Cython debug symbols
 cython_debug/

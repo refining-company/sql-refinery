@@ -10,11 +10,12 @@
     "**/.claude": true,
     "**/.ruff_cache": true,
     "**/.venv": true,
+    "**/.vscode-test": true,
     "**/*.pyc": true,
     "**/*.pyo": true,
     "**/node_modules": true,
-    "out": false,
-    "dist": false
+    "**/out": true,
+    "**/dist": true
   },
 
   // Search exclusions
@@ -24,8 +25,8 @@
     "**/__pycache__": true,
     "**/.mypy_cache": true,
     "**/.pytest_cache": true,
-    "out": true,
-    "dist": true
+    "**/out": true,
+    "**/dist": true
   },
 
   // Python configuration
