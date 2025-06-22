@@ -1,24 +1,19 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## 1. OVERVIEW
 
-## Project Overview
+The project is developing a Copilot designed to improve the speed and accuracy of work for Business Intelligence
+Analysts who build SQL data pipelines to dashboards and analytics.
 
-SQL Refinery is a VS Code extension that helps SQL analysts find inconsistent business logic patterns across large
-codebases. It identifies expressions that are similar but not identical, suggesting they may represent alternative
-implementations of the same business logic.
+**Secret ingredient:**
 
-## Copilot for BI Analysts
+- Reasoning about data and business logic by analyzing the existing SQL codebase of the company and colleagues. This is
+  the source of information that allows reasoning about data.
+- Providing software engineering-like efficiency features specifically tailoring it for data work (like debugging,
+  tracing, refactoring)
 
-The project is developing a Copilot designed to improve the speed and accuracy of work for Business Intelligence Analysts who build SQL data pipelines to dashboards and analytics.
+**Key Features:**
 
-The Copilot's secret sauce has two key ingredients:
-- Reasoning about data and business logic by analyzing the existing SQL codebase
-- Providing software engineering-like efficiency features specifically tailored for data work
-
-Copilot will be implemented as a plugin to major IDEs, starting with VSCode.
-
-Key Features:
 - Autocompletion grounded in codebase-specific expressions (e.g., common join fields)
 - Diagnostic highlighting of code snippets that deviate from codebase conventions
 - Join analysis estimating result mappings (one-one, one-many, one-zero)
@@ -26,7 +21,9 @@ Key Features:
 - Refactoring to propagate code changes across downstream queries
 - Autofixes to detect and suggest updates when data patterns change (e.g., new CASE WHEN logic needed)
 
-## Architecture
+## 2. TECHNICAL IMPLEMENTATION
+
+### Architecture
 
 **Backend (Python 3.12.7):**
 
@@ -38,12 +35,69 @@ Key Features:
 **Frontend (Node 20.18.0):**
 
 - VS Code extension (`frontend-vscode/src/extension.ts`) providing UI for viewing alternatives
-- Currently uses mock UI with hardcoded examples; LSP integration is commented out
 - Multiple providers for code lenses, virtual documents, and diagnostics
 
-## Essential Commands
+### Key Data Flow
 
-### Backend Development
+1. **Analysis Pipeline**: SQL files → Tree-sitter parsing → AST with typed elements (`@query`, `@table`, `@column`,
+   `@expression`) → Expression similarity detection
+2. **Data Structures**:
+   - `Tree.index`: Registry of elements by type
+   - `Tree.map_key_to_expr`: Expression deduplication by signature
+   - `Alternative`: Expression + similar alternatives + similarity score + locations
+3. **LSP Translation**: Alternatives → Diagnostics (blue squiggles) + Code Lenses ("Alternatives found: N") → VS Code UI
+
+### File Structure
+
+- **Entry Points**: `backend/src/server.py` (LSP server), `frontend-vscode/src/extension.ts` (VS Code extension)
+- **Core Logic**: `backend/src/logic.py` (similarity detection), `backend/src/workspace.py` (file ingestion)
+- **Test Data**: `backend/tests/inputs/codebase/` (sample SQL files), `backend/tests/sessions/` (recorded LSP sessions)
+- **Mock UI**: Extension currently shows hardcoded examples instead of live LSP integration
+
+## 3. DEVELOPMENT GUIDELINES
+
+### Design Philosophy
+
+- **Simplicity**: Avoid unnecessary code, write minimal lines, follow pythonic approach
+- **Component Design**: Single responsibility, self-managed state, concise interfaces
+- **Error Strategy**: Assertions for invariants; prefer crashes with clear messages over defensive code
+- **Modern Features**: Leverage Python 3.12+ (match statements, union types, walrus operator)
+- **Native UI**: Prioritise using native functionality for UI, suggest if a different UI can lead to simpler and more
+  robust implementation
+
+### Coding Standards
+
+- **No Emojis**: Never use emojis in code, comments, or documentation unless explicitly requested
+- **Minimal Documentation**: Do not proactively create documentation files, or excessive self-explanatory inline
+  comments
+- **Prefer Editing**: Always prefer editing existing files over creating new ones
+- **Use Built-ins**: Always check for built-in functions/methods before implementing custom solutions
+
+### Testing Approach
+
+SQL analysis pipeline (Parse → AST → Analysis → LSP) creates natural abstraction layers. When refactoring, only
+snapshots at the changed layer should break - if downstream snapshots fail, we've broken an abstraction.
+
+**Key Principles:**
+
+- **Feature-driven snapshots**: Test vulnerable SQL codebases + recorded user sessions capture capabilities, not
+  implementations
+- **Progressive complexity**: Simple → complex SQL examples document growing feature support
+- **Refactoring validation**: Parser changes should only break parser snapshots; LSP snapshots stay stable
+
+**Architecture:**
+
+- **Backend**: Snapshot each pipeline stage
+- **Frontend**: Snapshot final visualizations
+
+This inverts traditional snapshot testing - instead of locking in implementation details, we validate that our
+abstractions work correctly while documenting system capabilities.
+
+- **File names convention**: `.last.md` files for debugging, `.true.md` files as golden standards
+
+### Essential Commands
+
+**Backend Development:**
 
 ```bash
 # Run from backend/ directory
@@ -56,7 +110,7 @@ poetry run mypy src/ tests/                        # Type checking
 poetry run python -m src.server                    # Start LSP server manually
 ```
 
-### Frontend Development
+**Frontend Development:**
 
 ```bash
 # Run from frontend-vscode/ directory
@@ -65,38 +119,6 @@ npm run watch:rebuild                          # Watch mode (rebuilds on backend
 npm run watch:tstypes                          # TypeScript type checking in watch mode
 npm run lint                                   # ESLint
 npm run test                                   # Run VS Code extension tests
+npm run test:update-snapshots                  # Update test snapshots
 npm run package                                # Production build
 ```
-
-## Key Data Flow
-
-1. **Analysis Pipeline**: SQL files → Tree-sitter parsing → AST with typed elements (`@query`, `@table`, `@column`,
-   `@expression`) → Expression similarity detection
-2. **Data Structures**:
-   - `Tree.index`: Registry of elements by type
-   - `Tree.map_key_to_expr`: Expression deduplication by signature
-   - `Alternative`: Expression + similar alternatives + similarity score + locations
-3. **LSP Translation**: Alternatives → Diagnostics (blue squiggles) + Code Lenses ("Alternatives found: N") → VS Code UI
-
-## Design Philosophy
-
-- **Simplicity**: Minimal lines, pythonic approach, avoid unnecessary code
-- **Component Design**: Single responsibility, self-managed state, concise interfaces
-- **Error Strategy**: Assertions for invariants; prefer crashes with clear messages over defensive code
-- **Modern Features**: Leverage Python 3.12+ (match statements, union types, walrus operator)
-- **UI Strategy**: Prioritise using native functionality for UI, suggest if a different UI can lead to simpler and more
-  robust implementation
-
-## Testing Infrastructure
-
-- **Snapshot Testing**: `.last.md` files for debugging, `.true.md` files as golden standards
-- **LSP Session Recording**: `tests/recorder.py` patches pygls protocol for NDJSON message recording
-- **Replay Testing**: Generic message replay for LSP communication testing
-- **Self-Contained Tests**: Each test manages its own state without external dependencies
-
-## Key File Locations
-
-- **Entry Points**: `backend/src/server.py` (LSP server), `frontend-vscode/src/extension.ts` (VS Code extension)
-- **Core Logic**: `backend/src/logic.py` (similarity detection), `backend/src/workspace.py` (file ingestion)
-- **Test Data**: `backend/tests/inputs/codebase/` (sample SQL files), `backend/tests/sessions/` (recorded LSP sessions)
-- **Mock UI**: Extension currently shows hardcoded examples instead of live LSP integration
