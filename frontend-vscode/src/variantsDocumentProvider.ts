@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { getMockDiffLines, MockDiffLine } from './mockData';
 
-export class VariantsProvider implements vscode.TextDocumentContentProvider {
+export class InconsistencyProvider implements vscode.TextDocumentContentProvider {
   // Fired when you want VS Code to refresh the content
   private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
   readonly onDidChange = this._onDidChange.event;
@@ -13,30 +12,27 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   // Store metadata for code lens positioning
   private variantMetadata = new Map<string, { startLine: number; endLine: number; variant: any }[]>();
   
-  // Track which variants are showing diff
-  private diffModeVariants = new Set<number>();
-  
   // Store original SQL for diff comparison per group
   private originalSQL = new Map<string, string>();
-  
-  // Store diff line information for decorations (from backend)
-  private diffLines = new Map<string, { deletions: number[]; additions: number[] }>();
 
   constructor() {}
 
   // VS Code calls this whenever it needs the document's text
   async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-    console.log('VariantsProvider called with URI:', uri.toString());
-    console.log('URI scheme:', uri.scheme);
-    console.log('URI authority:', uri.authority);
-    console.log('URI path:', uri.path);
-    console.log('Available data keys:', Array.from(this.variantData.keys()));
+    mockupDebugDocumentRequest(uri, this.variantData);
+    
+    // Handle diff documents - return plain SQL
+    if (uri.path.includes('diff-')) {
+      // Extract the full groupId including the .sql extension
+      const groupId = uri.path.startsWith('/') ? uri.path.substring(1) : uri.path;
+      const variants = this.variantData.get(groupId) || [];
+      return variants.length > 0 ? variants[0].sql : '';
+    }
     
     // Extract groupId from document name: editor.sql:inconsistency-N
     const match = uri.path.match(/inconsistency-(\d+)/);
     const groupId = match ? match[1] : 'current';
     const variants = this.variantData.get(groupId) || [];
-    console.log('Found variants for group', groupId, ':', variants.length);
     
     if (variants.length === 0) {
       return '-- No alternatives found\n-- No SQL alternatives were found for this group.';
@@ -54,6 +50,7 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
         file: v.file,
         line: v.line,
         alias: v.alias,
+        sql: v.sql,
         occurrences: v.occurrences,
         range: v.range
       });
@@ -71,56 +68,16 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
     let currentLine = 3;
     let variantIndex = 1;
 
-    distinctVariants.forEach((data, sqlKey) => {
+    distinctVariants.forEach((data) => {
       // Add alternative header
       lines.push(`-- Alternative ${variantIndex}`);
       const startLine = currentLine + 1;
       
-      // Add the SQL content with optional diff
+      // Add the SQL content
       const sqlLines = data.sql.trim().split('\n');
+      sqlLines.forEach((line: string) => lines.push(line));
       
-      const deletionLines: number[] = [];
-      const additionLines: number[] = [];
-      
-      if (this.diffModeVariants.has(variantIndex)) {
-        // Show diff mode - use backend-provided diff data
-        const originalSQLForGroup = this.originalSQL.get(groupId);
-        if (originalSQLForGroup) {
-          const backendDiffLines = getMockDiffLines(originalSQLForGroup, data.sql);
-          
-          // Add lines in diff order from backend
-          backendDiffLines.forEach((diffLine) => {
-            const lineNumber = lines.length;
-            
-            if (diffLine.type === 'common') {
-              lines.push(`  ${diffLine.content}`);
-            } else if (diffLine.type === 'deletion') {
-              lines.push(`- ${diffLine.content}`);
-              deletionLines.push(lineNumber);
-            } else if (diffLine.type === 'addition') {
-              lines.push(`+ ${diffLine.content}`);
-              additionLines.push(lineNumber);
-            }
-          });
-        } else {
-          // No original SQL, just show alternative as additions
-          sqlLines.forEach((line: string) => {
-            const lineNumber = lines.length;
-            lines.push(`+ ${line}`);
-            additionLines.push(lineNumber);
-          });
-        }
-        
-        // Store diff line info for decorations
-        this.diffLines.set(groupId, { deletions: deletionLines, additions: additionLines });
-      } else {
-        // Normal mode - just show the alternative SQL
-        sqlLines.forEach((line: string) => lines.push(line));
-      }
-      
-      const endLine = startLine + sqlLines.length - 1 + 
-        (this.diffModeVariants.has(variantIndex) && this.originalSQL.get(groupId) ? 
-         this.originalSQL.get(groupId)!.trim().split('\n').length : 0);
+      const endLine = startLine + sqlLines.length - 1;
       
       // Create an alternative object with all locations
       const variantWithLocations = {
@@ -152,16 +109,6 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   }
   
   
-  // Toggle diff mode for an alternative
-  public toggleDiffMode(variantIndex: number): void {
-    if (this.diffModeVariants.has(variantIndex)) {
-      this.diffModeVariants.delete(variantIndex);
-      // Clear diff lines when turning off diff mode
-      this.diffLines.clear();
-    } else {
-      this.diffModeVariants.add(variantIndex);
-    }
-  }
   
   // Set original SQL for diff comparison
   public setOriginalSQL(groupId: string, sql: string): void {
@@ -173,15 +120,6 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
     return this.originalSQL.get(groupId) || '';
   }
   
-  // Check if alternative is in diff mode
-  public isInDiffMode(variantIndex: number): boolean {
-    return this.diffModeVariants.has(variantIndex);
-  }
-  
-  // Get diff line information for decorations
-  public getDiffLines(groupId: string): { deletions: number[]; additions: number[] } | undefined {
-    return this.diffLines.get(groupId);
-  }
 
   // Get metadata for code lens provider
   public getVariantMetadata(groupId: string): { startLine: number; endLine: number; variant: any }[] | undefined {
@@ -192,4 +130,11 @@ export class VariantsProvider implements vscode.TextDocumentContentProvider {
   public refresh(uri: vscode.Uri): void {
     this._onDidChange.fire(uri);
   }
+}
+
+// Mockup functions for development/demonstration purposes
+function mockupDebugDocumentRequest(uri: vscode.Uri, variantData: Map<string, any[]>) {
+  console.log('VariantsProvider called with URI:', uri.toString());
+  console.log('URI path:', uri.path);
+  console.log('Available data keys:', Array.from(variantData.keys()));
 }

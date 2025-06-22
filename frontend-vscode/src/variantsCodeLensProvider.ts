@@ -1,16 +1,15 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import { VariantsProvider } from './variantsDocumentProvider';
+import { InconsistencyProvider } from './variantsDocumentProvider';
 
-export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
+export class AlternativeCodeLensProvider implements vscode.CodeLensProvider {
   private _onDidChangeCodeLenses = new vscode.EventEmitter<void>();
   readonly onDidChangeCodeLenses = this._onDidChangeCodeLenses.event;
   
-  constructor(private variantsProvider: VariantsProvider) {}
+  constructor(private variantsProvider: InconsistencyProvider) {}
 
-  async provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): Promise<vscode.CodeLens[]> {
+  async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
     // Only provide code lenses for our virtual SQL documents
-    if (document.uri.scheme !== 'sql-refinery') {
+    if (document.uri.scheme !== 'sql-refinery-inconsistencies') {
       return [];
     }
 
@@ -36,7 +35,7 @@ export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
       
       const locationsLens = new vscode.CodeLens(range, {
         title: `→ Peek ${locationCount} locations`,
-        command: 'sql-insights.peekLocations',
+        command: 'sql-refinery.peekLocations',
         arguments: [{
           locations: variant.locations,
           groupId: groupId,
@@ -49,7 +48,7 @@ export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
       // Show native diff lens
       const diffLens = new vscode.CodeLens(range, {
         title: '↔ Show diff',
-        command: 'sql-insights.showNativeDiff',
+        command: 'sql-refinery.showNativeDiff',
         arguments: [{ 
           variant, 
           originalSQL: this.variantsProvider.getOriginalSQL(groupId),
@@ -63,7 +62,7 @@ export class VariantsCodeLensProvider implements vscode.CodeLensProvider {
       // Apply variant lens
       const applyLens = new vscode.CodeLens(range, {
         title: '✓ Apply',
-        command: 'sql-insights.applyVariant',
+        command: 'sql-refinery.applyVariant',
         arguments: [{ variant, groupId: groupId }],
         tooltip: 'Replace current SQL with this variant'
       });

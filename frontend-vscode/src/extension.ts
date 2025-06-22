@@ -11,10 +11,10 @@ let log: Logger;
 export async function activate(context: vscode.ExtensionContext) {
   Logger.init('SQL Refinery');
   log = new Logger(path.parse(__filename).name);
-  
+
   // Initialize UI for inconsistencies detection
   initInconsistencies(context);
-  
+
   // Start LSP server
   startServer(context);
 }
@@ -38,10 +38,10 @@ function startServer(context: vscode.ExtensionContext) {
     traceOutputChannel: Logger.outputChannel,
   };
 
-  client = new LanguageClient('sqlRefinery', 'SQL Refinery', serverOptions, clientOptions);
+  client = new LanguageClient('sql-refinery', 'SQL Refinery', serverOptions, clientOptions);
 
   setImmediate(async () => {
-    log.info('LanguageClient starting');
+    log.info('SQL Refinery client starting');
     await client.start();
   });
 }

@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { getVariantsForGroup } from './mockData';
 
-export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
+// Global access to current alternatives (temporary during refactoring)
+let getCurrentAlternatives: () => import('./mockData').UIAlternative[] = () => [];
+
+export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
   private diagnosticsCollection: vscode.DiagnosticCollection;
   private _onDidChangeCodeLenses = new vscode.EventEmitter<void>();
   readonly onDidChangeCodeLenses = this._onDidChangeCodeLenses.event;
@@ -11,7 +13,12 @@ export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
     this.diagnosticsCollection = diagnosticsCollection;
   }
 
-  async provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): Promise<vscode.CodeLens[]> {
+  // Method to set current alternatives access
+  setAlternativesProvider(provider: () => import('./mockData').UIAlternative[]) {
+    getCurrentAlternatives = provider;
+  }
+
+  async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
     // Only provide code lenses for SQL files
     if (document.languageId !== 'sql') {
       return [];
@@ -26,10 +33,19 @@ export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
 
     // For each diagnostic with variants, create code lenses
     for (const diagnostic of diagnostics) {
-      if (diagnostic.source === 'sql-refinery' && diagnostic.code === 'inconsistency') {
-        // Determine groupId based on diagnostic range (mock implementation)
-        const groupId = diagnostic.range.start.line < 10 ? '1' : '2';
-        const variants = getVariantsForGroup(groupId);
+      if (diagnostic.source === 'sql-refinery' && diagnostic.code) {
+        // The diagnostic code is now the groupId
+        const groupId = diagnostic.code.toString();
+        
+        // Try to find the alternative using the new structure
+        const alternatives = getCurrentAlternatives();
+        const alternative = alternatives.find(alt => alt.groupId === groupId);
+        
+        // Fall back to empty array if alternative not found
+        const variants = alternative ? alternative.others : [];
+        
+        // Calculate total count including current expression
+        const totalCount = alternative ? alternative.others.length + 1 : variants.length;
         
         // Position code lenses just above the diagnostic range
         const lensPosition = new vscode.Position(diagnostic.range.start.line, 0);
@@ -37,8 +53,8 @@ export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
 
         // Add main action lens
         const showVariantsLens = new vscode.CodeLens(lensRange, {
-          title: `→ Show ${variants.length} alternatives`,
-          command: 'sql-insights.showVariantsEditor',
+          title: `→ Show ${totalCount} alternatives`,
+          command: 'sql-refinery.showVariantsEditor',
           arguments: [{
             groupId,
             currentRange: diagnostic.range
@@ -50,7 +66,7 @@ export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
         // Add ignore lens
         const ignoreLens = new vscode.CodeLens(lensRange, {
           title: '× Ignore',
-          command: 'sql-insights.ignoreVariant',
+          command: 'sql-refinery.ignoreVariant',
           arguments: [{
             groupId,
             diagnosticRange: diagnostic.range
@@ -65,3 +81,9 @@ export class InlineVariantsCodeLensProvider implements vscode.CodeLensProvider {
   }
 
 }
+
+// Mockup functions for development/demonstration purposes (no longer used)
+// function mockupGroupIdFromRange(range: vscode.Range): string {
+//   // Mock implementation: determine groupId based on line number
+//   return range.start.line < 10 ? '1' : '2';
+// }
