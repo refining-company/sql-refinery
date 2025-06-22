@@ -13,9 +13,9 @@ This module provides:
 
 from __future__ import annotations
 
-from pathlib import Path
-from dataclasses import dataclass, field
 from collections import defaultdict
+from dataclasses import dataclass, field
+from pathlib import Path
 
 from src import sql
 
@@ -37,7 +37,7 @@ class Column:
         return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
 
     def __hash__(self) -> int:
-        return hash("{}.{}.{}".format(self.dataset, self.table, self.column))
+        return hash(f"{self.dataset}.{self.table}.{self.column}")
 
 
 @dataclass(frozen=True)
@@ -50,9 +50,7 @@ class Expression:
     alias: str | None
 
     def __repr__(self) -> str:
-        return "Expression({}:{}:{})".format(
-            self._file, self._node.start_point.row + 1, self._node.start_point.column + 1
-        )
+        return f"Expression({self._file}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
 
     def __str__(self) -> str:
         # TODO: maybe should be a different method
@@ -74,7 +72,7 @@ class Expression:
 
             return result
 
-        return "Expression({})".format(node_to_str(self._node))
+        return f"Expression({node_to_str(self._node)})"
 
 
 @dataclass(frozen=True)
@@ -88,9 +86,7 @@ class Table:
     alias: str | None
 
     def __repr__(self) -> str:
-        return "Table({}.{}{})".format(
-            self.dataset or "?", self.table, " as {}".format(self.alias) if self.alias else ""
-        )
+        return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
 
     def __str__(self) -> str:
         return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
@@ -106,7 +102,7 @@ class Query:
     expressions: list[Expression]
 
     def __repr__(self) -> str:
-        return "Query({}:{}:{})".format(self._file, self._node.start_point.row + 1, self._node.start_point.column + 1)
+        return f"Query({self._file}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
 
 
 @dataclass()

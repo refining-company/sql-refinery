@@ -17,7 +17,7 @@ This module provides:
 
 import tree_sitter
 import tree_sitter_sql_bigquery
-from tree_sitter import Tree, Node
+from tree_sitter import Node, Tree  # noqa: F401
 
 _language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
 # BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql
@@ -140,6 +140,8 @@ def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, ori
     elif original:
         return node_type
 
+    return None
+
 
 def decode_function(node: tree_sitter.Node) -> tuple[str, list[tree_sitter.Node]]:
     if node.type == "function_call":
@@ -153,7 +155,7 @@ def decode_function(node: tree_sitter.Node) -> tuple[str, list[tree_sitter.Node]
         args = node.named_children
         return name, args
 
-    assert False, "Node type is not #function"
+    raise ValueError("Node type is not #function")
 
 
 def decode_column(node: tree_sitter.Node) -> dict[str, str | None]:

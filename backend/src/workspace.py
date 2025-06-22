@@ -12,9 +12,8 @@ This module provides:
 """
 
 from pathlib import Path
-from src import logic
-from src import code
-from src import logger
+
+from src import code, logger, logic
 
 log = logger.get(__name__)
 

@@ -26,11 +26,12 @@ Analysis description:
 """
 
 from __future__ import annotations
-from dataclasses import dataclass
 
+from dataclasses import dataclass
 from pathlib import Path
 
 import Levenshtein
+
 from src import code
 
 

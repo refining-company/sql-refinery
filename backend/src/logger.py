@@ -1,6 +1,7 @@
-import pygls.server
 import logging
 import sys
+
+import pygls.server
 
 formatter = logging.Formatter("[backend:%(name)s] %(message)s")
 
