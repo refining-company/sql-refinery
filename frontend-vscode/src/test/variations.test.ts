@@ -3,15 +3,15 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { VSCodeRecorder, sleep, waitForDiagnostics } from './utils/recorder';
 
-suite('Alternatives Workflow Test', () => {
+suite('Variations Workflow Test', () => {
   let recorder: VSCodeRecorder;
 
   setup(() => {
     const snapshotsPath = path.join(__dirname, '../../src/test/snapshots');
-    recorder = new VSCodeRecorder('alternatives', snapshotsPath);
+    recorder = new VSCodeRecorder('variations', snapshotsPath);
   });
 
-  test('User workflow with alternatives', async function () {
+  test('User workflow with variations', async function () {
     this.timeout(60000); // Increase timeout for full workflow
 
     try {
@@ -26,7 +26,7 @@ suite('Alternatives Workflow Test', () => {
 
       await recorder.capture('1. File opened with diagnostics and code lenses');
 
-      // Step 2: Show alternatives for first inconsistency (CASE)
+      // Step 2: Show variations for first inconsistency (CASE)
       const codeLenses = (await vscode.commands.executeCommand(
         'vscode.executeCodeLensProvider',
         doc.uri
@@ -44,7 +44,7 @@ suite('Alternatives Workflow Test', () => {
         await sleep(1000); // Wait for virtual document to open
       }
 
-      await recorder.capture('2. Showed alternatives for first inconsistency (CASE statement)');
+      await recorder.capture('2. Showed variations for first inconsistency (CASE statement)');
 
       // Step 3: Execute peek command and capture the result
       const activeEditor = vscode.window.activeTextEditor;
@@ -67,9 +67,9 @@ suite('Alternatives Workflow Test', () => {
         }
       }
 
-      await recorder.capture('3. Peek locations opened for first alternative');
+      await recorder.capture('3. Peek locations opened for first variation');
 
-      // Step 4: Apply the first alternative
+      // Step 4: Apply the first variation
       const virtualEditor = vscode.window.visibleTextEditors.find(
         (e) => e.document.uri.scheme === 'sql-refinery-variations' && !e.document.uri.path.includes('diff-')
       );
@@ -96,9 +96,9 @@ suite('Alternatives Workflow Test', () => {
         }
       }
 
-      await recorder.capture('4. Applied first alternative (CASE statement replaced)');
+      await recorder.capture('4. Applied first variation (CASE statement replaced)');
 
-      // Step 5: Show alternatives for second inconsistency (IIF)
+      // Step 5: Show variations for second inconsistency (IIF)
       const originalEditor = vscode.window.visibleTextEditors.find(
         (e) => e.document.uri.scheme === 'file' && e.document.fileName.includes('editor.sql')
       );
@@ -120,7 +120,7 @@ suite('Alternatives Workflow Test', () => {
           );
 
         if (showAltLenses && showAltLenses.length > 0) {
-          // After applying first alternative, the second one might be at a different index
+          // After applying first variation, the second one might be at a different index
           const iifLens =
             showAltLenses.find(
               (lens) => lens.range.start.line > 10 // IIF is after line 10
@@ -132,7 +132,7 @@ suite('Alternatives Workflow Test', () => {
         }
       }
 
-      await recorder.capture('5. Showed alternatives for second inconsistency (IIF statement)');
+      await recorder.capture('5. Showed variations for second inconsistency (IIF statement)');
 
       // Execute some commands on the second inconsistency to demonstrate functionality
       const newVirtualEditor = vscode.window.activeTextEditor;

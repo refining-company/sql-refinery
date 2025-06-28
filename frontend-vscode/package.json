@@ -53,11 +53,11 @@
     "commands": [
       {
         "command": "sql-refinery.showVariantsEditor",
-        "title": "Show SQL Alternatives"
+        "title": "Show SQL Variations"
       },
       {
-        "command": "sql-refinery.applyVariant",
-        "title": "Apply SQL Alternative"
+        "command": "sql-refinery.applyVariation",
+        "title": "Apply SQL Variation"
       },
       {
         "command": "sql-refinery.showNativeDiff",

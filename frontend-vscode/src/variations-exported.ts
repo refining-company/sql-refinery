@@ -176,8 +176,8 @@ function initVariationsDocument(context: vscode.ExtensionContext) {
           currentFileName = `${currentFileName}:variation-${groupId}`;
         }
 
-        const alternativeNumber = variantIndex || 1;
-        const title = `${currentFileName} ↔ alternative-${alternativeNumber}`;
+        const variationNumber = variantIndex || 1;
+        const title = `${currentFileName} ↔ variation-${variationNumber}`;
 
         // Open native diff editor
         await vscode.commands.executeCommand('vscode.diff', originalUri, variantUri, title);

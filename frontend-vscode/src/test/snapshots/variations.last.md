@@ -1,4 +1,4 @@
-# Test: alternatives
+# Test: variations
 
 ## Step: 1. File opened with diagnostics and code lenses
 ### Open Editors (1):
@@ -94,7 +94,7 @@ GROUP BY date_year, macro_region, industry_it
 
 
 
-## Step: 2. Showed alternatives for first inconsistency (CASE statement)
+## Step: 2. Showed variations for first inconsistency (CASE statement)
 ### Open Editors (2):
 0. editor.sql (column 1)
 1. sql-refinery-variations:editor.sql%3Avariation-1 (column 2) (active)
@@ -166,7 +166,7 @@ END
 
 
 
-## Step: 3. Peek locations opened for first alternative
+## Step: 3. Peek locations opened for first variation
 ### Open Editors (2):
 0. editor.sql (column 1)
 1. sql-refinery-variations:editor.sql%3Avariation-1 (column 2) (active)
@@ -238,7 +238,7 @@ END
 
 
 
-## Step: 4. Applied first alternative (CASE statement replaced)
+## Step: 4. Applied first variation (CASE statement replaced)
 ### Open Editors (1):
 0. editor.sql (column 1) (active)
 
@@ -332,7 +332,7 @@ GROUP BY date_year, macro_region, industry_it
 
 
 
-## Step: 5. Showed alternatives for second inconsistency (IIF statement)
+## Step: 5. Showed variations for second inconsistency (IIF statement)
 ### Open Editors (2):
 0. editor.sql (column 1)
 1. sql-refinery-variations:editor.sql%3Avariation-2 (column 2) (active)

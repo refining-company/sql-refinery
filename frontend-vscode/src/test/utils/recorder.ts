@@ -32,7 +32,7 @@ export class VSCodeRecorder {
 
     const trueSnapshot = await fs.readFile(truePath, 'utf8').catch(() => '');
     if (lastSnapshot !== trueSnapshot) {
-      const patch = diff.createPatch('alternatives.true.md', trueSnapshot, lastSnapshot);
+      const patch = diff.createPatch(`${this.name}.true.md`, trueSnapshot, lastSnapshot);
       throw new AssertionError({
         message: `Snapshot mismatch:\n${patch}`,
         actual: lastSnapshot,
