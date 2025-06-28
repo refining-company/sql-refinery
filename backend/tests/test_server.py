@@ -42,6 +42,7 @@ async def test_server(snapshot, session_file):
     client = JsonRPCClient()
     await client.start_io("poetry", "run", "python", "-m", "src.server", "--start-server", "--start-recording")
 
+    # TODO: should replace ${workspaceFolder} back to absolute paths when replaying
     for record in utils.load_ndjson(session_path):
         if record["direction"] == "client->server":
             msg = record["message"]

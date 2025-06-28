@@ -338,121 +338,121 @@
 
 ```json
 {
-  "Tree(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql) = Tree(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql)": {
+  "Tree(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql) = Tree(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
                   "sources": [
                     "Table(?.orders as o)",
                     "Table(?.deals as d)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
                           "Column(?.deals.contract_end_date)",
                           "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
                           "Column(?.orders.value)" ],
                         "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_core)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_core_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_aux)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_aux_day" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
                   "sources": [
                     "Table(?.date_ranges as dr)",
                     "Table(?.deals_signed as ds)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
                           "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
                           "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
                           "Column(?.date_ranges.date_day)",
                           "Column(?.deals_signed.contract_start_date)",
                           "Column(?.deals_signed.contract_end_date)" ],
                         "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
                     "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
                     "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
                     "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
                     "Column(?.t.revenue)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
                   "sources": [
                     "Table(?.accounts_revenue)",
                     "Table(?.accounts)",
                     "Table(?.countries as c)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
                           "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
                           "Column(?.accounts.revenue)",
                           "Column(?.accounts.account_id)",
                           "Column(?.accounts.date_month)" ],
                         "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.t.revenue_12m)" ],
                   "alias": "account_size" } } ] } } ] },
@@ -503,91 +503,91 @@
         "Column(?.countries.region)",
         "Column(?.accounts.priority)" ],
       "<Expression>": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
@@ -602,390 +602,390 @@
         "Table(?.accounts)",
         "Table(?.countries as c)" ],
       "<Query>": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
             "sources": [
               "Table(?.orders as o)",
               "Table(?.deals as d)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                   "columns": [
                     "Column(?.deals.contract_end_date)",
                     "Column(?.deals.contract_start_date)" ],
                   "alias": "contract_duration_days" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                   "columns": [
                     "Column(?.orders.product)",
                     "Column(?.orders.value)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                   "columns": [
                     "Column(?.orders.product)",
                     "Column(?.orders.value)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                   "columns": [
                     "Column(?.orders.value)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
                   "sources": [
                     "Table(?.orders as o)",
                     "Table(?.deals as d)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
                           "Column(?.deals.contract_end_date)",
                           "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
                           "Column(?.orders.value)" ],
                         "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_core)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_core_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_aux)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_aux_day" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
             "sources": [
               "Table(?.date_ranges as dr)",
               "Table(?.deals_signed as ds)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                   "columns": [
                     "Column(?.?.date_day)" ],
                   "alias": "date_month" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                   "columns": [
                     "Column(?.deals_signed.deal_id)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_core_day)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_aux_day)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_day)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                   "columns": [
                     "Column(?.date_ranges.date_day)",
                     "Column(?.deals_signed.contract_start_date)",
                     "Column(?.deals_signed.contract_end_date)" ],
                   "alias": null } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
                   "sources": [
                     "Table(?.date_ranges as dr)",
                     "Table(?.deals_signed as ds)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
                           "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
                           "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
                           "Column(?.date_ranges.date_day)",
                           "Column(?.deals_signed.contract_start_date)",
                           "Column(?.deals_signed.contract_end_date)" ],
                         "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
                     "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
                     "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
                     "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
                     "Column(?.t.revenue)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
             "sources": [
               "Table(?.accounts_revenue)",
               "Table(?.accounts)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                   "columns": [
                     "Column(?.accounts.revenue)",
                     "Column(?.accounts.account_id)",
                     "Column(?.accounts.date_month)" ],
                   "alias": "revenue_12m" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
                   "sources": [
                     "Table(?.accounts_revenue)",
                     "Table(?.accounts)",
                     "Table(?.countries as c)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
                           "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
                           "Column(?.accounts.revenue)",
                           "Column(?.accounts.account_id)",
                           "Column(?.accounts.date_month)" ],
                         "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.t.revenue_12m)" ],
                   "alias": "account_size" } } ] } } ] },
     "map_key_to_expr": {
       "('Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_core)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_aux)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } } ],
       "('Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', ('Column(?.deals.contract_end_date)', 'Column(?.deals.contract_start_date)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.orders.value))))', ('Column(?.orders.value)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.deals))))', ('Column(?.t.deals)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))', ('Column(?.t.revenue_core)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))', ('Column(?.t.revenue_aux)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))', ('Column(?.t.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } } ],
       "(\"Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))\", ('Column(?.?.date_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))', ('Column(?.deals_signed.deal_id)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))', ('Column(?.deals_signed.revenue_core_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))', ('Column(?.deals_signed.revenue_aux_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))', ('Column(?.deals_signed.revenue_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } } ],
       "('Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', ('Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))\", ('Column(?.t.revenue_12m)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))\", ('Column(?.countries.region)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', ('Column(?.accounts.account_id)', 'Column(?.accounts.date_month)', 'Column(?.accounts.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
@@ -997,176 +997,176 @@
 
 ```json
 {
-  "Tree(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql) = Tree(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql)": {
+  "Tree(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql) = Tree(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
                   "sources": [
                     "Table(?.orders as o)",
                     "Table(?.deals as d)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
                           "Column(?.deals.contract_end_date)",
                           "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
                           "Column(?.orders.value)" ],
                         "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_core)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_core_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_aux)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_aux_day" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
                   "sources": [
                     "Table(?.date_ranges as dr)",
                     "Table(?.deals_signed as ds)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
                           "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
                           "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
                           "Column(?.date_ranges.date_day)",
                           "Column(?.deals_signed.contract_start_date)",
                           "Column(?.deals_signed.contract_end_date)" ],
                         "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
                     "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
                     "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
                     "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
                     "Column(?.t.revenue)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
                   "sources": [
                     "Table(?.accounts_revenue)",
                     "Table(?.accounts)",
                     "Table(?.countries as c)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
                           "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
                           "Column(?.accounts.revenue)",
                           "Column(?.accounts.account_id)",
                           "Column(?.accounts.date_month)" ],
                         "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.t.revenue_12m)" ],
                   "alias": "account_size" } } ] } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
               "Table(?.accounts as a)",
               "Table(?.countries as c)",
               "Table(?.accounts_360 as a360)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
                   "columns": [
                     "Column(?.?.date_month)" ],
                   "alias": "date_year" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "accounts" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)",
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "revenue_per_account" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
             "sources": [
               "Table(?.accounts)",
               "Table(?.accounts_revenue)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_tech" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "account_size" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue_12m" } } ] } } ] },
@@ -1236,134 +1236,134 @@
         "Column(?.accounts_revenue.country)",
         "Column(?.accounts_revenue.date_month)" ],
       "<Expression>": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m" } } ],
@@ -1383,536 +1383,536 @@
         "Table(?.accounts_revenue)",
         "Table(?.countries as c)" ],
       "<Query>": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
             "sources": [
               "Table(?.orders as o)",
               "Table(?.deals as d)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                   "columns": [
                     "Column(?.deals.contract_end_date)",
                     "Column(?.deals.contract_start_date)" ],
                   "alias": "contract_duration_days" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                   "columns": [
                     "Column(?.orders.product)",
                     "Column(?.orders.value)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                   "columns": [
                     "Column(?.orders.product)",
                     "Column(?.orders.value)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                   "columns": [
                     "Column(?.orders.value)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
                   "sources": [
                     "Table(?.orders as o)",
                     "Table(?.deals as d)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
                           "Column(?.deals.contract_end_date)",
                           "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
                           "Column(?.orders.value)" ],
                         "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_core)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_core_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_aux)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_aux_day" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
             "sources": [
               "Table(?.date_ranges as dr)",
               "Table(?.deals_signed as ds)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                   "columns": [
                     "Column(?.?.date_day)" ],
                   "alias": "date_month" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                   "columns": [
                     "Column(?.deals_signed.deal_id)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_core_day)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_aux_day)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_day)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                   "columns": [
                     "Column(?.date_ranges.date_day)",
                     "Column(?.deals_signed.contract_start_date)",
                     "Column(?.deals_signed.contract_end_date)" ],
                   "alias": null } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
                   "sources": [
                     "Table(?.date_ranges as dr)",
                     "Table(?.deals_signed as ds)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
                           "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
                           "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
                           "Column(?.date_ranges.date_day)",
                           "Column(?.deals_signed.contract_start_date)",
                           "Column(?.deals_signed.contract_end_date)" ],
                         "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
                     "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
                     "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
                     "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
                     "Column(?.t.revenue)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
             "sources": [
               "Table(?.accounts_revenue)",
               "Table(?.accounts)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                   "columns": [
                     "Column(?.accounts.revenue)",
                     "Column(?.accounts.account_id)",
                     "Column(?.accounts.date_month)" ],
                   "alias": "revenue_12m" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
                   "sources": [
                     "Table(?.accounts_revenue)",
                     "Table(?.accounts)",
                     "Table(?.countries as c)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
                           "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
                           "Column(?.accounts.revenue)",
                           "Column(?.accounts.account_id)",
                           "Column(?.accounts.date_month)" ],
                         "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.t.revenue_12m)" ],
                   "alias": "account_size" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
               "Table(?.accounts as a)",
               "Table(?.countries as c)",
               "Table(?.accounts_360 as a360)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
                   "columns": [
                     "Column(?.?.date_month)" ],
                   "alias": "date_year" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "accounts" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)",
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "revenue_per_account" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
             "sources": [
               "Table(?.accounts)",
               "Table(?.accounts_revenue)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_tech" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "account_size" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue_12m" } } ] } } ] },
     "map_key_to_expr": {
       "('Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_core)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_aux)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } } ],
       "('Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', ('Column(?.deals.contract_end_date)', 'Column(?.deals.contract_start_date)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.orders.value))))', ('Column(?.orders.value)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.deals))))', ('Column(?.t.deals)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))', ('Column(?.t.revenue_core)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))', ('Column(?.t.revenue_aux)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))', ('Column(?.t.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } } ],
       "(\"Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))\", ('Column(?.?.date_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))', ('Column(?.deals_signed.deal_id)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))', ('Column(?.deals_signed.revenue_core_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))', ('Column(?.deals_signed.revenue_aux_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))', ('Column(?.deals_signed.revenue_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } } ],
       "('Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', ('Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))\", ('Column(?.t.revenue_12m)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))\", ('Column(?.countries.region)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', ('Column(?.accounts.account_id)', 'Column(?.accounts.date_month)', 'Column(?.accounts.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } } ],
       "(\"Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))\", ('Column(?.?.date_month)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))\", ('Column(?.accounts.industry)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_cluster" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))', ('Column(?.accounts_revenue.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m" } } ],
       "('Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))', ('Column(?.accounts_revenue.account_id)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } } ],
       "('Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', ('Column(?.accounts_revenue.account_id)', 'Column(?.accounts_revenue.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } } ],
       "(\"Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))\", ('Column(?.accounts.industry)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))\", ('Column(?.accounts_revenue.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m" } } ] } } }
@@ -1922,207 +1922,207 @@
 
 ```json
 {
-  "Tree(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql, /Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql) = Tree(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql, /Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql)": {
+  "Tree(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql, /Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql) = Tree(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql, /Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql, /Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
                   "sources": [
                     "Table(?.orders as o)",
                     "Table(?.deals as d)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
                           "Column(?.deals.contract_end_date)",
                           "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
                           "Column(?.orders.value)" ],
                         "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_core)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_core_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_aux)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_aux_day" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
                   "sources": [
                     "Table(?.date_ranges as dr)",
                     "Table(?.deals_signed as ds)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
                           "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
                           "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
                           "Column(?.date_ranges.date_day)",
                           "Column(?.deals_signed.contract_start_date)",
                           "Column(?.deals_signed.contract_end_date)" ],
                         "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
                     "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
                     "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
                     "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
                     "Column(?.t.revenue)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
                   "sources": [
                     "Table(?.accounts_revenue)",
                     "Table(?.accounts)",
                     "Table(?.countries as c)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
                           "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
                           "Column(?.accounts.revenue)",
                           "Column(?.accounts.account_id)",
                           "Column(?.accounts.date_month)" ],
                         "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.t.revenue_12m)" ],
                   "alias": "account_size" } } ] } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
               "Table(?.accounts as a)",
               "Table(?.countries as c)",
               "Table(?.accounts_360 as a360)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
                   "columns": [
                     "Column(?.?.date_month)" ],
                   "alias": "date_year" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "accounts" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)",
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "revenue_per_account" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
             "sources": [
               "Table(?.accounts)",
               "Table(?.accounts_revenue)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_tech" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "account_size" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue_12m" } } ] } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:3:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:3:1)": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql": [
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:3:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:3:1)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
               "Table(?.accounts as a)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
                   "columns": [
                     "Column(?.?.date_month)" ],
                   "alias": "date_year" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "macro_region" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_it" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "accounts" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)",
                     "Column(?.accounts_revenue.account_id)" ],
@@ -2203,158 +2203,158 @@
         "Column(?.?.macro_region)",
         "Column(?.?.industry_it)" ],
       "<Expression>": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "macro_region" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_it" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
@@ -2378,619 +2378,619 @@
         "Table(?.accounts as a)",
         "Table(?.countries as c)" ],
       "<Query>": [
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
             "sources": [
               "Table(?.orders as o)",
               "Table(?.deals as d)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                   "columns": [
                     "Column(?.deals.contract_end_date)",
                     "Column(?.deals.contract_start_date)" ],
                   "alias": "contract_duration_days" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                   "columns": [
                     "Column(?.orders.product)",
                     "Column(?.orders.value)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                   "columns": [
                     "Column(?.orders.product)",
                     "Column(?.orders.value)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                   "columns": [
                     "Column(?.orders.value)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:26:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:32:5)": {
                   "sources": [
                     "Table(?.orders as o)",
                     "Table(?.deals as d)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
                         "columns": [
                           "Column(?.deals.contract_end_date)",
                           "Column(?.deals.contract_start_date)" ],
                         "alias": "contract_duration_days" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
                         "columns": [
                           "Column(?.orders.product)",
                           "Column(?.orders.value)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
                         "columns": [
                           "Column(?.orders.value)" ],
                         "alias": "revenue" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_core)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_core_day" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
                   "columns": [
                     "Column(?.?.revenue_aux)",
                     "Column(?.?.contract_duration_days)" ],
                   "alias": "revenue_aux_day" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
             "sources": [
               "Table(?.date_ranges as dr)",
               "Table(?.deals_signed as ds)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                   "columns": [
                     "Column(?.?.date_day)" ],
                   "alias": "date_month" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                   "columns": [
                     "Column(?.deals_signed.deal_id)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_core_day)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_aux_day)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                   "columns": [
                     "Column(?.deals_signed.revenue_day)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                   "columns": [
                     "Column(?.date_ranges.date_day)",
                     "Column(?.deals_signed.contract_start_date)",
                     "Column(?.deals_signed.contract_end_date)" ],
                   "alias": null } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:51:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:59:5)": {
                   "sources": [
                     "Table(?.date_ranges as dr)",
                     "Table(?.deals_signed as ds)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
                         "columns": [
                           "Column(?.?.date_day)" ],
                         "alias": "date_month" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
                         "columns": [
                           "Column(?.deals_signed.deal_id)" ],
                         "alias": "deals" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_core_day)" ],
                         "alias": "revenue_core" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_aux_day)" ],
                         "alias": "revenue_aux" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
                         "columns": [
                           "Column(?.deals_signed.revenue_day)" ],
                         "alias": "revenue" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
                         "columns": [
                           "Column(?.date_ranges.date_day)",
                           "Column(?.deals_signed.contract_start_date)",
                           "Column(?.deals_signed.contract_end_date)" ],
                         "alias": null } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
                   "columns": [
                     "Column(?.t.deals)" ],
                   "alias": "deals" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
                   "columns": [
                     "Column(?.t.revenue_core)" ],
                   "alias": "revenue_core" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
                   "columns": [
                     "Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
                   "columns": [
                     "Column(?.t.revenue)" ],
                   "alias": "revenue" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
             "sources": [
               "Table(?.accounts_revenue)",
               "Table(?.accounts)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                   "columns": [
                     "Column(?.accounts.revenue)",
                     "Column(?.accounts.account_id)",
                     "Column(?.accounts.date_month)" ],
                   "alias": "revenue_12m" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:79:1)": {
             "sources": [
-              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
+              { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:88:5)": {
                   "sources": [
                     "Table(?.accounts_revenue)",
                     "Table(?.accounts)",
                     "Table(?.countries as c)" ],
                   "expressions": [
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                         "columns": [
                           "Column(?.countries.region)" ],
                         "alias": "region_cluster" } },
-                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                    { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
                         "columns": [
                           "Column(?.accounts.revenue)",
                           "Column(?.accounts.account_id)",
                           "Column(?.accounts.date_month)" ],
                         "alias": "revenue_12m" } } ] } } ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.t.revenue_12m)" ],
                   "alias": "account_size" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:5:1)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
               "Table(?.accounts as a)",
               "Table(?.countries as c)",
               "Table(?.accounts_360 as a360)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
                   "columns": [
                     "Column(?.?.date_month)" ],
                   "alias": "date_year" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "region_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "accounts" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)",
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "revenue_per_account" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:30:1)": {
             "sources": [
               "Table(?.accounts)",
               "Table(?.accounts_revenue)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "cluster" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_tech" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "account_size" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue_12m" } } ] } },
-        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:3:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:3:1)": {
+        { "Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:3:1) = Query(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:3:1)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
               "Table(?.accounts as a)",
               "Table(?.countries as c)" ],
             "expressions": [
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
                   "columns": [
                     "Column(?.?.date_month)" ],
                   "alias": "date_year" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
                   "columns": [
                     "Column(?.countries.region)" ],
                   "alias": "macro_region" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
                   "columns": [
                     "Column(?.accounts.industry)" ],
                   "alias": "industry_it" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "accounts" } },
-              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+              { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
                   "columns": [
                     "Column(?.accounts_revenue.revenue)",
                     "Column(?.accounts_revenue.account_id)" ],
                   "alias": "revenue_per_account" } } ] } } ] },
     "map_key_to_expr": {
       "('Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_core)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } } ],
       "('Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))', ('Column(?.?.contract_duration_days)', 'Column(?.?.revenue_aux)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } } ],
       "('Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))', ('Column(?.deals.contract_end_date)', 'Column(?.deals.contract_start_date)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } } ],
       "(\"Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))\", ('Column(?.orders.product)', 'Column(?.orders.value)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.orders.value))))', ('Column(?.orders.value)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.deals))))', ('Column(?.t.deals)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))', ('Column(?.t.revenue_core)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))', ('Column(?.t.revenue_aux)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))', ('Column(?.t.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } } ],
       "(\"Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))\", ('Column(?.?.date_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))', ('Column(?.deals_signed.deal_id)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))', ('Column(?.deals_signed.revenue_core_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))', ('Column(?.deals_signed.revenue_aux_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))', ('Column(?.deals_signed.revenue_day)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } } ],
       "('Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))', ('Column(?.date_ranges.date_day)', 'Column(?.deals_signed.contract_end_date)', 'Column(?.deals_signed.contract_start_date)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))\", ('Column(?.t.revenue_12m)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))\", ('Column(?.countries.region)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))', ('Column(?.accounts.account_id)', 'Column(?.accounts.date_month)', 'Column(?.accounts.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } } ],
       "(\"Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))\", ('Column(?.?.date_month)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))\", ('Column(?.accounts.industry)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_cluster" } } ],
       "('Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))', ('Column(?.accounts_revenue.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } } ],
       "('Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))', ('Column(?.accounts_revenue.account_id)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } } ],
       "('Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))', ('Column(?.accounts_revenue.account_id)', 'Column(?.accounts_revenue.revenue)'))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } } ],
       "(\"Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))\", ('Column(?.accounts.industry)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))\", ('Column(?.accounts_revenue.revenue)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size" } } ],
       "(\"Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))\", ('Column(?.countries.region)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "macro_region" } } ],
       "(\"Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))\", ('Column(?.accounts.industry)',))": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_it" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:28:5) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:29:5) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_core)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_core_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:30:5) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue_aux)",
               "Column(?.?.contract_duration_days)" ],
             "alias": "revenue_aux_day" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:37:9) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
             "columns": [
               "Column(?.deals.contract_end_date)",
               "Column(?.deals.contract_start_date)" ],
             "alias": "contract_duration_days" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
             "columns": [
               "Column(?.orders.product)",
               "Column(?.orders.value)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:40:9) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
             "columns": [
               "Column(?.orders.value)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:54:5) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
             "columns": [
               "Column(?.t.deals)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:55:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
             "columns": [
               "Column(?.t.revenue_core)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:56:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
             "columns": [
               "Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:57:5) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
             "columns": [
               "Column(?.t.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:61:9) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
             "columns": [
               "Column(?.?.date_day)" ],
             "alias": "date_month" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:63:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
             "columns": [
               "Column(?.deals_signed.deal_id)" ],
             "alias": "deals" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:64:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_core_day)" ],
             "alias": "revenue_core" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:65:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_aux_day)" ],
             "alias": "revenue_aux" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:66:9) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
             "columns": [
               "Column(?.deals_signed.revenue_day)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:69:17) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
             "columns": [
               "Column(?.date_ranges.date_day)",
               "Column(?.deals_signed.contract_start_date)",
               "Column(?.deals_signed.contract_end_date)" ],
             "alias": null } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:81:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.t.revenue_12m)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:104:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
             "columns": [
               "Column(?.accounts.revenue)",
               "Column(?.accounts.account_id)",
               "Column(?.accounts.date_month)" ],
             "alias": "revenue_12m" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:6:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:12:5) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:18:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:19:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:20:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "revenue_per_account" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:40:5) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:46:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql": [
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:4:5) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
             "alias": "date_year" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "macro_region" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_it" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:14:5) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:15:5) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.account_id)" ],
             "alias": "accounts" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:16:5) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
             "columns": [
               "Column(?.accounts_revenue.revenue)",
               "Column(?.accounts_revenue.account_id)" ],
@@ -3001,35 +3001,35 @@
 
 ```json
 [
-  { "Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5)) = Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5), Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5))": {
+  { "Variation(Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9), Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5), Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5)) = Variation(Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9), Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5), Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5))": {
       "this": {
-        "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+        "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
           "columns": [
             "Column(?.countries.region)" ],
           "alias": "macro_region" } },
       "others": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "region_cluster" } },
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
             "columns": [
               "Column(?.countries.region)" ],
             "alias": "cluster" } } ],
       "reliability": 3,
       "similarity": 0.78 } },
-  { "Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5)) = Alternative(Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5))": {
+  { "Variation(Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5)) = Variation(Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5):Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5))": {
       "this": {
-        "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+        "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
           "columns": [
             "Column(?.accounts.industry)" ],
           "alias": "industry_it" } },
       "others": [
-        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refining/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+        { "Expression(/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
             "columns": [
               "Column(?.accounts.industry)" ],
             "alias": "industry_tech" } } ],

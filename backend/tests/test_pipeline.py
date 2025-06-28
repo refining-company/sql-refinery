@@ -41,7 +41,7 @@ def scenario():
     workspace = server.get_workspace(new=True)  # Start with a fresh workspace
     workspace.ingest_folder(dir_codebase)
     workspace.ingest_file(path=file_editor, content=file_editor.read_text())
-    workspace.find_inconsistencies(path=file_editor)
+    workspace.find_variations(path=file_editor)
     log.info("Scenario finished.")
 
 
@@ -51,7 +51,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
         match obj:
             case sql.Node():
                 return simplify(obj.text, terminal)
-            case logic.Alternative() | code.Tree() | code.Query() | code.Expression() | code.Column() | code.Table():
+            case logic.Variation() | code.Tree() | code.Query() | code.Expression() | code.Column() | code.Table():
                 return repr(obj)
             case _:
                 return f"<{obj.__class__.__name__}>"
@@ -60,7 +60,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
     else:
         match obj:
             # Custom data structures
-            case logic.Alternative() | code.Tree() | code.Query() | code.Expression() | code.Column() | code.Table():
+            case logic.Variation() | code.Tree() | code.Query() | code.Expression() | code.Column() | code.Table():
                 obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
                 return {f"{repr(obj)} = {str(obj)}": simplify(obj_dict, terminal)}
 

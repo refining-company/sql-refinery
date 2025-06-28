@@ -40,26 +40,26 @@ def get_workspace(new: bool = False) -> src.workspace.Workspace:
 
 
 def analyse_document(uri: str) -> tuple[list[lsp.Diagnostic], list[lsp.CodeLens]]:
-    """UI for find_inconsistencies"""
-    inconsistencies = get_workspace().find_inconsistencies(path=get_path(uri))
+    """UI for find_variations"""
+    variations = get_workspace().find_variations(path=get_path(uri))
 
     diagnostics = []
     code_lenses = []
-    for inc in inconsistencies:
+    for var in variations:
         # Create diagnostic
-        range = lsp.Range(lsp.Position(*inc.this._node.start_point), lsp.Position(*inc.this._node.end_point))
+        range = lsp.Range(lsp.Position(*var.this._node.start_point), lsp.Position(*var.this._node.end_point))
         diagnostic = lsp.Diagnostic(
             range=range,
-            message="Alternative expressions found in the codebase",
-            code="Inconsistency",
+            message="Variation expressions found in the codebase",
+            code="Variation",
             severity=lsp.DiagnosticSeverity.Information,
         )
         diagnostics.append(diagnostic)
 
         # Create code lens
-        title = f"Alternatives found: {len(inc.others)}"
+        title = f"Variations found: {len(var.others)}"
         other_locations = []
-        for other in inc.others:
+        for other in var.others:
             location_uri = other._file.as_uri()
             location_range = lsp.Range(lsp.Position(*other._node.start_point), lsp.Position(*other._node.end_point))
             other_locations.append({"uri": location_uri, "position": location_range.start, "range": location_range})

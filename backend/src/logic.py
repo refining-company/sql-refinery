@@ -10,12 +10,12 @@ Architecture Overview:
 3. VS Code frontend (frontend-vscode) visualizes and interacts with LSP features
 
 This module provides:
-- `Alternative`, representing groups of similar expressions with similarity and reliability
+- `Variation`, representing groups of similar expressions with similarity and reliability
 - `compare()`, which finds expressions with potentially flawed or duplicated business logic
 
 Analysis description:
-- Find expressions that look similar but not exact; likely alternative implementations of the same business logic
-- Drives diagnostics for inconsistencies such as:
+- Find expressions that look similar but not exact; likely variations of the same business logic
+- Drives diagnostics for variations such as:
     ```sql
     IF revenue > 3000 THEN ... as priority
     ```
@@ -36,18 +36,18 @@ from src import code
 
 
 @dataclass(frozen=True)
-class Alternative:
+class Variation:
     this: code.Expression
     others: list[code.Expression]
     reliability: int
     similarity: float
 
     def __repr__(self) -> str:
-        return "Alternative({}:{})".format(repr(self.this), ", ".join(map(repr, self.others)))
+        return "Variation({}:{})".format(repr(self.this), ", ".join(map(repr, self.others)))
 
 
-def compare(this: Path, tree: code.Tree, threshold: float = 0.7) -> list[Alternative]:
-    alternatives = []
+def compare(this: Path, tree: code.Tree, threshold: float = 0.7) -> list[Variation]:
+    variations = []
 
     for this_expr in tree.map_file_to_expr[this]:
         # FIXME: calculate hash just in one place
@@ -59,8 +59,8 @@ def compare(this: Path, tree: code.Tree, threshold: float = 0.7) -> list[Alterna
             sim_total = sim_exprs * sim_cols
 
             if threshold < sim_total < 1:
-                alternatives.append(
-                    Alternative(
+                variations.append(
+                    Variation(
                         reliability=len(that_exprs),
                         similarity=sim_total,
                         this=this_expr,
@@ -68,4 +68,4 @@ def compare(this: Path, tree: code.Tree, threshold: float = 0.7) -> list[Alterna
                     )
                 )
 
-    return alternatives
+    return variations

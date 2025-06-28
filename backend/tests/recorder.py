@@ -21,6 +21,7 @@ def record_message(direction: str, message: dict):
     if recording_path is None:
         return
 
+    # TODO: should replace absolute paths with ${workspaceFolder} when recording
     record = {"direction": direction, "message": converters.get_converter().unstructure(message)}
 
     with recording_path.open("a") as f:

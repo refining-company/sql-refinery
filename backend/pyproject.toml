@@ -3,7 +3,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "sql-refining-backend"
+name = "sql-refinery-backend"
 version = "0.0.1"
 description = "SQL language server for data engineering, business intelligence and analytics"
 authors = ["The Data Refining Company"]
@@ -29,7 +29,7 @@ mypy = "^1.10.0"
 pytest-asyncio = "^0.24.0"
 
 [tool.poetry.scripts]
-sql-refining-server = "src.server:main"
+sql-refinery-server = "src.server:main"
 
 
 [tool.pytest.ini_options]

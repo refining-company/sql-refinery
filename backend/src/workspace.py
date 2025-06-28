@@ -8,7 +8,7 @@ Architecture:
 
 This module provides:
 - `Workspace` to ingest SQL files/folders into a code tree
-- Entry point for finding cross-file inconsistencies via `logic.compare`
+- Entry point for finding cross-file variations via `logic.compare`
 """
 
 from pathlib import Path
@@ -36,6 +36,6 @@ class Workspace:
         self.tree.ingest_file(path=path, content=content)
         log.info(f"Ingested file {path}")
 
-    def find_inconsistencies(self, path: Path) -> list[logic.Alternative]:
-        log.info(f"Finding inconsistencies for file {path}")
+    def find_variations(self, path: Path) -> list[logic.Variation]:
+        log.info(f"Finding variations for file {path}")
         return logic.compare(path, self.tree)

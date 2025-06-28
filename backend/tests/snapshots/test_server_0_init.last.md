@@ -74,9 +74,9 @@
           "end": {
             "line": 10,
             "character": 7 } },
-        "message": "Alternative expressions found in the codebase",
+        "message": "Variation expressions found in the codebase",
         "severity": 3,
-        "code": "Inconsistency" },
+        "code": "Variation" },
       { "range": {
           "start": {
             "line": 12,
@@ -84,9 +84,9 @@
           "end": {
             "line": 12,
             "character": 62 } },
-        "message": "Alternative expressions found in the codebase",
+        "message": "Variation expressions found in the codebase",
         "severity": 3,
-        "code": "Inconsistency" } ] },
+        "code": "Variation" } ] },
   "method": "textDocument/publishDiagnostics",
   "jsonrpc": "2.0" }
 ```
@@ -115,7 +115,7 @@
           "line": 10,
           "character": 7 } },
       "command": {
-        "title": "Alternatives found: 3",
+        "title": "Variations found: 3",
         "command": "sqlRefinery.peekLocations",
         "arguments": [
           "file://${workspaceFolder}/tests/inputs/editor.sql",
@@ -164,7 +164,7 @@
           "line": 12,
           "character": 62 } },
       "command": {
-        "title": "Alternatives found: 1",
+        "title": "Variations found: 1",
         "command": "sqlRefinery.peekLocations",
         "arguments": [
           "file://${workspaceFolder}/tests/inputs/editor.sql",
