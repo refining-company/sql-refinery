@@ -74,12 +74,6 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
         return;
       }
 
-      const originalRange = new vscode.Range(
-        currentRange.start.line,
-        currentRange.start.character,
-        currentRange.end.line,
-        currentRange.end.character
-      );
       // Get original SQL from the variation object
       const originalSQL = variation.this.sql;
       inconsistencyProvider.setOriginalSQL(groupId, originalSQL);

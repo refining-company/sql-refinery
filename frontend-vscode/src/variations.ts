@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Variation, Expression } from './mockData';
+import { Variation } from './mockData';
 
 // UI-specific metadata for variations
 export interface VariationMetadata {
@@ -15,7 +15,7 @@ interface VariationWithMetadata extends Variation {
 }
 
 // Generate unique group ID for a variation
-function generateGroupId(variation: Variation, index: number): string {
+function generateGroupId(_variation: Variation, index: number): string {
   return `${index + 1}`;
 }
 
@@ -97,7 +97,7 @@ export function variationToVirtualDocumentVariants(variation: Variation): Virtua
 }
 
 // Create code lens for a variation
-export function createVariationCodeLens(variation: Variation, groupId: string): vscode.CodeLens {
+export function createVariationCodeLens(variation: Variation, _groupId: string): vscode.CodeLens {
   const range = variation.this.location.range;
   const title = `${variation.others.length} variation${variation.others.length !== 1 ? 's' : ''} found`;
   

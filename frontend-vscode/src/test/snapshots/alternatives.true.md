@@ -35,33 +35,33 @@ GROUP BY date_year, macro_region, industry_it
 
 #### Diagnostics (2):
 
-##### 0. Inconsistent expression: 4 variants found (75% similar)
+##### 0. 4 variations found (75% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 5:4-10:8
 - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END `
 - **Related Information** (4):
-  - editor.sql:5:4-10:8 - Variant 1: macro_region
+  - editor.sql:5:4-10:8 - Variation 1: macro_region
     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END `
-  - 0-accounts.sql:97:8-102:12 - Variant 2: region_cluster
+  - 0-accounts.sql:97:8-102:12 - Variation 2: region_cluster
     ``
-  - 1-revenue.sql:6:4-11:8 - Variant 3: region_cluster
+  - 1-revenue.sql:6:4-11:8 - Variation 3: region_cluster
     `    WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END AS macro_region,\n    -- T`
-  - 1-revenue.sql:32:4-37:8 - Variant 4: cluster
+  - 1-revenue.sql:32:4-37:8 - Variation 4: cluster
     ``
 
 
-##### 1. Inconsistent expression: 2 variants found (82% similar)
+##### 1. 2 variations found (82% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 2
 - **Range**: 12:4-12:60
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT`
 - **Related Information** (2):
-  - editor.sql:12:4-12:60 - Variant 1: industry_it
+  - editor.sql:12:4-12:60 - Variation 1: industry_it
     `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT`
-  - 1-revenue.sql:38:4-38:60 - Variant 2: industry_tech
+  - 1-revenue.sql:38:4-38:60 - Variation 2: industry_tech
     ``
 
 
@@ -273,33 +273,33 @@ GROUP BY date_year, macro_region, industry_it
 
 #### Diagnostics (2):
 
-##### 0. Inconsistent expression: 4 variants found (75% similar)
+##### 0. 4 variations found (75% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 5:4-10:8
 - **Snippet**: `CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nENDAS ma`
 - **Related Information** (4):
-  - editor.sql:5:4-10:8 - Variant 1: macro_region
+  - editor.sql:5:4-10:8 - Variation 1: macro_region
     `CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nENDAS ma`
-  - 0-accounts.sql:97:8-102:12 - Variant 2: region_cluster
+  - 0-accounts.sql:97:8-102:12 - Variation 2: region_cluster
     ``
-  - 1-revenue.sql:6:4-11:8 - Variant 3: region_cluster
+  - 1-revenue.sql:6:4-11:8 - Variation 3: region_cluster
     `EN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nENDAS macro_region,\n    -- T`
-  - 1-revenue.sql:32:4-37:8 - Variant 4: cluster
+  - 1-revenue.sql:32:4-37:8 - Variation 4: cluster
     ``
 
 
-##### 1. Inconsistent expression: 2 variants found (82% similar)
+##### 1. 2 variations found (82% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 2
 - **Range**: 12:4-12:60
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT`
 - **Related Information** (2):
-  - editor.sql:12:4-12:60 - Variant 1: industry_it
+  - editor.sql:12:4-12:60 - Variation 1: industry_it
     `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT`
-  - 1-revenue.sql:38:4-38:60 - Variant 2: industry_tech
+  - 1-revenue.sql:38:4-38:60 - Variation 2: industry_tech
     ``
 
 
