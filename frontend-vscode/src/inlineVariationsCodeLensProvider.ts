@@ -4,7 +4,7 @@ import * as path from 'path';
 // Global access to current variations (temporary during refactoring)
 let getCurrentVariations: () => import('./mockData').Variation[] = () => [];
 
-export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
+export class InlineVariationsCodeLensProvider implements vscode.CodeLensProvider {
   private diagnosticsCollection: vscode.DiagnosticCollection;
   private _onDidChangeCodeLenses = new vscode.EventEmitter<void>();
   readonly onDidChangeCodeLenses = this._onDidChangeCodeLenses.event;
@@ -14,7 +14,7 @@ export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
   }
 
   // Method to set current variations access
-  setAlternativesProvider(provider: () => import('./mockData').Variation[]) {
+  setVariationsProvider(provider: () => import('./mockData').Variation[]) {
     getCurrentVariations = provider;
   }
 
@@ -53,26 +53,26 @@ export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
         const lensRange = new vscode.Range(lensPosition, lensPosition);
 
         // Add main action lens
-        const showVariantsLens = new vscode.CodeLens(lensRange, {
-          title: `→ Show ${totalCount} alternatives`,
-          command: 'sql-refinery.showVariantsEditor',
+        const showVariationsLens = new vscode.CodeLens(lensRange, {
+          title: `→ Show ${totalCount} variations`,
+          command: 'sql-refinery.showVariations',
           arguments: [{
             groupId,
             currentRange: diagnostic.range
           }],
-          tooltip: 'Show all variants in side panel'
+          tooltip: 'Show all variations in side panel'
         });
-        codeLenses.push(showVariantsLens);
+        codeLenses.push(showVariationsLens);
         
         // Add ignore lens
         const ignoreLens = new vscode.CodeLens(lensRange, {
           title: '× Ignore',
-          command: 'sql-refinery.ignoreVariant',
+          command: 'sql-refinery.ignoreVariation',
           arguments: [{
             groupId,
             diagnosticRange: diagnostic.range
           }],
-          tooltip: 'Ignore this variant inconsistency'
+          tooltip: 'Ignore this variation'
         });
         codeLenses.push(ignoreLens);
       }

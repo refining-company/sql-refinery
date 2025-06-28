@@ -1,26 +1,26 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { InconsistencyProvider } from './variantsDocumentProvider';
-import { AlternativeCodeLensProvider } from './variantsCodeLensProvider';
-import { InconsistencyCodeLensProvider } from './inlineVariantsCodeLensProvider';
+import { VariationsProvider } from './variationsDocumentProvider';
+import { VariationsCodeLensProvider } from './variationsCodeLensProvider';
+import { InlineVariationsCodeLensProvider } from './inlineVariationsCodeLensProvider';
 import { getMockVariations, Variation } from './mockData';
 import { variationsToDiagnostics, getVariationByGroupId, variationToVirtualDocumentVariants } from './variations';
 
-let inconsistencyProvider: InconsistencyProvider;
-let alternativeCodeLensProvider: AlternativeCodeLensProvider;
-let inconsistencyCodeLensProvider: InconsistencyCodeLensProvider;
+let variationsProvider: VariationsProvider;
+let variationsCodeLensProvider: VariationsCodeLensProvider;
+let inlineVariationsCodeLensProvider: InlineVariationsCodeLensProvider;
 let diagnosticCollection: vscode.DiagnosticCollection;
 let currentVariations: Variation[] = [];
 
-export function initInconsistencies(context: vscode.ExtensionContext) {
+export function initVariations(context: vscode.ExtensionContext) {
   initDiagnostics(context);
   initCodeLenses(context);
-  initAlternativesDocument(context);
+  initVariationsDocument(context);
 }
 
 function initDiagnostics(context: vscode.ExtensionContext) {
-  // Create diagnostics collection for inconsistency detection
-  diagnosticCollection = vscode.languages.createDiagnosticCollection('sql-refinery-inconsistencies');
+  // Create diagnostics collection for variation detection
+  diagnosticCollection = vscode.languages.createDiagnosticCollection('sql-refinery-variations');
   context.subscriptions.push(diagnosticCollection);
 
   // Initialize mockup system for demonstration
@@ -28,33 +28,33 @@ function initDiagnostics(context: vscode.ExtensionContext) {
 }
 
 function initCodeLenses(context: vscode.ExtensionContext) {
-  // Register inline code lens provider (shows "Show alternatives" and "Ignore" on original files)
-  inconsistencyCodeLensProvider = new InconsistencyCodeLensProvider(diagnosticCollection);
+  // Register inline code lens provider (shows "Show variations" and "Ignore" on original files)
+  inlineVariationsCodeLensProvider = new InlineVariationsCodeLensProvider(diagnosticCollection);
   
-  // Provide access to current alternatives
-  inconsistencyCodeLensProvider.setAlternativesProvider(() => currentVariations);
+  // Provide access to current variations
+  inlineVariationsCodeLensProvider.setVariationsProvider(() => currentVariations);
   
   context.subscriptions.push(
-    vscode.languages.registerCodeLensProvider({ scheme: 'file', language: 'sql' }, inconsistencyCodeLensProvider)
+    vscode.languages.registerCodeLensProvider({ scheme: 'file', language: 'sql' }, inlineVariationsCodeLensProvider)
   );
 }
 
-function initAlternativesDocument(context: vscode.ExtensionContext) {
-  // Register the virtual document provider for alternatives
-  inconsistencyProvider = new InconsistencyProvider();
+function initVariationsDocument(context: vscode.ExtensionContext) {
+  // Register the virtual document provider for variations
+  variationsProvider = new VariationsProvider();
   context.subscriptions.push(
-    vscode.workspace.registerTextDocumentContentProvider('sql-refinery-inconsistencies', inconsistencyProvider)
+    vscode.workspace.registerTextDocumentContentProvider('sql-refinery-variations', variationsProvider)
   );
 
-  // Register code lens provider for alternative actions (Peek, Diff, Apply)
-  alternativeCodeLensProvider = new AlternativeCodeLensProvider(inconsistencyProvider);
+  // Register code lens provider for variation actions (Peek, Diff, Apply)
+  variationsCodeLensProvider = new VariationsCodeLensProvider(variationsProvider);
   context.subscriptions.push(
-    vscode.languages.registerCodeLensProvider({ scheme: 'sql-refinery-inconsistencies' }, alternativeCodeLensProvider)
+    vscode.languages.registerCodeLensProvider({ scheme: 'sql-refinery-variations' }, variationsCodeLensProvider)
   );
 
-  // Register command to show alternatives in virtual document
+  // Register command to show variations in virtual document
   context.subscriptions.push(
-    vscode.commands.registerCommand('sql-refinery.showVariantsEditor', async (args) => {
+    vscode.commands.registerCommand('sql-refinery.showVariations', async (args) => {
       const { groupId, currentRange } = args;
       
       // Find the variation using the new data structure
@@ -66,7 +66,7 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
       
       // Convert to virtual document format
       const variants = variationToVirtualDocumentVariants(variation);
-      inconsistencyProvider.setVariants(groupId, variants);
+      variationsProvider.setVariants(groupId, variants);
 
       // Store original range and document for apply command
       const activeEditor = vscode.window.activeTextEditor;
@@ -76,7 +76,7 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
 
       // Get original SQL from the variation object
       const originalSQL = variation.this.sql;
-      inconsistencyProvider.setOriginalSQL(groupId, originalSQL);
+      variationsProvider.setOriginalSQL(groupId, originalSQL);
 
       context.workspaceState.update(`currentRange-${groupId}`, {
         start: { line: currentRange.start.line, character: currentRange.start.character },
@@ -86,12 +86,12 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
 
       // Create descriptive file name for virtual document
       const currentFileName = path.basename(activeEditor.document.fileName);
-      const inconsistencyNumber = groupId;
-      const virtualFileName = `${currentFileName}:inconsistency-${inconsistencyNumber}`;
+      const variationNumber = groupId;
+      const virtualFileName = `${currentFileName}:variation-${variationNumber}`;
 
       // Open group-specific virtual document
-      const variantsUri = vscode.Uri.parse(`sql-refinery-inconsistencies:${virtualFileName}`);
-      const doc = await vscode.workspace.openTextDocument(variantsUri);
+      const variationsUri = vscode.Uri.parse(`sql-refinery-variations:${virtualFileName}`);
+      const doc = await vscode.workspace.openTextDocument(variationsUri);
       await vscode.window.showTextDocument(doc, {
         viewColumn: vscode.ViewColumn.Beside,
         preview: false,
@@ -101,9 +101,9 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
     })
   );
 
-  // Register command to apply an alternative
+  // Register command to apply a variation
   context.subscriptions.push(
-    vscode.commands.registerCommand('sql-refinery.applyVariant', async (args) => {
+    vscode.commands.registerCommand('sql-refinery.applyVariation', async (args) => {
       const data = Array.isArray(args) ? args[0] : args;
       const { variant, groupId } = data;
       const rangeData = context.workspaceState.get<any>(`currentRange-${groupId}`);
@@ -131,12 +131,12 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
       const success = await vscode.workspace.applyEdit(edit);
 
       if (success) {
-        // Close the variants document
-        const variantsEditor = vscode.window.visibleTextEditors.find(
-          (editor) => editor.document.uri.scheme === 'sql-refinery-inconsistencies'
+        // Close the variations document
+        const variationsEditor = vscode.window.visibleTextEditors.find(
+          (editor) => editor.document.uri.scheme === 'sql-refinery-variations'
         );
-        if (variantsEditor) {
-          await vscode.window.showTextDocument(variantsEditor.document, variantsEditor.viewColumn);
+        if (variationsEditor) {
+          await vscode.window.showTextDocument(variationsEditor.document, variationsEditor.viewColumn);
           await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
         }
       }
@@ -153,27 +153,27 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
         return;
       }
 
-      // Create temporary URIs for diff - using the sql-refinery-inconsistencies scheme
+      // Create temporary URIs for diff - using the sql-refinery-variations scheme
       const timestamp = Date.now();
-      const originalUri = vscode.Uri.parse(`sql-refinery-inconsistencies:diff-original-${timestamp}.sql`);
-      const variantUri = vscode.Uri.parse(`sql-refinery-inconsistencies:diff-variant-${timestamp}.sql`);
+      const originalUri = vscode.Uri.parse(`sql-refinery-variations:diff-original-${timestamp}.sql`);
+      const variantUri = vscode.Uri.parse(`sql-refinery-variations:diff-variant-${timestamp}.sql`);
 
-      // Store the content temporarily in the inconsistency provider
+      // Store the content temporarily in the variations provider
       mockupDebugDiffData(timestamp, originalSQL, variant.sql);
-      inconsistencyProvider.setVariants(`diff-original-${timestamp}.sql`, [{ sql: originalSQL }]);
-      inconsistencyProvider.setVariants(`diff-variant-${timestamp}.sql`, [{ sql: variant.sql }]);
+      variationsProvider.setVariants(`diff-original-${timestamp}.sql`, [{ sql: originalSQL }]);
+      variationsProvider.setVariants(`diff-variant-${timestamp}.sql`, [{ sql: variant.sql }]);
 
       try {
         // Create descriptive title
         const activeEditor = vscode.window.activeTextEditor;
         let currentFileName = activeEditor ? path.basename(activeEditor.document.fileName) : 'current';
 
-        // If we're already in a virtual document, don't add inconsistency number again
-        if (currentFileName.includes(':inconsistency-')) {
-          // Already contains inconsistency info, use as-is
+        // If we're already in a virtual document, don't add variation number again
+        if (currentFileName.includes(':variation-')) {
+          // Already contains variation info, use as-is
         } else {
-          // Add inconsistency number to the original file name
-          currentFileName = `${currentFileName}:inconsistency-${groupId}`;
+          // Add variation number to the original file name
+          currentFileName = `${currentFileName}:variation-${groupId}`;
         }
 
         const alternativeNumber = variantIndex || 1;
@@ -217,7 +217,7 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
 function mockupDiagnosticsSystem(context: vscode.ExtensionContext, diagnosticCollection: vscode.DiagnosticCollection) {
   // Watch for SQL file opens/changes
   const updateDiagnostics = (document: vscode.TextDocument) => {
-    if (document.languageId !== 'sql' || document.uri.scheme === 'sql-refinery-inconsistencies') {
+    if (document.languageId !== 'sql' || document.uri.scheme === 'sql-refinery-variations') {
       return;
     }
 
@@ -227,8 +227,8 @@ function mockupDiagnosticsSystem(context: vscode.ExtensionContext, diagnosticCol
     diagnosticCollection.set(document.uri, diagnostics);
 
     // Trigger code lens refresh
-    if (inconsistencyCodeLensProvider) {
-      (inconsistencyCodeLensProvider as any)._onDidChangeCodeLenses.fire();
+    if (inlineVariationsCodeLensProvider) {
+      (inlineVariationsCodeLensProvider as any)._onDidChangeCodeLenses.fire();
     }
   };
 

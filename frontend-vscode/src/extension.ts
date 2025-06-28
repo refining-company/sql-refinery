@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { Logger } from './logger';
-import { initInconsistencies } from './inconsistencies';
+import { initVariations } from './variations-exported';
 
 let client: LanguageClient;
 let log: Logger;
@@ -12,8 +12,8 @@ export async function activate(context: vscode.ExtensionContext) {
   Logger.init('SQL Refinery');
   log = new Logger(path.parse(__filename).name);
 
-  // Initialize UI for inconsistencies detection
-  initInconsistencies(context);
+  // Initialize UI for variations detection
+  initVariations(context);
 
   // Start LSP server
   startServer(context);

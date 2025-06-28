@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-export class InconsistencyProvider implements vscode.TextDocumentContentProvider {
+export class VariationsProvider implements vscode.TextDocumentContentProvider {
   // Fired when you want VS Code to refresh the content
   private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
   readonly onDidChange = this._onDidChange.event;
 
-  // Store variant data by groupId
-  private variantData = new Map<string, any[]>();
+  // Store variation data by groupId
+  private variationData = new Map<string, any[]>();
   
   // Store metadata for code lens positioning
-  private variantMetadata = new Map<string, { startLine: number; endLine: number; variant: any }[]>();
+  private variationMetadata = new Map<string, { startLine: number; endLine: number; variant: any }[]>();
   
   // Store original SQL for diff comparison per group
   private originalSQL = new Map<string, string>();
@@ -19,34 +19,34 @@ export class InconsistencyProvider implements vscode.TextDocumentContentProvider
 
   // VS Code calls this whenever it needs the document's text
   async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-    mockupDebugDocumentRequest(uri, this.variantData);
+    mockupDebugDocumentRequest(uri, this.variationData);
     
     // Handle diff documents - return plain SQL
     if (uri.path.includes('diff-')) {
       // Extract the full groupId including the .sql extension
       const groupId = uri.path.startsWith('/') ? uri.path.substring(1) : uri.path;
-      const variants = this.variantData.get(groupId) || [];
+      const variants = this.variationData.get(groupId) || [];
       return variants.length > 0 ? variants[0].sql : '';
     }
     
-    // Extract groupId from document name: editor.sql:inconsistency-N
-    const match = uri.path.match(/inconsistency-(\d+)/);
+    // Extract groupId from document name: editor.sql:variation-N
+    const match = uri.path.match(/variation-(\d+)/);
     const groupId = match ? match[1] : 'current';
-    const variants = this.variantData.get(groupId) || [];
+    const variants = this.variationData.get(groupId) || [];
     
     if (variants.length === 0) {
-      return '-- No alternatives found\n-- No SQL alternatives were found for this group.';
+      return '-- No variations found\n-- No SQL variations were found for this group.';
     }
 
-    // Group alternatives by their SQL content to find distinct alternatives
-    const distinctVariants = new Map<string, { sql: string; locations: any[] }>();
+    // Group variations by their SQL content to find distinct variations
+    const distinctVariations = new Map<string, { sql: string; locations: any[] }>();
     
     variants.forEach(v => {
       const key = v.sql.trim();
-      if (!distinctVariants.has(key)) {
-        distinctVariants.set(key, { sql: v.sql, locations: [] });
+      if (!distinctVariations.has(key)) {
+        distinctVariations.set(key, { sql: v.sql, locations: [] });
       }
-      distinctVariants.get(key)!.locations.push({
+      distinctVariations.get(key)!.locations.push({
         file: v.file,
         line: v.line,
         alias: v.alias,
@@ -56,21 +56,21 @@ export class InconsistencyProvider implements vscode.TextDocumentContentProvider
       });
     });
 
-    // Build a SQL document with distinct alternatives
+    // Build a SQL document with distinct variations
     const lines: string[] = [];
     const metadata: { startLine: number; endLine: number; variant: any }[] = [];
     
     // Add header comment
     lines.push('-- SQL-Refinery');
-    lines.push('-- Inconsistent query: alternative variants found in the codebase');
+    lines.push('-- SQL variations found in the codebase');
     lines.push('');
     
     let currentLine = 3;
-    let variantIndex = 1;
+    let variationIndex = 1;
 
-    distinctVariants.forEach((data) => {
-      // Add alternative header
-      lines.push(`-- Alternative ${variantIndex}`);
+    distinctVariations.forEach((data) => {
+      // Add variation header
+      lines.push(`-- Variation ${variationIndex}`);
       const startLine = currentLine + 1;
       
       // Add the SQL content
@@ -79,33 +79,33 @@ export class InconsistencyProvider implements vscode.TextDocumentContentProvider
       
       const endLine = startLine + sqlLines.length - 1;
       
-      // Create an alternative object with all locations
-      const variantWithLocations = {
+      // Create a variation object with all locations
+      const variationWithLocations = {
         sql: data.sql,
         locations: data.locations,
-        variantIndex: variantIndex
+        variantIndex: variationIndex
       };
       
       // Store metadata for code lens
-      metadata.push({ startLine, endLine, variant: variantWithLocations });
+      metadata.push({ startLine, endLine, variant: variationWithLocations });
       
-      // Add blank lines between alternatives
+      // Add blank lines between variations
       lines.push('');
       lines.push('');
       
       currentLine = endLine + 3;
-      variantIndex++;
+      variationIndex++;
     });
 
     // Store metadata for code lens provider
-    this.variantMetadata.set(groupId, metadata);
+    this.variationMetadata.set(groupId, metadata);
 
     return lines.join('\n');
   }
 
-  // Store variant data for a group
+  // Store variation data for a group
   public setVariants(groupId: string, variants: any[]): void {
-    this.variantData.set(groupId, variants);
+    this.variationData.set(groupId, variants);
   }
   
   
@@ -123,7 +123,7 @@ export class InconsistencyProvider implements vscode.TextDocumentContentProvider
 
   // Get metadata for code lens provider
   public getVariantMetadata(groupId: string): { startLine: number; endLine: number; variant: any }[] | undefined {
-    return this.variantMetadata.get(groupId);
+    return this.variationMetadata.get(groupId);
   }
 
   // Call this if you ever need to refresh the view
@@ -133,8 +133,8 @@ export class InconsistencyProvider implements vscode.TextDocumentContentProvider
 }
 
 // Mockup functions for development/demonstration purposes
-function mockupDebugDocumentRequest(uri: vscode.Uri, variantData: Map<string, any[]>) {
-  console.log('VariantsProvider called with URI:', uri.toString());
+function mockupDebugDocumentRequest(uri: vscode.Uri, variationData: Map<string, any[]>) {
+  console.log('VariationsProvider called with URI:', uri.toString());
   console.log('URI path:', uri.path);
-  console.log('Available data keys:', Array.from(variantData.keys()));
+  console.log('Available data keys:', Array.from(variationData.keys()));
 }

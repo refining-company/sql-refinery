@@ -36,7 +36,7 @@ suite('Alternatives Workflow Test', () => {
 
       const showAltLens =
         codeLenses &&
-        codeLenses.find((lens) => lens.command?.title.includes('Show') && lens.command?.title.includes('alternatives'));
+        codeLenses.find((lens) => lens.command?.title.includes('Show') && lens.command?.title.includes('variations'));
 
       if (showAltLens?.command) {
         console.log(`Executing command: ${showAltLens.command.command}`);
@@ -48,7 +48,7 @@ suite('Alternatives Workflow Test', () => {
 
       // Step 3: Execute peek command and capture the result
       const activeEditor = vscode.window.activeTextEditor;
-      if (activeEditor?.document.uri.scheme === 'sql-refinery-inconsistencies') {
+      if (activeEditor?.document.uri.scheme === 'sql-refinery-variations') {
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
           activeEditor.document.uri
@@ -71,7 +71,7 @@ suite('Alternatives Workflow Test', () => {
 
       // Step 4: Apply the first alternative
       const virtualEditor = vscode.window.visibleTextEditors.find(
-        (e) => e.document.uri.scheme === 'sql-refinery-inconsistencies' && !e.document.uri.path.includes('diff-')
+        (e) => e.document.uri.scheme === 'sql-refinery-variations' && !e.document.uri.path.includes('diff-')
       );
 
       if (virtualEditor) {
@@ -112,11 +112,11 @@ suite('Alternatives Workflow Test', () => {
           originalEditor.document.uri
         )) as vscode.CodeLens[];
 
-        // Find remaining "Show alternatives" lens (should be for IIF now)
+        // Find remaining "Show variations" lens (should be for IIF now)
         const showAltLenses =
           newCodeLenses &&
           newCodeLenses.filter(
-            (lens) => lens.command?.title.includes('Show') && lens.command?.title.includes('alternatives')
+            (lens) => lens.command?.title.includes('Show') && lens.command?.title.includes('variations')
           );
 
         if (showAltLenses && showAltLenses.length > 0) {
@@ -136,7 +136,7 @@ suite('Alternatives Workflow Test', () => {
 
       // Execute some commands on the second inconsistency to demonstrate functionality
       const newVirtualEditor = vscode.window.activeTextEditor;
-      if (newVirtualEditor?.document.uri.scheme === 'sql-refinery-inconsistencies') {
+      if (newVirtualEditor?.document.uri.scheme === 'sql-refinery-variations') {
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
           newVirtualEditor.document.uri

@@ -1,22 +1,22 @@
 import * as vscode from 'vscode';
-import { InconsistencyProvider } from './variantsDocumentProvider';
+import { VariationsProvider } from './variationsDocumentProvider';
 
-export class AlternativeCodeLensProvider implements vscode.CodeLensProvider {
+export class VariationsCodeLensProvider implements vscode.CodeLensProvider {
   private _onDidChangeCodeLenses = new vscode.EventEmitter<void>();
   readonly onDidChangeCodeLenses = this._onDidChangeCodeLenses.event;
   
-  constructor(private variantsProvider: InconsistencyProvider) {}
+  constructor(private variationsProvider: VariationsProvider) {}
 
   async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
     // Only provide code lenses for our virtual SQL documents
-    if (document.uri.scheme !== 'sql-refinery-inconsistencies') {
+    if (document.uri.scheme !== 'sql-refinery-variations') {
       return [];
     }
 
-    // Extract groupId from document name: editor.sql:inconsistency-N
-    const match = document.uri.path.match(/inconsistency-(\d+)/);
+    // Extract groupId from document name: editor.sql:variation-N
+    const match = document.uri.path.match(/variation-(\d+)/);
     const groupId = match ? match[1] : 'current';
-    const metadata = this.variantsProvider.getVariantMetadata(groupId);
+    const metadata = this.variationsProvider.getVariantMetadata(groupId);
     
     if (!metadata) {
       return [];
@@ -41,7 +41,7 @@ export class AlternativeCodeLensProvider implements vscode.CodeLensProvider {
           groupId: groupId,
           position: peekPosition
         }],
-        tooltip: 'Peek at all locations where this variant appears'
+        tooltip: 'Peek at all locations where this variation appears'
       });
       codeLenses.push(locationsLens);
 
@@ -51,7 +51,7 @@ export class AlternativeCodeLensProvider implements vscode.CodeLensProvider {
         command: 'sql-refinery.showNativeDiff',
         arguments: [{ 
           variant, 
-          originalSQL: this.variantsProvider.getOriginalSQL(groupId),
+          originalSQL: this.variationsProvider.getOriginalSQL(groupId),
           groupId,
           variantIndex: variant.variantIndex
         }],
@@ -59,12 +59,12 @@ export class AlternativeCodeLensProvider implements vscode.CodeLensProvider {
       });
       codeLenses.push(diffLens);
       
-      // Apply variant lens
+      // Apply variation lens
       const applyLens = new vscode.CodeLens(range, {
         title: '✓ Apply',
-        command: 'sql-refinery.applyVariant',
+        command: 'sql-refinery.applyVariation',
         arguments: [{ variant, groupId: groupId }],
-        tooltip: 'Replace current SQL with this variant'
+        tooltip: 'Replace current SQL with this variation'
       });
       codeLenses.push(applyLens);
     });
