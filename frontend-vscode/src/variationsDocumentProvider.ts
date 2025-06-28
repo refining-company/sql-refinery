@@ -23,7 +23,6 @@ export class VariationsProvider implements vscode.TextDocumentContentProvider {
 
   // VS Code calls this whenever it needs the document's text
   async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-    mockupDebugDocumentRequest(uri, this.variationData);
     
     // Handle diff documents - return plain SQL
     if (uri.path.includes('diff-')) {
@@ -78,11 +77,4 @@ export class VariationsProvider implements vscode.TextDocumentContentProvider {
   public refresh(uri: vscode.Uri): void {
     this._onDidChange.fire(uri);
   }
-}
-
-// Mockup functions for development/demonstration purposes
-function mockupDebugDocumentRequest(uri: vscode.Uri, variationData: Map<string, VirtualDocumentVariant[]>) {
-  console.log('VariationsProvider called with URI:', uri.toString());
-  console.log('URI path:', uri.path);
-  console.log('Available data keys:', Array.from(variationData.keys()));
 }

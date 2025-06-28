@@ -159,7 +159,6 @@ function initVariationsDocument(context: vscode.ExtensionContext) {
       const variantUri = vscode.Uri.parse(`sql-refinery-variations:diff-variant-${timestamp}.sql`);
 
       // Store the content temporarily in the variations provider
-      mockupDebugDiffData(timestamp, originalSQL, variant.sql);
       variationsProvider.setDiffContent(`diff-original-${timestamp}.sql`, originalSQL);
       variationsProvider.setDiffContent(`diff-variant-${timestamp}.sql`, variant.sql);
 
@@ -240,11 +239,4 @@ function mockupDiagnosticsSystem(context: vscode.ExtensionContext, diagnosticCol
 
   // Update diagnostics for all open SQL files
   vscode.workspace.textDocuments.forEach(updateDiagnostics);
-}
-
-// Mockup functions for development/demonstration purposes
-function mockupDebugDiffData(timestamp: number, originalSQL: string, variantSQL: string) {
-  console.log('Storing diff data for timestamp:', timestamp);
-  console.log('Original SQL:', originalSQL);
-  console.log('Variant SQL:', variantSQL);
 }

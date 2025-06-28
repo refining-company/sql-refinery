@@ -1,19 +1,6 @@
 import * as vscode from 'vscode';
 import { Variation } from './mockData';
 
-// UI-specific metadata for variations
-export interface VariationMetadata {
-  groupId: string;
-  totalOccurrences: number;
-  filesAffected: number;
-  category?: string;
-}
-
-// Helper type for internal use
-interface VariationWithMetadata extends Variation {
-  metadata: VariationMetadata;
-}
-
 // Generate unique group ID for a variation
 function generateGroupId(_variation: Variation, index: number): string {
   return `${index + 1}`;
@@ -96,68 +83,8 @@ export function variationToVirtualDocumentVariants(variation: Variation): Virtua
   return variants;
 }
 
-// Create code lens for a variation
-export function createVariationCodeLens(variation: Variation, _groupId: string): vscode.CodeLens {
-  const range = variation.this.location.range;
-  const title = `${variation.others.length} variation${variation.others.length !== 1 ? 's' : ''} found`;
-  
-  const otherLocations = variation.others.map(other => ({
-    uri: other.location.file,
-    position: new vscode.Position(other.location.range.start.line, other.location.range.start.character),
-    range: other.location.range
-  }));
-  
-  return new vscode.CodeLens(
-    range,
-    {
-      title,
-      command: 'sqlRefinery.peekLocations',
-      arguments: [variation.this.location.file, range.end, otherLocations, 'peek']
-    }
-  );
-}
 
-// Enrich variations with metadata for UI display
-export function enrichVariationsWithMetadata(variations: Variation[]): VariationWithMetadata[] {
-  return variations.map((variation, index) => {
-    const allExpressions = [variation.this, ...variation.others];
-    const uniqueFiles = new Set(allExpressions.map(expr => expr.location.file));
-    
-    return {
-      ...variation,
-      metadata: {
-        groupId: generateGroupId(variation, index),
-        totalOccurrences: allExpressions.length,
-        filesAffected: uniqueFiles.size,
-        category: determineVariationCategory(variation)
-      }
-    };
-  });
-}
 
-// Determine the category of variation (naming, logic, format, etc.)
-function determineVariationCategory(variation: Variation): string {
-  // Simple heuristic - can be enhanced
-  const thisAlias = variation.this.alias?.toLowerCase() || '';
-  const otherAliases = variation.others.map(o => o.alias?.toLowerCase() || '');
-  
-  // Check if it's primarily a naming difference
-  const hasDifferentAliases = otherAliases.some(alias => alias && alias !== thisAlias);
-  if (hasDifferentAliases) {
-    return 'naming';
-  }
-  
-  // Check if it's a logic difference (different SQL content)
-  const thisSqlNormalized = variation.this.sql.replace(/\s+/g, ' ').trim();
-  const hasDifferentLogic = variation.others.some(
-    other => other.sql.replace(/\s+/g, ' ').trim() !== thisSqlNormalized
-  );
-  if (hasDifferentLogic) {
-    return 'logic';
-  }
-  
-  return 'format';
-}
 
 // Virtual document content generation for variations display
 export interface VirtualDocumentSection {

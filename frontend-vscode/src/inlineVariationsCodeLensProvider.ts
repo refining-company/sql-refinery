@@ -80,11 +80,4 @@ export class InlineVariationsCodeLensProvider implements vscode.CodeLensProvider
 
     return codeLenses;
   }
-
 }
-
-// Mockup functions for development/demonstration purposes (no longer used)
-// function mockupGroupIdFromRange(range: vscode.Range): string {
-//   // Mock implementation: determine groupId based on line number
-//   return range.start.line < 10 ? '1' : '2';
-// }
