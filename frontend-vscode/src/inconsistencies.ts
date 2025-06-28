@@ -3,13 +3,14 @@ import * as path from 'path';
 import { InconsistencyProvider } from './variantsDocumentProvider';
 import { AlternativeCodeLensProvider } from './variantsCodeLensProvider';
 import { InconsistencyCodeLensProvider } from './inlineVariantsCodeLensProvider';
-import { getMockAlternatives, alternativesToDiagnostics, getAlternativeByGroupId, alternativeToMockVariants, UIAlternative } from './mockData';
+import { getMockVariations, Variation } from './mockData';
+import { variationsToDiagnostics, getVariationByGroupId, variationToVirtualDocumentVariants } from './variations';
 
 let inconsistencyProvider: InconsistencyProvider;
 let alternativeCodeLensProvider: AlternativeCodeLensProvider;
 let inconsistencyCodeLensProvider: InconsistencyCodeLensProvider;
 let diagnosticCollection: vscode.DiagnosticCollection;
-let currentAlternatives: UIAlternative[] = [];
+let currentVariations: Variation[] = [];
 
 export function initInconsistencies(context: vscode.ExtensionContext) {
   initDiagnostics(context);
@@ -31,7 +32,7 @@ function initCodeLenses(context: vscode.ExtensionContext) {
   inconsistencyCodeLensProvider = new InconsistencyCodeLensProvider(diagnosticCollection);
   
   // Provide access to current alternatives
-  inconsistencyCodeLensProvider.setAlternativesProvider(() => currentAlternatives);
+  inconsistencyCodeLensProvider.setAlternativesProvider(() => currentVariations);
   
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider({ scheme: 'file', language: 'sql' }, inconsistencyCodeLensProvider)
@@ -56,15 +57,15 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('sql-refinery.showVariantsEditor', async (args) => {
       const { groupId, currentRange } = args;
       
-      // Find the alternative using the new data structure
-      const alternative = getAlternativeByGroupId(groupId, currentAlternatives);
-      if (!alternative) {
-        vscode.window.showErrorMessage(`No alternative found for group ${groupId}`);
+      // Find the variation using the new data structure
+      const variation = getVariationByGroupId(groupId, currentVariations);
+      if (!variation) {
+        vscode.window.showErrorMessage(`No variation found for group ${groupId}`);
         return;
       }
       
-      // Convert to legacy format for the virtual document (temporarily)
-      const variants = alternativeToMockVariants(alternative);
+      // Convert to virtual document format
+      const variants = variationToVirtualDocumentVariants(variation);
       inconsistencyProvider.setVariants(groupId, variants);
 
       // Store original range and document for apply command
@@ -79,8 +80,8 @@ function initAlternativesDocument(context: vscode.ExtensionContext) {
         currentRange.end.line,
         currentRange.end.character
       );
-      // Get original SQL from the alternative object
-      const originalSQL = alternative.this.sql;
+      // Get original SQL from the variation object
+      const originalSQL = variation.this.sql;
       inconsistencyProvider.setOriginalSQL(groupId, originalSQL);
 
       context.workspaceState.update(`currentRange-${groupId}`, {
@@ -226,9 +227,9 @@ function mockupDiagnosticsSystem(context: vscode.ExtensionContext, diagnosticCol
       return;
     }
 
-    // Get alternatives using new data structure
-    currentAlternatives = getMockAlternatives(document);
-    const diagnostics = alternativesToDiagnostics(currentAlternatives);
+    // Get variations using new data structure
+    currentVariations = getMockVariations(document);
+    const diagnostics = variationsToDiagnostics(currentVariations);
     diagnosticCollection.set(document.uri, diagnostics);
 
     // Trigger code lens refresh

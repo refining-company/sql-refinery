@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-// Global access to current alternatives (temporary during refactoring)
-let getCurrentAlternatives: () => import('./mockData').UIAlternative[] = () => [];
+// Global access to current variations (temporary during refactoring)
+let getCurrentVariations: () => import('./mockData').Variation[] = () => [];
 
 export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
   private diagnosticsCollection: vscode.DiagnosticCollection;
@@ -13,9 +13,9 @@ export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
     this.diagnosticsCollection = diagnosticsCollection;
   }
 
-  // Method to set current alternatives access
-  setAlternativesProvider(provider: () => import('./mockData').UIAlternative[]) {
-    getCurrentAlternatives = provider;
+  // Method to set current variations access
+  setAlternativesProvider(provider: () => import('./mockData').Variation[]) {
+    getCurrentVariations = provider;
   }
 
   async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
@@ -37,15 +37,16 @@ export class InconsistencyCodeLensProvider implements vscode.CodeLensProvider {
         // The diagnostic code is now the groupId
         const groupId = diagnostic.code.toString();
         
-        // Try to find the alternative using the new structure
-        const alternatives = getCurrentAlternatives();
-        const alternative = alternatives.find(alt => alt.groupId === groupId);
+        // Try to find the variation using the new structure
+        const variations = getCurrentVariations();
+        const variationIndex = parseInt(groupId) - 1;
+        const variation = variations[variationIndex];
         
-        // Fall back to empty array if alternative not found
-        const variants = alternative ? alternative.others : [];
+        // Fall back to empty array if variation not found
+        const variants = variation ? variation.others : [];
         
         // Calculate total count including current expression
-        const totalCount = alternative ? alternative.others.length + 1 : variants.length;
+        const totalCount = variation ? variation.others.length + 1 : variants.length;
         
         // Position code lenses just above the diagnostic range
         const lensPosition = new vscode.Position(diagnostic.range.start.line, 0);
