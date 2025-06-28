@@ -24,7 +24,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "compile-tests": "tsc -p . --outDir out",
+    "compile-tests": "rm -rf out && tsc -p . --outDir out",
     "test": "vscode-test",
     "test:update-snapshots": "UPDATE_SNAPSHOTS=1 npm run test"
   },

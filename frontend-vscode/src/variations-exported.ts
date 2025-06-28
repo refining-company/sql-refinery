@@ -160,8 +160,8 @@ function initVariationsDocument(context: vscode.ExtensionContext) {
 
       // Store the content temporarily in the variations provider
       mockupDebugDiffData(timestamp, originalSQL, variant.sql);
-      variationsProvider.setVariants(`diff-original-${timestamp}.sql`, [{ sql: originalSQL }]);
-      variationsProvider.setVariants(`diff-variant-${timestamp}.sql`, [{ sql: variant.sql }]);
+      variationsProvider.setDiffContent(`diff-original-${timestamp}.sql`, originalSQL);
+      variationsProvider.setDiffContent(`diff-variant-${timestamp}.sql`, variant.sql);
 
       try {
         // Create descriptive title

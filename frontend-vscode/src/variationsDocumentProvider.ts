@@ -10,6 +10,9 @@ export class VariationsProvider implements vscode.TextDocumentContentProvider {
   // Store variation data by groupId
   private variationData = new Map<string, VirtualDocumentVariant[]>();
   
+  // Store plain SQL content for diff documents
+  private diffContent = new Map<string, string>();
+  
   // Store metadata for code lens positioning
   private variationMetadata = new Map<string, VirtualDocumentSection[]>();
   
@@ -26,8 +29,7 @@ export class VariationsProvider implements vscode.TextDocumentContentProvider {
     if (uri.path.includes('diff-')) {
       // Extract the full groupId including the .sql extension
       const groupId = uri.path.startsWith('/') ? uri.path.substring(1) : uri.path;
-      const variants = this.variationData.get(groupId) || [];
-      return variants.length > 0 ? variants[0].sql : '';
+      return this.diffContent.get(groupId) || '';
     }
     
     // Extract groupId from document name: editor.sql:variation-N
@@ -47,6 +49,11 @@ export class VariationsProvider implements vscode.TextDocumentContentProvider {
   // Store variation data for a group
   public setVariants(groupId: string, variants: VirtualDocumentVariant[]): void {
     this.variationData.set(groupId, variants);
+  }
+  
+  // Store plain SQL content for diff documents
+  public setDiffContent(groupId: string, sql: string): void {
+    this.diffContent.set(groupId, sql);
   }
   
   
