@@ -38,7 +38,7 @@ GROUP BY date_year, macro_region, industry_it
 ##### 0. 4 variations found (75% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
-- **Code**: 1
+- **Code**: 0
 - **Range**: 5:4-10:8
 - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END `
 - **Related Information** (4):
@@ -55,7 +55,7 @@ GROUP BY date_year, macro_region, industry_it
 ##### 1. 2 variations found (82% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
-- **Code**: 2
+- **Code**: 1
 - **Range**: 12:4-12:60
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT`
 - **Related Information** (2):
@@ -71,25 +71,25 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 5:0-5:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showVariations`
-   - **Arguments**: [{"groupId":"1","currentRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
+   - **Arguments**: [{"groupId":"0","currentRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
 
 1. **× Ignore**
    - **Range**: 5:0-5:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.ignoreVariation`
-   - **Arguments**: [{"groupId":"1","diagnosticRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
+   - **Arguments**: [{"groupId":"0","diagnosticRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
 
 2. **→ Show 2 variations**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showVariations`
-   - **Arguments**: [{"groupId":"2","currentRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
+   - **Arguments**: [{"groupId":"1","currentRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
 
 3. **× Ignore**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.ignoreVariation`
-   - **Arguments**: [{"groupId":"2","diagnosticRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
+   - **Arguments**: [{"groupId":"1","diagnosticRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
 
 
 
@@ -97,9 +97,9 @@ GROUP BY date_year, macro_region, industry_it
 ## Step: 2. Showed variations for first inconsistency (CASE statement)
 ### Open Editors (2):
 0. editor.sql (column 1)
-1. sql-refinery-variations:editor.sql%3Avariation-1 (column 2) (active)
+1. sql-refinery-variations:editor.sql%3Avariation-0 (column 2) (active)
 
-### Active Editor: sql-refinery-variations:editor.sql%3Avariation-1
+### Active Editor: sql-refinery-variations:editor.sql%3Avariation-0
 ```sql
 -- SQL-Refinery
 -- SQL variations found in the codebase
@@ -131,37 +131,37 @@ END
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"groupId":"1","position":{"line":9,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"groupId":"0","position":{"line":9,"character":0}}]
 
 1. **↔ Show diff**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"1","variantIndex":1}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"0","variantIndex":1}]
 
 2. **✓ Apply**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"groupId":"1"}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"groupId":"0"}]
 
 3. **→ Peek 3 locations**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"groupId":"1","position":{"line":17,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"groupId":"0","position":{"line":17,"character":0}}]
 
 4. **↔ Show diff**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"1","variantIndex":2}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"0","variantIndex":2}]
 
 5. **✓ Apply**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"groupId":"1"}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"groupId":"0"}]
 
 
 
@@ -169,9 +169,9 @@ END
 ## Step: 3. Peek locations opened for first variation
 ### Open Editors (2):
 0. editor.sql (column 1)
-1. sql-refinery-variations:editor.sql%3Avariation-1 (column 2) (active)
+1. sql-refinery-variations:editor.sql%3Avariation-0 (column 2) (active)
 
-### Active Editor: sql-refinery-variations:editor.sql%3Avariation-1
+### Active Editor: sql-refinery-variations:editor.sql%3Avariation-0
 ```sql
 -- SQL-Refinery
 -- SQL variations found in the codebase
@@ -203,37 +203,37 @@ END
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"groupId":"1","position":{"line":9,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"groupId":"0","position":{"line":9,"character":0}}]
 
 1. **↔ Show diff**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"1","variantIndex":1}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"0","variantIndex":1}]
 
 2. **✓ Apply**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"groupId":"1"}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","locations":[{"file":"Current file","line":6,"alias":"macro_region","occurrences":1,"range":[{"line":5,"character":4},{"line":10,"character":8}],"sql":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND"}],"variantIndex":1},"groupId":"0"}]
 
 3. **→ Peek 3 locations**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"groupId":"1","position":{"line":17,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"groupId":"0","position":{"line":17,"character":0}}]
 
 4. **↔ Show diff**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"1","variantIndex":2}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"originalSQL":"CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nEND","groupId":"0","variantIndex":2}]
 
 5. **✓ Apply**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"groupId":"1"}]
+   - **Arguments**: [{"variant":{"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql","line":98,"alias":"region_cluster","occurrences":1,"range":[{"line":97,"character":8},{"line":102,"character":12}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":7,"alias":"region_cluster","occurrences":1,"range":[{"line":6,"character":4},{"line":11,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"},{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":33,"alias":"cluster","occurrences":1,"range":[{"line":32,"character":4},{"line":37,"character":8}],"sql":"CASE\n  WHEN countries.region IN ('Americas', 'Europe') THEN 'North-West'\n  WHEN countries.region IN ('Africa', 'Asia') THEN 'South-East'\n  ELSE NULL\nEND"}],"variantIndex":2},"groupId":"0"}]
 
 
 
@@ -276,7 +276,7 @@ GROUP BY date_year, macro_region, industry_it
 ##### 0. 4 variations found (75% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
-- **Code**: 1
+- **Code**: 0
 - **Range**: 5:4-10:8
 - **Snippet**: `CASE\n  WHEN countries.region = 'Americas' THEN 'AMER'\n  WHEN countries.region IN ('Europe', 'Africa') THEN 'EMEA'\n  WHEN countries.region = 'Asia' THEN 'APAC'\n  ELSE NULL\nENDAS ma`
 - **Related Information** (4):
@@ -293,7 +293,7 @@ GROUP BY date_year, macro_region, industry_it
 ##### 1. 2 variations found (82% similar)
 - **Source**: sql-refinery
 - **Severity**: Information
-- **Code**: 2
+- **Code**: 1
 - **Range**: 12:4-12:60
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT`
 - **Related Information** (2):
@@ -309,25 +309,25 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 5:0-5:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showVariations`
-   - **Arguments**: [{"groupId":"1","currentRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
+   - **Arguments**: [{"groupId":"0","currentRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
 
 1. **× Ignore**
    - **Range**: 5:0-5:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.ignoreVariation`
-   - **Arguments**: [{"groupId":"1","diagnosticRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
+   - **Arguments**: [{"groupId":"0","diagnosticRange":[{"line":5,"character":4},{"line":10,"character":8}]}]
 
 2. **→ Show 2 variations**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showVariations`
-   - **Arguments**: [{"groupId":"2","currentRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
+   - **Arguments**: [{"groupId":"1","currentRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
 
 3. **× Ignore**
    - **Range**: 12:0-12:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.ignoreVariation`
-   - **Arguments**: [{"groupId":"2","diagnosticRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
+   - **Arguments**: [{"groupId":"1","diagnosticRange":[{"line":12,"character":4},{"line":12,"character":60}]}]
 
 
 
@@ -335,9 +335,9 @@ GROUP BY date_year, macro_region, industry_it
 ## Step: 5. Showed variations for second inconsistency (IIF statement)
 ### Open Editors (2):
 0. editor.sql (column 1)
-1. sql-refinery-variations:editor.sql%3Avariation-2 (column 2) (active)
+1. sql-refinery-variations:editor.sql%3Avariation-1 (column 2) (active)
 
-### Active Editor: sql-refinery-variations:editor.sql%3Avariation-2
+### Active Editor: sql-refinery-variations:editor.sql%3Avariation-1
 ```sql
 -- SQL-Refinery
 -- SQL variations found in the codebase
@@ -360,37 +360,37 @@ IF(accounts.industry = 'Information Technology', 'Tech', 'Other')
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"groupId":"2","position":{"line":4,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"groupId":"1","position":{"line":4,"character":0}}]
 
 1. **↔ Show diff**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"2","variantIndex":1}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"1","variantIndex":1}]
 
 2. **✓ Apply**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"groupId":"2"}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"groupId":"1"}]
 
 3. **→ Peek 1 locations**
    - **Range**: 7:0-7:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"groupId":"2","position":{"line":8,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"groupId":"1","position":{"line":8,"character":0}}]
 
 4. **↔ Show diff**
    - **Range**: 7:0-7:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"2","variantIndex":2}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"1","variantIndex":2}]
 
 5. **✓ Apply**
    - **Range**: 7:0-7:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"groupId":"2"}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"groupId":"1"}]
 
 
 
@@ -398,9 +398,9 @@ IF(accounts.industry = 'Information Technology', 'Tech', 'Other')
 ## Step: 6. Final state - workflow completed
 ### Open Editors (2):
 0. editor.sql (column 1)
-1. sql-refinery-variations:editor.sql%3Avariation-2 (column 2) (active)
+1. sql-refinery-variations:editor.sql%3Avariation-1 (column 2) (active)
 
-### Active Editor: sql-refinery-variations:editor.sql%3Avariation-2
+### Active Editor: sql-refinery-variations:editor.sql%3Avariation-1
 ```sql
 -- SQL-Refinery
 -- SQL variations found in the codebase
@@ -423,37 +423,37 @@ IF(accounts.industry = 'Information Technology', 'Tech', 'Other')
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"groupId":"2","position":{"line":4,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"groupId":"1","position":{"line":4,"character":0}}]
 
 1. **↔ Show diff**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"2","variantIndex":1}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"1","variantIndex":1}]
 
 2. **✓ Apply**
    - **Range**: 3:0-3:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"groupId":"2"}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","locations":[{"file":"Current file","line":13,"alias":"industry_it","occurrences":1,"range":[{"line":12,"character":4},{"line":12,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')"}],"variantIndex":1},"groupId":"1"}]
 
 3. **→ Peek 1 locations**
    - **Range**: 7:0-7:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.peekLocations`
-   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"groupId":"2","position":{"line":8,"character":0}}]
+   - **Arguments**: [{"locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"groupId":"1","position":{"line":8,"character":0}}]
 
 4. **↔ Show diff**
    - **Range**: 7:0-7:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.showNativeDiff`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"2","variantIndex":2}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"originalSQL":"IF(accounts.industry = 'Information Technology', 'IT', 'Non-IT')","groupId":"1","variantIndex":2}]
 
 5. **✓ Apply**
    - **Range**: 7:0-7:0
    - **Snippet**: ``
    - **Command**: `sql-refinery.applyVariation`
-   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"groupId":"2"}]
+   - **Arguments**: [{"variant":{"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')","locations":[{"file":"/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql","line":39,"alias":"industry_tech","occurrences":1,"range":[{"line":38,"character":4},{"line":38,"character":60}],"sql":"IF(accounts.industry = 'Information Technology', 'Tech', 'Other')"}],"variantIndex":2},"groupId":"1"}]
 
 
 

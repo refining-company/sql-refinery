@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { Logger } from './logger';
-import { initVariations } from './variations-exported';
+import { initVariations } from './variations/variations';
 
 let client: LanguageClient;
 let log: Logger;
