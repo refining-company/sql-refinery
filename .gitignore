@@ -135,6 +135,9 @@ dmypy.json
 .ruff_cache
 .vscode-test/
 
+# Debug logs
+logs/
+
 # Cython debug symbols
 cython_debug/
 

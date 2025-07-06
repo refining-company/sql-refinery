@@ -29,7 +29,7 @@ def record_message(direction: str, message: dict):
         f.flush()
 
 
-def start(output_path: Path = Path(__file__).parent.parent / "session.last.ndjson"):
+def start(output_path: Path = Path(__file__).parent.parent.parent / "logs" / "session.last.ndjson"):
     """Start recording LSP messages."""
     global recording_path, original_methods
 
