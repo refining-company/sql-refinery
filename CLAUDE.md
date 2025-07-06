@@ -60,6 +60,7 @@ Analysts who build SQL data pipelines to dashboards and analytics.
 
 - **Simplicity**: Avoid unnecessary code, write minimal lines, follow pythonic approach
 - **Component Design**: Single responsibility, self-managed state, concise interfaces
+- **Feature-Centric Architecture**: Design around features and user journeys rather than technical functions - this creates better encapsulation and more intuitive code organization
 - **Error Strategy**: Assertions for invariants; prefer crashes with clear messages over defensive code
 - **Modern Features**: Leverage Python 3.12+ (match statements, union types, walrus operator)
 - **Native UI**: Prioritise using native functionality for UI, suggest if a different UI can lead to simpler and more
@@ -122,3 +123,7 @@ npm run test                                   # Run VS Code extension tests
 npm run test:update-snapshots                  # Update test snapshots
 npm run package                                # Production build
 ```
+
+### Workflow
+
+- **Test and Commit All Changes**: Every change must be tested and committed to ensure stability and track progress

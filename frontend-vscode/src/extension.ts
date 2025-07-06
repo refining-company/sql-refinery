@@ -1,22 +1,17 @@
 // Entry point for the extension
 import * as vscode from 'vscode';
 import * as path from 'path';
+
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { Logger } from './logger';
 import { initVariations } from './variations/variations';
 
 let client: LanguageClient;
-let log: Logger;
+let log: Logger = new Logger(module.filename);
 
 export async function activate(context: vscode.ExtensionContext) {
-  Logger.init('SQL Refinery');
-  log = new Logger(path.parse(__filename).name);
-
-  // Initialize UI for variations detection
   initVariations(context);
-
-  // Start LSP server
-  startServer(context);
+  // startServer(context);
 }
 
 // Start the Python LSP server
@@ -34,8 +29,8 @@ function startServer(context: vscode.ExtensionContext) {
       { scheme: 'vscode-notebook', language: 'sql' },
       { scheme: 'vscode-notebook-cell', language: 'sql' },
     ],
-    outputChannel: Logger.outputChannel,
-    traceOutputChannel: Logger.outputChannel,
+    outputChannel: log.outputChannel,
+    traceOutputChannel: log.outputChannel,
   };
 
   client = new LanguageClient('sql-refinery', 'SQL Refinery', serverOptions, clientOptions);

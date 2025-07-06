@@ -34,6 +34,10 @@ import Levenshtein
 
 from src import code
 
+# FIXME: Variation should be structured differentlthere should be a set of expressions that are deemed
+# equivalent based on `str(expr)`
+# then each has a list of close sets of expressions
+
 
 @dataclass(frozen=True)
 class Variation:
