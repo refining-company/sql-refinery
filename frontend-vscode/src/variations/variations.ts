@@ -157,9 +157,7 @@ class VariationsExplorerFeature {
     context.subscriptions.push(
       vscode.commands.registerCommand('sql-refinery.variations.explorer.peek', this.commandPeek.bind(this)),
       vscode.commands.registerCommand('sql-refinery.variations.explorer.diff', this.commandDiff.bind(this)),
-      vscode.commands.registerCommand('sql-refinery.variations.explorer.apply', () => {
-        // TODO: implement apply logic, vscode.changes is what looks simlilar, but need to search more
-      })
+      vscode.commands.registerCommand('sql-refinery.variations.explorer.apply', this.commandApply.bind(this))
     );
   }
 
@@ -185,6 +183,19 @@ class VariationsExplorerFeature {
     await vscode.languages.setTextDocumentLanguage(originalDoc, 'sql');
     await vscode.languages.setTextDocumentLanguage(selectedDoc, 'sql');
     await vscode.commands.executeCommand('vscode.diff', originalUri, selectedUri, `${uriUI} Original ↔ Selected`);
+  }
+
+  async commandApply(targetExpr: Expression, newExpr: Expression, thisUri: vscode.Uri) {
+    const edit = new vscode.WorkspaceEdit();
+    edit.replace(vscode.Uri.file(targetExpr.location.file), targetExpr.location.range, newExpr.sql);
+    await vscode.workspace.applyEdit(edit);
+
+    // Close the virtual document
+    await Promise.all(
+      vscode.window.visibleTextEditors
+        .filter((editor) => editor.document.uri.toString() === thisUri.toString())
+        .map((editor) => vscode.commands.executeCommand('workbench.action.closeActiveEditor', editor.document.uri))
+    );
   }
 
   async renderDiffContent(uri: vscode.Uri): Promise<string> {
@@ -244,6 +255,7 @@ class VariationsExplorerFeature {
         new vscode.CodeLens(rangeLenses, {
           title: `✓ Apply`,
           command: 'sql-refinery.variations.explorer.apply',
+          arguments: [variation.this, expr, uri],
         })
       );
     });
