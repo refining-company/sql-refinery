@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
+import { basename } from 'path';
 
 import { Expression, Variation, getMockVariations } from './mockData';
 import { Logger } from '../logger';
 
 let log: Logger = new Logger(module.filename);
+const uriUI = '⌬ [SQL Refinery]';
 
 export function initVariations(context: vscode.ExtensionContext) {
   log.info('initVariations: starting extension initialization');
@@ -156,15 +158,17 @@ class VariationsExplorerFeature {
       vscode.commands.registerCommand('sql-refinery.variations.explorer.peek', this.commandPeek.bind(this)),
       vscode.commands.registerCommand('sql-refinery.variations.explorer.diff', this.commandDiff.bind(this)),
       vscode.commands.registerCommand('sql-refinery.variations.explorer.apply', () => {
-        // TODO: implement apply logic
+        // TODO: implement apply logic, vscode.changes is what looks simlilar, but need to search more
       })
     );
   }
 
   async commandShow(uri: vscode.Uri, id: number) {
-    const explorerUri = vscode.Uri.parse(`sql-refinery-explorer:${uri.fsPath}/variation-${id}`);
+    const explorerUri = vscode.Uri.parse(
+      `sql-refinery-explorer:${uriUI} ${basename(uri.fsPath)}?file=${encodeURIComponent(uri.fsPath)}&var=${id}`
+    );
     const doc = await vscode.workspace.openTextDocument(explorerUri);
-    await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: false });
+    await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: true });
     await vscode.languages.setTextDocumentLanguage(doc, 'sql');
   }
 
@@ -174,46 +178,46 @@ class VariationsExplorerFeature {
   }
 
   async commandDiff(file: string, indVariation: number, indExpr: number) {
-    const originalUri = vscode.Uri.parse(`sql-refinery-explorer-diff:${file}/variation-${indVariation}/original`);
-    const selectedUri = vscode.Uri.parse(`sql-refinery-explorer-diff:${file}/variation-${indVariation}/${indExpr}`);
+    const originalUri = vscode.Uri.parse(`sql-refinery-explorer-diff:${file}?var=${indVariation}`);
+    const selectedUri = vscode.Uri.parse(`sql-refinery-explorer-diff:${file}?var=${indVariation}&expr=${indExpr}`);
     const originalDoc = await vscode.workspace.openTextDocument(originalUri);
     const selectedDoc = await vscode.workspace.openTextDocument(selectedUri);
     await vscode.languages.setTextDocumentLanguage(originalDoc, 'sql');
     await vscode.languages.setTextDocumentLanguage(selectedDoc, 'sql');
-    await vscode.commands.executeCommand('vscode.diff', originalUri, selectedUri, 'Original ↔ Selected');
+    await vscode.commands.executeCommand('vscode.diff', originalUri, selectedUri, `${uriUI} Original ↔ Selected`);
   }
 
   async renderDiffContent(uri: vscode.Uri): Promise<string> {
-    const match = uri.path.match(/(.+)\/variation-(\d+)\/(original|\d+)$/);
-    if (!match) return '';
+    const params = new URLSearchParams(uri.query);
+    const filePath = uri.fsPath;
+    const variationInd = parseInt(params.get('var') || '-1');
+    const exprInd = parseInt(params.get('expr') || '-1');
+    if (!filePath) return '';
 
-    const filePath = match[1];
-    const variationInd = parseInt(match[2]);
-    const otherInd = match[3];
     const variation = this.stateManager.getVariations(vscode.Uri.file(filePath))?.[variationInd];
     if (!variation) return '';
 
-    if (otherInd === 'original') {
-      return variation.this.sql;
+    if (exprInd >= 0) {
+      return variation.others[exprInd]?.sql || '';
     } else {
-      return variation.others[parseInt(otherInd)]?.sql || '';
+      return variation.this.sql;
     }
   }
 
   async renderExplorerContent(uri: vscode.Uri): Promise<string> {
-    const match = uri.path.match(/(.+)\/variation-(\d+)$/);
-    if (!match) return '';
+    const params = new URLSearchParams(uri.query);
+    const filePath = params.get('file');
+    const variationId = parseInt(params.get('var') || '-1');
+    if (!filePath) return '';
 
-    const variationFile = match[1];
-    const variationInd = parseInt(match[2]);
-    const variation = this.stateManager.getVariations(vscode.Uri.file(variationFile))?.[variationInd];
+    const variation = this.stateManager.getVariations(vscode.Uri.file(filePath))?.[variationId];
     const others = variation?.others;
     if (!others) return '';
 
     const lines: string[] = [];
     const codeLenses: vscode.CodeLens[] = [];
 
-    lines.push('-- SQL-Refinery');
+    lines.push(`-- ${uriUI}`);
     lines.push('-- Expression variations found in the codebase');
     lines.push('');
 
@@ -235,7 +239,7 @@ class VariationsExplorerFeature {
         new vscode.CodeLens(rangeLenses, {
           title: `↔ Show diff`,
           command: 'sql-refinery.variations.explorer.diff',
-          arguments: [variationFile, variationInd, exprInd],
+          arguments: [filePath, variationId, exprInd],
         }),
         new vscode.CodeLens(rangeLenses, {
           title: `✓ Apply`,
