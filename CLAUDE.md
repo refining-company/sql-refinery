@@ -58,13 +58,23 @@ Analysts who build SQL data pipelines to dashboards and analytics.
 
 ### Design Philosophy
 
-- **Simplicity**: Avoid unnecessary code, write minimal lines, follow pythonic approach
-- **Component Design**: Single responsibility, self-managed state, concise interfaces
-- **Feature-Centric Architecture**: Design around features and user journeys rather than technical functions - this creates better encapsulation and more intuitive code organization
-- **Error Strategy**: Assertions for invariants; prefer crashes with clear messages over defensive code
+Optimize for developer velocity rather than defensive programming. Build fast, iterate quickly, and add robustness only
+where experience shows it's actually needed.
+
+**Core Principles:**
+
+- **Simplicity**: Avoid unnecessary code, write minimal lines, follow pythonic approach. Start simple and refactor when
+  needed rather than architecting for problems you don't have
+- **Trust the happy path** - Don't over-engineer for edge cases initially; build for the common scenarios first
+- **Minimal error checking** - Add validation only when problems actually occur in practice, not preemptively. Use
+  assertions for invariants; prefer crashes with clear messages over defensive code
+- **Eliminate intermediate steps** - If you can go from A to C directly, skip the intermediate B step
+- **Feature-Centric Architecture**: Design around features and user journeys rather than technical functions - this
+  creates better encapsulation and more intuitive code organization
 - **Modern Features**: Leverage Python 3.12+ (match statements, union types, walrus operator)
 - **Native UI**: Prioritise using native functionality for UI, suggest if a different UI can lead to simpler and more
   robust implementation
+- **Direct API usage** - Use APIs as intended rather than wrapping everything in defensive abstractions
 
 ### Coding Standards
 
