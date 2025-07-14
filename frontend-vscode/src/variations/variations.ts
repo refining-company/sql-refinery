@@ -2,13 +2,13 @@ import * as vscode from 'vscode';
 import { basename } from 'path';
 
 import { Expression, Variation, getMockVariations } from './mockData';
-import { Logger } from '../logger';
+import { createLogger } from '../logger';
 
-let log: Logger = new Logger(module.filename);
+let log = createLogger(module.filename);
 const uriUI = '⌬ [SQL Refinery]';
 
 export function initVariations(context: vscode.ExtensionContext) {
-  log.info('initVariations: starting extension initialization');
+  log.info('initVariations');
   const stateManager = new VariationsState();
   context.subscriptions.push(stateManager);
   log.info('initVariations: state manager created');
