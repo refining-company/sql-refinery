@@ -1,53 +1,45 @@
 // Custom logger
+// consider moving to winston-transport-vscode
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { Console } from 'console';
 
-export class Logger {
-  public name: string;
-  public outputChannel: vscode.LogOutputChannel;
-  private outputFile: Console;
-  private static logFilePath = path.join(__dirname, '..', '..', 'logs', 'frontend-vscode.log');
+const outputChannel = vscode.window.createOutputChannel('SQL Refinery', { log: true });
+outputChannel.clear();
 
-  constructor(filePath: string) {
-    this.name = path.parse(filePath).name;
+const logFilePath = path.join(__dirname, '..', '..', 'logs', 'frontend-vscode.log');
+fs.mkdirSync(path.dirname(logFilePath), { recursive: true });
+const logStream = fs.createWriteStream(logFilePath, { flags: 'w' });
 
-    // VSCode output pannel
-    this.outputChannel = vscode.window.createOutputChannel('SQL Refinery', { log: true });
-    this.outputChannel.clear();
+export function createLogger(filePath: string) {
+  const name = path.parse(filePath).name;
 
-    // File logging
-    fs.mkdirSync(path.dirname(Logger.logFilePath), { recursive: true });
-    const logStream = fs.createWriteStream(Logger.logFilePath);
-    this.outputFile = new Console(logStream, logStream);
+  function format(message: string): string {
+    const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' });
+    return `[${timestamp}] [${name}] ${message}`;
   }
 
-  info(message: string): void {
-    const formatted = this.format(message);
-    this.outputChannel.info(formatted);
-    this.outputFile.log(formatted);
-  }
-
-  error(message: string): void {
-    const formatted = this.format(message);
-    this.outputChannel.error(formatted);
-    this.outputFile.error(formatted);
-  }
-
-  warn(message: string): void {
-    const formatted = this.format(message);
-    this.outputChannel.warn(formatted);
-    this.outputFile.warn(formatted);
-  }
-
-  debug(message: string): void {
-    const formatted = this.format(message);
-    this.outputChannel.debug(formatted);
-    this.outputFile.log(formatted);
-  }
-
-  private format(message: string): string {
-    return `[${this.name}] ${message}`;
-  }
+  return {
+    outputChannel,
+    info: (message: string) => {
+      const formatted = format(message);
+      outputChannel.info(formatted);
+      logStream.write('[info] ' + formatted + '\n');
+    },
+    error: (message: string) => {
+      const formatted = format(message);
+      outputChannel.error(formatted);
+      logStream.write('[error] ' + formatted + '\n');
+    },
+    warn: (message: string) => {
+      const formatted = format(message);
+      outputChannel.warn(formatted);
+      logStream.write('[warn] ' + formatted + '\n');
+    },
+    debug: (message: string) => {
+      const formatted = format(message);
+      outputChannel.debug(formatted);
+      logStream.write('[debug] ' + formatted + '\n');
+    },
+  };
 }
