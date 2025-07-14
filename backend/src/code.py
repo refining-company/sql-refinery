@@ -21,6 +21,20 @@ from src import sql
 
 
 @dataclass(frozen=True)
+class Range:
+    start_line: int
+    start_character: int
+    end_line: int
+    end_character: int
+
+
+@dataclass(frozen=True)
+class Location:
+    file: Path
+    range: Range
+
+
+@dataclass(frozen=True)
 class Column:
     _file: Path
     _tree: Tree
@@ -48,6 +62,7 @@ class Expression:
 
     columns: list[Column]
     alias: str | None
+    location: Location
 
     def __repr__(self) -> str:
         return f"Expression({self._file}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
@@ -173,8 +188,17 @@ class Tree:
                 for col_node in sql.find_desc(op_node.parent, "@column"):  # type: ignore
                     if nodes_columns[col_node] not in op_cols:
                         op_cols.append(nodes_columns[col_node])
+                location = Location(
+                    file=file,
+                    range=Range(
+                        start_line=op_node.start_point[0],
+                        start_character=op_node.start_point[1],
+                        end_line=op_node.end_point[0],
+                        end_character=op_node.end_point[1]
+                    )
+                )
                 ops.append(
-                    self._make(Expression, _file=file, _node=op_node, columns=op_cols, alias=sql.find_alias(op_node))
+                    self._make(Expression, _file=file, _node=op_node, columns=op_cols, alias=sql.find_alias(op_node), location=location)
                 )
 
             subqueries = self._parse_node(select_node, file=file)

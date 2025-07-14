@@ -13,6 +13,7 @@ This module provides:
 """
 
 import argparse
+import dataclasses
 import sys
 import urllib.parse
 from pathlib import Path
@@ -77,6 +78,29 @@ def analyse_document(uri: str) -> tuple[list[lsp.Diagnostic], list[lsp.CodeLens]
     return diagnostics, code_lenses
 
 
+def serialise(obj):
+    """Recursively serialise objects to JSON-compatible format"""
+    match obj:
+        # Handle dataclass objects
+        case _ if dataclasses.is_dataclass(obj):
+            data = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+            return {key: serialise(value) for key, value in data.items()}
+
+        # Handle Path objects
+        case Path():
+            return str(obj)
+
+        # Handle collections
+        case list():
+            return [serialise(item) for item in obj]
+        case dict():
+            return {key: serialise(value) for key, value in obj.items()}
+
+        # Handle primitives
+        case _:
+            return obj
+
+
 @lspserver.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
     document = lspserver.workspace.get_text_document(params.text_document.uri)
@@ -84,8 +108,10 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 
     get_workspace().ingest_file(path=get_path(document.uri), content=document.source)
 
-    diagnostics, _ = analyse_document(document.uri)
-    lspserver.publish_diagnostics(document.uri, diagnostics)
+    # Send raw variations data to frontend
+    variations = get_workspace().find_variations(path=get_path(document.uri))
+    serialized_variations = serialise(variations)
+    lspserver.send_notification("sql-refinery/variations", {"uri": document.uri, "variations": serialized_variations})
 
 
 @lspserver.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
@@ -93,15 +119,6 @@ def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
     document = lspserver.workspace.get_text_document(params.text_document.uri)
     log.info(f"Updating file {document.uri}")
     log.warning(f"File {document.uri} changed. Change handling is not implemented yet.")
-
-
-@lspserver.feature(lsp.TEXT_DOCUMENT_CODE_LENS)
-def code_lens_provider(params: lsp.CodeLensParams):
-    document = lspserver.workspace.get_text_document(params.text_document.uri)
-    log.info(f"Providing code lenses for file {document.uri}")
-
-    _, code_lenses = analyse_document(document.uri)
-    return code_lenses
 
 
 @lspserver.feature(lsp.INITIALIZE)
