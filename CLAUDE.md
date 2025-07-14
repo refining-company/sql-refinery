@@ -106,6 +106,11 @@ abstractions work correctly while documenting system capabilities.
 
 - **File names convention**: `.last.md` files for debugging, `.true.md` files as golden standards
 
+**Logs** Located in `./logs`:
+
+- **Frontend**: `frontend-vscode.sh` with output pannel from VSCode
+- **Backend**: `session.last.ndjson` for client-server LSP comms
+
 ### Essential Commands
 
 **Backend Development:**
@@ -130,7 +135,7 @@ npm run watch:rebuild                          # Watch mode (rebuilds on backend
 npm run watch:tstypes                          # TypeScript type checking in watch mode
 npm run lint                                   # ESLint
 npm run test                                   # Run VS Code extension tests
-npm run test:update-snapshots                  # Update test snapshots
+npm run test:update                            # Update test snapshots
 npm run package                                # Production build
 ```
 
