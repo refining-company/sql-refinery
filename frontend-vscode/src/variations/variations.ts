@@ -16,12 +16,20 @@ export function initVariations(context: vscode.ExtensionContext) {
   // Set up document event listeners - filter to SQL files only
   context.subscriptions.push(
     vscode.workspace.onDidOpenTextDocument((document) => {
-      if (document.languageId === 'sql' && document.uri.scheme === 'file') {
+      if (
+        document.languageId === 'sql' &&
+        document.uri.scheme === 'file' &&
+        basename(document.uri.fsPath) === 'editor.sql'
+      ) {
         stateManager.updateVariations(document.uri, getMockVariations(document));
       }
     }),
     vscode.workspace.onDidChangeTextDocument(({ document }) => {
-      if (document.languageId === 'sql' && document.uri.scheme === 'file') {
+      if (
+        document.languageId === 'sql' &&
+        document.uri.scheme === 'file' &&
+        basename(document.uri.fsPath) === 'editor.sql'
+      ) {
         stateManager.updateVariations(document.uri, getMockVariations(document));
       }
     })
@@ -33,7 +41,11 @@ export function initVariations(context: vscode.ExtensionContext) {
   // Process already-open documents (after VariationsFeature subscribes)
   log.info(`initVariations: processing ${vscode.workspace.textDocuments.length} open documents`);
   vscode.workspace.textDocuments.forEach((document) => {
-    if (document.languageId === 'sql' && document.uri.scheme === 'file') {
+    if (
+      document.languageId === 'sql' &&
+      document.uri.scheme === 'file' &&
+      basename(document.uri.fsPath) === 'editor.sql'
+    ) {
       stateManager.updateVariations(document.uri, getMockVariations(document));
     }
   });
@@ -54,6 +66,15 @@ class VariationsState {
 
   getVariations(uri: vscode.Uri): Variation[] | undefined {
     return this.variationsMap.get(uri.fsPath);
+  }
+
+  removeVariation(uri: vscode.Uri, variationIndex: number): void {
+    const variations = this.variationsMap.get(uri.fsPath);
+    if (variations && variationIndex >= 0 && variationIndex < variations.length) {
+      variations.splice(variationIndex, 1);
+      log.info(`StateManager: removed variation ${variationIndex} from ${uri.fsPath}, ${variations.length} remaining`);
+      this._onDidUpdateVariations.fire({ uri, variations });
+    }
   }
 
   dispose(): void {
@@ -99,18 +120,11 @@ class VariationsFeature {
     variations.forEach((variation, index) => {
       const diagnostic = new vscode.Diagnostic(
         variation.this.location.range,
-        `Variations found: ${variation.others.length + 1} with ${Math.round(variation.similarity * 100)}% similarity`,
+        `${variation.others.length} variation${variation.others.length !== 1 ? 's' : ''} found`,
         vscode.DiagnosticSeverity.Information
       );
       diagnostic.code = index;
       diagnostic.source = 'sql-refinery';
-      diagnostic.relatedInformation = variation.others.map(
-        (expr, idx) =>
-          new vscode.DiagnosticRelatedInformation(
-            new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range),
-            `Location ${idx + 1}`
-          )
-      );
       diagnostics.push(diagnostic);
     });
     log.info(`updateDiagnostic: setting ${diagnostics.length} diagnostics for ${uri.fsPath}`);
@@ -123,7 +137,7 @@ class VariationsFeature {
 
     variations.forEach((variation, index) => {
       const showLens = new vscode.CodeLens(variation.this.location.range, {
-        title: `→ Show ${variation.others.length + 1} variations`,
+        title: `→ Show ${variation.others.length} variation${variation.others.length !== 1 ? 's' : ''}`,
         command: 'sql-refinery.variations.show',
         arguments: [uri, index],
         tooltip: 'Show all variations of this code in side panel',
@@ -166,12 +180,19 @@ class VariationsExplorerFeature {
       `sql-refinery-explorer:${uriUI} ${basename(uri.fsPath)}?file=${encodeURIComponent(uri.fsPath)}&var=${id}`
     );
     const doc = await vscode.workspace.openTextDocument(explorerUri);
-    await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: true });
+    const editor = await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: false });
     await vscode.languages.setTextDocumentLanguage(doc, 'sql');
+    
+    // Set cursor to beginning of document
+    const startPosition = new vscode.Position(0, 0);
+    editor.selection = new vscode.Selection(startPosition, startPosition);
+    editor.revealRange(new vscode.Range(startPosition, startPosition));
   }
 
   async commandPeek(expr: Expression, uri: vscode.Uri, position: vscode.Position) {
-    const locations = [new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range)];
+    const locations = expr.locations
+      ? expr.locations.map((loc) => new vscode.Location(vscode.Uri.file(loc.file), loc.range))
+      : [new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range)];
     await vscode.commands.executeCommand('editor.action.peekLocations', uri, position, locations);
   }
 
@@ -187,8 +208,24 @@ class VariationsExplorerFeature {
 
   async commandApply(targetExpr: Expression, newExpr: Expression, thisUri: vscode.Uri) {
     const edit = new vscode.WorkspaceEdit();
-    edit.replace(vscode.Uri.file(targetExpr.location.file), targetExpr.location.range, newExpr.sql);
+    
+    // Get the target document to determine indentation
+    const targetDoc = await vscode.workspace.openTextDocument(vscode.Uri.file(targetExpr.location.file));
+    const targetLine = targetDoc.lineAt(targetExpr.location.range.start.line);
+    const indentation = targetLine.text.substring(0, targetExpr.location.range.start.character);
+    
+    // Apply indentation to lines 2+ of the replacement text
+    const lines = newExpr.sql.split('\n');
+    const indentedSql = lines.map((line, index) => 
+      index === 0 ? line : indentation + line
+    ).join('\n');
+    
+    edit.replace(vscode.Uri.file(targetExpr.location.file), targetExpr.location.range, indentedSql);
     await vscode.workspace.applyEdit(edit);
+
+    // Remove all variations from the state
+    const targetUri = vscode.Uri.file(targetExpr.location.file);
+    this.stateManager.updateVariations(targetUri, []);
 
     // Close the virtual document
     await Promise.all(
@@ -234,7 +271,13 @@ class VariationsExplorerFeature {
 
     others.forEach((expr: Expression, exprInd) => {
       // Text
-      lines.push(`-- Variation ${exprInd + 1}`);
+      const locationCount = expr.locations ? expr.locations.length : 1;
+      const similarityPercent = Math.round(variation.similarity * 100);
+      lines.push(
+        `-- Variation ${exprInd + 1}:` +
+          ` ${similarityPercent}% similarity,` +
+          ` ${locationCount} location${locationCount > 1 ? 's' : ''}`
+      );
       const rangeLenses = new vscode.Range(lines.length, 0, lines.length, 0);
       expr.sql.split('\n').forEach((line) => lines.push(line));
       const positionPeek = new vscode.Position(lines.length - 1, 0);
@@ -243,7 +286,7 @@ class VariationsExplorerFeature {
       // CodeLens
       codeLenses.push(
         new vscode.CodeLens(rangeLenses, {
-          title: `→ Peek locations`,
+          title: `→ Peek ${locationCount} location${locationCount > 1 ? 's' : ''}`,
           command: 'sql-refinery.variations.explorer.peek',
           arguments: [expr, uri, positionPeek],
         }),
