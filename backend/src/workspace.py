@@ -13,7 +13,7 @@ This module provides:
 
 from pathlib import Path
 
-from src import code, logger, logic
+from src import code, logger, variations
 
 log = logger.get(__name__)
 
@@ -36,6 +36,6 @@ class Workspace:
         self.tree.ingest_file(path=path, content=content)
         log.info(f"Ingested file {path}")
 
-    def find_variations(self, path: Path) -> list[logic.Variation]:
+    def find_variations(self, path: Path) -> list[variations.ExpressionVariations]:
         log.info(f"Finding variations for file {path}")
-        return logic.compare(path, self.tree)
+        return variations.get_variations(path, self.tree)

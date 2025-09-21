@@ -25,7 +25,7 @@ from pathlib import Path
 import pytest
 
 import tests.utils as utils
-from src import code, logger, logic, server, sql
+from src import code, logger, server, sql, variations
 
 log = logger.get(__name__)
 
@@ -51,7 +51,15 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
         match obj:
             case sql.Node():
                 return simplify(obj.text, terminal)
-            case logic.Variation() | code.Tree() | code.Query() | code.Expression() | code.Column() | code.Table():
+            case (
+                variations.ExpressionVariations()
+                | variations.ExpressionGroup()
+                | code.Tree()
+                | code.Query()
+                | code.Expression()
+                | code.Column()
+                | code.Table()
+            ):
                 return repr(obj)
             case _:
                 return f"<{obj.__class__.__name__}>"
@@ -60,7 +68,15 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
     else:
         match obj:
             # Custom data structures
-            case logic.Variation() | code.Tree() | code.Query() | code.Expression() | code.Column() | code.Table():
+            case (
+                variations.ExpressionVariations()
+                | variations.ExpressionGroup()
+                | code.Tree()
+                | code.Query()
+                | code.Expression()
+                | code.Column()
+                | code.Table()
+            ):
                 obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
                 return {f"{repr(obj)} = {str(obj)}": simplify(obj_dict, terminal)}
 
@@ -144,8 +160,8 @@ def captured_outputs():
         code.Tree.ingest_file,
         lambda result: simplify(result, terminal=(sql.Node, sql.Tree, code.Column, code.Table)),
     )
-    _compare, logic.compare = capture(
-        logic.compare,
+    _get_variations, variations.get_variations = capture(
+        variations.get_variations,
         lambda result: simplify(result, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table)),
     )
 
@@ -155,7 +171,7 @@ def captured_outputs():
         # Restore original functions
         sql.parse = _sql_parse
         code.Tree.ingest_file = _ingest_file
-        logic.compare = _compare
+        variations.get_variations = _get_variations
 
     md_lines = ["# Testing Pipeline\n"]
     for key, values in captured.items():
