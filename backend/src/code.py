@@ -47,9 +47,6 @@ class Column:
     def __repr__(self) -> str:
         return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
 
-    def __str__(self) -> str:
-        return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
-
     def __hash__(self) -> int:
         return hash(f"{self.dataset}.{self.table}.{self.column}")
 
@@ -65,7 +62,7 @@ class Expression:
     location: Location
 
     def __repr__(self) -> str:
-        return f"Expression({self._file}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
+        return f"Expression({self._file.name}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
 
     def __str__(self) -> str:
         # TODO: maybe should be a different method
@@ -101,9 +98,6 @@ class Table:
     alias: str | None
 
     def __repr__(self) -> str:
-        return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
-
-    def __str__(self) -> str:
         return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
 
 
@@ -194,11 +188,18 @@ class Tree:
                         start_line=op_node.start_point[0],
                         start_character=op_node.start_point[1],
                         end_line=op_node.end_point[0],
-                        end_character=op_node.end_point[1]
-                    )
+                        end_character=op_node.end_point[1],
+                    ),
                 )
                 ops.append(
-                    self._make(Expression, _file=file, _node=op_node, columns=op_cols, alias=sql.find_alias(op_node), location=location)
+                    self._make(
+                        Expression,
+                        _file=file,
+                        _node=op_node,
+                        columns=op_cols,
+                        alias=sql.find_alias(op_node),
+                        location=location,
+                    )
                 )
 
             subqueries = self._parse_node(select_node, file=file)
