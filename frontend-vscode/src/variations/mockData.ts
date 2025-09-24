@@ -14,25 +14,34 @@ export interface Column {
 
 export interface Expression {
   location: Location;
-  locations?: Location[]; // Additional locations where this exact expression appears
   columns: Column[];
   alias: string | null;
   sql: string; // The actual SQL text of the expression
 }
 
-export interface Variation {
-  this: Expression;
-  others: Expression[];
+export interface ExpressionGroup {
+  expressions: Expression[];
+  repr: string;
+  columns: string[];
   reliability: number;
+}
+
+export interface ExpressionVariation {
+  group: ExpressionGroup;
   similarity: number;
 }
 
+export interface ExpressionVariations {
+  this: Expression;
+  others: ExpressionVariation[];
+}
+
 // Mock data generation for testing
-export function getMockVariations(document: vscode.TextDocument): Variation[] {
-  const variations: Variation[] = [];
+export function getMockVariations(document: vscode.TextDocument): ExpressionVariations[] {
+  const variations: ExpressionVariations[] = [];
 
   // Variation 1: Region clustering CASE statement
-  const var1: Variation = {
+  const var1: ExpressionVariations = {
     this: {
       location: {
         file: document.uri.fsPath,
@@ -49,39 +58,59 @@ END`,
     },
     others: [
       {
-        location: {
-          file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql',
-          range: new vscode.Range(97, 1, 102, 12),
-        },
-        locations: [
-          {
-            file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql',
-            range: new vscode.Range(97, 8, 102, 12),
-          },
-          {
-            file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql',
-            range: new vscode.Range(6, 4, 10, 7),
-          },
-          {
-            file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql',
-            range: new vscode.Range(32, 4, 36, 7),
-          },
-        ],
-        columns: [{ dataset: null, table: 'countries', column: 'region' }],
-        alias: 'region_cluster',
-        sql: `CASE
+        group: {
+          expressions: [
+            {
+              location: {
+                file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql',
+                range: new vscode.Range(97, 8, 102, 12),
+              },
+              columns: [{ dataset: null, table: 'countries', column: 'region' }],
+              alias: 'region_cluster',
+              sql: `CASE
     WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
     WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
     ELSE NULL
 END`,
+            },
+            {
+              location: {
+                file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql',
+                range: new vscode.Range(6, 4, 10, 7),
+              },
+              columns: [{ dataset: null, table: 'countries', column: 'region' }],
+              alias: 'region_cluster',
+              sql: `CASE
+    WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
+    WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
+    ELSE NULL
+END`,
+            },
+            {
+              location: {
+                file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql',
+                range: new vscode.Range(32, 4, 36, 7),
+              },
+              columns: [{ dataset: null, table: 'countries', column: 'region' }],
+              alias: 'region_cluster',
+              sql: `CASE
+    WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'
+    WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'
+    ELSE NULL
+END`,
+            },
+          ],
+          repr: 'Expression(Casewhen_expression(...))',
+          columns: ['region'],
+          reliability: 3,
+        },
+        similarity: 0.75,
       },
     ],
-    reliability: 3,
-    similarity: 0.75,
   };
 
   // Variation 2: IT/Tech industry classification
-  const var2: Variation = {
+  const var2: ExpressionVariations = {
     this: {
       location: {
         file: document.uri.fsPath,
@@ -93,17 +122,25 @@ END`,
     },
     others: [
       {
-        location: {
-          file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql',
-          range: new vscode.Range(38, 4, 38, 60),
+        group: {
+          expressions: [
+            {
+              location: {
+                file: '/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql',
+                range: new vscode.Range(38, 4, 38, 60),
+              },
+              columns: [{ dataset: null, table: 'accounts', column: 'industry' }],
+              alias: 'industry_tech',
+              sql: `IF(accounts.industry = 'Information Technology', 'Tech', 'Other')`,
+            },
+          ],
+          repr: 'Expression(Function_call(...))',
+          columns: ['industry'],
+          reliability: 1,
         },
-        columns: [{ dataset: null, table: 'accounts', column: 'industry' }],
-        alias: 'industry_tech',
-        sql: `IF(accounts.industry = 'Information Technology', 'Tech', 'Other')`,
+        similarity: 0.82,
       },
     ],
-    reliability: 1,
-    similarity: 0.82,
   };
 
   variations.push(var1, var2);

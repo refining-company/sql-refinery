@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { basename } from 'path';
 
-import { Expression, Variation, getMockVariations } from './mockData';
+import { Expression, ExpressionVariations, ExpressionVariation, ExpressionGroup, getMockVariations } from './mockData';
 import { createLogger } from '../logger';
 
 let log = createLogger(module.filename);
@@ -54,17 +54,17 @@ export function initVariations(context: vscode.ExtensionContext) {
 }
 
 class VariationsState {
-  private variationsMap: Map<string, Variation[]> = new Map<string, Variation[]>();
-  private _onDidUpdateVariations = new vscode.EventEmitter<{ uri: vscode.Uri; variations: Variation[] }>();
+  private variationsMap: Map<string, ExpressionVariations[]> = new Map<string, ExpressionVariations[]>();
+  private _onDidUpdateVariations = new vscode.EventEmitter<{ uri: vscode.Uri; variations: ExpressionVariations[] }>();
   readonly onDidUpdateVariations = this._onDidUpdateVariations.event;
 
-  updateVariations(uri: vscode.Uri, variations: Variation[]): void {
+  updateVariations(uri: vscode.Uri, variations: ExpressionVariations[]): void {
     log.info(`StateManager: updating ${uri.fsPath} with ${variations.length} variations`);
     this.variationsMap.set(uri.fsPath, variations);
     this._onDidUpdateVariations.fire({ uri, variations });
   }
 
-  getVariations(uri: vscode.Uri): Variation[] | undefined {
+  getVariations(uri: vscode.Uri): ExpressionVariations[] | undefined {
     return this.variationsMap.get(uri.fsPath);
   }
 
@@ -113,7 +113,7 @@ class VariationsFeature {
     );
   }
 
-  private updateDiagnostic(uri: vscode.Uri, variations: Variation[]): void {
+  private updateDiagnostic(uri: vscode.Uri, variations: ExpressionVariations[]): void {
     log.info(`updateDiagnostic: creating diagnostics for ${uri.fsPath}`);
     const diagnostics: vscode.Diagnostic[] = [];
 
@@ -131,7 +131,7 @@ class VariationsFeature {
     this.diagnosticsProvider.updateDiagnostics(uri, diagnostics);
   }
 
-  private updateCodeLens(uri: vscode.Uri, variations: Variation[]): void {
+  private updateCodeLens(uri: vscode.Uri, variations: ExpressionVariations[]): void {
     log.info(`updateCodeLens: creating code lenses for ${uri.fsPath}`);
     const codeLenses: vscode.CodeLens[] = [];
 
@@ -189,10 +189,10 @@ class VariationsExplorerFeature {
     editor.revealRange(new vscode.Range(startPosition, startPosition));
   }
 
-  async commandPeek(expr: Expression, uri: vscode.Uri, position: vscode.Position) {
-    const locations = expr.locations
-      ? expr.locations.map((loc) => new vscode.Location(vscode.Uri.file(loc.file), loc.range))
-      : [new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range)];
+  async commandPeek(expressions: Expression[], uri: vscode.Uri, position: vscode.Position) {
+    const locations = expressions.map(expr =>
+      new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range)
+    );
     await vscode.commands.executeCommand('editor.action.peekLocations', uri, position, locations);
   }
 
@@ -246,7 +246,7 @@ class VariationsExplorerFeature {
     if (!variation) return '';
 
     if (exprInd >= 0) {
-      return variation.others[exprInd]?.sql || '';
+      return variation.others[exprInd]?.group.expressions[0]?.sql || '';
     } else {
       return variation.this.sql;
     }
@@ -259,8 +259,7 @@ class VariationsExplorerFeature {
     if (!filePath) return '';
 
     const variation = this.stateManager.getVariations(vscode.Uri.file(filePath))?.[variationId];
-    const others = variation?.others;
-    if (!others) return '';
+    if (!variation || !variation.others) return '';
 
     const lines: string[] = [];
     const codeLenses: vscode.CodeLens[] = [];
@@ -269,36 +268,42 @@ class VariationsExplorerFeature {
     lines.push('-- Expression variations found in the codebase');
     lines.push('');
 
-    others.forEach((expr: Expression, exprInd) => {
+    variation.others.forEach((exprVar: ExpressionVariation, varIndex) => {
+      const firstExpr = exprVar.group.expressions[0];
+      if (!firstExpr) return;
+
       // Text
-      const locationCount = expr.locations ? expr.locations.length : 1;
-      const similarityPercent = Math.round(variation.similarity * 100);
+      const locationCount = exprVar.group.expressions.length;
+      const similarityPercent = Math.round(exprVar.similarity * 100);
+      const reliability = exprVar.group.reliability;
+
       lines.push(
-        `-- Variation ${exprInd + 1}:` +
+        `-- Variation ${varIndex + 1}:` +
           ` ${similarityPercent}% similarity,` +
-          ` ${locationCount} location${locationCount > 1 ? 's' : ''}`
+          ` reliability ${reliability},` +
+          ` ${locationCount} location${locationCount !== 1 ? 's' : ''}`
       );
       const rangeLenses = new vscode.Range(lines.length, 0, lines.length, 0);
-      expr.sql.split('\n').forEach((line) => lines.push(line));
+      firstExpr.sql.split('\n').forEach((line) => lines.push(line));
       const positionPeek = new vscode.Position(lines.length - 1, 0);
       lines.push('');
 
       // CodeLens
       codeLenses.push(
         new vscode.CodeLens(rangeLenses, {
-          title: `→ Peek ${locationCount} location${locationCount > 1 ? 's' : ''}`,
+          title: `→ Peek ${locationCount} location${locationCount !== 1 ? 's' : ''}`,
           command: 'sql-refinery.variations.explorer.peek',
-          arguments: [expr, uri, positionPeek],
+          arguments: [exprVar.group.expressions, uri, positionPeek],
         }),
         new vscode.CodeLens(rangeLenses, {
           title: `↔ Show diff`,
           command: 'sql-refinery.variations.explorer.diff',
-          arguments: [filePath, variationId, exprInd],
+          arguments: [filePath, variationId, varIndex],
         }),
         new vscode.CodeLens(rangeLenses, {
           title: `✓ Apply`,
           command: 'sql-refinery.variations.explorer.apply',
-          arguments: [variation.this, expr, uri],
+          arguments: [variation.this, firstExpr, uri],
         })
       );
     });

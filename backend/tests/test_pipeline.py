@@ -53,6 +53,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
                 return simplify(obj.text, terminal)
             case (
                 variations.ExpressionVariations()
+                | variations.ExpressionVariation()
                 | variations.ExpressionGroup()
                 | code.Tree()
                 | code.Query()
@@ -70,6 +71,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
             # Custom data structures
             case (
                 variations.ExpressionVariations()
+                | variations.ExpressionVariation()
                 | variations.ExpressionGroup()
                 | code.Tree()
                 | code.Query()

@@ -29,15 +29,25 @@ class ExpressionGroup:
 
 
 @dataclass(frozen=True)
-class ExpressionVariations:
-    """Expression variations for a specific expression"""
+class ExpressionVariation:
+    """A variation with its similarity score"""
 
-    this: code.Expression
-    other: ExpressionGroup
+    group: ExpressionGroup
     similarity: float
 
+    def __str__(self) -> str:
+        return f"ExpressionVariation(group={self.group}, similarity={self.similarity:.2f})"
+
+
+@dataclass(frozen=True)
+class ExpressionVariations:
+    """All variations for a specific expression"""
+
+    this: code.Expression
+    others: list[ExpressionVariation]
+
     def __repr__(self) -> str:
-        return f"ExpressionVariations({self.this._file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, similarity={self.similarity:.2f}, other={self.other!r})"
+        return f"ExpressionVariations({self.this._file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
 
 
 def get_variations(path: Path, tree: code.Tree, threshold: float = 0.7) -> list[ExpressionVariations]:
@@ -64,7 +74,9 @@ def get_variations(path: Path, tree: code.Tree, threshold: float = 0.7) -> list[
     for expr in tree.map_file_to_expr.get(path, []):
         gr = map_expr_to_group[id(expr)]
         other = map_group_to_other[id(gr)]
-        file_variations.extend(ExpressionVariations(expr, gr2, sim) for (gr2, sim) in other if sim >= threshold)
+        variations = [ExpressionVariation(gr2, sim) for (gr2, sim) in other if sim >= threshold]
+        if variations:
+            file_variations.append(ExpressionVariations(expr, variations))
 
     return file_variations
 

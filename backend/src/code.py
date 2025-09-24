@@ -60,6 +60,7 @@ class Expression:
     columns: list[Column]
     alias: str | None
     location: Location
+    sql: str  # The SQL text of this expression
 
     def __repr__(self) -> str:
         return f"Expression({self._file.name}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
@@ -199,6 +200,7 @@ class Tree:
                         columns=op_cols,
                         alias=sql.find_alias(op_node),
                         location=location,
+                        sql=op_node.text.decode("utf-8"),
                     )
                 )
 
