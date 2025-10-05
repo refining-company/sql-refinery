@@ -3,12 +3,14 @@ Server — LSP Communication Layer
 
 Architecture:
 - Pipeline: SQL parsing, Code AST abstraction, Workspace & logic analysis
-- Server: LSP server (this module) - thin communication wrapper
+- Server: LSP server (this module) - thin I/O wrapper
 - Frontend: VS Code extension (frontend-vscode) - owns all UI logic
 
 This module provides:
-- Workspace lifecycle management (initialize, file ingestion)
-- Custom notifications to send variations data to frontend
+- Workspace lifecycle management (singleton per session)
+- Collect all files (workspace folder + open documents)
+- Rebuild workspace on every file operation
+- Send computed results to frontend via custom notifications (sql-refinery/{key})
 - Serialization of Python dataclasses to JSON
 """
 
@@ -27,17 +29,36 @@ import src.workspace
 log = src.logger.get(__name__)
 
 lspserver = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
-workspace = None
+
+# Workspace singleton - created on initialize, persists for session
+workspace: src.workspace.Workspace | None = None
+
+# Workspace folder path - set on initialize
+workspace_folder: Path | None = None
 
 
-def get_workspace(new: bool = False) -> src.workspace.Workspace:
-    global workspace
+def collect_all_files() -> dict[Path, str]:
+    """Collect all SQL files from workspace folder + open documents
 
-    if new:
-        workspace = src.workspace.Workspace()
+    Combines:
+    - Codebase files from disk (workspace_folder/**/*.sql)
+    - Open documents from LSP (may override disk with in-memory edits)
 
-    assert workspace is not None, "Workspace accessed before initialization"
-    return workspace
+    Returns dict: Path -> file content
+    """
+    files: dict[Path, str] = {}
+
+    # Codebase files from workspace folder on disk
+    if workspace_folder:
+        for file_path in workspace_folder.glob("**/*.sql"):
+            files[file_path] = file_path.read_text()
+
+    # Open documents from LSP workspace (overrides disk files with edits)
+    for uri in lspserver.workspace.text_documents:
+        document = lspserver.workspace.get_text_document(uri)
+        files[get_path(uri)] = document.source
+
+    return files
 
 
 def serialise(obj):
@@ -65,43 +86,49 @@ def serialise(obj):
 
 @lspserver.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
-    document = lspserver.workspace.get_text_document(params.text_document.uri)
-    log.info(f"Opening file {document.uri}")
+    """Handle file open: rebuild workspace and send all computed data"""
+    path = get_path(params.text_document.uri)
+    log.info(f"File opened: {path}")
 
-    get_workspace().ingest_file(path=get_path(document.uri), content=document.source)
+    # Rebuild entire workspace from all files
+    workspace.rebuild(collect_all_files())
 
-    variations = get_workspace().find_variations(path=get_path(document.uri))
-    log.info(f"Found {len(variations)} variations for {document.uri}")
-
-    serialized = serialise(variations)
-    log.info(f"Sending sql-refinery/variations notification with {len(serialized)} items")
-    lspserver.send_notification("sql-refinery/variations", {"uri": document.uri, "variations": serialized})
+    # Get computed output and send each data type to frontend
+    output = workspace.get_output(path)
+    for key, data in output.items():
+        lspserver.send_notification(f"sql-refinery/{key}", {"uri": params.text_document.uri, key: serialise(data)})
 
 
 @lspserver.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
 def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
-    document = lspserver.workspace.get_text_document(params.text_document.uri)
-    log.info(f"Updating file {document.uri}")
+    """Handle file change: rebuild workspace and send all computed data"""
+    path = get_path(params.text_document.uri)
+    log.info(f"File changed: {path}")
 
-    get_workspace().ingest_file(path=get_path(document.uri), content=document.source)
+    # Rebuild entire workspace from all files
+    workspace.rebuild(collect_all_files())
 
-    variations = get_workspace().find_variations(path=get_path(document.uri))
-    lspserver.send_notification("sql-refinery/variations", {"uri": document.uri, "variations": serialise(variations)})
+    # Get computed output and send each data type to frontend
+    output = workspace.get_output(path)
+    for key, data in output.items():
+        lspserver.send_notification(f"sql-refinery/{key}", {"uri": params.text_document.uri, key: serialise(data)})
 
 
 @lspserver.feature(lsp.INITIALIZE)
 def initialize(params: lsp.InitializeParams) -> None:
+    """Initialize workspace singleton and store workspace folder path"""
+    global workspace, workspace_folder
+
     log.info("Initializing LSP server")
 
-    # Initialize workspace on first connect or reset on reconnect
-    get_workspace(new=True)
+    # Create workspace singleton for this session
+    workspace = src.workspace.Workspace()
 
+    # Store workspace folder path (codebase location)
     if params.workspace_folders:
-        assert len(params.workspace_folders) == 1, log.error("Only one workspace folder is supported")  # type:ignore
-        workspace_path = get_path(params.workspace_folders[0].uri)
-
-        log.info(f"Loading workspace folder {workspace_path}")
-        get_workspace().ingest_folder(workspace_path)
+        assert len(params.workspace_folders) == 1, "Only one workspace folder is supported"
+        workspace_folder = get_path(params.workspace_folders[0].uri)
+        log.info(f"Workspace folder: {workspace_folder}")
 
 
 def start(start_debug: bool = False, start_server: bool = False, start_recording: bool = False):

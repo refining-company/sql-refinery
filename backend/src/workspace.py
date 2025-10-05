@@ -3,12 +3,13 @@ Pipeline — Workspace & Logic Analysis
 
 Architecture:
 - Pipeline: SQL parsing, Code AST abstraction, Workspace & Logic Analysis (this module)
-- Server: LSP server (server.py)
+- Server: LSP server (server.py) - thin I/O wrapper
 - Frontend: VS Code extension (frontend-vscode)
 
 This module provides:
-- `Workspace` to ingest SQL files/folders into a code tree
-- Entry point for finding cross-file variations via `logic.compare`
+- `Workspace` singleton as process manager and data hub
+- Rebuilds analysis from scratch on every file operation
+- Caches all computed results in `output` for server to send
 """
 
 from pathlib import Path
@@ -19,23 +20,52 @@ log = logger.get(__name__)
 
 
 class Workspace:
+    """Process manager and data hub for SQL analysis
+
+    Maintains:
+    - files: Current file set (Path -> content)
+    - tree: Parsed SQL code tree
+    - output: All computed results ready to send to frontend
+    """
+
+    files: dict[Path, str]
     tree: code.Tree
+    output: dict[str, dict]
 
     def __init__(self):
+        self.files = {}
         self.tree = code.Tree()
+        self.output = {"variations": {}}
 
-    def ingest_folder(self, path: Path):
-        assert path, f"Path to codebase '{path}' is not a directory"
+    def rebuild(self, files: dict[Path, str]) -> None:
+        """Rebuild entire workspace from all files
 
-        for file in path.glob("**/*.sql"):
-            self.ingest_file(file, file.read_text())
+        Clears all state, re-ingests all files, and recomputes all analysis.
+        This is stateless per-operation - guarantees consistent results.
+        """
+        log.info(f"Rebuilding workspace with {len(files)} files")
 
-        log.info(f"Injested folder {path}")
+        # Store files for future reference
+        self.files = files
 
-    def ingest_file(self, path: Path, content: str):
-        self.tree.ingest_file(path=path, content=content)
-        log.info(f"Ingested file {path}")
+        # Clear analysis state
+        self.tree = code.Tree()
+        self.output["variations"].clear()
 
-    def find_variations(self, path: Path) -> list[variations.ExpressionVariations]:
-        log.info(f"Finding variations for file {path}")
-        return variations.get_variations(path, self.tree)
+        # Ingest all files into tree
+        for path, content in files.items():
+            self.tree.ingest_file(path=path, content=content)
+
+        # Compute variations for ALL files
+        for path in files.keys():
+            vars = variations.get_variations(path, self.tree)
+            self.output["variations"][path] = vars
+            log.info(f"Computed {len(vars)} variations for {path}")
+
+    def get_output(self, path: Path) -> dict:
+        """Get cached output data for a specific file
+
+        Returns dict with all data types ready to send to frontend.
+        Server just serializes and sends this.
+        """
+        return {"variations": self.output["variations"].get(path, [])}

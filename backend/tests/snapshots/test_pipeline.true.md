@@ -3933,6 +3933,168 @@
 
 ```json
 [
+  { "ExpressionVariations(0-accounts.sql:38:9, 1 variations) = ExpressionVariations(0-accounts.sql:38:9, 1 variations)": {
+      "this": {
+        "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+          "columns": [
+            "Column(?.orders.product)",
+            "Column(?.orders.value)" ],
+          "alias": "revenue_core",
+          "location": "<Location>",
+          "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
+      "others": [
+        { "ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(0-accounts.sql:39:9)), similarity=0.9037037037037037) = ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(0-accounts.sql:39:9)), similarity=0.90)": {
+            "group": {
+              "ExpressionGroup(reliability=1, Expression(0-accounts.sql:39:9)) = ExpressionGroup(reliability=1, Expression(0-accounts.sql:39:9))": {
+                "expressions": [
+                  { "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                      "columns": [
+                        "Column(?.orders.product)",
+                        "Column(?.orders.value)" ],
+                      "alias": "revenue_aux",
+                      "location": "<Location>",
+                      "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } } ],
+                "repr": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
+                "columns": [
+                  "Column(?.orders.product)",
+                  "Column(?.orders.value)" ],
+                "reliability": 1 } },
+            "similarity": 0.9 } } ] } },
+  { "ExpressionVariations(0-accounts.sql:39:9, 1 variations) = ExpressionVariations(0-accounts.sql:39:9, 1 variations)": {
+      "this": {
+        "Expression(0-accounts.sql:39:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+          "columns": [
+            "Column(?.orders.product)",
+            "Column(?.orders.value)" ],
+          "alias": "revenue_aux",
+          "location": "<Location>",
+          "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
+      "others": [
+        { "ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(0-accounts.sql:38:9)), similarity=0.9037037037037037) = ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(0-accounts.sql:38:9)), similarity=0.90)": {
+            "group": {
+              "ExpressionGroup(reliability=1, Expression(0-accounts.sql:38:9)) = ExpressionGroup(reliability=1, Expression(0-accounts.sql:38:9))": {
+                "expressions": [
+                  { "Expression(0-accounts.sql:38:9) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                      "columns": [
+                        "Column(?.orders.product)",
+                        "Column(?.orders.value)" ],
+                      "alias": "revenue_core",
+                      "location": "<Location>",
+                      "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } } ],
+                "repr": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",
+                "columns": [
+                  "Column(?.orders.product)",
+                  "Column(?.orders.value)" ],
+                "reliability": 1 } },
+            "similarity": 0.9 } } ] } },
+  { "ExpressionVariations(0-accounts.sql:98:9, 1 variations) = ExpressionVariations(0-accounts.sql:98:9, 1 variations)": {
+      "this": {
+        "Expression(0-accounts.sql:98:9) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          "columns": [
+            "Column(?.countries.region)" ],
+          "alias": "region_cluster",
+          "location": "<Location>",
+          "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
+      "others": [
+        { "ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:6:5)), similarity=0.77734375) = ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:6:5)), similarity=0.78)": {
+            "group": {
+              "ExpressionGroup(reliability=1, Expression(editor.sql:6:5)) = ExpressionGroup(reliability=1, Expression(editor.sql:6:5))": {
+                "expressions": [
+                  { "Expression(editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+                      "columns": [
+                        "Column(?.countries.region)" ],
+                      "alias": "macro_region",
+                      "location": "<Location>",
+                      "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } } ],
+                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "columns": [
+                  "Column(?.countries.region)" ],
+                "reliability": 1 } },
+            "similarity": 0.78 } } ] } } ]
+```
+
+# STEP: src.variations.get_variations 2
+
+```json
+[
+  { "ExpressionVariations(1-revenue.sql:7:5, 1 variations) = ExpressionVariations(1-revenue.sql:7:5, 1 variations)": {
+      "this": {
+        "Expression(1-revenue.sql:7:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          "columns": [
+            "Column(?.countries.region)" ],
+          "alias": "region_cluster",
+          "location": "<Location>",
+          "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+      "others": [
+        { "ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:6:5)), similarity=0.77734375) = ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:6:5)), similarity=0.78)": {
+            "group": {
+              "ExpressionGroup(reliability=1, Expression(editor.sql:6:5)) = ExpressionGroup(reliability=1, Expression(editor.sql:6:5))": {
+                "expressions": [
+                  { "Expression(editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+                      "columns": [
+                        "Column(?.countries.region)" ],
+                      "alias": "macro_region",
+                      "location": "<Location>",
+                      "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } } ],
+                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "columns": [
+                  "Column(?.countries.region)" ],
+                "reliability": 1 } },
+            "similarity": 0.78 } } ] } },
+  { "ExpressionVariations(1-revenue.sql:33:5, 1 variations) = ExpressionVariations(1-revenue.sql:33:5, 1 variations)": {
+      "this": {
+        "Expression(1-revenue.sql:33:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+          "columns": [
+            "Column(?.countries.region)" ],
+          "alias": "cluster",
+          "location": "<Location>",
+          "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+      "others": [
+        { "ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:6:5)), similarity=0.77734375) = ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:6:5)), similarity=0.78)": {
+            "group": {
+              "ExpressionGroup(reliability=1, Expression(editor.sql:6:5)) = ExpressionGroup(reliability=1, Expression(editor.sql:6:5))": {
+                "expressions": [
+                  { "Expression(editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {
+                      "columns": [
+                        "Column(?.countries.region)" ],
+                      "alias": "macro_region",
+                      "location": "<Location>",
+                      "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } } ],
+                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "columns": [
+                  "Column(?.countries.region)" ],
+                "reliability": 1 } },
+            "similarity": 0.78 } } ] } },
+  { "ExpressionVariations(1-revenue.sql:39:5, 1 variations) = ExpressionVariations(1-revenue.sql:39:5, 1 variations)": {
+      "this": {
+        "Expression(1-revenue.sql:39:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+          "columns": [
+            "Column(?.accounts.industry)" ],
+          "alias": "industry_tech",
+          "location": "<Location>",
+          "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
+      "others": [
+        { "ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:13:5)), similarity=0.9469964664310954) = ExpressionVariation(group=ExpressionGroup(reliability=1, Expression(editor.sql:13:5)), similarity=0.95)": {
+            "group": {
+              "ExpressionGroup(reliability=1, Expression(editor.sql:13:5)) = ExpressionGroup(reliability=1, Expression(editor.sql:13:5))": {
+                "expressions": [
+                  { "Expression(editor.sql:13:5) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))": {
+                      "columns": [
+                        "Column(?.accounts.industry)" ],
+                      "alias": "industry_it",
+                      "location": "<Location>",
+                      "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" } } ],
+                "repr": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
+                "columns": [
+                  "Column(?.accounts.industry)" ],
+                "reliability": 1 } },
+            "similarity": 0.95 } } ] } } ]
+```
+
+# STEP: src.variations.get_variations 3
+
+```json
+[
   { "ExpressionVariations(editor.sql:6:5, 1 variations) = ExpressionVariations(editor.sql:6:5, 1 variations)": {
       "this": {
         "Expression(editor.sql:6:5) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))": {

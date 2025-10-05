@@ -25,7 +25,7 @@ from pathlib import Path
 import pytest
 
 import tests.utils as utils
-from src import code, logger, server, sql, variations
+from src import code, logger, sql, variations, workspace as ws_module
 
 log = logger.get(__name__)
 
@@ -38,10 +38,16 @@ def scenario():
     file_editor = dir_inputs / "editor.sql"
 
     log.info("Starting scenario...")
-    workspace = server.get_workspace(new=True)  # Start with a fresh workspace
-    workspace.ingest_folder(dir_codebase)
-    workspace.ingest_file(path=file_editor, content=file_editor.read_text())
-    workspace.find_variations(path=file_editor)
+    workspace = ws_module.Workspace()  # Create fresh workspace
+
+    # Collect all files
+    files = {}
+    for file_path in dir_codebase.glob("**/*.sql"):
+        files[file_path] = file_path.read_text()
+    files[file_editor] = file_editor.read_text()
+
+    # Rebuild workspace with all files
+    workspace.rebuild(files)
     log.info("Scenario finished.")
 
 
