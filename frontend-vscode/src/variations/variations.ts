@@ -1,56 +1,118 @@
 import * as vscode from 'vscode';
 import { basename } from 'path';
 
-import { Expression, ExpressionVariations, ExpressionVariation, ExpressionGroup, getMockVariations } from './mockData';
 import { createLogger } from '../logger';
 
 let log = createLogger(module.filename);
 const uriUI = '⌬ [SQL Refinery]';
 
-export function initVariations(context: vscode.ExtensionContext) {
-  log.info('initVariations');
+// Core interfaces matching Python backend structure
+interface Location {
+  file: string;
+  range: vscode.Range;
+}
+
+interface Column {
+  dataset: string | null;
+  table: string | null;
+  column: string | null;
+}
+
+interface Expression {
+  location: Location;
+  columns: Column[];
+  alias: string | null;
+  sql: string;
+}
+
+interface ExpressionGroup {
+  expressions: Expression[];
+  repr: string;
+  columns: string[];
+  reliability: number;
+}
+
+interface ExpressionVariation {
+  group: ExpressionGroup;
+  similarity: number;
+}
+
+interface ExpressionVariations {
+  this: Expression;
+  others: ExpressionVariation[];
+}
+
+export function initVariationsState(context: vscode.ExtensionContext): VariationsState {
+  log.info('initVariationsState');
   const stateManager = new VariationsState();
   context.subscriptions.push(stateManager);
-  log.info('initVariations: state manager created');
+  log.info('initVariationsState: state manager created');
 
-  // Set up document event listeners - filter to SQL files only
-  context.subscriptions.push(
-    vscode.workspace.onDidOpenTextDocument((document) => {
-      if (
-        document.languageId === 'sql' &&
-        document.uri.scheme === 'file' &&
-        basename(document.uri.fsPath) === 'editor.sql'
-      ) {
-        stateManager.updateVariations(document.uri, getMockVariations(document));
-      }
-    }),
-    vscode.workspace.onDidChangeTextDocument(({ document }) => {
-      if (
-        document.languageId === 'sql' &&
-        document.uri.scheme === 'file' &&
-        basename(document.uri.fsPath) === 'editor.sql'
-      ) {
-        stateManager.updateVariations(document.uri, getMockVariations(document));
-      }
-    })
-  );
-
-  log.info('initVariations: creating VariationsFeature');
+  log.info('initVariationsState: creating VariationsFeature');
   new VariationsFeature(context, stateManager);
 
-  // Process already-open documents (after VariationsFeature subscribes)
-  log.info(`initVariations: processing ${vscode.workspace.textDocuments.length} open documents`);
-  vscode.workspace.textDocuments.forEach((document) => {
-    if (
-      document.languageId === 'sql' &&
-      document.uri.scheme === 'file' &&
-      basename(document.uri.fsPath) === 'editor.sql'
-    ) {
-      stateManager.updateVariations(document.uri, getMockVariations(document));
+  log.info('initVariationsState: complete');
+  return stateManager;
+}
+
+export function registerVariationsHandler(client: any, stateManager: VariationsState) {
+  log.info('registerVariationsHandler: registering notification handler');
+
+  // Register notification handler from LSP server
+  client.onNotification('sql-refinery/variations', (params: { uri: string; variations: any[] }) => {
+    try {
+      log.info(`Received ${params.variations.length} variations for ${params.uri}`);
+      const uri = vscode.Uri.parse(params.uri);
+      const variations = deserializeVariations(params.variations);
+      log.info(`Deserialized ${variations.length} variations`);
+      stateManager.updateVariations(uri, variations);
+      log.info(`Updated state manager with variations`);
+    } catch (error) {
+      log.error(`Error handling variations notification: ${error}`);
     }
   });
+  log.info('registerVariationsHandler: notification handler registered');
+}
 
-  log.info('initVariations: extension initialization complete');
+function deserializeVariations(data: any[]): ExpressionVariations[] {
+  return data.map((item) => ({
+    this: {
+      location: {
+        file: item.this.location.file,
+        range: new vscode.Range(
+          item.this.location.range.start_line,
+          item.this.location.range.start_character,
+          item.this.location.range.end_line,
+          item.this.location.range.end_character
+        ),
+      },
+      columns: item.this.columns,
+      alias: item.this.alias,
+      sql: item.this.sql,
+    },
+    others: item.others.map((other: any) => ({
+      group: {
+        expressions: other.group.expressions.map((expr: any) => ({
+          location: {
+            file: expr.location.file,
+            range: new vscode.Range(
+              expr.location.range.start_line,
+              expr.location.range.start_character,
+              expr.location.range.end_line,
+              expr.location.range.end_character
+            ),
+          },
+          columns: expr.columns,
+          alias: expr.alias,
+          sql: expr.sql,
+        })),
+        repr: other.group.repr,
+        columns: other.group.columns,
+        reliability: other.group.reliability,
+      },
+      similarity: other.similarity,
+    })),
+  }));
 }
 
 class VariationsState {

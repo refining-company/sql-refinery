@@ -1,15 +1,15 @@
 """
-Server — LSP Server
+Server — LSP Communication Layer
 
 Architecture:
 - Pipeline: SQL parsing, Code AST abstraction, Workspace & logic analysis
-- Server: LSP server (this module)
-- Frontend: VS Code extension (frontend-vscode)
+- Server: LSP server (this module) - thin communication wrapper
+- Frontend: VS Code extension (frontend-vscode) - owns all UI logic
 
 This module provides:
-- A pygls-based LanguageServer
-- Handlers for open/change, diagnostics and code-lens requests
-- Translation from `Workspace` outputs into LSP types
+- Workspace lifecycle management (initialize, file ingestion)
+- Custom notifications to send variations data to frontend
+- Serialization of Python dataclasses to JSON
 """
 
 import argparse
@@ -40,44 +40,6 @@ def get_workspace(new: bool = False) -> src.workspace.Workspace:
     return workspace
 
 
-def analyse_document(uri: str) -> tuple[list[lsp.Diagnostic], list[lsp.CodeLens]]:
-    """UI for find_variations"""
-    variations = get_workspace().find_variations(path=get_path(uri))
-
-    diagnostics = []
-    code_lenses = []
-    for var in variations:
-        # Create diagnostic
-        range = lsp.Range(lsp.Position(*var.this._node.start_point), lsp.Position(*var.this._node.end_point))
-        diagnostic = lsp.Diagnostic(
-            range=range,
-            message="Variation expressions found in the codebase",
-            code="Variation",
-            severity=lsp.DiagnosticSeverity.Information,
-        )
-        diagnostics.append(diagnostic)
-
-        # Create code lens
-        title = f"Variations found: {len(var.others)}"
-        other_locations = []
-        for other in var.others:
-            location_uri = other._file.as_uri()
-            location_range = lsp.Range(lsp.Position(*other._node.start_point), lsp.Position(*other._node.end_point))
-            other_locations.append({"uri": location_uri, "position": location_range.start, "range": location_range})
-
-        code_lens = lsp.CodeLens(
-            range=range,
-            command=lsp.Command(
-                title=title,
-                command="sqlRefinery.peekLocations",
-                arguments=[uri, range.end, other_locations, "peek"],
-            ),
-        )
-        code_lenses.append(code_lens)
-
-    return diagnostics, code_lenses
-
-
 def serialise(obj):
     """Recursively serialise objects to JSON-compatible format"""
     match obj:
@@ -91,7 +53,7 @@ def serialise(obj):
             return str(obj)
 
         # Handle collections
-        case list():
+        case list() | frozenset() | set():
             return [serialise(item) for item in obj]
         case dict():
             return {key: serialise(value) for key, value in obj.items()}
@@ -108,17 +70,23 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 
     get_workspace().ingest_file(path=get_path(document.uri), content=document.source)
 
-    # Send raw variations data to frontend
     variations = get_workspace().find_variations(path=get_path(document.uri))
-    serialized_variations = serialise(variations)
-    lspserver.send_notification("sql-refinery/variations", {"uri": document.uri, "variations": serialized_variations})
+    log.info(f"Found {len(variations)} variations for {document.uri}")
+
+    serialized = serialise(variations)
+    log.info(f"Sending sql-refinery/variations notification with {len(serialized)} items")
+    lspserver.send_notification("sql-refinery/variations", {"uri": document.uri, "variations": serialized})
 
 
 @lspserver.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
 def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
     document = lspserver.workspace.get_text_document(params.text_document.uri)
     log.info(f"Updating file {document.uri}")
-    log.warning(f"File {document.uri} changed. Change handling is not implemented yet.")
+
+    get_workspace().ingest_file(path=get_path(document.uri), content=document.source)
+
+    variations = get_workspace().find_variations(path=get_path(document.uri))
+    lspserver.send_notification("sql-refinery/variations", {"uri": document.uri, "variations": serialise(variations)})
 
 
 @lspserver.feature(lsp.INITIALIZE)

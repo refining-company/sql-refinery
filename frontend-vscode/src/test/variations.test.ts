@@ -48,7 +48,7 @@ suite('Variations Workflow Test', () => {
 
       // Step 3: Execute peek command and capture the result
       const activeEditor = vscode.window.activeTextEditor;
-      if (activeEditor?.document.uri.scheme === 'sql-refinery-variations') {
+      if (activeEditor?.document.uri.scheme === 'sql-refinery-explorer') {
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
           activeEditor.document.uri
@@ -71,7 +71,7 @@ suite('Variations Workflow Test', () => {
 
       // Step 4: Apply the first variation
       const virtualEditor = vscode.window.visibleTextEditors.find(
-        (e) => e.document.uri.scheme === 'sql-refinery-variations' && !e.document.uri.path.includes('diff-')
+        (e) => e.document.uri.scheme === 'sql-refinery-explorer' && !e.document.uri.path.includes('diff-')
       );
 
       if (virtualEditor) {
@@ -136,7 +136,7 @@ suite('Variations Workflow Test', () => {
 
       // Execute some commands on the second inconsistency to demonstrate functionality
       const newVirtualEditor = vscode.window.activeTextEditor;
-      if (newVirtualEditor?.document.uri.scheme === 'sql-refinery-variations') {
+      if (newVirtualEditor?.document.uri.scheme === 'sql-refinery-explorer') {
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
           newVirtualEditor.document.uri
