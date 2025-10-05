@@ -1,36 +1,42 @@
 import logging
 import sys
+from pathlib import Path
 
-import pygls.server
+formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s", datefmt="%H:%M:%S")
 
-formatter = logging.Formatter("[backend:%(name)s] %(message)s")
+log_dir = Path(__file__).parent.parent.parent / "logs"
+log_dir.mkdir(exist_ok=True)
+log_file = log_dir / "backend.log"
 
 
-class FlushStreamHandler(logging.StreamHandler):
-    # FIXME: This ensures each message is flushed to stderr immediately, however is ugly and likely the bug is on the VSCode end
+class FlushHandler(logging.Handler):
+    def __init__(self, stream):
+        super().__init__()
+        self.stream = stream
+
     def emit(self, record):
-        super().emit(record)
-        sys.stderr.write("")
-        self.flush()
+        msg = self.format(record)
+        self.stream.write(msg + '\n')
+        self.stream.flush()
 
 
-def _setup(logger: logging.Logger, level=logging.DEBUG) -> None:
-    # All intentional logging via stderr => Extension Output panel
-    # RPC communication via stdin => Debug Console
-
+def _setup(logger: logging.Logger) -> None:
     if not logger.hasHandlers():
         logger.handlers.clear()
-        handler = FlushStreamHandler(sys.stderr)
-        handler.setLevel(level)
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-    logger.setLevel(level)
+
+        stderr_handler = FlushHandler(sys.stderr)
+        stderr_handler.setFormatter(formatter)
+        logger.addHandler(stderr_handler)
+
+        file_handler = FlushHandler(open(log_file, 'w'))
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
+    logger.setLevel(logging.DEBUG)
 
 
-_setup(pygls.server.logger, level=logging.ERROR)
+_setup(logging.getLogger())
 
 
 def get(name: str) -> logging.Logger:
-    logger = logging.getLogger(name)
-    _setup(logger)
-    return logger
+    return logging.getLogger(name)

@@ -1,5 +1,3 @@
-// Custom logger
-// consider moving to winston-transport-vscode
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -14,32 +12,32 @@ const logStream = fs.createWriteStream(logFilePath, { flags: 'w' });
 export function createLogger(filePath: string) {
   const name = path.parse(filePath).name;
 
-  function format(message: string): string {
+  function format(level: string, message: string): string {
     const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' });
-    return `[${timestamp}] [${name}] ${message}`;
+    return `[${timestamp}] [${name}] [${level}] ${message}`;
   }
 
   return {
     outputChannel,
     info: (message: string) => {
-      const formatted = format(message);
+      const formatted = format('INFO', message);
       outputChannel.info(formatted);
-      logStream.write('[info] ' + formatted + '\n');
+      logStream.write(formatted + '\n');
     },
     error: (message: string) => {
-      const formatted = format(message);
+      const formatted = format('ERROR', message);
       outputChannel.error(formatted);
-      logStream.write('[error] ' + formatted + '\n');
+      logStream.write(formatted + '\n');
     },
     warn: (message: string) => {
-      const formatted = format(message);
+      const formatted = format('WARN', message);
       outputChannel.warn(formatted);
-      logStream.write('[warn] ' + formatted + '\n');
+      logStream.write(formatted + '\n');
     },
     debug: (message: string) => {
-      const formatted = format(message);
+      const formatted = format('DEBUG', message);
       outputChannel.debug(formatted);
-      logStream.write('[debug] ' + formatted + '\n');
+      logStream.write(formatted + '\n');
     },
   };
 }
