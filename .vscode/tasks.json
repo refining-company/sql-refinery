@@ -19,7 +19,7 @@
       "script": "watch:rebuild",
       "path": "frontend-vscode",
       "group": "build",
-      "problemMatcher": "$esbuild-watch",
+      "problemMatcher": "$ts-esbuild-watch",
       "isBackground": true,
       "presentation": {
         "group": "watch",
@@ -38,7 +38,7 @@
         "reveal": "never"
       }
     },
-    
+
     // Frontend test tasks
     {
       "label": "npm: watch-tests",

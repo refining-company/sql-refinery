@@ -7,13 +7,13 @@
     "ms-python.debugpy",
     "charliermarsh.ruff",
     "tamasfe.even-better-toml",
-    
+
     // TypeScript/JavaScript extensions
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "connor4312.esbuild-problem-matchers",
+    "nhedger.ts-esbuild-problem-matchers",
     "ms-vscode.extension-test-runner",
-    
+
     // Shared productivity extensions
     "github.copilot",
     "github.copilot-chat",
