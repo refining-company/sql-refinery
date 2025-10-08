@@ -83,6 +83,9 @@ where experience shows it's actually needed.
   comments
 - **Prefer Editing**: Always prefer editing existing files over creating new ones
 - **Use Built-ins**: Always check for built-in functions/methods before implementing custom solutions
+- **Import Style**: Use `from package import module` pattern, not `import package` - clearer module origin without
+  excessive verbosity. Example: `from src import code, logger` then use `code.Tree`, `logger.get()`. Avoid aliasing
+  imports except for standard cases like `import tests.utils as utils`
 
 ### Testing Approach
 
@@ -156,3 +159,10 @@ npm run <script-name>                          # Run any npm script from package
 ### Workflow
 
 - **Test and Commit All Changes**: Every change must be tested and committed to ensure stability and track progress
+- **Commit Prefixes**: Use standard prefixes for commit messages:
+  - `setup:` - Build system, dependencies, configuration
+  - `feat:` - New features or functionality
+  - `fix:` - Bug fixes
+  - `refactor:` - Code changes that neither fix bugs nor add features
+  - `test:` - Adding or updating tests
+  - `docs:` - Documentation changes

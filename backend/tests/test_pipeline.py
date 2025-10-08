@@ -25,7 +25,7 @@ from pathlib import Path
 import pytest
 
 import tests.utils as utils
-from src import code, logger, sql, variations, workspace as ws_module
+from src import code, logger, sql, variations, workspace
 
 log = logger.get(__name__)
 
@@ -38,7 +38,7 @@ def scenario():
     file_editor = dir_inputs / "editor.sql"
 
     log.info("Starting scenario...")
-    workspace = ws_module.Workspace()  # Create fresh workspace
+    ws = workspace.Workspace()  # Create fresh workspace
 
     # Collect all files
     files = {}
@@ -47,7 +47,7 @@ def scenario():
     files[file_editor] = file_editor.read_text()
 
     # Rebuild workspace with all files
-    workspace.rebuild(files)
+    ws.rebuild(files)
     log.info("Scenario finished.")
 
 
