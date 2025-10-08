@@ -113,30 +113,44 @@ abstractions work correctly while documenting system capabilities.
 
 ### Essential Commands
 
-**Backend Development:**
+**Quality Checks & Testing (run from repository root):**
 
 ```bash
-# Run from backend/ directory
-poetry run python -m pytest                        # Run all tests
-poetry run python -m pytest tests/test_server.py   # Run specific test
-poetry run python -m pytest -k "test_name"         # Run tests matching pattern
-poetry run ruff check src/ tests/                  # Lint code
-poetry run black src/ tests/                       # Format code
-poetry run mypy src/ tests/                        # Type checking
-poetry run python -m src.server                    # Start LSP server manually
+# Full monorepo
+make check         # Run all quality checks (format, lint, typecheck, test)
+make format        # Format all code
+make test          # Run all tests
+make test-update   # Update all test snapshots
+
+# Backend only
+make backend-check         # Check backend (Black, Ruff, MyPy, pytest)
+make backend-format        # Format backend code
+make backend-test          # Run backend tests
+make backend-test-update   # Update backend snapshots
+
+# Frontend only
+make frontend-check        # Check frontend (TypeScript, ESLint, Prettier)
+make frontend-format       # Format frontend code
+make frontend-test         # Run frontend tests
+make frontend-test-update  # Update frontend snapshots
+
+# Utility
+make clean         # Remove cache files
+make install       # Install all dependencies
 ```
 
-**Frontend Development:**
+**Running Arbitrary Commands:**
 
 ```bash
-# Run from frontend-vscode/ directory
+# Backend (from backend/ or use: cd backend && ...)
+poetry run python -m pytest -k "test_name"     # Run specific test
+poetry run python -m src.server                # Start LSP server
+poetry run <any-python-command>                # Run any Python command in venv
+
+# Frontend (from frontend-vscode/ or use: cd frontend-vscode && ...)
+npm run watch:rebuild                          # Watch mode (rebuilds on changes)
 npm run compile                                # Build extension
-npm run watch:rebuild                          # Watch mode (rebuilds on backend/frontend changes)
-npm run watch:tstypes                          # TypeScript type checking in watch mode
-npm run lint                                   # ESLint
-npm run test                                   # Run VS Code extension tests
-npm run test:update                            # Update test snapshots
-npm run package                                # Production build
+npm run <script-name>                          # Run any npm script from package.json
 ```
 
 ### Workflow

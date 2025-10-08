@@ -16,7 +16,7 @@ class FlushHandler(logging.Handler):
 
     def emit(self, record):
         msg = self.format(record)
-        self.stream.write(msg + '\n')
+        self.stream.write(msg + "\n")
         self.stream.flush()
 
 
@@ -28,7 +28,7 @@ def _setup(logger: logging.Logger) -> None:
         stderr_handler.setFormatter(formatter)
         logger.addHandler(stderr_handler)
 
-        file_handler = FlushHandler(open(log_file, 'w'))
+        file_handler = FlushHandler(open(log_file, "w"))
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
