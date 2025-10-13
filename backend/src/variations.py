@@ -35,7 +35,7 @@ class ExpressionVariation:
     group: ExpressionGroup
     similarity: float
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f"ExpressionVariation(group={self.group}, similarity={self.similarity:.2f})"
 
 

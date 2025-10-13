@@ -11,6 +11,10 @@
   ],
   "deny": [
     "Bash(git commit*)",
-    "Bash(git push*)"
+    "Bash(git push*)",
+    "Bash(*--snapshot-update*)",
+    "Bash(make test-update*)",
+    "Bash(make backend-test-update*)",
+    "Bash(make frontend-test-update*)"
   ]
 }

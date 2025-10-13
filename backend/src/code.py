@@ -23,15 +23,22 @@ from src import sql
 @dataclass(frozen=True)
 class Range:
     start_line: int
-    start_character: int
+    start_char: int
     end_line: int
-    end_character: int
+    end_char: int
+
+    def __repr__(self) -> str:
+        return f"{self.start_line}:{self.start_char}-{self.end_line}:{self.end_char}"
 
 
 @dataclass(frozen=True)
 class Location:
     file: Path
     range: Range
+
+    def __repr__(self) -> str:
+        filename = str(self.file).replace(str(Path.cwd()), ".")
+        return f"{filename}:{self.range}"
 
 
 @dataclass(frozen=True)
@@ -63,7 +70,7 @@ class Expression:
     sql: str  # The SQL text of this expression
 
     def __repr__(self) -> str:
-        return f"Expression({self._file.name}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
+        return f"Expression({self.location})"
 
     def __str__(self) -> str:
         # TODO: maybe should be a different method
@@ -110,9 +117,10 @@ class Query:
 
     sources: list[Table | Query]
     expressions: list[Expression]
+    location: Location
 
     def __repr__(self) -> str:
-        return f"Query({self._file}:{self._node.start_point.row + 1}:{self._node.start_point.column + 1})"
+        return f"Query({self.location})"
 
 
 @dataclass()
@@ -123,7 +131,8 @@ class Tree:
     map_file_to_expr: dict[Path, list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
-        return "Tree({})".format(", ".join(map(str, self.files)))
+        files_str = ", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)
+        return f"Tree({files_str})"
 
     def ingest_file(self, path: Path, content: str) -> Tree:
         parse_tree = sql.parse(content.encode())
@@ -187,9 +196,9 @@ class Tree:
                     file=file,
                     range=Range(
                         start_line=op_node.start_point[0],
-                        start_character=op_node.start_point[1],
+                        start_char=op_node.start_point[1],
                         end_line=op_node.end_point[0],
-                        end_character=op_node.end_point[1],
+                        end_char=op_node.end_point[1],
                     ),
                 )
                 ops.append(
@@ -205,7 +214,23 @@ class Tree:
                 )
 
             subqueries = self._parse_node(select_node, file=file)
-            query = self._make(Query, _file=file, _node=select_node, sources=tables + subqueries, expressions=ops)
+            query_location = Location(
+                file=file,
+                range=Range(
+                    start_line=select_node.start_point.row,
+                    start_char=select_node.start_point.column,
+                    end_line=select_node.end_point.row,
+                    end_char=select_node.end_point.column,
+                ),
+            )
+            query = self._make(
+                Query,
+                _file=file,
+                _node=select_node,
+                sources=tables + subqueries,
+                expressions=ops,
+                location=query_location,
+            )
             queries.append(query)
 
         return queries

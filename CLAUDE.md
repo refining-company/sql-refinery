@@ -144,6 +144,8 @@ make install       # Install all dependencies
 
 **Running Arbitrary Commands:**
 
+Use it only as a last resort
+
 ```bash
 # Backend (from backend/ or use: cd backend && ...)
 poetry run python -m pytest -k "test_name"     # Run specific test
