@@ -14,7 +14,6 @@
     "**/__pycache__": true,
     "**/.pytest_cache": true,
     "**/.mypy_cache": true,
-    "**/.claude": true,
     "**/.ruff_cache": true,
     "**/.venv": true,
     "**/.vscode-test": true,
@@ -63,11 +62,20 @@
   "python.testing.unittestEnabled": false,
   "python.testing.cwd": "${workspaceFolder}/backend",
   "python.testing.pytestPath": "pytest",
-  "python.testing.pytestArgs": ["-c", "${workspaceFolder}/backend/pyproject.toml"],
+  "python.testing.pytestArgs": [
+    "-c",
+    "${workspaceFolder}/backend/pyproject.toml"
+  ],
 
-  "black-formatter.args": ["--config", "${workspaceFolder}/backend/pyproject.toml"],
+  "black-formatter.args": [
+    "--config",
+    "${workspaceFolder}/backend/pyproject.toml"
+  ],
   "ruff.configuration": "${workspaceFolder}/backend/pyproject.toml",
-  "mypy-type-checker.args": ["--config-file", "${workspaceFolder}/backend/pyproject.toml"],
+  "mypy-type-checker.args": [
+    "--config-file",
+    "${workspaceFolder}/backend/pyproject.toml"
+  ],
 
   // ============================================================================
   // TypeScript/JavaScript Settings

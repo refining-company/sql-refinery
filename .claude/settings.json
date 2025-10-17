@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(**)",
+      "Read(**)",
+      "Write(**)",
+      "WebFetch(**)",
+      "Bash(make :*)",
+      "Bash(npm run:*)",
+      "Bash(poetry run python -c:*)",
+      "Bash(cd backend && poetry run python -c:*)",
+      "Bash(cd frontend:*)"
+    ],
+    "deny": [
+      "Bash(poetry run python -m pytest:*)",
+      "Bash(poetry run pytest:*)",
+      "Bash(cd backend && poetry run python -m pytest:*)",
+      "Bash(cd backend && poetry run pytest:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(make test-update)",
+      "Bash(make backend-test-update)",
+      "Bash(make frontend-test-update)",
+      "Bash(make :*update:*)"
+    ],
+    "defaultMode": "acceptEdits"
+  }
+}
