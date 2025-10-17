@@ -866,7 +866,7 @@
 {
   "Tree(./tests/inputs/codebase/0-accounts.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
             "sources": [
               { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
@@ -1625,7 +1625,7 @@
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
@@ -1764,7 +1764,7 @@
 {
   "Tree(./tests/inputs/codebase/0-accounts.sql, ./tests/inputs/codebase/1-revenue.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
             "sources": [
               { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
@@ -1926,7 +1926,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+      "./tests/inputs/codebase/1-revenue.sql": [
         { "Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
@@ -2831,7 +2831,7 @@
             "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
             "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
@@ -2962,7 +2962,7 @@
             "alias": "revenue_12m",
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+      "./tests/inputs/codebase/1-revenue.sql": [
         { "Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
@@ -3032,7 +3032,7 @@
 {
   "Tree(./tests/inputs/codebase/0-accounts.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
             "sources": [
               { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
@@ -3791,7 +3791,7 @@
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
@@ -3930,7 +3930,7 @@
 {
   "Tree(./tests/inputs/codebase/0-accounts.sql, ./tests/inputs/codebase/1-revenue.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
             "sources": [
               { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
@@ -4092,7 +4092,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+      "./tests/inputs/codebase/1-revenue.sql": [
         { "Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
@@ -4997,7 +4997,7 @@
             "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
             "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
@@ -5128,7 +5128,7 @@
             "alias": "revenue_12m",
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+      "./tests/inputs/codebase/1-revenue.sql": [
         { "Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
@@ -5198,7 +5198,7 @@
 {
   "Tree(./tests/inputs/codebase/0-accounts.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
             "sources": [
               { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
@@ -5957,7 +5957,7 @@
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
@@ -6096,7 +6096,7 @@
 {
   "Tree(./tests/inputs/codebase/0-accounts.sql, ./tests/inputs/codebase/1-revenue.sql)": {
     "files": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
             "sources": [
               { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
@@ -6258,7 +6258,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+      "./tests/inputs/codebase/1-revenue.sql": [
         { "Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
             "sources": [
               "Table(?.accounts_revenue as ar)",
@@ -7163,7 +7163,7 @@
             "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
             "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ] },
     "map_file_to_expr": {
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/0-accounts.sql": [
+      "./tests/inputs/codebase/0-accounts.sql": [
         { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
             "columns": [
               "Column(?.?.revenue)",
@@ -7294,7 +7294,7 @@
             "alias": "revenue_12m",
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
-      "/Users/ilyakochik/Developer/refining-company/sql-refinery/backend/tests/inputs/codebase/1-revenue.sql": [
+      "./tests/inputs/codebase/1-revenue.sql": [
         { "Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
             "columns": [
               "Column(?.?.date_month)" ],
@@ -7556,7 +7556,7 @@
 []
 ```
 
-## LSP Protocol
+## Client-Server Exchange
 
 ### client->server: initialize
 
@@ -7918,33 +7918,6 @@
   "jsonrpc": "2.0" }
 ```
 
-### server->client: response-0
-
-```json
-{
-  "id": 0,
-  "jsonrpc": "2.0",
-  "result": {
-    "capabilities": {
-      "positionEncoding": "utf-16",
-      "textDocumentSync": {
-        "openClose": true,
-        "change": 2,
-        "willSave": false,
-        "willSaveWaitUntil": false,
-        "save": false },
-      "codeLensProvider": {},
-      "executeCommandProvider": { "commands": [] },
-      "workspace": {
-        "workspaceFolders": {
-          "supported": true,
-          "changeNotifications": true },
-        "fileOperations": {} } },
-    "serverInfo": {
-      "name": "sql-refinery-server",
-      "version": "0.1-dev" } } }
-```
-
 ### client->server: initialized
 
 ```json
@@ -7968,37 +7941,6 @@
   "jsonrpc": "2.0" }
 ```
 
-### server->client: textDocument/publishDiagnostics
-
-```json
-{
-  "params": {
-    "uri": "file://./tests/inputs/editor.sql",
-    "diagnostics": [
-      { "range": {
-          "start": {
-            "line": 5,
-            "character": 4 },
-          "end": {
-            "line": 10,
-            "character": 7 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 12,
-            "character": 4 },
-          "end": {
-            "line": 12,
-            "character": 62 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" } ] },
-  "method": "textDocument/publishDiagnostics",
-  "jsonrpc": "2.0" }
-```
-
 ### client->server: textDocument/codeLens
 
 ```json
@@ -8008,91 +7950,6 @@
     "textDocument": { "uri": "file://./tests/inputs/editor.sql" } },
   "method": "textDocument/codeLens",
   "jsonrpc": "2.0" }
-```
-
-### server->client: response-1
-
-```json
-{
-  "id": 1,
-  "jsonrpc": "2.0",
-  "result": [
-    { "range": {
-        "start": {
-          "line": 5,
-          "character": 4 },
-        "end": {
-          "line": 10,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 3",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/editor.sql",
-          { "line": 10,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 97,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 97,
-                  "character": 8 },
-                "end": {
-                  "line": 101,
-                  "character": 11 } } },
-            { "uri": "file://./tests/inputs/codebase/1-revenue.sql",
-              "position": {
-                "line": 6,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 6,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } },
-            { "uri": "file://./tests/inputs/codebase/1-revenue.sql",
-              "position": {
-                "line": 32,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 32,
-                  "character": 4 },
-                "end": {
-                  "line": 36,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 12,
-          "character": 4 },
-        "end": {
-          "line": 12,
-          "character": 62 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/editor.sql",
-          { "line": 12,
-            "character": 62 },
-          [
-            { "uri": "file://./tests/inputs/codebase/1-revenue.sql",
-              "position": {
-                "line": 38,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 38,
-                  "character": 4 },
-                "end": {
-                  "line": 38,
-                  "character": 70 } } } ],
-          "peek" ] } } ] }
 ```
 
 ### client->server: textDocument/didOpen
@@ -8109,77 +7966,6 @@
   "jsonrpc": "2.0" }
 ```
 
-### server->client: textDocument/publishDiagnostics
-
-```json
-{
-  "params": {
-    "uri": "file://./tests/inputs/codebase/1-revenue.sql",
-    "diagnostics": [
-      { "range": {
-          "start": {
-            "line": 6,
-            "character": 4 },
-          "end": {
-            "line": 10,
-            "character": 7 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 32,
-            "character": 4 },
-          "end": {
-            "line": 36,
-            "character": 7 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 38,
-            "character": 4 },
-          "end": {
-            "line": 38,
-            "character": 70 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 6,
-            "character": 4 },
-          "end": {
-            "line": 10,
-            "character": 7 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 32,
-            "character": 4 },
-          "end": {
-            "line": 36,
-            "character": 7 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 38,
-            "character": 4 },
-          "end": {
-            "line": 38,
-            "character": 70 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" } ] },
-  "method": "textDocument/publishDiagnostics",
-  "jsonrpc": "2.0" }
-```
-
 ### client->server: textDocument/codeLens
 
 ```json
@@ -8189,177 +7975,6 @@
     "textDocument": { "uri": "file://./tests/inputs/codebase/1-revenue.sql" } },
   "method": "textDocument/codeLens",
   "jsonrpc": "2.0" }
-```
-
-### server->client: response-2
-
-```json
-{
-  "id": 2,
-  "jsonrpc": "2.0",
-  "result": [
-    { "range": {
-        "start": {
-          "line": 6,
-          "character": 4 },
-        "end": {
-          "line": 10,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 10,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 32,
-          "character": 4 },
-        "end": {
-          "line": 36,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 36,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 38,
-          "character": 4 },
-        "end": {
-          "line": 38,
-          "character": 70 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 38,
-            "character": 70 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 12,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 12,
-                  "character": 4 },
-                "end": {
-                  "line": 12,
-                  "character": 62 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 6,
-          "character": 4 },
-        "end": {
-          "line": 10,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 10,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 32,
-          "character": 4 },
-        "end": {
-          "line": 36,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 36,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 38,
-          "character": 4 },
-        "end": {
-          "line": 38,
-          "character": 70 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 38,
-            "character": 70 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 12,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 12,
-                  "character": 4 },
-                "end": {
-                  "line": 12,
-                  "character": 62 } } } ],
-          "peek" ] } } ] }
 ```
 
 ### client->server: textDocument/didOpen
@@ -8376,77 +7991,6 @@
   "jsonrpc": "2.0" }
 ```
 
-### server->client: textDocument/publishDiagnostics
-
-```json
-{
-  "params": {
-    "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-    "diagnostics": [
-      { "range": {
-          "start": {
-            "line": 37,
-            "character": 8 },
-          "end": {
-            "line": 37,
-            "character": 105 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 38,
-            "character": 8 },
-          "end": {
-            "line": 38,
-            "character": 86 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 97,
-            "character": 8 },
-          "end": {
-            "line": 101,
-            "character": 11 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 37,
-            "character": 8 },
-          "end": {
-            "line": 37,
-            "character": 105 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 38,
-            "character": 8 },
-          "end": {
-            "line": 38,
-            "character": 86 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" },
-      { "range": {
-          "start": {
-            "line": 97,
-            "character": 8 },
-          "end": {
-            "line": 101,
-            "character": 11 } },
-        "message": "Variation expressions found in the codebase",
-        "severity": 3,
-        "code": "Variation" } ] },
-  "method": "textDocument/publishDiagnostics",
-  "jsonrpc": "2.0" }
-```
-
 ### client->server: textDocument/codeLens
 
 ```json
@@ -8456,221 +8000,6 @@
     "textDocument": { "uri": "file://./tests/inputs/codebase/0-accounts.sql" } },
   "method": "textDocument/codeLens",
   "jsonrpc": "2.0" }
-```
-
-### server->client: response-3
-
-```json
-{
-  "id": 3,
-  "jsonrpc": "2.0",
-  "result": [
-    { "range": {
-        "start": {
-          "line": 37,
-          "character": 8 },
-        "end": {
-          "line": 37,
-          "character": 105 } },
-      "command": {
-        "title": "Variations found: 2",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/0-accounts.sql",
-          { "line": 37,
-            "character": 105 },
-          [
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 38,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 38,
-                  "character": 8 },
-                "end": {
-                  "line": 38,
-                  "character": 86 } } },
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 38,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 38,
-                  "character": 8 },
-                "end": {
-                  "line": 38,
-                  "character": 86 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 38,
-          "character": 8 },
-        "end": {
-          "line": 38,
-          "character": 86 } },
-      "command": {
-        "title": "Variations found: 2",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/0-accounts.sql",
-          { "line": 38,
-            "character": 86 },
-          [
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 37,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 37,
-                  "character": 8 },
-                "end": {
-                  "line": 37,
-                  "character": 105 } } },
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 37,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 37,
-                  "character": 8 },
-                "end": {
-                  "line": 37,
-                  "character": 105 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 97,
-          "character": 8 },
-        "end": {
-          "line": 101,
-          "character": 11 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/0-accounts.sql",
-          { "line": 101,
-            "character": 11 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 37,
-          "character": 8 },
-        "end": {
-          "line": 37,
-          "character": 105 } },
-      "command": {
-        "title": "Variations found: 2",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/0-accounts.sql",
-          { "line": 37,
-            "character": 105 },
-          [
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 38,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 38,
-                  "character": 8 },
-                "end": {
-                  "line": 38,
-                  "character": 86 } } },
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 38,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 38,
-                  "character": 8 },
-                "end": {
-                  "line": 38,
-                  "character": 86 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 38,
-          "character": 8 },
-        "end": {
-          "line": 38,
-          "character": 86 } },
-      "command": {
-        "title": "Variations found: 2",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/0-accounts.sql",
-          { "line": 38,
-            "character": 86 },
-          [
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 37,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 37,
-                  "character": 8 },
-                "end": {
-                  "line": 37,
-                  "character": 105 } } },
-            { "uri": "file://./tests/inputs/codebase/0-accounts.sql",
-              "position": {
-                "line": 37,
-                "character": 8 },
-              "range": {
-                "start": {
-                  "line": 37,
-                  "character": 8 },
-                "end": {
-                  "line": 37,
-                  "character": 105 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 97,
-          "character": 8 },
-        "end": {
-          "line": 101,
-          "character": 11 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/0-accounts.sql",
-          { "line": 101,
-            "character": 11 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } } ] }
 ```
 
 ### client->server: textDocument/didClose
@@ -8692,177 +8021,6 @@
     "textDocument": { "uri": "file://./tests/inputs/codebase/1-revenue.sql" } },
   "method": "textDocument/codeLens",
   "jsonrpc": "2.0" }
-```
-
-### server->client: response-4
-
-```json
-{
-  "id": 4,
-  "jsonrpc": "2.0",
-  "result": [
-    { "range": {
-        "start": {
-          "line": 6,
-          "character": 4 },
-        "end": {
-          "line": 10,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 10,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 32,
-          "character": 4 },
-        "end": {
-          "line": 36,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 36,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 38,
-          "character": 4 },
-        "end": {
-          "line": 38,
-          "character": 70 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 38,
-            "character": 70 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 12,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 12,
-                  "character": 4 },
-                "end": {
-                  "line": 12,
-                  "character": 62 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 6,
-          "character": 4 },
-        "end": {
-          "line": 10,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 10,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 32,
-          "character": 4 },
-        "end": {
-          "line": 36,
-          "character": 7 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 36,
-            "character": 7 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 5,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 5,
-                  "character": 4 },
-                "end": {
-                  "line": 10,
-                  "character": 7 } } } ],
-          "peek" ] } },
-    { "range": {
-        "start": {
-          "line": 38,
-          "character": 4 },
-        "end": {
-          "line": 38,
-          "character": 70 } },
-      "command": {
-        "title": "Variations found: 1",
-        "command": "sqlRefinery.peekLocations",
-        "arguments": [
-          "file://./tests/inputs/codebase/1-revenue.sql",
-          { "line": 38,
-            "character": 70 },
-          [
-            { "uri": "file://./tests/inputs/editor.sql",
-              "position": {
-                "line": 12,
-                "character": 4 },
-              "range": {
-                "start": {
-                  "line": 12,
-                  "character": 4 },
-                "end": {
-                  "line": 12,
-                  "character": 62 } } } ],
-          "peek" ] } } ] }
 ```
 
 ### client->server: textDocument/didClose
@@ -8894,15 +8052,6 @@
   "jsonrpc": "2.0" }
 ```
 
-### server->client: response-5
-
-```json
-{
-  "id": 5,
-  "jsonrpc": "2.0",
-  "result": null }
-```
-
 ### client->server: exit
 
 ```json
@@ -8911,40 +8060,112 @@
   "jsonrpc": "2.0" }
 ```
 
-## Server Responses (Captured)
+## Server Notifications
 
-### Response to initialize (id=0)
+### sql-refinery/variations
 
 ```json
-null
+{
+  "uri": "file://./tests/inputs/editor.sql",
+  "variations": [] }
 ```
 
-### Response to textDocument/codeLens (id=1)
+### sql-refinery/variations
 
 ```json
-[]
+{
+  "uri": "file://./tests/inputs/codebase/1-revenue.sql",
+  "variations": [] }
 ```
 
-### Response to textDocument/codeLens (id=2)
+### sql-refinery/variations
 
 ```json
-[]
-```
-
-### Response to textDocument/codeLens (id=3)
-
-```json
-[]
-```
-
-### Response to textDocument/codeLens (id=4)
-
-```json
-[]
-```
-
-### Response to shutdown (id=5)
-
-```json
-null
+{
+  "uri": "file://./tests/inputs/codebase/0-accounts.sql",
+  "variations": [
+    { "this": {
+        "columns": [
+          { "dataset": null,
+            "table": "orders",
+            "column": "product" },
+          { "dataset": null,
+            "table": "orders",
+            "column": "value" } ],
+        "alias": "revenue_core",
+        "location": {
+          "file": "./tests/inputs/codebase/0-accounts.sql",
+          "range": {
+            "start_line": 37,
+            "start_char": 8,
+            "end_line": 37,
+            "end_char": 105 } },
+        "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" },
+      "others": [
+        { "group": {
+            "expressions": [
+              { "columns": [
+                  { "dataset": null,
+                    "table": "orders",
+                    "column": "product" },
+                  { "dataset": null,
+                    "table": "orders",
+                    "column": "value" } ],
+                "alias": "revenue_aux",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 38,
+                    "start_char": 8,
+                    "end_line": 38,
+                    "end_char": 86 } },
+                "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } ],
+            "repr": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
+            "columns": [
+              "Column(?.orders.product)",
+              "Column(?.orders.value)" ],
+            "reliability": 1 },
+          "similarity": 0.9 } ] },
+    { "this": {
+        "columns": [
+          { "dataset": null,
+            "table": "orders",
+            "column": "product" },
+          { "dataset": null,
+            "table": "orders",
+            "column": "value" } ],
+        "alias": "revenue_aux",
+        "location": {
+          "file": "./tests/inputs/codebase/0-accounts.sql",
+          "range": {
+            "start_line": 38,
+            "start_char": 8,
+            "end_line": 38,
+            "end_char": 86 } },
+        "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" },
+      "others": [
+        { "group": {
+            "expressions": [
+              { "columns": [
+                  { "dataset": null,
+                    "table": "orders",
+                    "column": "product" },
+                  { "dataset": null,
+                    "table": "orders",
+                    "column": "value" } ],
+                "alias": "revenue_core",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 37,
+                    "start_char": 8,
+                    "end_line": 37,
+                    "end_char": 105 } },
+                "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } ],
+            "repr": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",
+            "columns": [
+              "Column(?.orders.product)",
+              "Column(?.orders.value)" ],
+            "reliability": 1 },
+          "similarity": 0.9 } ] } ] }
 ```

@@ -19,3 +19,28 @@ def pformat(obj) -> str:
     output_json = json.dumps(obj, indent=2)
     output_mini = json_compact(output_json)
     return output_mini
+
+
+class Markdown:
+    """Simple markdown document builder"""
+
+    def __init__(self):
+        self.lines = []
+
+    def h1(self, text):
+        self.lines.append(f"# {text}\n")
+
+    def h2(self, text):
+        self.lines.append(f"## {text}\n")
+
+    def h3(self, text):
+        self.lines.append(f"### {text}\n")
+
+    def h4(self, text):
+        self.lines.append(f"#### {text}\n")
+
+    def code(self, obj, lang="json"):
+        self.lines.append(f"```{lang}\n{pformat(obj)}\n```\n")
+
+    def __str__(self):
+        return "\n".join(self.lines)
