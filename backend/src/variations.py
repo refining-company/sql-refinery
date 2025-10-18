@@ -53,35 +53,27 @@ class ExpressionVariations:
 def get_variations(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
     """Compute variations for all files in the tree, return path->variations mapping."""
 
-    # Create variations (groups of identical expressions)
+    # Group identical expressions
     dict_expr_groups: dict[tuple[str, frozenset[str]], list[code.Expression]] = defaultdict(list)
-    for exprs in tree.map_file_to_expr.values():
-        for expr in exprs:
-            key = (str(expr), frozenset(map(str, expr.columns)))
-            dict_expr_groups[key].append(expr)
+    for expr in tree.index[code.Expression]:  # type: ignore
+        key = (str(expr), frozenset(map(str, expr.columns)))
+        dict_expr_groups[key].append(expr)
     expr_groups = [ExpressionGroup(exprs, text, cols, len(exprs)) for (text, cols), exprs in dict_expr_groups.items()]
 
-    # Build map from expression to group (use id since Expression is not hashable)
-    map_expr_to_group = {id(expr): gr for gr in expr_groups for expr in gr.expressions}
-
-    # Build similarity map between variations
-    map_group_to_other: dict[int, list[tuple[ExpressionGroup, float]]] = defaultdict(list)
+    # Build output directly - for each group, find similar groups and add to result
+    result: dict[Path, list[ExpressionVariations]] = defaultdict(list)
     for gr1 in expr_groups:
-        map_group_to_other[id(gr1)] = [(gr2, get_similarity(gr1, gr2)) for gr2 in expr_groups if gr2 != gr1]
+        variations = [
+            ExpressionVariation(gr2, sim)
+            for gr2 in expr_groups
+            if gr2 != gr1 and (sim := get_similarity(gr1, gr2)) >= threshold
+        ]
 
-    # Build variations for all files at once
-    map_file_to_vars = {}
-    for path, expressions in tree.map_file_to_expr.items():
-        file_variations = []
-        for expr in expressions:
-            gr = map_expr_to_group[id(expr)]
-            other = map_group_to_other[id(gr)]
-            variations = [ExpressionVariation(gr2, sim) for (gr2, sim) in other if sim >= threshold]
-            if variations:
-                file_variations.append(ExpressionVariations(expr, variations))
-        map_file_to_vars[path] = file_variations
+        if variations:
+            for expr in gr1.expressions:
+                result[expr._file].append(ExpressionVariations(expr, variations))
 
-    return map_file_to_vars
+    return dict(result)
 
 
 def get_similarity(v1: ExpressionGroup, v2: ExpressionGroup) -> float:

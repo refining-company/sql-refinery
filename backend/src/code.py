@@ -13,7 +13,6 @@ This module provides:
 
 from __future__ import annotations
 
-from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -127,7 +126,6 @@ class Query:
 class Tree:
     files: dict[Path, list[Query]] = field(default_factory=dict)
     index: dict[type, list[Query | Expression | Column | Table]] = field(default_factory=dict)
-    map_file_to_expr: dict[Path, list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
         files_str = ", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)
@@ -136,8 +134,6 @@ class Tree:
     def ingest_file(self, path: Path, content: str) -> Tree:
         parse_tree = sql.parse(content.encode())
         self.files[path] = self._parse_node(parse_tree.root_node, path)
-        self.map_file_to_expr |= _map_file_to_expr(self.index[Expression])  # type: ignore
-
         return self
 
     def _make(self, cls, *args, **kwargs) -> object:
@@ -232,15 +228,3 @@ class Tree:
             queries.append(query)
 
         return queries
-
-
-# BUG: Fix WITH RECURSIVE queries capture
-
-
-def _map_file_to_expr(exprs: list[Expression]) -> dict[str, list[Expression]]:
-    mapped = defaultdict(list)
-    for expr in exprs:
-        op_key = expr._file
-        mapped[op_key].append(expr)
-
-    return dict(mapped)
