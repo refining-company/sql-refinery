@@ -50,8 +50,8 @@ class ExpressionVariations:
         return f"ExpressionVariations({self.this._file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
 
 
-def get_variations(path: Path, tree: code.Tree, threshold: float = 0.7) -> list[ExpressionVariations]:
-    """Find variation groups containing expressions from the given file."""
+def get_variations(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
+    """Compute variations for all files in the tree, return path->variations mapping."""
 
     # Create variations (groups of identical expressions)
     dict_expr_groups: dict[tuple[str, frozenset[str]], list[code.Expression]] = defaultdict(list)
@@ -69,16 +69,19 @@ def get_variations(path: Path, tree: code.Tree, threshold: float = 0.7) -> list[
     for gr1 in expr_groups:
         map_group_to_other[id(gr1)] = [(gr2, get_similarity(gr1, gr2)) for gr2 in expr_groups if gr2 != gr1]
 
-    # Find variations related to the requested file
-    file_variations: list[ExpressionVariations] = []
-    for expr in tree.map_file_to_expr.get(path, []):
-        gr = map_expr_to_group[id(expr)]
-        other = map_group_to_other[id(gr)]
-        variations = [ExpressionVariation(gr2, sim) for (gr2, sim) in other if sim >= threshold]
-        if variations:
-            file_variations.append(ExpressionVariations(expr, variations))
+    # Build variations for all files at once
+    map_file_to_vars = {}
+    for path, expressions in tree.map_file_to_expr.items():
+        file_variations = []
+        for expr in expressions:
+            gr = map_expr_to_group[id(expr)]
+            other = map_group_to_other[id(gr)]
+            variations = [ExpressionVariation(gr2, sim) for (gr2, sim) in other if sim >= threshold]
+            if variations:
+                file_variations.append(ExpressionVariations(expr, variations))
+        map_file_to_vars[path] = file_variations
 
-    return file_variations
+    return map_file_to_vars
 
 
 def get_similarity(v1: ExpressionGroup, v2: ExpressionGroup) -> float:
