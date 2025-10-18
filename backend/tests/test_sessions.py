@@ -69,12 +69,10 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
         # Built-in types
         case dict():
             return {str(simplify(key, terminal)): simplify(value, terminal) for key, value in obj.items()}
-        case list():
-            return [simplify(item, terminal) for item in obj]
+        case list() | set() | frozenset():
+            return sorted([simplify(item, terminal) for item in obj], key=str)
         case tuple():
             return tuple(simplify(item, terminal) for item in obj)
-        case set() | frozenset():
-            return tuple(sorted((simplify(item, terminal) for item in obj), key=str))
         case Path():
             return simplify(str(obj), terminal)
         case bytes():
@@ -94,7 +92,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
 @contextmanager
 def patch_pipeline():
     """Patch pipeline functions to capture internal stages"""
-    captured = defaultdict(list)
+    pipeline = defaultdict(list)
 
     def capture(target, processor):
         key = f"{target.__module__}.{target.__name__}"
@@ -102,7 +100,7 @@ def patch_pipeline():
         @wraps(target)
         def wrapper(*args, **kwargs):
             result = target(*args, **kwargs)
-            captured[key].append(processor(result))
+            pipeline[key].append(processor(result))
             return result
 
         return wrapper
@@ -126,7 +124,7 @@ def patch_pipeline():
     )
 
     try:
-        yield captured
+        yield pipeline
     finally:
         # Restore originals
         sql.parse = orig_parse
@@ -136,19 +134,31 @@ def patch_pipeline():
 
 @contextmanager
 def patch_server():
-    """Patch server to capture responses and notifications"""
-    responses = {}
-    notifications = []
+    """Patch server to capture all messages"""
+    exchange = []
     orig_send_notification = server.lspserver.send_notification
 
     server.workspace = None
     server.workspace_folder = None
     server.lspserver.lsp._workspace = pygls.workspace.Workspace(None)
-    server.lspserver.send_notification = lambda met, par: notifications.append({"method": met, "params": par})
+
+    # Patch send_notification to append directly to exchange
+    server.lspserver.send_notification = lambda method, params: exchange.append(
+        {"direction": "server->client", "type": "notification", "method": method, "params": params}
+    )
 
     converter = server.lspserver.lsp._converter
 
-    def handle(method, params, req_id):
+    def replay(client_message):
+        """Replay client message: append request, execute server handler, append response"""
+        msg = client_message["message"]
+        method = msg.get("method")
+        params = msg.get("params", {})
+
+        # Append client request
+        exchange.append({"direction": "client->server", "method": method, "data": msg})
+
+        # Execute server handler
         response = None
         match method:
             case "initialize":
@@ -156,11 +166,12 @@ def patch_server():
             case "textDocument/didOpen":
                 server.did_open(converter.structure(params, lsp.DidOpenTextDocumentParams))
 
-        if response and req_id:
-            responses[req_id] = response
+        # Append response if present
+        if response is not None:
+            exchange.append({"direction": "server->client", "type": "response", "method": method, "data": response})
 
     try:
-        yield handle, responses, notifications
+        yield exchange, replay
     finally:
         server.lspserver.send_notification = orig_send_notification
 
@@ -171,37 +182,33 @@ def test_session(snapshot, session_name):
     snapshot.snapshot_dir = SNAPSHOTS_DIR
     session_data = utils.load_ndjson(SESSIONS_DIR / f"{session_name}.ndjson")
 
-    with patch_pipeline() as captured_internal, patch_server() as (handle, server_responses, server_notifications):
+    with patch_pipeline() as pipeline, patch_server() as (exchange, replay):
         for record in session_data:
             if record["direction"] == "client->server":
-                msg = record["message"]
-                handle(msg.get("method"), msg.get("params", {}), msg.get("id"))
+                replay(record)
 
     # Format snapshot
     md = utils.Markdown()
     md.h1(f"Session: {session_name}")
 
     md.h2("Internal Pipeline")
-    for stage_name, values in captured_internal.items():
+    for stage_name, values in pipeline.items():
         for i, value in enumerate(values):
             md.h3(f"{stage_name} (call {i + 1})")
             md.code(value)
 
     md.h2("Client-Server Exchange")
-    for record in session_data:
-        if record["direction"] == "client->server":
-            msg = record["message"]
-            md.h3(f"client->server: {msg.get('method')}")
-            md.code(simplify(msg))
-            if msg.get("id") in server_responses:
-                md.h4("server->client")
-                md.code(simplify(server_responses[msg.get("id")]))
-
-    if server_notifications:
-        md.h2("Server Notifications")
-        for notification in server_notifications:
-            md.h3(notification["method"])
-            md.code(simplify(notification["params"]))
+    for msg in exchange:
+        if msg["direction"] == "client->server":
+            md.h3(f"client->server: {msg['method']}")
+            md.code(simplify(msg["data"]))
+        else:  # server->client
+            if msg["type"] == "response":
+                md.h3(f"server->client: {msg['method']} (response)")
+                md.code(simplify(msg["data"]))
+            else:  # notification
+                md.h3(f"server->client: {msg['method']} (notification)")
+                md.code(simplify(msg["params"]))
 
     output = str(md)
 

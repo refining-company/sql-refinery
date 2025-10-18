@@ -8,9 +8,16 @@ def load_ndjson(path: Path) -> list[dict]:
 
 
 def json_compact(string: str) -> str:
-    string = re.sub(r"\{\s+(.*)\s+\}", r"{ \1 }", string)  # small one-item objects
-    string = re.sub(r"(\n[ \t]*)\{\s+", r"\1{ ", string)  # hanging {
-    string = re.sub(r"\s+(?=[\}\]])", " ", string)  # combine closing brackets on one line
+    # Small one-item objects
+    string = re.sub(r"\{\s+(.*)\s+\}", r"{ \1 }", string)
+    # Hanging {
+    string = re.sub(r"(\n[ \t]*)\{\s+", r"\1{ ", string)
+    # Combine closing brackets on one line
+    string = re.sub(r"\s+(?=[\}\]])", " ", string)
+    # Collapse arrays of integers
+    string = re.sub(r"\[\s*\d+\s*(?:,\s*\d+\s*)*\]", lambda m: re.sub(r"\s+", " ", m.group()), string)
+    # Collapse arrays of strings
+    string = re.sub(r'\[\s*"[^"]*"\s*(?:,\s*"[^"]*"\s*)*\]', lambda m: re.sub(r"\s+", " ", m.group()), string)
 
     return string
 
