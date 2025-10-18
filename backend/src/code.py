@@ -127,7 +127,6 @@ class Query:
 class Tree:
     files: dict[Path, list[Query]] = field(default_factory=dict)
     index: dict[type, list[Query | Expression | Column | Table]] = field(default_factory=dict)
-    map_key_to_expr: dict[tuple[str, frozenset[str]], list[Expression]] = field(default_factory=dict)
     map_file_to_expr: dict[Path, list[Expression]] = field(default_factory=dict)
 
     def __repr__(self) -> str:
@@ -137,7 +136,6 @@ class Tree:
     def ingest_file(self, path: Path, content: str) -> Tree:
         parse_tree = sql.parse(content.encode())
         self.files[path] = self._parse_node(parse_tree.root_node, path)
-        self.map_key_to_expr |= _map_key_to_expr(self.index[Expression])  # type: ignore
         self.map_file_to_expr |= _map_file_to_expr(self.index[Expression])  # type: ignore
 
         return self
@@ -237,15 +235,6 @@ class Tree:
 
 
 # BUG: Fix WITH RECURSIVE queries capture
-
-
-def _map_key_to_expr(exprs: list[Expression]) -> dict[tuple[str, frozenset[str]], list[Expression]]:
-    mapped = defaultdict(list)
-    for expr in exprs:
-        op_key = (str(expr), frozenset(map(str, expr.columns)))
-        mapped[op_key].append(expr)
-
-    return dict(mapped)
 
 
 def _map_file_to_expr(exprs: list[Expression]) -> dict[str, list[Expression]]:

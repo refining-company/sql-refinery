@@ -43,8 +43,8 @@ Analysts who build SQL data pipelines to dashboards and analytics.
    `@expression`) → Expression similarity detection
 2. **Data Structures**:
    - `Tree.index`: Registry of elements by type
-   - `Tree.map_key_to_expr`: Expression deduplication by signature
-   - `Alternative`: Expression + similar alternatives + similarity score + locations
+   - `Tree.map_file_to_expr`: Mapping from files to their expressions
+   - `ExpressionVariations`: Expression + similar variations + similarity scores + locations
 3. **LSP Translation**: Alternatives → Diagnostics (blue squiggles) + Code Lenses ("Alternatives found: N") → VS Code UI
 
 ### File Structure
@@ -140,22 +140,6 @@ make frontend-test-update  # Update frontend snapshots
 # Utility
 make clean         # Remove cache files
 make install       # Install all dependencies
-```
-
-**Running Arbitrary Commands:**
-
-Use it only as a last resort
-
-```bash
-# Backend (from backend/ or use: cd backend && ...)
-poetry run python -m pytest -k "test_name"     # Run specific test
-poetry run python -m src.server                # Start LSP server
-poetry run <any-python-command>                # Run any Python command in venv
-
-# Frontend (from frontend-vscode/ or use: cd frontend-vscode && ...)
-npm run watch:rebuild                          # Watch mode (rebuilds on changes)
-npm run compile                                # Build extension
-npm run <script-name>                          # Run any npm script from package.json
 ```
 
 ### Workflow
