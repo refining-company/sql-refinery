@@ -1,6 +1,30 @@
+import dataclasses
 import json
 import re
+import urllib.parse
 from pathlib import Path
+
+
+def uri_to_path(uri: str) -> Path:
+    path = urllib.parse.urlparse(uri).path
+    path = urllib.parse.unquote(path)
+    return Path(path)
+
+
+def serialise(obj):
+    """Recursively serialise objects to JSON-compatible format"""
+    match obj:
+        case _ if dataclasses.is_dataclass(obj):
+            data = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+            return {key: serialise(value) for key, value in data.items()}
+        case Path():
+            return str(obj)
+        case list() | frozenset() | set():
+            return [serialise(item) for item in obj]
+        case dict():
+            return {key: serialise(value) for key, value in obj.items()}
+        case _:
+            return obj
 
 
 def load_ndjson(path: Path) -> list[dict]:

@@ -81,9 +81,9 @@ function deserializeVariations(data: any[]): ExpressionVariations[] {
         file: item.this.location.file,
         range: new vscode.Range(
           item.this.location.range.start_line,
-          item.this.location.range.start_character,
+          item.this.location.range.start_char,
           item.this.location.range.end_line,
-          item.this.location.range.end_character
+          item.this.location.range.end_char
         ),
       },
       columns: item.this.columns,
@@ -97,9 +97,9 @@ function deserializeVariations(data: any[]): ExpressionVariations[] {
             file: expr.location.file,
             range: new vscode.Range(
               expr.location.range.start_line,
-              expr.location.range.start_character,
+              expr.location.range.start_char,
               expr.location.range.end_line,
-              expr.location.range.end_character
+              expr.location.range.end_char
             ),
           },
           columns: expr.columns,

@@ -26,9 +26,9 @@ async function startServer(context: vscode.ExtensionContext): Promise<any> {
   log.info(`Backend path: ${backendPath}`);
 
   const serverOptions: ServerOptions = {
-    // FIXME: debug blocks running in test mode
-    // command: 'poetry run python -m src.server --start-server --start-debug --start-recording',
-    command: 'poetry run python -m src.server --start-server',
+    // To enable debug mode: 'poetry run python -m src.server --debug'
+    // To enable recording: 'poetry run python -m src.server --record'
+    command: 'poetry run python -m src.server',
     options: { cwd: backendPath, shell: true },
   };
 

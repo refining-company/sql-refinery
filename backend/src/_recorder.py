@@ -3,14 +3,18 @@ Recording utilities for LSP protocol messages.
 """
 
 import json
+from collections.abc import Callable, Generator
+from contextlib import contextmanager
 from pathlib import Path
 
+import lsprotocol.types as lsp
 import pygls.protocol
+import pygls.workspace
 from lsprotocol import converters
 
-from src import logger
+import src
 
-log = logger.get(__name__)
+log = src.logger.get(__name__)
 
 recording_path: Path | None = None
 original_methods = {}
@@ -53,3 +57,40 @@ def start(output_path: Path = Path(__file__).parent.parent.parent / "logs" / "se
 
     pygls.protocol.LanguageServerProtocol._send_data = patched_send_data  # type: ignore
     pygls.protocol.LanguageServerProtocol._procedure_handler = patched_procedure_handler  # type: ignore
+
+
+@contextmanager
+def mock_client() -> Generator[tuple[list, Callable]]:
+    exchange: list = []
+
+    src.server.workspace = src.workspace.Workspace()
+    src.server.lspserver.lsp._workspace = pygls.workspace.Workspace(None)  # type: ignore
+
+    orig_send_notification = src.server.lspserver.send_notification
+    src.server.lspserver.send_notification = lambda method, params: exchange.append(  # type: ignore
+        {"direction": "server->client", "type": "notification", "method": method, "params": params}
+    )
+
+    def replay(client_message: dict) -> None:
+        converter = src.server.lspserver.lsp._converter
+
+        msg = client_message["message"]
+        method = msg.get("method")
+        params = msg.get("params", {})
+
+        exchange.append({"direction": "client->server", "method": method, "data": msg})
+
+        response = None
+        match method:
+            case "initialize":
+                response = src.server.initialize(converter.structure(params, lsp.InitializeParams))
+            case "textDocument/didOpen":
+                src.server.did_open(converter.structure(params, lsp.DidOpenTextDocumentParams))
+
+        if response is not None:
+            exchange.append({"direction": "server->client", "type": "response", "method": method, "data": response})
+
+    try:
+        yield exchange, replay
+    finally:
+        src.server.lspserver.send_notification = orig_send_notification  # type: ignore

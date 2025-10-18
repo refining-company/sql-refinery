@@ -12,12 +12,9 @@ from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 
-import lsprotocol.types as lsp
-import pygls.workspace
 import pytest
 
-import tests.utils as utils
-from src import code, server, sql, variations
+from src import _recorder, code, sql, utils, variations
 
 TEST_DIR = Path(__file__).parent
 SESSIONS_DIR = TEST_DIR / "sessions"
@@ -132,57 +129,13 @@ def patch_pipeline():
         variations.get_variations = orig_variations
 
 
-@contextmanager
-def patch_server():
-    """Patch server to capture all messages"""
-    exchange = []
-    orig_send_notification = server.lspserver.send_notification
-
-    server.workspace = None
-    server.workspace_folder = None
-    server.lspserver.lsp._workspace = pygls.workspace.Workspace(None)
-
-    # Patch send_notification to append directly to exchange
-    server.lspserver.send_notification = lambda method, params: exchange.append(
-        {"direction": "server->client", "type": "notification", "method": method, "params": params}
-    )
-
-    converter = server.lspserver.lsp._converter
-
-    def replay(client_message):
-        """Replay client message: append request, execute server handler, append response"""
-        msg = client_message["message"]
-        method = msg.get("method")
-        params = msg.get("params", {})
-
-        # Append client request
-        exchange.append({"direction": "client->server", "method": method, "data": msg})
-
-        # Execute server handler
-        response = None
-        match method:
-            case "initialize":
-                response = server.initialize(converter.structure(params, lsp.InitializeParams))
-            case "textDocument/didOpen":
-                server.did_open(converter.structure(params, lsp.DidOpenTextDocumentParams))
-
-        # Append response if present
-        if response is not None:
-            exchange.append({"direction": "server->client", "type": "response", "method": method, "data": response})
-
-    try:
-        yield exchange, replay
-    finally:
-        server.lspserver.send_notification = orig_send_notification
-
-
 @pytest.mark.parametrize("session_name", [f.stem for f in sorted(SESSIONS_DIR.glob("*.ndjson"))])
 def test_session(snapshot, session_name):
     """Test complete pipeline by replaying LSP session"""
     snapshot.snapshot_dir = SNAPSHOTS_DIR
     session_data = utils.load_ndjson(SESSIONS_DIR / f"{session_name}.ndjson")
 
-    with patch_pipeline() as pipeline, patch_server() as (exchange, replay):
+    with patch_pipeline() as pipeline, _recorder.mock_client() as (exchange, replay):
         for record in session_data:
             if record["direction"] == "client->server":
                 replay(record)

@@ -35,12 +35,12 @@
       "presentation": { "hidden": true }
     },
     {
-      "name": "Backend: Initialize Tests",
+      "name": "Backend: Replay Session",
       "type": "debugpy",
       "request": "launch",
-      "module": "pytest",
+      "module": "src.server",
       "cwd": "${workspaceFolder}/backend",
-      "args": ["--snapshot-update"],
+      "args": ["--replay", "tests/sessions/variations.ndjson"],
       "console": "integratedTerminal"
     }
   ]

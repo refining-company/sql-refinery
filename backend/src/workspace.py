@@ -20,52 +20,46 @@ log = logger.get(__name__)
 
 
 class Workspace:
-    """Process manager and data hub for SQL analysis
-
-    Maintains:
-    - files: Current file set (Path -> content)
-    - tree: Parsed SQL code tree
-    - output: All computed results ready to send to frontend
-    """
-
+    folder: Path | None
     files: dict[Path, str]
     tree: code.Tree
     output: dict[str, dict]
 
     def __init__(self):
+        self.folder = None
         self.files = {}
         self.tree = code.Tree()
         self.output = {"variations": {}}
 
-    def rebuild(self, files: dict[Path, str]) -> None:
-        """Rebuild entire workspace from all files
+    def set_folder(self, folder: Path | None) -> None:
+        self.folder = folder
+        self.files = {}
 
-        Clears all state, re-ingests all files, and recomputes all analysis.
-        This is stateless per-operation - guarantees consistent results.
-        """
-        log.info(f"Rebuilding workspace with {len(files)} files")
+        if self.folder:
+            log.info(f"Workspace folder: {self.folder}")
+            for file_path in self.folder.glob("**/*.sql"):
+                self.files[file_path] = file_path.read_text()
 
-        # Store files for future reference
-        self.files = files
+        self._rebuild()
 
-        # Clear analysis state
+    def update_file(self, path: Path, content: str) -> None:
+        if self.files.get(path) != content:
+            self.files[path] = content
+            self._rebuild()
+
+    def _rebuild(self) -> None:
+        log.info(f"Rebuilding workspace with {len(self.files)} files")
+
         self.tree = code.Tree()
         self.output["variations"].clear()
 
-        # Ingest all files into tree
-        for path, content in files.items():
+        for path, content in self.files.items():
             self.tree.ingest_file(path=path, content=content)
 
-        # Compute variations for ALL files
-        for path in files.keys():
+        for path in self.files.keys():
             vars = variations.get_variations(path, self.tree)
             self.output["variations"][path] = vars
             log.info(f"Computed {len(vars)} variations for {path}")
 
     def get_output(self, path: Path) -> dict:
-        """Get cached output data for a specific file
-
-        Returns dict with all data types ready to send to frontend.
-        Server just serializes and sends this.
-        """
         return {"variations": self.output["variations"].get(path, [])}
