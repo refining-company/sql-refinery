@@ -45,12 +45,12 @@ SQL files → code.build() → code.Tree
                               ↓
          model.build() → model.SemanticModel
                               ↓
-      variations.analyze() → Pattern outputs
+      variations.build() → Pattern outputs
                               ↓
          workspace → LSP server → VS Code
 ```
 
-**Backend**: Python 3.12.7 | **Frontend**: Node 20.18.0 (VS Code extension)
+**Backend**: Python 3.13.7 | **Frontend**: Node 20.18.0 (VS Code extension)
 
 ### File Structure
 
@@ -87,7 +87,7 @@ where experience shows it's actually needed.
 - **Eliminate intermediate steps** - If you can go from A to C directly, skip the intermediate B step
 - **Feature-Centric Architecture**: Design around features and user journeys rather than technical functions - this
   creates better encapsulation and more intuitive code organization
-- **Modern Features**: Leverage Python 3.12+ (match statements, union types, walrus operator)
+- **Modern Features**: Leverage Python 3.13+ (match statements, union types, walrus operator)
 - **Native UI**: Prioritise using native functionality for UI, suggest if a different UI can lead to simpler and more
   robust implementation
 - **Direct API usage** - Use APIs as intended rather than wrapping everything in defensive abstractions
@@ -120,8 +120,8 @@ where experience shows it's actually needed.
 - Builders: `build()` (uniform across modules)
   - `code.build(files) -> code.Tree`
   - `model.build(tree) -> model.SemanticModel`
+  - `variations.build(model) -> dict`
 - Analyzers: `analyze()`, `find()`, `detect()`
-  - `variations.analyze(model) -> dict`
 - Private: `_prefix` (e.g., `_parse()`, `_TreeBuilder`)
 
 **Import Discipline (STRICT):**
@@ -199,7 +199,7 @@ make install       # Install all dependencies
 - **Test and Commit All Changes**: Every change must be tested and committed to ensure stability and track progress
 - **Commit Prefixes**: Use standard prefixes for commit messages:
   - `setup:` - Build system, dependencies, configuration
-  - `feat:` - New features or functionality
+  - `feature:` - New features or functionality
   - `fix:` - Bug fixes
   - `refactor:` - Code changes that neither fix bugs nor add features
   - `test:` - Adding or updating tests

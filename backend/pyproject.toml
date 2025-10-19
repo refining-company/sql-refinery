@@ -12,12 +12,12 @@ license = "MIT"
 packages = [{include = "src"}, {include = "tests"}]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.13"
 debugpy = "1.8.7"
 Levenshtein = "0.26.0"
 lsprotocol = "2023.0.1"
 pygls = "^1.3.1"
-tree-sitter = "0.23.0"
+tree-sitter = "^0.23.0"
 tree-sitter-sql-bigquery = {git = "https://github.com/ilyakochik/tree-sitter-sql-bigquery", rev = "9ace9408a3b89f770c11eed22af6fb58961ec512"}
 
 [tool.poetry.group.dev.dependencies]
@@ -50,11 +50,11 @@ markers = [
 
 [tool.black]
 line-length = 120
-target-version = ["py312"]
+target-version = ["py313"]
 include = '\.pyi?$'
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py313"
 line-length = 120
 src = ["src", "tests"]
 
@@ -83,7 +83,7 @@ known-first-party = ["src"]
 "tests/*" = ["S101"]  # Allow assert in tests
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
