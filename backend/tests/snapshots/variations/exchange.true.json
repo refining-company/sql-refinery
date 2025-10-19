@@ -279,8 +279,25 @@
         { "this": {
             "columns": [
               { "dataset": null,
-                "table": "countries",
-                "column": "region" } ],
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 98,
+                    "start_char": 17,
+                    "end_line": 98,
+                    "end_char": 25 } } },
+              { "dataset": null,
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 99,
+                    "start_char": 17,
+                    "end_line": 99,
+                    "end_char": 25 } } } ],
             "alias": "region_cluster",
             "location": {
               "file": "./tests/inputs/codebase/0-accounts.sql",
@@ -292,11 +309,38 @@
             "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
-                        "table": "countries",
-                        "column": "region" } ],
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
                     "alias": "macro_region",
                     "location": {
                       "file": "./tests/inputs/editor.sql",
@@ -306,58 +350,127 @@
                         "end_line": 10,
                         "end_char": 7 } },
                     "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } ],
-                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
-                "columns": [ "Column(?.countries.region)" ],
-                "reliability": 1 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 98,
+                            "start_char": 17,
+                            "end_line": 98,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 99,
+                            "start_char": 17,
+                            "end_line": 99,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 33,
+                            "start_char": 13,
+                            "end_line": 33,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 34,
+                            "start_char": 13,
+                            "end_line": 34,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
+                    "dataset": null,
+                    "table": "countries",
+                    "column": "region" } ],
+                "reliability": 1,
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
               "similarity": 0.78 } ] },
         { "this": {
             "columns": [
               { "dataset": null,
-                "table": "orders",
-                "column": "product" },
+                "table": "o",
+                "column": "product",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 37,
+                    "start_char": 22,
+                    "end_line": 37,
+                    "end_char": 31 } } },
               { "dataset": null,
-                "table": "orders",
-                "column": "value" } ],
-            "alias": "revenue_aux",
-            "location": {
-              "file": "./tests/inputs/codebase/0-accounts.sql",
-              "range": {
-                "start_line": 38,
-                "start_char": 8,
-                "end_line": 38,
-                "end_char": 86 } },
-            "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" },
-          "others": [
-            { "group": {
-                "expressions": [
-                  { "columns": [
-                      { "dataset": null,
-                        "table": "orders",
-                        "column": "product" },
-                      { "dataset": null,
-                        "table": "orders",
-                        "column": "value" } ],
-                    "alias": "revenue_core",
-                    "location": {
-                      "file": "./tests/inputs/codebase/0-accounts.sql",
-                      "range": {
-                        "start_line": 37,
-                        "start_char": 8,
-                        "end_line": 37,
-                        "end_char": 105 } },
-                    "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } ],
-                "repr": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",
-                "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
-                "reliability": 1 },
-              "similarity": 0.9 } ] },
-        { "this": {
-            "columns": [
-              { "dataset": null,
-                "table": "orders",
-                "column": "product" },
-              { "dataset": null,
-                "table": "orders",
-                "column": "value" } ],
+                "table": "o",
+                "column": "value",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 37,
+                    "start_char": 86,
+                    "end_line": 37,
+                    "end_char": 93 } } } ],
             "alias": "revenue_core",
             "location": {
               "file": "./tests/inputs/codebase/0-accounts.sql",
@@ -369,14 +482,28 @@
             "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
-                        "table": "orders",
-                        "column": "product" },
+                        "table": "o",
+                        "column": "product",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 22,
+                            "end_line": 38,
+                            "end_char": 31 } } },
                       { "dataset": null,
-                        "table": "orders",
-                        "column": "value" } ],
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 67,
+                            "end_line": 38,
+                            "end_char": 74 } } } ],
                     "alias": "revenue_aux",
                     "location": {
                       "file": "./tests/inputs/codebase/0-accounts.sql",
@@ -386,9 +513,195 @@
                         "end_line": 38,
                         "end_char": 86 } },
                     "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } ],
-                "repr": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
-                "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
-                "reliability": 1 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "product",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 37,
+                            "start_char": 22,
+                            "end_line": 37,
+                            "end_char": 31 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "product",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 22,
+                            "end_line": 38,
+                            "end_char": 31 } } } ],
+                    "dataset": null,
+                    "table": "orders",
+                    "column": "product" },
+                  { "code": [
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 37,
+                            "start_char": 86,
+                            "end_line": 37,
+                            "end_char": 93 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 67,
+                            "end_line": 38,
+                            "end_char": 74 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 39,
+                            "start_char": 12,
+                            "end_line": 39,
+                            "end_char": 19 } } } ],
+                    "dataset": null,
+                    "table": "orders",
+                    "column": "value" } ],
+                "reliability": 1,
+                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
+                "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" },
+              "similarity": 0.9 } ] },
+        { "this": {
+            "columns": [
+              { "dataset": null,
+                "table": "o",
+                "column": "product",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 38,
+                    "start_char": 22,
+                    "end_line": 38,
+                    "end_char": 31 } } },
+              { "dataset": null,
+                "table": "o",
+                "column": "value",
+                "location": {
+                  "file": "./tests/inputs/codebase/0-accounts.sql",
+                  "range": {
+                    "start_line": 38,
+                    "start_char": 67,
+                    "end_line": 38,
+                    "end_char": 74 } } } ],
+            "alias": "revenue_aux",
+            "location": {
+              "file": "./tests/inputs/codebase/0-accounts.sql",
+              "range": {
+                "start_line": 38,
+                "start_char": 8,
+                "end_line": 38,
+                "end_char": 86 } },
+            "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" },
+          "others": [
+            { "group": {
+                "code": [
+                  { "columns": [
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "product",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 37,
+                            "start_char": 22,
+                            "end_line": 37,
+                            "end_char": 31 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 37,
+                            "start_char": 86,
+                            "end_line": 37,
+                            "end_char": 93 } } } ],
+                    "alias": "revenue_core",
+                    "location": {
+                      "file": "./tests/inputs/codebase/0-accounts.sql",
+                      "range": {
+                        "start_line": 37,
+                        "start_char": 8,
+                        "end_line": 37,
+                        "end_char": 105 } },
+                    "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } ],
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "product",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 37,
+                            "start_char": 22,
+                            "end_line": 37,
+                            "end_char": 31 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "product",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 22,
+                            "end_line": 38,
+                            "end_char": 31 } } } ],
+                    "dataset": null,
+                    "table": "orders",
+                    "column": "product" },
+                  { "code": [
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 37,
+                            "start_char": 86,
+                            "end_line": 37,
+                            "end_char": 93 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 67,
+                            "end_line": 38,
+                            "end_char": 74 } } },
+                      { "dataset": null,
+                        "table": "o",
+                        "column": "value",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 39,
+                            "start_char": 12,
+                            "end_line": 39,
+                            "end_char": 19 } } } ],
+                    "dataset": null,
+                    "table": "orders",
+                    "column": "value" } ],
+                "reliability": 1,
+                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",
+                "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" },
               "similarity": 0.9 } ] } ] } },
   { "direction": "server->client",
     "type": "notification",
@@ -400,7 +713,14 @@
             "columns": [
               { "dataset": null,
                 "table": "accounts",
-                "column": "industry" } ],
+                "column": "industry",
+                "location": {
+                  "file": "./tests/inputs/codebase/1-revenue.sql",
+                  "range": {
+                    "start_line": 38,
+                    "start_char": 8,
+                    "end_line": 38,
+                    "end_char": 25 } } } ],
             "alias": "industry_tech",
             "location": {
               "file": "./tests/inputs/codebase/1-revenue.sql",
@@ -412,11 +732,18 @@
             "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
-                        "table": "accounts",
-                        "column": "industry" } ],
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 12,
+                            "start_char": 8,
+                            "end_line": 12,
+                            "end_char": 18 } } } ],
                     "alias": "industry_it",
                     "location": {
                       "file": "./tests/inputs/editor.sql",
@@ -426,15 +753,77 @@
                         "end_line": 12,
                         "end_char": 62 } },
                     "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" } ],
-                "repr": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
-                "columns": [ "Column(?.accounts.industry)" ],
-                "reliability": 1 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 12,
+                            "start_char": 13,
+                            "end_line": 12,
+                            "end_char": 23 } } },
+                      { "dataset": null,
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 13,
+                            "start_char": 13,
+                            "end_line": 13,
+                            "end_char": 23 } } },
+                      { "dataset": null,
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 12,
+                            "start_char": 8,
+                            "end_line": 12,
+                            "end_char": 18 } } },
+                      { "dataset": null,
+                        "table": "accounts",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 8,
+                            "end_line": 38,
+                            "end_char": 25 } } } ],
+                    "dataset": null,
+                    "table": "accounts",
+                    "column": "industry" } ],
+                "reliability": 1,
+                "canonical": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
+                "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" },
               "similarity": 0.95 } ] },
         { "this": {
             "columns": [
               { "dataset": null,
-                "table": "countries",
-                "column": "region" } ],
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/codebase/1-revenue.sql",
+                  "range": {
+                    "start_line": 33,
+                    "start_char": 13,
+                    "end_line": 33,
+                    "end_char": 21 } } },
+              { "dataset": null,
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/codebase/1-revenue.sql",
+                  "range": {
+                    "start_line": 34,
+                    "start_char": 13,
+                    "end_line": 34,
+                    "end_char": 21 } } } ],
             "alias": "cluster",
             "location": {
               "file": "./tests/inputs/codebase/1-revenue.sql",
@@ -446,11 +835,38 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
-                        "table": "countries",
-                        "column": "region" } ],
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
                     "alias": "macro_region",
                     "location": {
                       "file": "./tests/inputs/editor.sql",
@@ -460,15 +876,127 @@
                         "end_line": 10,
                         "end_char": 7 } },
                     "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } ],
-                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
-                "columns": [ "Column(?.countries.region)" ],
-                "reliability": 1 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 98,
+                            "start_char": 17,
+                            "end_line": 98,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 99,
+                            "start_char": 17,
+                            "end_line": 99,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 33,
+                            "start_char": 13,
+                            "end_line": 33,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 34,
+                            "start_char": 13,
+                            "end_line": 34,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
+                    "dataset": null,
+                    "table": "countries",
+                    "column": "region" } ],
+                "reliability": 1,
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
               "similarity": 0.78 } ] },
         { "this": {
             "columns": [
               { "dataset": null,
-                "table": "countries",
-                "column": "region" } ],
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/codebase/1-revenue.sql",
+                  "range": {
+                    "start_line": 7,
+                    "start_char": 13,
+                    "end_line": 7,
+                    "end_char": 21 } } },
+              { "dataset": null,
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/codebase/1-revenue.sql",
+                  "range": {
+                    "start_line": 8,
+                    "start_char": 13,
+                    "end_line": 8,
+                    "end_char": 21 } } } ],
             "alias": "region_cluster",
             "location": {
               "file": "./tests/inputs/codebase/1-revenue.sql",
@@ -480,11 +1008,38 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
-                        "table": "countries",
-                        "column": "region" } ],
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
                     "alias": "macro_region",
                     "location": {
                       "file": "./tests/inputs/editor.sql",
@@ -494,9 +1049,104 @@
                         "end_line": 10,
                         "end_char": 7 } },
                     "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } ],
-                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
-                "columns": [ "Column(?.countries.region)" ],
-                "reliability": 1 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 98,
+                            "start_char": 17,
+                            "end_line": 98,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 99,
+                            "start_char": 17,
+                            "end_line": 99,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 33,
+                            "start_char": 13,
+                            "end_line": 33,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 34,
+                            "start_char": 13,
+                            "end_line": 34,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
+                    "dataset": null,
+                    "table": "countries",
+                    "column": "region" } ],
+                "reliability": 1,
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
               "similarity": 0.78 } ] } ] } },
   { "direction": "server->client",
     "type": "notification",
@@ -507,8 +1157,15 @@
         { "this": {
             "columns": [
               { "dataset": null,
-                "table": "accounts",
-                "column": "industry" } ],
+                "table": "a",
+                "column": "industry",
+                "location": {
+                  "file": "./tests/inputs/editor.sql",
+                  "range": {
+                    "start_line": 12,
+                    "start_char": 8,
+                    "end_line": 12,
+                    "end_char": 18 } } } ],
             "alias": "industry_it",
             "location": {
               "file": "./tests/inputs/editor.sql",
@@ -520,11 +1177,18 @@
             "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
                         "table": "accounts",
-                        "column": "industry" } ],
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 8,
+                            "end_line": 38,
+                            "end_char": 25 } } } ],
                     "alias": "industry_tech",
                     "location": {
                       "file": "./tests/inputs/codebase/1-revenue.sql",
@@ -534,15 +1198,87 @@
                         "end_line": 38,
                         "end_char": 70 } },
                     "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } ],
-                "repr": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))",
-                "columns": [ "Column(?.accounts.industry)" ],
-                "reliability": 1 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 12,
+                            "start_char": 13,
+                            "end_line": 12,
+                            "end_char": 23 } } },
+                      { "dataset": null,
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 13,
+                            "start_char": 13,
+                            "end_line": 13,
+                            "end_char": 23 } } },
+                      { "dataset": null,
+                        "table": "a",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 12,
+                            "start_char": 8,
+                            "end_line": 12,
+                            "end_char": 18 } } },
+                      { "dataset": null,
+                        "table": "accounts",
+                        "column": "industry",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 38,
+                            "start_char": 8,
+                            "end_line": 38,
+                            "end_char": 25 } } } ],
+                    "dataset": null,
+                    "table": "accounts",
+                    "column": "industry" } ],
+                "reliability": 1,
+                "canonical": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))",
+                "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" },
               "similarity": 0.95 } ] },
         { "this": {
             "columns": [
               { "dataset": null,
-                "table": "countries",
-                "column": "region" } ],
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/editor.sql",
+                  "range": {
+                    "start_line": 6,
+                    "start_char": 13,
+                    "end_line": 6,
+                    "end_char": 21 } } },
+              { "dataset": null,
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/editor.sql",
+                  "range": {
+                    "start_line": 7,
+                    "start_char": 13,
+                    "end_line": 7,
+                    "end_char": 21 } } },
+              { "dataset": null,
+                "table": "c",
+                "column": "region",
+                "location": {
+                  "file": "./tests/inputs/editor.sql",
+                  "range": {
+                    "start_line": 8,
+                    "start_char": 13,
+                    "end_line": 8,
+                    "end_char": 21 } } } ],
             "alias": "macro_region",
             "location": {
               "file": "./tests/inputs/editor.sql",
@@ -554,24 +1290,28 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
           "others": [
             { "group": {
-                "expressions": [
+                "code": [
                   { "columns": [
                       { "dataset": null,
-                        "table": "countries",
-                        "column": "region" } ],
-                    "alias": "cluster",
-                    "location": {
-                      "file": "./tests/inputs/codebase/1-revenue.sql",
-                      "range": {
-                        "start_line": 32,
-                        "start_char": 4,
-                        "end_line": 36,
-                        "end_char": 7 } },
-                    "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
-                  { "columns": [
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 98,
+                            "start_char": 17,
+                            "end_line": 98,
+                            "end_char": 25 } } },
                       { "dataset": null,
-                        "table": "countries",
-                        "column": "region" } ],
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 99,
+                            "start_char": 17,
+                            "end_line": 99,
+                            "end_char": 25 } } } ],
                     "alias": "region_cluster",
                     "location": {
                       "file": "./tests/inputs/codebase/0-accounts.sql",
@@ -583,8 +1323,55 @@
                     "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" },
                   { "columns": [
                       { "dataset": null,
-                        "table": "countries",
-                        "column": "region" } ],
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 33,
+                            "start_char": 13,
+                            "end_line": 33,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 34,
+                            "start_char": 13,
+                            "end_line": 34,
+                            "end_char": 21 } } } ],
+                    "alias": "cluster",
+                    "location": {
+                      "file": "./tests/inputs/codebase/1-revenue.sql",
+                      "range": {
+                        "start_line": 32,
+                        "start_char": 4,
+                        "end_line": 36,
+                        "end_char": 7 } },
+                    "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" },
+                  { "columns": [
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
                     "alias": "region_cluster",
                     "location": {
                       "file": "./tests/inputs/codebase/1-revenue.sql",
@@ -594,7 +1381,102 @@
                         "end_line": 10,
                         "end_char": 7 } },
                     "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } ],
-                "repr": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))",
-                "columns": [ "Column(?.countries.region)" ],
-                "reliability": 3 },
+                "columns": [
+                  { "code": [
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 98,
+                            "start_char": 17,
+                            "end_line": 98,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/0-accounts.sql",
+                          "range": {
+                            "start_line": 99,
+                            "start_char": 17,
+                            "end_line": 99,
+                            "end_char": 25 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 33,
+                            "start_char": 13,
+                            "end_line": 33,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 34,
+                            "start_char": 13,
+                            "end_line": 34,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/codebase/1-revenue.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 6,
+                            "start_char": 13,
+                            "end_line": 6,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 7,
+                            "start_char": 13,
+                            "end_line": 7,
+                            "end_char": 21 } } },
+                      { "dataset": null,
+                        "table": "c",
+                        "column": "region",
+                        "location": {
+                          "file": "./tests/inputs/editor.sql",
+                          "range": {
+                            "start_line": 8,
+                            "start_char": 13,
+                            "end_line": 8,
+                            "end_char": 21 } } } ],
+                    "dataset": null,
+                    "table": "countries",
+                    "column": "region" } ],
+                "reliability": 3,
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))",
+                "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" },
               "similarity": 0.78 } ] } ] } } ]

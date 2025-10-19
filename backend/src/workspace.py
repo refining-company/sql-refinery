@@ -14,9 +14,9 @@ This module provides:
 
 from pathlib import Path
 
-from src import code, logger, sql, variations
+import src
 
-log = logger.get(__name__)
+log = src.logger.get(__name__)
 
 
 class Workspace:
@@ -48,10 +48,11 @@ class Workspace:
     def _rebuild(self) -> None:
         log.info(f"Rebuilding workspace with {len(self.files)} files")
 
-        # Build pipeline: files -> sql.Tree -> code.Tree -> variations
-        parse_trees = sql.build(self.files)
-        tree = code.build(parse_trees)
-        self.output["variations"] = variations.build(tree)
+        # Build pipeline: files -> sql.Tree -> code.Tree -> model.Semantics -> variations
+        parse_trees = src.sql.build(self.files)
+        tree = src.code.build(parse_trees)
+        semantics = src.model.build(tree)
+        self.output["variations"] = src.variations.build(semantics)
 
         log.info(f"Computed variations for {[p.stem for p in self.output['variations'].keys()]}")
 

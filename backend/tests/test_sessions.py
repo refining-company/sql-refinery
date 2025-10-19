@@ -29,7 +29,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
             case src.sql.Node():
                 return simplify(obj.text, terminal)
             case _ if dataclasses.is_dataclass(obj):
-                return repr(obj)
+                return repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
             case _:
                 return f"<{obj.__class__.__name__}>"
 
@@ -108,10 +108,12 @@ def patch_pipeline():
                 src.sql.Tree,
                 src.code.Tree,
                 src.code.Query,
+                src.code.Expression,
                 src.code.Column,
                 src.code.Table,
                 src.code.Location,
                 src.code.Range,
+                src.model.Column,
             ),
         ),
     )
