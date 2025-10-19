@@ -50,7 +50,7 @@ class ExpressionVariations:
         return f"ExpressionVariations({self.this._file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
 
 
-def get_variations(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
+def build(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
     """Compute variations for all files in the tree, return path->variations mapping."""
 
     # Group identical expressions

@@ -168,8 +168,8 @@ def decode_table(node: tree_sitter.Node) -> dict[str, str | None]:
     return {"dataset": dataset, "table": table}
 
 
-def parse(text: bytes) -> tree_sitter.Tree:
+def build(text: str) -> tree_sitter.Tree:
     parser = tree_sitter.Parser()
     parser.language = _language
-    tree = parser.parse(text)
+    tree = parser.parse(text.encode())
     return tree

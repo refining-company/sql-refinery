@@ -2,7 +2,7 @@
 
 ## Internal Pipeline
 
-### src.sql.parse (call 1)
+### src.sql.build (call 1)
 
 ```json
 [
@@ -195,7 +195,7 @@
                       { "@table (identifier at 10:10) = deals": [] } ] } ] } ] } ] } ] } ]
 ```
 
-### src.sql.parse (call 2)
+### src.sql.build (call 2)
 
 ```json
 [
@@ -288,7 +288,7 @@
               { "@column (identifier at 26:37) = industry_cluster": [] } ] } ] } ] } ]
 ```
 
-### src.sql.parse (call 3)
+### src.sql.build (call 3)
 
 ```json
 [
@@ -481,7 +481,7 @@
                       { "@table (identifier at 10:10) = deals": [] } ] } ] } ] } ] } ] } ]
 ```
 
-### src.sql.parse (call 4)
+### src.sql.build (call 4)
 
 ```json
 [
@@ -574,7 +574,7 @@
               { "@column (identifier at 26:37) = industry_cluster": [] } ] } ] } ] } ]
 ```
 
-### src.sql.parse (call 5)
+### src.sql.build (call 5)
 
 ```json
 [
@@ -3392,7 +3392,7 @@
             "location": "./tests/inputs/editor.sql:2:0-24:45" } } ] } } }
 ```
 
-### src.variations.get_variations (call 1)
+### src.variations.build (call 1)
 
 ```json
 {
@@ -3441,7 +3441,7 @@
               "similarity": 0.9 } } ] } } ] }
 ```
 
-### src.variations.get_variations (call 2)
+### src.variations.build (call 2)
 
 ```json
 {

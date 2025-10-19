@@ -55,7 +55,7 @@ class Workspace:
         for path, content in self.files.items():
             self.tree.ingest_file(path=path, content=content)
 
-        self.output["variations"] = variations.get_variations(self.tree)
+        self.output["variations"] = variations.build(self.tree)
         log.info(f"Computed variations for {[p.stem for p in self.output['variations'].keys()]}")
 
     def get_output(self, path: Path) -> dict:

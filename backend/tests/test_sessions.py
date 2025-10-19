@@ -103,18 +103,18 @@ def patch_pipeline():
         return wrapper
 
     # Save originals
-    orig_parse = sql.parse
+    orig_sql_build = sql.build
     orig_ingest = code.Tree.ingest_file
-    orig_variations = variations.get_variations
+    orig_variations_build = variations.build
 
     # Patch with capturing wrappers
-    sql.parse = capture(sql.parse, lambda r: simplify(r))
+    sql.build = capture(sql.build, lambda r: simplify(r))
     code.Tree.ingest_file = capture(
         code.Tree.ingest_file,
         lambda r: simplify(r, terminal=(sql.Node, sql.Tree, code.Column, code.Table, code.Location, code.Range)),
     )
-    variations.get_variations = capture(
-        variations.get_variations,
+    variations.build = capture(
+        variations.build,
         lambda r: simplify(
             r, terminal=(sql.Node, sql.Tree, code.Tree, code.Query, code.Column, code.Table, code.Location, code.Range)
         ),
@@ -124,9 +124,9 @@ def patch_pipeline():
         yield pipeline
     finally:
         # Restore originals
-        sql.parse = orig_parse
+        sql.build = orig_sql_build
         code.Tree.ingest_file = orig_ingest
-        variations.get_variations = orig_variations
+        variations.build = orig_variations_build
 
 
 @pytest.mark.parametrize("session_name", [f.stem for f in sorted(SESSIONS_DIR.glob("*.ndjson"))])

@@ -132,7 +132,7 @@ class Tree:
         return f"Tree({files_str})"
 
     def ingest_file(self, path: Path, content: str) -> Tree:
-        parse_tree = sql.parse(content.encode())
+        parse_tree = sql.build(content)
         self.files[path] = self._parse_node(parse_tree.root_node, path)
         return self
 
