@@ -1,0 +1,596 @@
+{
+  "Tree(./tests/inputs/codebase/0-accounts.sql, ./tests/inputs/codebase/1-revenue.sql)": {
+    "files": {
+      "./tests/inputs/codebase/0-accounts.sql": [
+        { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
+            "sources": [
+              { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
+                  "sources": [ "Table(?.deals as d)", "Table(?.orders as o)" ],
+                  "expressions": [
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                        "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                        "alias": "revenue_core",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
+                        "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                        "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                        "alias": "revenue_aux",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
+                        "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                        "columns": [ "Column(?.deals.contract_end_date)", "Column(?.deals.contract_start_date)" ],
+                        "alias": "contract_duration_days",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
+                        "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                        "columns": [ "Column(?.orders.value)" ],
+                        "alias": "revenue",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
+                        "sql": "SUM(o.value)" } } ],
+                  "location": "./tests/inputs/codebase/0-accounts.sql:31:4-43:80" } } ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+                  "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue)" ],
+                  "alias": "revenue_day",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:27:4-27:36",
+                  "sql": "revenue / contract_duration_days" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:28:4-28:41) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+                  "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue_core)" ],
+                  "alias": "revenue_core_day",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:28:4-28:41",
+                  "sql": "revenue_core / contract_duration_days" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:29:4-29:40) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+                  "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue_aux)" ],
+                  "alias": "revenue_aux_day",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
+                  "sql": "revenue_aux / contract_duration_days" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:25:0-44:6" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:50:0-71:31)": {
+            "sources": [
+              { "Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39)": {
+                  "sources": [ "Table(?.date_ranges as dr)", "Table(?.deals_signed as ds)" ],
+                  "expressions": [
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                        "columns": [ "Column(?.?.date_day)" ],
+                        "alias": "date_month",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
+                        "sql": "DATE(date_day, 'start of month')" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                        "columns": [ "Column(?.deals_signed.deal_id)" ],
+                        "alias": "deals",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
+                        "sql": "COUNT(ds.deal_id)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                        "columns": [ "Column(?.deals_signed.revenue_core_day)" ],
+                        "alias": "revenue_core",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
+                        "sql": "SUM(ds.revenue_core_day)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                        "columns": [ "Column(?.deals_signed.revenue_aux_day)" ],
+                        "alias": "revenue_aux",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
+                        "sql": "SUM(ds.revenue_aux_day)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                        "columns": [ "Column(?.deals_signed.revenue_day)" ],
+                        "alias": "revenue",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
+                        "sql": "SUM(ds.revenue_day)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                        "columns": [ "Column(?.date_ranges.date_day)", "Column(?.deals_signed.contract_end_date)", "Column(?.deals_signed.contract_start_date)" ],
+                        "alias": null,
+                        "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
+                        "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
+                  "location": "./tests/inputs/codebase/0-accounts.sql:58:4-70:39" } } ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:53:4-53:16) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+                  "columns": [ "Column(?.t.deals)" ],
+                  "alias": "deals",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:53:4-53:16",
+                  "sql": "AVG(t.deals)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:54:4-54:23) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+                  "columns": [ "Column(?.t.revenue_core)" ],
+                  "alias": "revenue_core",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:54:4-54:23",
+                  "sql": "SUM(t.revenue_core)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:55:4-55:22) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+                  "columns": [ "Column(?.t.revenue_aux)" ],
+                  "alias": "revenue_aux",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:55:4-55:22",
+                  "sql": "SUM(t.revenue_aux)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:56:4-56:18) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+                  "columns": [ "Column(?.t.revenue)" ],
+                  "alias": "revenue",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
+                  "sql": "SUM(t.revenue)" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:50:0-71:31" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:78:0-111:6)": {
+            "sources": [
+              { "Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45)": {
+                  "sources": [ "Table(?.accounts)", "Table(?.accounts_revenue)", "Table(?.countries as c)" ],
+                  "expressions": [
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                        "columns": [ "Column(?.countries.region)" ],
+                        "alias": "region_cluster",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
+                        "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                        "columns": [ "Column(?.accounts.account_id)", "Column(?.accounts.date_month)", "Column(?.accounts.revenue)" ],
+                        "alias": "revenue_12m",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
+                        "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
+                  "location": "./tests/inputs/codebase/0-accounts.sql:87:4-110:45" } } ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:80:4-85:7) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.t.revenue_12m)" ],
+                  "alias": "account_size",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
+                  "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } } ],
+      "./tests/inputs/codebase/1-revenue.sql": [
+        { "Query(./tests/inputs/codebase/1-revenue.sql:29:0-50:49)": {
+            "sources": [ "Table(?.accounts)", "Table(?.accounts_revenue)", "Table(?.countries as c)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.countries.region)" ],
+                  "alias": "cluster",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:32:4-36:7",
+                  "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+                  "columns": [ "Column(?.accounts.industry)" ],
+                  "alias": "industry_tech",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:38:4-38:70",
+                  "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:39:4-44:7) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "account_size",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
+                  "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:45:4-45:33) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+                  "columns": [ "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "revenue_12m",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
+                  "sql": "SUM(accounts_revenue.revenue)" } } ],
+            "location": "./tests/inputs/codebase/1-revenue.sql:29:0-50:49" } },
+        { "Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
+            "sources": [ "Table(?.accounts as a)", "Table(?.accounts_360 as a360)", "Table(?.accounts_revenue as ar)", "Table(?.countries as c)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+                  "columns": [ "Column(?.accounts.industry)" ],
+                  "alias": "industry_cluster",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:11:4-15:7",
+                  "sql": "CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+                  "columns": [ "Column(?.?.date_month)" ],
+                  "alias": "date_year",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:5:4-5:37",
+                  "sql": "date(date_month, 'start of year')" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.countries.region)" ],
+                  "alias": "region_cluster",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:6:4-10:7",
+                  "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:17:4-17:19) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+                  "columns": [ "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "revenue",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:17:4-17:19",
+                  "sql": "SUM(ar.revenue)" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:18:4-18:33) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+                  "columns": [ "Column(?.accounts_revenue.account_id)" ],
+                  "alias": "accounts",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:18:4-18:33",
+                  "sql": "COUNT(DISTINCT ar.account_id)" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:19:4-19:51) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+                  "columns": [ "Column(?.accounts_revenue.account_id)", "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "revenue_per_account",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:19:4-19:51",
+                  "sql": "SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)" } } ],
+            "location": "./tests/inputs/codebase/1-revenue.sql:4:0-25:52" } } ] },
+    "index": {
+      "<Query>": [
+        { "Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
+            "sources": [
+              { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
+                  "sources": [ "Table(?.deals as d)", "Table(?.orders as o)" ],
+                  "expressions": [
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                        "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                        "alias": "revenue_core",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
+                        "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                        "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                        "alias": "revenue_aux",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
+                        "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                        "columns": [ "Column(?.deals.contract_end_date)", "Column(?.deals.contract_start_date)" ],
+                        "alias": "contract_duration_days",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
+                        "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                        "columns": [ "Column(?.orders.value)" ],
+                        "alias": "revenue",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
+                        "sql": "SUM(o.value)" } } ],
+                  "location": "./tests/inputs/codebase/0-accounts.sql:31:4-43:80" } } ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+                  "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue)" ],
+                  "alias": "revenue_day",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:27:4-27:36",
+                  "sql": "revenue / contract_duration_days" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:28:4-28:41) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+                  "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue_core)" ],
+                  "alias": "revenue_core_day",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:28:4-28:41",
+                  "sql": "revenue_core / contract_duration_days" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:29:4-29:40) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+                  "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue_aux)" ],
+                  "alias": "revenue_aux_day",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
+                  "sql": "revenue_aux / contract_duration_days" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:25:0-44:6" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
+            "sources": [ "Table(?.deals as d)", "Table(?.orders as o)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                  "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                  "alias": "revenue_core",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
+                  "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+                  "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                  "alias": "revenue_aux",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
+                  "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+                  "columns": [ "Column(?.deals.contract_end_date)", "Column(?.deals.contract_start_date)" ],
+                  "alias": "contract_duration_days",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
+                  "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+                  "columns": [ "Column(?.orders.value)" ],
+                  "alias": "revenue",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
+                  "sql": "SUM(o.value)" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:31:4-43:80" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:50:0-71:31)": {
+            "sources": [
+              { "Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39)": {
+                  "sources": [ "Table(?.date_ranges as dr)", "Table(?.deals_signed as ds)" ],
+                  "expressions": [
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                        "columns": [ "Column(?.?.date_day)" ],
+                        "alias": "date_month",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
+                        "sql": "DATE(date_day, 'start of month')" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                        "columns": [ "Column(?.deals_signed.deal_id)" ],
+                        "alias": "deals",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
+                        "sql": "COUNT(ds.deal_id)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                        "columns": [ "Column(?.deals_signed.revenue_core_day)" ],
+                        "alias": "revenue_core",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
+                        "sql": "SUM(ds.revenue_core_day)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                        "columns": [ "Column(?.deals_signed.revenue_aux_day)" ],
+                        "alias": "revenue_aux",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
+                        "sql": "SUM(ds.revenue_aux_day)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                        "columns": [ "Column(?.deals_signed.revenue_day)" ],
+                        "alias": "revenue",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
+                        "sql": "SUM(ds.revenue_day)" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                        "columns": [ "Column(?.date_ranges.date_day)", "Column(?.deals_signed.contract_end_date)", "Column(?.deals_signed.contract_start_date)" ],
+                        "alias": null,
+                        "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
+                        "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
+                  "location": "./tests/inputs/codebase/0-accounts.sql:58:4-70:39" } } ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:53:4-53:16) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+                  "columns": [ "Column(?.t.deals)" ],
+                  "alias": "deals",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:53:4-53:16",
+                  "sql": "AVG(t.deals)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:54:4-54:23) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+                  "columns": [ "Column(?.t.revenue_core)" ],
+                  "alias": "revenue_core",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:54:4-54:23",
+                  "sql": "SUM(t.revenue_core)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:55:4-55:22) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+                  "columns": [ "Column(?.t.revenue_aux)" ],
+                  "alias": "revenue_aux",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:55:4-55:22",
+                  "sql": "SUM(t.revenue_aux)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:56:4-56:18) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+                  "columns": [ "Column(?.t.revenue)" ],
+                  "alias": "revenue",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
+                  "sql": "SUM(t.revenue)" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:50:0-71:31" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39)": {
+            "sources": [ "Table(?.date_ranges as dr)", "Table(?.deals_signed as ds)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+                  "columns": [ "Column(?.?.date_day)" ],
+                  "alias": "date_month",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
+                  "sql": "DATE(date_day, 'start of month')" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+                  "columns": [ "Column(?.deals_signed.deal_id)" ],
+                  "alias": "deals",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
+                  "sql": "COUNT(ds.deal_id)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+                  "columns": [ "Column(?.deals_signed.revenue_core_day)" ],
+                  "alias": "revenue_core",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
+                  "sql": "SUM(ds.revenue_core_day)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+                  "columns": [ "Column(?.deals_signed.revenue_aux_day)" ],
+                  "alias": "revenue_aux",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
+                  "sql": "SUM(ds.revenue_aux_day)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+                  "columns": [ "Column(?.deals_signed.revenue_day)" ],
+                  "alias": "revenue",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
+                  "sql": "SUM(ds.revenue_day)" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+                  "columns": [ "Column(?.date_ranges.date_day)", "Column(?.deals_signed.contract_end_date)", "Column(?.deals_signed.contract_start_date)" ],
+                  "alias": null,
+                  "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
+                  "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:58:4-70:39" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:78:0-111:6)": {
+            "sources": [
+              { "Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45)": {
+                  "sources": [ "Table(?.accounts)", "Table(?.accounts_revenue)", "Table(?.countries as c)" ],
+                  "expressions": [
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                        "columns": [ "Column(?.countries.region)" ],
+                        "alias": "region_cluster",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
+                        "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
+                    { "Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                        "columns": [ "Column(?.accounts.account_id)", "Column(?.accounts.date_month)", "Column(?.accounts.revenue)" ],
+                        "alias": "revenue_12m",
+                        "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
+                        "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
+                  "location": "./tests/inputs/codebase/0-accounts.sql:87:4-110:45" } } ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:80:4-85:7) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.t.revenue_12m)" ],
+                  "alias": "account_size",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
+                  "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } },
+        { "Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45)": {
+            "sources": [ "Table(?.accounts)", "Table(?.accounts_revenue)", "Table(?.countries as c)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.countries.region)" ],
+                  "alias": "region_cluster",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
+                  "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
+              { "Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+                  "columns": [ "Column(?.accounts.account_id)", "Column(?.accounts.date_month)", "Column(?.accounts.revenue)" ],
+                  "alias": "revenue_12m",
+                  "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
+                  "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
+            "location": "./tests/inputs/codebase/0-accounts.sql:87:4-110:45" } },
+        { "Query(./tests/inputs/codebase/1-revenue.sql:29:0-50:49)": {
+            "sources": [ "Table(?.accounts)", "Table(?.accounts_revenue)", "Table(?.countries as c)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.countries.region)" ],
+                  "alias": "cluster",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:32:4-36:7",
+                  "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+                  "columns": [ "Column(?.accounts.industry)" ],
+                  "alias": "industry_tech",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:38:4-38:70",
+                  "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:39:4-44:7) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "account_size",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
+                  "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:45:4-45:33) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+                  "columns": [ "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "revenue_12m",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
+                  "sql": "SUM(accounts_revenue.revenue)" } } ],
+            "location": "./tests/inputs/codebase/1-revenue.sql:29:0-50:49" } },
+        { "Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
+            "sources": [ "Table(?.accounts as a)", "Table(?.accounts_360 as a360)", "Table(?.accounts_revenue as ar)", "Table(?.countries as c)" ],
+            "expressions": [
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+                  "columns": [ "Column(?.accounts.industry)" ],
+                  "alias": "industry_cluster",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:11:4-15:7",
+                  "sql": "CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+                  "columns": [ "Column(?.?.date_month)" ],
+                  "alias": "date_year",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:5:4-5:37",
+                  "sql": "date(date_month, 'start of year')" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+                  "columns": [ "Column(?.countries.region)" ],
+                  "alias": "region_cluster",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:6:4-10:7",
+                  "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:17:4-17:19) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+                  "columns": [ "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "revenue",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:17:4-17:19",
+                  "sql": "SUM(ar.revenue)" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:18:4-18:33) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+                  "columns": [ "Column(?.accounts_revenue.account_id)" ],
+                  "alias": "accounts",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:18:4-18:33",
+                  "sql": "COUNT(DISTINCT ar.account_id)" } },
+              { "Expression(./tests/inputs/codebase/1-revenue.sql:19:4-19:51) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+                  "columns": [ "Column(?.accounts_revenue.account_id)", "Column(?.accounts_revenue.revenue)" ],
+                  "alias": "revenue_per_account",
+                  "location": "./tests/inputs/codebase/1-revenue.sql:19:4-19:51",
+                  "sql": "SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)" } } ],
+            "location": "./tests/inputs/codebase/1-revenue.sql:4:0-25:52" } } ],
+      "<Expression>": [
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+            "alias": "revenue_core",
+            "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
+            "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))": {
+            "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+            "alias": "revenue_aux",
+            "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
+            "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_day)), Argument('start of month')))": {
+            "columns": [ "Column(?.?.date_day)" ],
+            "alias": "date_month",
+            "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
+            "sql": "DATE(date_day, 'start of month')" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:80:4-85:7) = Expression(Casewhen_expression(Casewhen_clause(<=(Column(?.t.revenue_12m), 300), 'Small'), Casewhen_clause(And(>(Column(?.t.revenue_12m), 300), <=(Column(?.t.revenue_12m), 600)), 'Medium'), Casewhen_clause(>(Column(?.t.revenue_12m), 600), 'Large'), Caseelse_clause(Null())))": {
+            "columns": [ "Column(?.t.revenue_12m)" ],
+            "alias": "account_size",
+            "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
+            "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [ "Column(?.countries.region)" ],
+            "alias": "region_cluster",
+            "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
+            "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = Expression(Casewhen_expression(Casewhen_clause(=(Column(?.accounts.industry), 'Information Technology'), 'Tech'), Casewhen_clause(Unary_expression(Column(?.accounts.industry), Null()), Null()), Caseelse_clause('Other')))": {
+            "columns": [ "Column(?.accounts.industry)" ],
+            "alias": "industry_cluster",
+            "location": "./tests/inputs/codebase/1-revenue.sql:11:4-15:7",
+            "sql": "CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [ "Column(?.countries.region)" ],
+            "alias": "cluster",
+            "location": "./tests/inputs/codebase/1-revenue.sql:32:4-36:7",
+            "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))": {
+            "columns": [ "Column(?.accounts.industry)" ],
+            "alias": "industry_tech",
+            "location": "./tests/inputs/codebase/1-revenue.sql:38:4-38:70",
+            "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:39:4-44:7) = Expression(Casewhen_expression(Casewhen_clause(<=(Sum(Column(?.accounts_revenue.revenue)), 300), 'Small'), Casewhen_clause(And(>(Sum(Column(?.accounts_revenue.revenue)), 300), <=(Sum(Column(?.accounts_revenue.revenue)), 600)), 'Medium'), Casewhen_clause(>(Sum(Column(?.accounts_revenue.revenue)), 600), 'Large'), Caseelse_clause(Null())))": {
+            "columns": [ "Column(?.accounts_revenue.revenue)" ],
+            "alias": "account_size",
+            "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
+            "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = Expression(Function_call(Identifier(), Argument(Column(?.?.date_month)), Argument('start of year')))": {
+            "columns": [ "Column(?.?.date_month)" ],
+            "alias": "date_year",
+            "location": "./tests/inputs/codebase/1-revenue.sql:5:4-5:37",
+            "sql": "date(date_month, 'start of year')" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))": {
+            "columns": [ "Column(?.countries.region)" ],
+            "alias": "region_cluster",
+            "location": "./tests/inputs/codebase/1-revenue.sql:6:4-10:7",
+            "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = Expression(Function_call(Identifier, Argument(Column(?.accounts.revenue)), Analytics_clause(Over_clause(Window_specification(Window_partition_clause(Partition_expression(Column(?.accounts.account_id))), Order_by_clause(Order_by_clause_body(Column(?.accounts.date_month))), Window_frame_clause(Rows_range(), Window_frame_between(Between_from(11), Between_to(Keyword_current_row()))))))))": {
+            "columns": [ "Column(?.accounts.account_id)", "Column(?.accounts.date_month)", "Column(?.accounts.revenue)" ],
+            "alias": "revenue_12m",
+            "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
+            "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = Expression(Binary_expression(Column(?.?.revenue), Column(?.?.contract_duration_days)))": {
+            "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue)" ],
+            "alias": "revenue_day",
+            "location": "./tests/inputs/codebase/0-accounts.sql:27:4-27:36",
+            "sql": "revenue / contract_duration_days" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:28:4-28:41) = Expression(Binary_expression(Column(?.?.revenue_core), Column(?.?.contract_duration_days)))": {
+            "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue_core)" ],
+            "alias": "revenue_core_day",
+            "location": "./tests/inputs/codebase/0-accounts.sql:28:4-28:41",
+            "sql": "revenue_core / contract_duration_days" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:29:4-29:40) = Expression(Binary_expression(Column(?.?.revenue_aux), Column(?.?.contract_duration_days)))": {
+            "columns": [ "Column(?.?.contract_duration_days)", "Column(?.?.revenue_aux)" ],
+            "alias": "revenue_aux_day",
+            "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
+            "sql": "revenue_aux / contract_duration_days" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = Expression(Binary_expression(-(Julianday(Column(?.deals.contract_end_date)), Julianday(Column(?.deals.contract_start_date))), 1))": {
+            "columns": [ "Column(?.deals.contract_end_date)", "Column(?.deals.contract_start_date)" ],
+            "alias": "contract_duration_days",
+            "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
+            "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = Expression(Function_call(Identifier, Argument(Column(?.orders.value))))": {
+            "columns": [ "Column(?.orders.value)" ],
+            "alias": "revenue",
+            "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
+            "sql": "SUM(o.value)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:53:4-53:16) = Expression(Function_call(Identifier, Argument(Column(?.t.deals))))": {
+            "columns": [ "Column(?.t.deals)" ],
+            "alias": "deals",
+            "location": "./tests/inputs/codebase/0-accounts.sql:53:4-53:16",
+            "sql": "AVG(t.deals)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:54:4-54:23) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_core))))": {
+            "columns": [ "Column(?.t.revenue_core)" ],
+            "alias": "revenue_core",
+            "location": "./tests/inputs/codebase/0-accounts.sql:54:4-54:23",
+            "sql": "SUM(t.revenue_core)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:55:4-55:22) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue_aux))))": {
+            "columns": [ "Column(?.t.revenue_aux)" ],
+            "alias": "revenue_aux",
+            "location": "./tests/inputs/codebase/0-accounts.sql:55:4-55:22",
+            "sql": "SUM(t.revenue_aux)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:56:4-56:18) = Expression(Function_call(Identifier, Argument(Column(?.t.revenue))))": {
+            "columns": [ "Column(?.t.revenue)" ],
+            "alias": "revenue",
+            "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
+            "sql": "SUM(t.revenue)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.deal_id))))": {
+            "columns": [ "Column(?.deals_signed.deal_id)" ],
+            "alias": "deals",
+            "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
+            "sql": "COUNT(ds.deal_id)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_core_day))))": {
+            "columns": [ "Column(?.deals_signed.revenue_core_day)" ],
+            "alias": "revenue_core",
+            "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
+            "sql": "SUM(ds.revenue_core_day)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_aux_day))))": {
+            "columns": [ "Column(?.deals_signed.revenue_aux_day)" ],
+            "alias": "revenue_aux",
+            "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
+            "sql": "SUM(ds.revenue_aux_day)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = Expression(Function_call(Identifier, Argument(Column(?.deals_signed.revenue_day))))": {
+            "columns": [ "Column(?.deals_signed.revenue_day)" ],
+            "alias": "revenue",
+            "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
+            "sql": "SUM(ds.revenue_day)" } },
+        { "Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = Expression(Binary_expression(>=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_start_date))), <=(Column(?.date_ranges.date_day), Date(Column(?.deals_signed.contract_end_date)))))": {
+            "columns": [ "Column(?.date_ranges.date_day)", "Column(?.deals_signed.contract_end_date)", "Column(?.deals_signed.contract_start_date)" ],
+            "alias": null,
+            "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
+            "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:17:4-17:19) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+            "columns": [ "Column(?.accounts_revenue.revenue)" ],
+            "alias": "revenue",
+            "location": "./tests/inputs/codebase/1-revenue.sql:17:4-17:19",
+            "sql": "SUM(ar.revenue)" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:18:4-18:33) = Expression(Function_call(Identifier, Distinct(), Argument(Column(?.accounts_revenue.account_id))))": {
+            "columns": [ "Column(?.accounts_revenue.account_id)" ],
+            "alias": "accounts",
+            "location": "./tests/inputs/codebase/1-revenue.sql:18:4-18:33",
+            "sql": "COUNT(DISTINCT ar.account_id)" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:19:4-19:51) = Expression(Binary_expression(Sum(Column(?.accounts_revenue.revenue)), Count(Column(?.accounts_revenue.account_id))))": {
+            "columns": [ "Column(?.accounts_revenue.account_id)", "Column(?.accounts_revenue.revenue)" ],
+            "alias": "revenue_per_account",
+            "location": "./tests/inputs/codebase/1-revenue.sql:19:4-19:51",
+            "sql": "SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)" } },
+        { "Expression(./tests/inputs/codebase/1-revenue.sql:45:4-45:33) = Expression(Function_call(Identifier, Argument(Column(?.accounts_revenue.revenue))))": {
+            "columns": [ "Column(?.accounts_revenue.revenue)" ],
+            "alias": "revenue_12m",
+            "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
+            "sql": "SUM(accounts_revenue.revenue)" } } ],
+      "<Column>": [ "Column(?.?.contract_duration_days)", "Column(?.?.date_day)", "Column(?.?.date_month)", "Column(?.?.revenue)", "Column(?.?.revenue_aux)", "Column(?.?.revenue_core)", "Column(?.accounts.account_id)", "Column(?.accounts.date_month)", "Column(?.accounts.industry)", "Column(?.accounts.industry)", "Column(?.accounts.revenue)", "Column(?.accounts_revenue.account_id)", "Column(?.accounts_revenue.revenue)", "Column(?.accounts_revenue.revenue)", "Column(?.countries.region)", "Column(?.countries.region)", "Column(?.countries.region)", "Column(?.date_ranges.date_day)", "Column(?.deals.contract_end_date)", "Column(?.deals.contract_start_date)", "Column(?.deals_signed.contract_end_date)", "Column(?.deals_signed.contract_start_date)", "Column(?.deals_signed.deal_id)", "Column(?.deals_signed.revenue_aux_day)", "Column(?.deals_signed.revenue_core_day)", "Column(?.deals_signed.revenue_day)", "Column(?.orders.product)", "Column(?.orders.value)", "Column(?.t.deals)", "Column(?.t.revenue)", "Column(?.t.revenue_12m)", "Column(?.t.revenue_aux)", "Column(?.t.revenue_core)" ],
+      "<Table>": [ "Table(?.accounts as a)", "Table(?.accounts)", "Table(?.accounts)", "Table(?.accounts_360 as a360)", "Table(?.accounts_revenue as ar)", "Table(?.accounts_revenue)", "Table(?.accounts_revenue)", "Table(?.countries as c)", "Table(?.countries as c)", "Table(?.countries as c)", "Table(?.date_ranges as dr)", "Table(?.deals as d)", "Table(?.deals_signed as ds)", "Table(?.orders as o)" ] } } }

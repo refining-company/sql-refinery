@@ -148,9 +148,7 @@ def _resolve_columns(
     return nodes_columns
 
 
-def _deduplicate_columns(
-    nodes_columns: dict[sql.Node, dict[str, str | None]], file: Path
-) -> list[Column]:
+def _deduplicate_columns(nodes_columns: dict[sql.Node, dict[str, str | None]], file: Path) -> list[Column]:
     """Create unique Column objects from potentially duplicate column nodes"""
     columns_nodes = {}
     for node, col_dict in nodes_columns.items():
@@ -171,9 +169,7 @@ def _parse_tables(query_node: sql.Node, file: Path) -> list[Table]:
     """Parse Table objects at this query level"""
     tables = []
     for node in sql.find_desc(query_node, "@table", local=True):
-        tables.append(
-            Table(_node=node, _file=file, **sql.decode_table(node), alias=sql.find_alias(node))
-        )
+        tables.append(Table(_node=node, _file=file, **sql.decode_table(node), alias=sql.find_alias(node)))
     return tables
 
 
