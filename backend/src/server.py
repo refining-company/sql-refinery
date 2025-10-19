@@ -39,6 +39,9 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 
     output = workspace.get_output(path)
     for key, data in output.items():
+        # TODO: Filter data before sending to reduce payload size
+        # - Remove detailed syntactic column locations from model.Column.code arrays
+        # - Frontend only needs semantic column info and first syntactic occurrence
         lspserver.send_notification(
             f"sql-refinery/{key}", {"uri": params.text_document.uri, key: src.utils.serialise(data)}
         )

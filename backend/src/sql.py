@@ -15,6 +15,9 @@ This module provides:
 - `parse()`, `find_desc()`, and related utilities to normalize dialect differences
 """
 
+import re
+from pathlib import Path
+
 import tree_sitter
 import tree_sitter_sql_bigquery
 from tree_sitter import Node, Tree  # noqa: F401
@@ -168,8 +171,32 @@ def decode_table(node: tree_sitter.Node) -> dict[str, str | None]:
     return {"dataset": dataset, "table": table}
 
 
-def parse(text: bytes) -> tree_sitter.Tree:
+def to_struc(node: tree_sitter.Node) -> dict | list:
+    """Convert node to simplified structure"""
+    node_type = get_type(node, meta=True, helper=False, original=False)
+    children = [to_struc(child) for child in node.children]
+    children = [child for child in children if child]
+    children = sum([child if isinstance(child, list) else [child] for child in children], [])
+
+    if node_type:
+        node_text = node.text.decode("utf-8") if node.text else ""
+        node_repr = "{} ({} at {}:{}) = {}".format(
+            node_type,
+            node.grammar_name,
+            node.start_point.row + 1,
+            node.start_point.column + 1,
+            re.sub(r"\s+", " ", node_text)[:20],  # type: ignore[arg-type]
+        )
+
+        return {node_repr: children}
+    else:
+        return children
+
+
+def build(files: dict[Path, str]) -> dict[Path, tree_sitter.Tree]:
+    """Build tree_sitter.Tree for each SQL file"""
     parser = tree_sitter.Parser()
     parser.language = _language
-    tree = parser.parse(text)
-    return tree
+    result = {path: parser.parse(content.encode()) for path, content in files.items()}
+
+    return result

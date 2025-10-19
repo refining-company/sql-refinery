@@ -29,7 +29,7 @@ suite('Variations Workflow Test', () => {
       // Step 2: Show variations for first inconsistency (CASE)
       const codeLenses = (await vscode.commands.executeCommand(
         'vscode.executeCodeLensProvider',
-        doc.uri
+        doc.uri,
       )) as vscode.CodeLens[];
 
       console.log(`Found ${codeLenses?.length || 0} code lenses`);
@@ -51,14 +51,14 @@ suite('Variations Workflow Test', () => {
       if (activeEditor?.document.uri.scheme === 'sql-refinery-explorer') {
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
-          activeEditor.document.uri
+          activeEditor.document.uri,
         )) as vscode.CodeLens[];
 
         // Execute peek
         const peekLens =
           virtualCodeLenses &&
           virtualCodeLenses.find(
-            (lens) => lens.command?.title.includes('Peek') || lens.command?.command.includes('peek')
+            (lens) => lens.command?.title.includes('Peek') || lens.command?.command.includes('peek'),
           );
         if (peekLens?.command) {
           console.log(`Executing peek command: ${peekLens.command.command}`);
@@ -71,7 +71,7 @@ suite('Variations Workflow Test', () => {
 
       // Step 4: Apply the first variation
       const virtualEditor = vscode.window.visibleTextEditors.find(
-        (e) => e.document.uri.scheme === 'sql-refinery-explorer' && !e.document.uri.path.includes('diff-')
+        (e) => e.document.uri.scheme === 'sql-refinery-explorer' && !e.document.uri.path.includes('diff-'),
       );
 
       if (virtualEditor) {
@@ -80,13 +80,13 @@ suite('Variations Workflow Test', () => {
 
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
-          virtualEditor.document.uri
+          virtualEditor.document.uri,
         )) as vscode.CodeLens[];
 
         const applyLens =
           virtualCodeLenses &&
           virtualCodeLenses.find(
-            (lens) => lens.command?.title.includes('Apply') || lens.command?.command.includes('apply')
+            (lens) => lens.command?.title.includes('Apply') || lens.command?.command.includes('apply'),
           );
 
         if (applyLens?.command) {
@@ -100,7 +100,7 @@ suite('Variations Workflow Test', () => {
 
       // Step 5: Show variations for second inconsistency (IIF)
       const originalEditor = vscode.window.visibleTextEditors.find(
-        (e) => e.document.uri.scheme === 'file' && e.document.fileName.includes('editor.sql')
+        (e) => e.document.uri.scheme === 'file' && e.document.fileName.includes('editor.sql'),
       );
 
       if (originalEditor) {
@@ -109,21 +109,21 @@ suite('Variations Workflow Test', () => {
 
         const newCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
-          originalEditor.document.uri
+          originalEditor.document.uri,
         )) as vscode.CodeLens[];
 
         // Find remaining "Show variations" lens (should be for IIF now)
         const showAltLenses =
           newCodeLenses &&
           newCodeLenses.filter(
-            (lens) => lens.command?.title.includes('Show') && lens.command?.title.includes('variations')
+            (lens) => lens.command?.title.includes('Show') && lens.command?.title.includes('variations'),
           );
 
         if (showAltLenses && showAltLenses.length > 0) {
           // After applying first variation, the second one might be at a different index
           const iifLens =
             showAltLenses.find(
-              (lens) => lens.range.start.line > 10 // IIF is after line 10
+              (lens) => lens.range.start.line > 10, // IIF is after line 10
             ) || showAltLenses[0];
 
           console.log(`Executing show command for IIF: ${iifLens.command!.command}`);
@@ -139,14 +139,14 @@ suite('Variations Workflow Test', () => {
       if (newVirtualEditor?.document.uri.scheme === 'sql-refinery-explorer') {
         const virtualCodeLenses = (await vscode.commands.executeCommand(
           'vscode.executeCodeLensProvider',
-          newVirtualEditor.document.uri
+          newVirtualEditor.document.uri,
         )) as vscode.CodeLens[];
 
         // Click peek to demonstrate
         const peekLens =
           virtualCodeLenses &&
           virtualCodeLenses.find(
-            (lens) => lens.command?.title.includes('Peek') || lens.command?.command.includes('peek')
+            (lens) => lens.command?.title.includes('Peek') || lens.command?.command.includes('peek'),
           );
 
         if (peekLens?.command) {

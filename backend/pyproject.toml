@@ -22,7 +22,7 @@ tree-sitter-sql-bigquery = {git = "https://github.com/ilyakochik/tree-sitter-sql
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.0.0"
-ruff = "^0.5.3"
+ruff = "^0.9.0"
 mypy = "^1.10.0"
 pytest = "8.3.3"
 pytest-snapshot = "0.9.0"

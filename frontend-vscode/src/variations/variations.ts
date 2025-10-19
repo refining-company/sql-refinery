@@ -25,11 +25,19 @@ interface Expression {
   sql: string;
 }
 
+interface SemanticColumn {
+  code: Column[];
+  dataset: string | null;
+  table: string | null;
+  column: string | null;
+}
+
 interface ExpressionGroup {
-  expressions: Expression[];
-  repr: string;
-  columns: string[];
+  code: Expression[];
+  columns: SemanticColumn[];
   reliability: number;
+  canonical: string;
+  sql: string;
 }
 
 interface ExpressionVariation {
@@ -83,7 +91,7 @@ function deserializeVariations(data: any[]): ExpressionVariations[] {
           item.this.location.range.start_line,
           item.this.location.range.start_char,
           item.this.location.range.end_line,
-          item.this.location.range.end_char
+          item.this.location.range.end_char,
         ),
       },
       columns: item.this.columns,
@@ -92,23 +100,24 @@ function deserializeVariations(data: any[]): ExpressionVariations[] {
     },
     others: item.others.map((other: any) => ({
       group: {
-        expressions: other.group.expressions.map((expr: any) => ({
+        code: other.group.code.map((expr: any) => ({
           location: {
             file: expr.location.file,
             range: new vscode.Range(
               expr.location.range.start_line,
               expr.location.range.start_char,
               expr.location.range.end_line,
-              expr.location.range.end_char
+              expr.location.range.end_char,
             ),
           },
           columns: expr.columns,
           alias: expr.alias,
           sql: expr.sql,
         })),
-        repr: other.group.repr,
         columns: other.group.columns,
         reliability: other.group.reliability,
+        canonical: other.group.canonical,
+        sql: other.group.sql,
       },
       similarity: other.similarity,
     })),
@@ -149,7 +158,10 @@ class VariationsFeature {
   private codeLensProvider: CodeLensProvider;
   private variationsExplorerFeature: VariationsExplorerFeature;
 
-  constructor(context: vscode.ExtensionContext, private stateManager: VariationsState) {
+  constructor(
+    context: vscode.ExtensionContext,
+    private stateManager: VariationsState,
+  ) {
     // Set up UI elements
     this.variationsExplorerFeature = new VariationsExplorerFeature(context, stateManager);
     this.diagnosticsProvider = new DiagnosticsProvider(context, 'sql-refinery-variations');
@@ -161,17 +173,17 @@ class VariationsFeature {
         log.info(`VariationsFeature: received ${variations.length} variations for ${uri.fsPath}`);
         this.updateDiagnostic(uri, variations);
         this.updateCodeLens(uri, variations);
-      })
+      }),
     );
 
     context.subscriptions.push(
       vscode.commands.registerCommand(
         'sql-refinery.variations.show',
-        this.variationsExplorerFeature.commandShow.bind(this.variationsExplorerFeature)
+        this.variationsExplorerFeature.commandShow.bind(this.variationsExplorerFeature),
       ),
       vscode.commands.registerCommand('sql-refinery.variations.ignore', () => {
         // TODO: potentially cash on client side that these warning should be ignored
-      })
+      }),
     );
   }
 
@@ -183,7 +195,7 @@ class VariationsFeature {
       const diagnostic = new vscode.Diagnostic(
         variation.this.location.range,
         `${variation.others.length} variation${variation.others.length !== 1 ? 's' : ''} found`,
-        vscode.DiagnosticSeverity.Information
+        vscode.DiagnosticSeverity.Information,
       );
       diagnostic.code = index;
       diagnostic.source = 'sql-refinery';
@@ -221,7 +233,10 @@ class VariationsFeature {
 class VariationsExplorerFeature {
   private codeLensProvider: CodeLensProvider;
 
-  constructor(context: vscode.ExtensionContext, private stateManager: VariationsState) {
+  constructor(
+    context: vscode.ExtensionContext,
+    private stateManager: VariationsState,
+  ) {
     // Code lenses
     this.codeLensProvider = new CodeLensProvider(context, 'sql-refinery-explorer', 'sql');
 
@@ -233,18 +248,18 @@ class VariationsExplorerFeature {
     context.subscriptions.push(
       vscode.commands.registerCommand('sql-refinery.variations.explorer.peek', this.commandPeek.bind(this)),
       vscode.commands.registerCommand('sql-refinery.variations.explorer.diff', this.commandDiff.bind(this)),
-      vscode.commands.registerCommand('sql-refinery.variations.explorer.apply', this.commandApply.bind(this))
+      vscode.commands.registerCommand('sql-refinery.variations.explorer.apply', this.commandApply.bind(this)),
     );
   }
 
   async commandShow(uri: vscode.Uri, id: number) {
     const explorerUri = vscode.Uri.parse(
-      `sql-refinery-explorer:${uriUI} ${basename(uri.fsPath)}?file=${encodeURIComponent(uri.fsPath)}&var=${id}`
+      `sql-refinery-explorer:${uriUI} ${basename(uri.fsPath)}?file=${encodeURIComponent(uri.fsPath)}&var=${id}`,
     );
     const doc = await vscode.workspace.openTextDocument(explorerUri);
     const editor = await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: false });
     await vscode.languages.setTextDocumentLanguage(doc, 'sql');
-    
+
     // Set cursor to beginning of document
     const startPosition = new vscode.Position(0, 0);
     editor.selection = new vscode.Selection(startPosition, startPosition);
@@ -252,8 +267,8 @@ class VariationsExplorerFeature {
   }
 
   async commandPeek(expressions: Expression[], uri: vscode.Uri, position: vscode.Position) {
-    const locations = expressions.map(expr =>
-      new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range)
+    const locations = expressions.map(
+      (expr) => new vscode.Location(vscode.Uri.file(expr.location.file), expr.location.range),
     );
     await vscode.commands.executeCommand('editor.action.peekLocations', uri, position, locations);
   }
@@ -270,18 +285,16 @@ class VariationsExplorerFeature {
 
   async commandApply(targetExpr: Expression, newExpr: Expression, thisUri: vscode.Uri) {
     const edit = new vscode.WorkspaceEdit();
-    
+
     // Get the target document to determine indentation
     const targetDoc = await vscode.workspace.openTextDocument(vscode.Uri.file(targetExpr.location.file));
     const targetLine = targetDoc.lineAt(targetExpr.location.range.start.line);
     const indentation = targetLine.text.substring(0, targetExpr.location.range.start.character);
-    
+
     // Apply indentation to lines 2+ of the replacement text
     const lines = newExpr.sql.split('\n');
-    const indentedSql = lines.map((line, index) => 
-      index === 0 ? line : indentation + line
-    ).join('\n');
-    
+    const indentedSql = lines.map((line, index) => (index === 0 ? line : indentation + line)).join('\n');
+
     edit.replace(vscode.Uri.file(targetExpr.location.file), targetExpr.location.range, indentedSql);
     await vscode.workspace.applyEdit(edit);
 
@@ -293,7 +306,7 @@ class VariationsExplorerFeature {
     await Promise.all(
       vscode.window.visibleTextEditors
         .filter((editor) => editor.document.uri.toString() === thisUri.toString())
-        .map((editor) => vscode.commands.executeCommand('workbench.action.closeActiveEditor', editor.document.uri))
+        .map((editor) => vscode.commands.executeCommand('workbench.action.closeActiveEditor', editor.document.uri)),
     );
   }
 
@@ -308,7 +321,7 @@ class VariationsExplorerFeature {
     if (!variation) return '';
 
     if (exprInd >= 0) {
-      return variation.others[exprInd]?.group.expressions[0]?.sql || '';
+      return variation.others[exprInd]?.group.code[0]?.sql || '';
     } else {
       return variation.this.sql;
     }
@@ -331,11 +344,11 @@ class VariationsExplorerFeature {
     lines.push('');
 
     variation.others.forEach((exprVar: ExpressionVariation, varIndex) => {
-      const firstExpr = exprVar.group.expressions[0];
+      const firstExpr = exprVar.group.code[0];
       if (!firstExpr) return;
 
       // Text
-      const locationCount = exprVar.group.expressions.length;
+      const locationCount = exprVar.group.code.length;
       const similarityPercent = Math.round(exprVar.similarity * 100);
       const reliability = exprVar.group.reliability;
 
@@ -343,10 +356,10 @@ class VariationsExplorerFeature {
         `-- Variation ${varIndex + 1}:` +
           ` ${similarityPercent}% similarity,` +
           ` reliability ${reliability},` +
-          ` ${locationCount} location${locationCount !== 1 ? 's' : ''}`
+          ` ${locationCount} location${locationCount !== 1 ? 's' : ''}`,
       );
       const rangeLenses = new vscode.Range(lines.length, 0, lines.length, 0);
-      firstExpr.sql.split('\n').forEach((line) => lines.push(line));
+      firstExpr.sql.split('\n').forEach((line: string) => lines.push(line));
       const positionPeek = new vscode.Position(lines.length - 1, 0);
       lines.push('');
 
@@ -355,7 +368,7 @@ class VariationsExplorerFeature {
         new vscode.CodeLens(rangeLenses, {
           title: `→ Peek ${locationCount} location${locationCount !== 1 ? 's' : ''}`,
           command: 'sql-refinery.variations.explorer.peek',
-          arguments: [exprVar.group.expressions, uri, positionPeek],
+          arguments: [exprVar.group.code, uri, positionPeek],
         }),
         new vscode.CodeLens(rangeLenses, {
           title: `↔ Show diff`,
@@ -366,7 +379,7 @@ class VariationsExplorerFeature {
           title: `✓ Apply`,
           command: 'sql-refinery.variations.explorer.apply',
           arguments: [variation.this, firstExpr, uri],
-        })
+        }),
       );
     });
 

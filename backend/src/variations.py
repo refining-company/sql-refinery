@@ -12,27 +12,14 @@ from pathlib import Path
 
 import Levenshtein
 
-from src import code
-
-
-@dataclass(frozen=True)
-class ExpressionGroup:
-    """A group of identical expressions"""
-
-    expressions: list[code.Expression]
-    repr: str
-    columns: frozenset[str]
-    reliability: int
-
-    def __repr__(self) -> str:
-        return f"ExpressionGroup(reliability={self.reliability}, {", ".join(repr(expr) for expr in self.expressions)})"
+from src import code, model
 
 
 @dataclass(frozen=True)
 class ExpressionVariation:
     """A variation with its similarity score"""
 
-    group: ExpressionGroup
+    group: model.Expression
     similarity: float
 
     def __repr__(self) -> str:
@@ -47,38 +34,32 @@ class ExpressionVariations:
     others: list[ExpressionVariation]
 
     def __repr__(self) -> str:
-        return f"ExpressionVariations({self.this._file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
+        return f"ExpressionVariations({self.this.location.file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
 
 
-def get_variations(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
-    """Compute variations for all files in the tree, return path->variations mapping."""
+def build(semantics: model.Semantics, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
+    """Compute variations using semantic model, organized by file with code expressions"""
+    result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
 
-    # Group identical expressions
-    dict_expr_groups: dict[tuple[str, frozenset[str]], list[code.Expression]] = defaultdict(list)
-    for expr in tree.index[code.Expression]:  # type: ignore
-        key = (str(expr), frozenset(map(str, expr.columns)))
-        dict_expr_groups[key].append(expr)
-    expr_groups = [ExpressionGroup(exprs, text, cols, len(exprs)) for (text, cols), exprs in dict_expr_groups.items()]
-
-    # Build output directly - for each group, find similar groups and add to result
-    result: dict[Path, list[ExpressionVariations]] = defaultdict(list)
-    for gr1 in expr_groups:
+    for code_expr, semantic_expr in semantics.code_to_expression.items():
         variations = [
-            ExpressionVariation(gr2, sim)
-            for gr2 in expr_groups
-            if gr2 != gr1 and (sim := get_similarity(gr1, gr2)) >= threshold
+            ExpressionVariation(other_semantic, sim)
+            for other_semantic in semantics.expressions
+            if other_semantic != semantic_expr
+            and threshold <= (sim := get_similarity(semantic_expr, other_semantic)) < 1.0
         ]
 
         if variations:
-            for expr in gr1.expressions:
-                result[expr._file].append(ExpressionVariations(expr, variations))
+            result[code_expr.location.file].append(ExpressionVariations(code_expr, variations))
 
     return dict(result)
 
 
-def get_similarity(v1: ExpressionGroup, v2: ExpressionGroup) -> float:
-    """Get distance between two variations (0.0 = identical, 1.0 = completely different)"""
-    text_sim = Levenshtein.ratio(v1.repr, v2.repr)
+def get_similarity(v1: model.Expression, v2: model.Expression) -> float:
+    """Get similarity between two expressions (0.0 = completely different, 1.0 = identical)"""
+    # TODO: Levenshtein should treat column names as atomic tokens instead of character sequences.
+    # Currently "ar.revenue" vs "accounts_revenue.revenue" gets high text similarity due to
+    # character-level comparison, even though they reference different columns syntactically.
+    text_sim = Levenshtein.ratio(v1.canonical, v2.canonical)
     cols_sim = len(v1.columns & v2.columns) / len(v1.columns | v2.columns) if v1.columns | v2.columns else 1.0
-    sim = text_sim * cols_sim
-    return sim
+    return text_sim * cols_sim

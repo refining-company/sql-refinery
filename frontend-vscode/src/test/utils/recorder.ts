@@ -118,7 +118,7 @@ export class VSCodeRecorder {
     const codeLenses =
       ((await vscode.commands.executeCommand(
         'vscode.executeCodeLensProvider',
-        editor.document.uri
+        editor.document.uri,
       )) as vscode.CodeLens[]) || [];
 
     let output = `#### Code Lenses (${codeLenses?.length}):\n`;

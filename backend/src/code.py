@@ -1,19 +1,13 @@
 """
-Pipeline — Code AST Abstraction
+SQL Refining — Syntactic Code Layer
 
-Architecture:
-- Pipeline: Code AST abstraction (this module)
-- Server: LSP server (server.py)
-- Frontend: VS Code extension (frontend-vscode)
-
-This module provides:
-- Data classes for Table, Column, Expression, Query, and Tree
-- Logic to transform raw tree-sitter nodes into a structured code AST
+Parse SQL files into syntactic tree (1:1 mapping with SQL AST).
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 from src import sql
@@ -39,79 +33,63 @@ class Location:
         filename = str(self.file).replace(str(Path.cwd()), ".")
         return f"{filename}:{self.range}"
 
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
 
 @dataclass(frozen=True)
 class Column:
-    _file: Path
-    _tree: Tree
-    _nodes: list[sql.Node]
+    _node: sql.Node
 
     dataset: str | None
     table: str | None
     column: str | None
+    location: Location
 
     def __repr__(self) -> str:
-        return "Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
+        return "code.Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
 
     def __hash__(self) -> int:
-        return hash(f"{self.dataset}.{self.table}.{self.column}")
+        return hash(self.location)
 
 
 @dataclass(frozen=True)
 class Expression:
-    _file: Path
-    _tree: Tree
     _node: sql.Node
 
     columns: list[Column]
     alias: str | None
     location: Location
-    sql: str  # The SQL text of this expression
+    sql: str
 
     def __repr__(self) -> str:
-        return f"Expression({self.location})"
+        return f"code.Expression({self.location})"
 
     def __str__(self) -> str:
-        # TODO: maybe should be a different method
-        nodes_to_col = {node: column for column in self.columns for node in column._nodes}
+        return f"code.Expression({self.sql})"
 
-        def node_to_str(node: sql.Node) -> str:
-            if node in nodes_to_col:
-                result = str(nodes_to_col[node])
-            elif sql.is_type(node, "#constant"):
-                # FIXME: not sure we need capturing this, probably there is a way around in src.code.op.__str__
-                result = node.text.decode("utf-8")  # type: ignore
-            elif sql.is_type(node, "#function"):
-                parsed_name, parsed_args = sql.decode_function(node)
-                result = "{}({})".format(parsed_name, ", ".join(map(node_to_str, parsed_args)))
-            else:
-                result = node.type.capitalize()
-                if len(node.children):
-                    result += "({})".format(", ".join(map(node_to_str, node.named_children)))
-
-            return result
-
-        return f"Expression({node_to_str(self._node)})"
+    def __hash__(self) -> int:
+        return hash(self.location)
 
 
 @dataclass(frozen=True)
 class Table:
-    _file: Path
-    _tree: Tree
     _node: sql.Node
 
     dataset: str | None
     table: str | None
     alias: str | None
+    location: Location
 
     def __repr__(self) -> str:
-        return "Table({}.{}{})".format(self.dataset or "?", self.table, f" as {self.alias}" if self.alias else "")
+        return f"code.Table({self.location})"
+
+    def __hash__(self) -> int:
+        return hash(self.location)
 
 
 @dataclass(frozen=True)
 class Query:
-    _file: Path
-    _tree: Tree
     _node: sql.Node
 
     sources: list[Table | Query]
@@ -119,112 +97,106 @@ class Query:
     location: Location
 
     def __repr__(self) -> str:
-        return f"Query({self.location})"
+        return f"code.Query({self.location})"
+
+    def __hash__(self) -> int:
+        return hash(self.location)
 
 
-@dataclass()
+@dataclass(frozen=True)
 class Tree:
-    files: dict[Path, list[Query]] = field(default_factory=dict)
-    index: dict[type, list[Query | Expression | Column | Table]] = field(default_factory=dict)
+    files: dict[Path, list[Query]]
+    index: dict[type, list[Query | Expression | Column | Table]]
 
     def __repr__(self) -> str:
         files_str = ", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)
-        return f"Tree({files_str})"
+        return f"code.Tree({files_str})"
 
-    def ingest_file(self, path: Path, content: str) -> Tree:
-        parse_tree = sql.parse(content.encode())
-        self.files[path] = self._parse_node(parse_tree.root_node, path)
-        return self
 
-    def _make(self, cls, *args, **kwargs) -> object:
-        obj = cls(_tree=self, *args, **kwargs)
-        self.index.setdefault(cls, []).append(obj)
-        return obj
+def _get_range(node: sql.Node) -> Range:
+    return Range(
+        start_line=node.start_point.row,
+        start_char=node.start_point.column,
+        end_line=node.end_point.row,
+        end_char=node.end_point.column,
+    )
 
-    def _parse_node(self, node: sql.Node, file: Path) -> list[Query]:
-        queries = []
-        for select_node in sql.find_desc(node, "@query"):
 
-            # Capture tables
-            tables = []
-            for n in sql.find_desc(select_node, "@table"):
-                tables.append(self._make(Table, _node=n, _file=file, **sql.decode_table(n), alias=sql.find_alias(n)))
+def _parse_tables(query_node: sql.Node, file: Path) -> list[Table]:
+    tables = []
+    for node in sql.find_desc(query_node, "@table", local=True):
+        location = Location(file=file, range=_get_range(node))
+        tables.append(Table(_node=node, location=location, **sql.decode_table(node), alias=sql.find_alias(node)))
+    return tables
 
-            # Capture columns
-            nodes_columns = {n: sql.decode_column(n) for n in sql.find_desc(select_node, "@column")}
 
-            tables_aliases = {t.alias: t for t in tables}
-            for col, path in nodes_columns.items():
-                table = None
-                if path["table"] in tables_aliases:
-                    table = tables_aliases[path["table"]]
-                if not path["table"] and len(tables) == 1:
-                    table = tables[0]
-                if table:
-                    path["table"] = table.table
-                    path["dataset"] = table.dataset
+def _parse_columns(query_node: sql.Node, file: Path) -> list[Column]:
+    columns = []
+    for node in sql.find_desc(query_node, "@column", local=True):
+        col_dict = sql.decode_column(node)
+        location = Location(file=file, range=_get_range(node))
+        columns.append(Column(_node=node, location=location, **col_dict))
+    return columns
 
-                # TODO: resolve using data model (when no table is specified in JOIN but could be inferred)
-                # TODO: resolve when different datasets/catalogs
-                # TODO: resolve `*` into columns
 
-            # Squash multiple column nodes into single column object
-            columns_nodes = {}
-            for k, v in nodes_columns.items():
-                columns_nodes.setdefault(tuple(v.values()), []).append(k)
-
-            # Create columns
-            columns = []
-            for (d, t, c), n in columns_nodes.items():
-                columns.append(self._make(Column, _nodes=n, _file=file, dataset=d, table=t, column=c))
-
-            # Capture ops
-            nodes_columns = {n: col for col in columns for n in col._nodes}
-            ops = []
-            for op_node in sql.find_desc(select_node, "@expression"):
-                op_cols = []
-                for col_node in sql.find_desc(op_node.parent, "@column"):  # type: ignore
-                    if nodes_columns[col_node] not in op_cols:
-                        op_cols.append(nodes_columns[col_node])
-                location = Location(
-                    file=file,
-                    range=Range(
-                        start_line=op_node.start_point[0],
-                        start_char=op_node.start_point[1],
-                        end_line=op_node.end_point[0],
-                        end_char=op_node.end_point[1],
-                    ),
-                )
-                ops.append(
-                    self._make(
-                        Expression,
-                        _file=file,
-                        _node=op_node,
-                        columns=op_cols,
-                        alias=sql.find_alias(op_node),
-                        location=location,
-                        sql=op_node.text.decode("utf-8"),
-                    )
-                )
-
-            subqueries = self._parse_node(select_node, file=file)
-            query_location = Location(
-                file=file,
-                range=Range(
-                    start_line=select_node.start_point.row,
-                    start_char=select_node.start_point.column,
-                    end_line=select_node.end_point.row,
-                    end_char=select_node.end_point.column,
-                ),
+def _parse_expressions(query_node: sql.Node, file: Path) -> list[Expression]:
+    expressions = []
+    for expr_node in sql.find_desc(query_node, "@expression", local=True):
+        expr_cols = _parse_columns(expr_node.parent, file)  # type: ignore
+        expressions.append(
+            Expression(
+                _node=expr_node,
+                columns=expr_cols,
+                alias=sql.find_alias(expr_node),
+                location=Location(file=file, range=_get_range(expr_node)),
+                sql=expr_node.text.decode("utf-8") if expr_node.text else "",
             )
-            query = self._make(
-                Query,
-                _file=file,
-                _node=select_node,
-                sources=tables + subqueries,
-                expressions=ops,
-                location=query_location,
-            )
-            queries.append(query)
+        )
+    return expressions
 
-        return queries
+
+def _parse_query(query_node: sql.Node, file: Path) -> Query:
+    tables = _parse_tables(query_node, file)
+    expressions = _parse_expressions(query_node, file)
+    subquery_nodes = sql.find_desc(query_node, "@query", local=True)
+    subqueries = [_parse_query(sub_node, file) for sub_node in subquery_nodes]
+    return Query(
+        _node=query_node,
+        sources=tables + subqueries,
+        expressions=expressions,
+        location=Location(file=file, range=_get_range(query_node)),
+    )
+
+
+def _parse_tree(parse_tree: sql.Tree, file: Path) -> list[Query]:
+    root_query_nodes = sql.find_desc(parse_tree.root_node, "@query", local=True)
+    return [_parse_query(node, file) for node in root_query_nodes]
+
+
+def _build_index(files: dict[Path, list[Query]]) -> dict[type, list[Query | Expression | Column | Table]]:
+    index: defaultdict[type, list[Query | Expression | Column | Table]] = defaultdict(list)
+
+    def traverse(query: Query):
+        index[Query].append(query)
+        for expr in query.expressions:
+            index[Expression].append(expr)
+            for col in expr.columns:
+                if col not in index[Column]:
+                    index[Column].append(col)
+        for source in query.sources:
+            if isinstance(source, Table):
+                index[Table].append(source)
+            elif isinstance(source, Query):
+                traverse(source)
+
+    for queries in files.values():
+        for query in queries:
+            traverse(query)
+
+    return dict(index)
+
+
+def build(parse_trees: dict[Path, sql.Tree]) -> Tree:
+    files = {file: _parse_tree(parse_tree, file) for file, parse_tree in parse_trees.items()}
+    index = _build_index(files)
+    return Tree(files=files, index=index)
