@@ -15,6 +15,8 @@ This module provides:
 - `parse()`, `find_desc()`, and related utilities to normalize dialect differences
 """
 
+from pathlib import Path
+
 import tree_sitter
 import tree_sitter_sql_bigquery
 from tree_sitter import Node, Tree  # noqa: F401
@@ -168,8 +170,18 @@ def decode_table(node: tree_sitter.Node) -> dict[str, str | None]:
     return {"dataset": dataset, "table": table}
 
 
-def build(text: str) -> tree_sitter.Tree:
+def build(files: dict[Path, str]) -> dict[Path, tree_sitter.Tree]:
+    """Build tree_sitter.Tree for each SQL file
+
+    Pipeline:
+    - Input: dict[Path, str] - SQL file contents
+    - Output: dict[Path, tree_sitter.Tree] - parsed syntax trees
+    """
     parser = tree_sitter.Parser()
     parser.language = _language
-    tree = parser.parse(text.encode())
-    return tree
+
+    result = {}
+    for path, content in files.items():
+        result[path] = parser.parse(content.encode())
+
+    return result

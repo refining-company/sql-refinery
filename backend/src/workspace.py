@@ -14,7 +14,7 @@ This module provides:
 
 from pathlib import Path
 
-from src import code, logger, variations
+from src import code, logger, sql, variations
 
 log = logger.get(__name__)
 
@@ -22,13 +22,11 @@ log = logger.get(__name__)
 class Workspace:
     folder: Path | None
     files: dict[Path, str]
-    tree: code.Tree
     output: dict[str, dict]
 
     def __init__(self):
         self.folder = None
         self.files = {}
-        self.tree = code.Tree()
         self.output = {"variations": {}}
 
     def set_folder(self, folder: Path | None) -> None:
@@ -50,12 +48,11 @@ class Workspace:
     def _rebuild(self) -> None:
         log.info(f"Rebuilding workspace with {len(self.files)} files")
 
-        self.tree = code.Tree()
+        # Build pipeline: files -> sql.Tree -> code.Tree -> variations
+        parse_trees = sql.build(self.files)
+        tree = code.build(parse_trees)
+        self.output["variations"] = variations.build(tree)
 
-        for path, content in self.files.items():
-            self.tree.ingest_file(path=path, content=content)
-
-        self.output["variations"] = variations.build(self.tree)
         log.info(f"Computed variations for {[p.stem for p in self.output['variations'].keys()]}")
 
     def get_output(self, path: Path) -> dict:

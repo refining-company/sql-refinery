@@ -104,13 +104,13 @@ def patch_pipeline():
 
     # Save originals
     orig_sql_build = sql.build
-    orig_ingest = code.Tree.ingest_file
+    orig_code_build = code.build
     orig_variations_build = variations.build
 
     # Patch with capturing wrappers
     sql.build = capture(sql.build, lambda r: simplify(r))
-    code.Tree.ingest_file = capture(
-        code.Tree.ingest_file,
+    code.build = capture(
+        code.build,
         lambda r: simplify(r, terminal=(sql.Node, sql.Tree, code.Column, code.Table, code.Location, code.Range)),
     )
     variations.build = capture(
@@ -125,7 +125,7 @@ def patch_pipeline():
     finally:
         # Restore originals
         sql.build = orig_sql_build
-        code.Tree.ingest_file = orig_ingest
+        code.build = orig_code_build
         variations.build = orig_variations_build
 
 
