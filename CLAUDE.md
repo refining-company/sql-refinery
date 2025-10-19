@@ -33,19 +33,24 @@ Analysts who build SQL data pipelines to dashboards and analytics.
 4. **Layer 4 (Features)**: `variations.py`, `autocomplete.py`, `lineage.py` (future) - Analysis features
 
 **Key Modules:**
-- `code.py`: Parse SQL → `code.Tree` (syntactic AST, unresolved references)
-- `model.py`: Build semantic model → `model.SemanticModel` (resolved schemas, dependencies)
+- `code.py`: Parse SQL → `code.Tree` (syntactic AST, location-based hashing, 1:1 with SQL)
+- `model.py`: Build semantic model → `model.Semantics` (resolved references, identity-based hashing, deduplication)
 - `workspace.py`: Orchestrate pipeline, cache results, manage incremental updates
 - `variations.py`: Find similar expression patterns across codebase (Levenshtein distance, threshold 0.7)
 - `server.py`: LSP server (thin I/O wrapper)
 
+**Layer Separation:**
+- Syntactic (code.py): Preserves all SQL occurrences, aliases, duplicates; hash by location
+- Semantic (model.py): Groups identical expressions by canonical representation; hash by identity
+- `model.Semantics.code_to_expression`: Maps each syntactic expression to its semantic group
+
 **Data Flow:**
 ```
-SQL files → code.build() → code.Tree
+SQL files → code.build() → code.Tree (syntactic, with duplicates)
                               ↓
-         model.build() → model.SemanticModel
+         model.build() → model.Semantics (semantic, deduplicated, with code_to_expression map)
                               ↓
-      variations.build() → Pattern outputs
+      variations.build() → dict[Path, list[ExpressionVariations]] (organized by file)
                               ↓
          workspace → LSP server → VS Code
 ```
