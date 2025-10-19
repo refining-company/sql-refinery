@@ -25,34 +25,50 @@ Analysts who build SQL data pipelines to dashboards and analytics.
 
 ### Architecture
 
-**Backend (Python 3.12.7):**
+**4-Layer Pipeline:**
 
-- **Pipeline Components**: SQL parsing (`src/sql.py`) → AST abstraction (`src/code.py`) → Logic analysis
-  (`src/workspace.py`, `src/logic.py`)
-- **LSP Server**: Translates analysis results into LSP diagnostics and code lenses (`src/server.py`)
-- **Core Algorithm**: Uses Levenshtein distance (threshold 0.7) to detect expression similarity
+1. **Layer 1 (Sources)**: `code.py` - Parse SQL files into syntactic tree
+2. **Layer 2 (Semantics)**: `model.py` - Build unified semantic model (future: merge code + database + catalog)
+3. **Layer 3 (Orchestration)**: `workspace.py` - Manage pipeline, caching, incremental computation
+4. **Layer 4 (Features)**: `variations.py`, `autocomplete.py`, `lineage.py` (future) - Analysis features
 
-**Frontend (Node 20.18.0):**
+**Key Modules:**
+- `code.py`: Parse SQL → `code.Tree` (syntactic AST, unresolved references)
+- `model.py`: Build semantic model → `model.SemanticModel` (resolved schemas, dependencies)
+- `workspace.py`: Orchestrate pipeline, cache results, manage incremental updates
+- `variations.py`: Find similar expression patterns across codebase (Levenshtein distance, threshold 0.7)
+- `server.py`: LSP server (thin I/O wrapper)
 
-- VS Code extension (`frontend-vscode/src/extension.ts`) providing UI for viewing alternatives
-- Multiple providers for code lenses, virtual documents, and diagnostics
+**Data Flow:**
+```
+SQL files → code.build() → code.Tree
+                              ↓
+         model.build() → model.SemanticModel
+                              ↓
+      variations.analyze() → Pattern outputs
+                              ↓
+         workspace → LSP server → VS Code
+```
 
-### Key Data Flow
-
-1. **Analysis Pipeline**: SQL files → Tree-sitter parsing → AST with typed elements (`@query`, `@table`, `@column`,
-   `@expression`) → Expression similarity detection
-2. **Data Structures**:
-   - `Tree.index`: Registry of elements by type
-   - `Tree.map_file_to_expr`: Mapping from files to their expressions
-   - `ExpressionVariations`: Expression + similar variations + similarity scores + locations
-3. **LSP Translation**: Alternatives → Diagnostics (blue squiggles) + Code Lenses ("Alternatives found: N") → VS Code UI
+**Backend**: Python 3.12.7 | **Frontend**: Node 20.18.0 (VS Code extension)
 
 ### File Structure
 
-- **Entry Points**: `backend/src/server.py` (LSP server), `frontend-vscode/src/extension.ts` (VS Code extension)
-- **Core Logic**: `backend/src/logic.py` (similarity detection), `backend/src/workspace.py` (file ingestion)
-- **Test Data**: `backend/tests/inputs/codebase/` (sample SQL files), `backend/tests/sessions/` (recorded LSP sessions)
-- **Mock UI**: Extension currently shows hardcoded examples instead of live LSP integration
+**Backend (Python):**
+- `src/code.py` - SQL parsing, syntactic AST
+- `src/model.py` - Semantic model, schema registry (future: multi-source integration)
+- `src/workspace.py` - Pipeline orchestration, caching, incremental updates
+- `src/variations.py` - Expression pattern detection
+- `src/server.py` - LSP server (thin I/O layer)
+- `src/logger.py`, `src/utils.py` - Infrastructure
+
+**Test Data:**
+- `backend/tests/inputs/codebase/` - Sample SQL files
+- `backend/tests/sessions/` - Recorded LSP sessions
+- `backend/tests/snapshots/` - Expected outputs (.true.md = golden, .last.md = debug)
+
+**Frontend (TypeScript):**
+- `frontend-vscode/src/extension.ts` - VS Code extension entry point
 
 ## 3. DEVELOPMENT GUIDELINES
 
@@ -78,7 +94,7 @@ where experience shows it's actually needed.
 
 ### Coding Standards
 
-- **No Emojis**: Never use emojis in code, comments, or documentation unless explicitly requested
+- **No Emojis**: Never use emojis in code, comments, documentation, or commit messages unless explicitly requested
 - **Minimal Documentation**: Do not proactively create documentation files, or excessive self-explanatory inline
   comments
 - **Prefer Editing**: Always prefer editing existing files over creating new ones
@@ -86,6 +102,42 @@ where experience shows it's actually needed.
 - **Import Style**: Use `from package import module` pattern, not `import package` - clearer module origin without
   excessive verbosity. Example: `from src import code, logger` then use `code.Tree`, `logger.get()`. Avoid aliasing
   imports except for standard cases like `import tests.utils as utils`
+
+### Naming Framework
+
+**Core Principle**: Name what something IS (substance), not what it DOES (function)
+
+**Module Names:**
+- Nouns representing substance: `code`, `model`, `variations`, `workspace`
+- NOT verbs: ~~`parser`~~, ~~`analyzer`~~, ~~`builder`~~
+
+**Class Names:**
+- Simple nouns, NO suffixes: `Column`, `Table`, `Expression`, `Query`, `Tree`
+- Disambiguation via module: `code.Column` (syntactic) vs `model.Column` (semantic)
+- NOT: ~~`ColumnRef`~~, ~~`ParsedTree`~~, ~~`ColumnDef`~~
+
+**Function Names:**
+- Builders: `build()` (uniform across modules)
+  - `code.build(files) -> code.Tree`
+  - `model.build(tree) -> model.SemanticModel`
+- Analyzers: `analyze()`, `find()`, `detect()`
+  - `variations.analyze(model) -> dict`
+- Private: `_prefix` (e.g., `_parse()`, `_TreeBuilder`)
+
+**Import Discipline (STRICT):**
+- Always: `from src import code, model` (import modules, not classes)
+- Use qualified: `code.Column`, `model.Column`
+- NEVER: `from src.code import *`
+- NEVER: `from src.code import Column` (ambiguous across modules)
+
+**Type Hints (REQUIRED):**
+- All function signatures must specify module-qualified types
+- Example: `def resolve(ref: code.Column, registry: model.SchemaRegistry) -> model.Column | None`
+
+**Rationale**: Same names across layers (Column, Expression, Query) represent different abstractions:
+- `code.Column` = syntactic reference in SQL text (may not exist)
+- `model.Column` = semantic definition in schema (exists, has type)
+- Module context + type hints prevent confusion
 
 ### Testing Approach
 
