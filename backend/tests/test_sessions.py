@@ -6,7 +6,6 @@ LSP sessions through direct handler calls (no threads/IO).
 """
 
 import dataclasses
-import re
 from collections import defaultdict
 from contextlib import contextmanager
 from functools import wraps
@@ -45,24 +44,8 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
         # Tree-sitter objects
         case src.sql.Tree():
             return [simplify(obj.root_node, terminal)]
-
         case src.sql.Node():
-            node_type = src.sql.get_type(obj, meta=True, helper=False, original=False)
-            children = simplify(obj.children, terminal)
-            children = [child for child in children if child]  # type: ignore[union-attr]
-            children = sum([child if isinstance(child, list) else [child] for child in children], [])
-
-            if node_type:
-                key = "{} ({} at {}:{}) = {}".format(
-                    node_type,
-                    obj.grammar_name,
-                    obj.start_point.row + 1,
-                    obj.start_point.column + 1,
-                    re.sub(r"\s+", " ", simplify(obj.text, terminal))[:20],  # type: ignore[arg-type]
-                )
-                return {key: children}
-            else:
-                return children
+            return src.sql.to_struc(obj)
 
         # Built-in types
         case dict():
