@@ -47,7 +47,7 @@ class ExpressionVariations:
     others: list[ExpressionVariation]
 
     def __repr__(self) -> str:
-        return f"ExpressionVariations({self.this._file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
+        return f"ExpressionVariations({self.this.location.file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
 
 
 def build(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
@@ -71,7 +71,7 @@ def build(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[Expression
 
         if variations:
             for expr in gr1.expressions:
-                result[expr._file].append(ExpressionVariations(expr, variations))
+                result[expr.location.file].append(ExpressionVariations(expr, variations))
 
     return dict(result)
 

@@ -43,7 +43,6 @@ class Location:
 @dataclass(frozen=True)
 class Column:
     _file: Path
-    _tree: Tree
     _nodes: list[sql.Node]
 
     dataset: str | None
@@ -59,8 +58,6 @@ class Column:
 
 @dataclass(frozen=True)
 class Expression:
-    _file: Path
-    _tree: Tree
     _node: sql.Node
 
     columns: list[Column]
@@ -97,7 +94,6 @@ class Expression:
 @dataclass(frozen=True)
 class Table:
     _file: Path
-    _tree: Tree
     _node: sql.Node
 
     dataset: str | None
@@ -110,8 +106,6 @@ class Table:
 
 @dataclass(frozen=True)
 class Query:
-    _file: Path
-    _tree: Tree
     _node: sql.Node
 
     sources: list[Table | Query]
@@ -137,7 +131,7 @@ class Tree:
         return self
 
     def _make(self, cls, *args, **kwargs) -> object:
-        obj = cls(_tree=self, *args, **kwargs)
+        obj = cls(*args, **kwargs)
         self.index.setdefault(cls, []).append(obj)
         return obj
 
@@ -198,7 +192,6 @@ class Tree:
                 ops.append(
                     self._make(
                         Expression,
-                        _file=file,
                         _node=op_node,
                         columns=op_cols,
                         alias=sql.find_alias(op_node),
@@ -219,7 +212,6 @@ class Tree:
             )
             query = self._make(
                 Query,
-                _file=file,
                 _node=select_node,
                 sources=tables + subqueries,
                 expressions=ops,
