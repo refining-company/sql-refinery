@@ -55,7 +55,8 @@ def build(tree: code.Tree, threshold: float = 0.7) -> dict[Path, list[Expression
 
     # Group identical expressions
     dict_expr_groups: dict[tuple[str, frozenset[str]], list[code.Expression]] = defaultdict(list)
-    for expr in tree.index[code.Expression]:  # type: ignore
+    for expr in tree.index[code.Expression]:
+        assert type(expr) is code.Expression
         key = (str(expr), frozenset(map(str, expr.columns)))
         dict_expr_groups[key].append(expr)
     expr_groups = [ExpressionGroup(exprs, text, cols, len(exprs)) for (text, cols), exprs in dict_expr_groups.items()]

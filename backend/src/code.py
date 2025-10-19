@@ -150,7 +150,7 @@ def _resolve_columns(
 
 def _deduplicate_columns(nodes_columns: dict[sql.Node, dict[str, str | None]], file: Path) -> list[Column]:
     """Create unique Column objects from potentially duplicate column nodes"""
-    columns_nodes = {}
+    columns_nodes: dict = {}
     for node, col_dict in nodes_columns.items():
         key = tuple(col_dict.values())
         columns_nodes.setdefault(key, []).append(node)
@@ -206,13 +206,13 @@ def _parse_expressions(query_node: sql.Node, file: Path, columns: list[Column]) 
                 location=Location(
                     file=file,
                     range=Range(
-                        start_line=expr_node.start_point[0],
-                        start_char=expr_node.start_point[1],
-                        end_line=expr_node.end_point[0],
-                        end_char=expr_node.end_point[1],
+                        start_line=expr_node.start_point.row,
+                        start_char=expr_node.start_point.column,
+                        end_line=expr_node.end_point.row,
+                        end_char=expr_node.end_point.column,
                     ),
                 ),
-                sql=expr_node.text.decode("utf-8"),
+                sql=expr_node.text.decode("utf-8") if expr_node.text else "",
             )
         )
 
@@ -294,15 +294,7 @@ def _build_index(files: dict[Path, list[Query]]) -> dict[type, list[Query | Expr
 
 
 def build(parse_trees: dict[Path, sql.Tree]) -> Tree:
-    """Build code.Tree from dict of sql.Tree objects
-
-    Pipeline:
-    - Input: dict[Path, sql.Tree] from sql.build()
-    - Output: code.Tree with parsed Query tree structure and index
-    """
-    files = {}
-    for file, parse_tree in parse_trees.items():
-        files[file] = _parse_tree(parse_tree, file)
-
+    """Build code.Tree from dict of sql.Tree objects"""
+    files = {file: _parse_tree(parse_tree, file) for file, parse_tree in parse_trees.items()}
     index = _build_index(files)
     return Tree(files=files, index=index)
