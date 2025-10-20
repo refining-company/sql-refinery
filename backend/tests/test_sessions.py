@@ -89,6 +89,7 @@ def patch_pipeline():
     # Save originals
     orig_sql_build = src.sql.build
     orig_code_build = src.code.build
+    orig_model_build = src.model.build
     orig_variations_build = src.variations.build
 
     # Patch with capturing wrappers
@@ -97,6 +98,12 @@ def patch_pipeline():
         src.code.build,
         lambda r: simplify(
             r, terminal=(src.sql.Node, src.sql.Tree, src.code.Column, src.code.Table, src.code.Location, src.code.Range)
+        ),
+    )
+    src.model.build = capture(
+        src.model.build,
+        lambda r: simplify(
+            r, terminal=(src.sql.Node, src.sql.Tree, src.code.Tree, src.code.Column, src.code.Expression, src.code.Table, src.code.Query, src.code.Location, src.code.Range, src.model.Expression)
         ),
     )
     src.variations.build = capture(
@@ -124,6 +131,7 @@ def patch_pipeline():
         # Restore originals
         src.sql.build = orig_sql_build
         src.code.build = orig_code_build
+        src.model.build = orig_model_build
         src.variations.build = orig_variations_build
 
 
