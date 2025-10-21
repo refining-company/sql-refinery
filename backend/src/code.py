@@ -34,7 +34,7 @@ class Location:
         return f"{filename}:{self.range}"
 
     def __hash__(self) -> int:
-        return hash(repr(self))
+        return hash((self.file, self.range))
 
 
 @dataclass(frozen=True)
@@ -50,7 +50,7 @@ class Column:
         return "code.Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
 
     def __hash__(self) -> int:
-        return hash(self.location)
+        return hash((type(self), self.location))
 
 
 @dataclass(frozen=True)
@@ -69,7 +69,7 @@ class Expression:
         return f"code.Expression({self.sql})"
 
     def __hash__(self) -> int:
-        return hash(self.location)
+        return hash((type(self), self.location))
 
 
 @dataclass(frozen=True)
@@ -85,7 +85,7 @@ class Table:
         return f"code.Table({self.location})"
 
     def __hash__(self) -> int:
-        return hash(self.location)
+        return hash((type(self), self.location))
 
 
 @dataclass(frozen=True)
@@ -100,7 +100,7 @@ class Query:
         return f"code.Query({self.location})"
 
     def __hash__(self) -> int:
-        return hash(self.location)
+        return hash((type(self), self.location))
 
 
 @dataclass(frozen=True)
