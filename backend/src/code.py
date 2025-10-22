@@ -113,7 +113,7 @@ class Tree:
         return f"code.Tree({files_str})"
 
 
-def _get_range(node: sql.Node) -> Range:
+def parse_range(node: sql.Node) -> Range:
     return Range(
         start_line=node.start_point.row,
         start_char=node.start_point.column,
@@ -125,7 +125,7 @@ def _get_range(node: sql.Node) -> Range:
 def _parse_tables(query_node: sql.Node, file: Path) -> list[Table]:
     tables = []
     for node in sql.find_desc(query_node, "@table", local=True):
-        location = Location(file=file, range=_get_range(node))
+        location = Location(file=file, range=parse_range(node))
         tables.append(Table(_node=node, location=location, **sql.decode_table(node), alias=sql.find_alias(node)))
     return tables
 
@@ -134,7 +134,7 @@ def _parse_columns(query_node: sql.Node, file: Path) -> list[Column]:
     columns = []
     for node in sql.find_desc(query_node, "@column", local=True):
         col_dict = sql.decode_column(node)
-        location = Location(file=file, range=_get_range(node))
+        location = Location(file=file, range=parse_range(node))
         columns.append(Column(_node=node, location=location, **col_dict))
     return columns
 
@@ -148,7 +148,7 @@ def _parse_expressions(query_node: sql.Node, file: Path) -> list[Expression]:
                 _node=expr_node,
                 columns=expr_cols,
                 alias=sql.find_alias(expr_node),
-                location=Location(file=file, range=_get_range(expr_node)),
+                location=Location(file=file, range=parse_range(expr_node)),
                 sql=expr_node.text.decode("utf-8") if expr_node.text else "",
             )
         )
@@ -164,7 +164,7 @@ def _parse_query(query_node: sql.Node, file: Path) -> Query:
         _node=query_node,
         sources=tables + subqueries,
         expressions=expressions,
-        location=Location(file=file, range=_get_range(query_node)),
+        location=Location(file=file, range=parse_range(query_node)),
     )
 
 

@@ -21,13 +21,18 @@ SESSIONS_DIR = TEST_DIR / "sessions"
 SNAPSHOTS_DIR = TEST_DIR / "snapshots"
 
 
-def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
-    """Simplify complex objects for snapshot comparison"""
-    # Terminal class handling - stop recursion here
-    if isinstance(obj, terminal):
+def simplify(obj, terminal=(), terminal_hidden=False) -> dict | list | tuple | str | int | float | bool | None:
+    """Simplify complex objects for snapshot comparison
+
+    Args:
+        terminal: Classes to stop recursion and show repr() + str()
+        terminal_hidden: If True, show str() for "_" fields instead of recursing
+    """
+    # Terminal class handling - stop recursion here (ignored if terminal_hidden=True)
+    if not terminal_hidden and isinstance(obj, terminal):
         match obj:
             case src.sql.Node():
-                return simplify(obj.text, terminal)
+                return simplify(obj.text, terminal, terminal_hidden)
             case _ if dataclasses.is_dataclass(obj):
                 return repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
             case _:
@@ -37,25 +42,43 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
     match obj:
         # Dataclasses
         case _ if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
-            obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+            if terminal_hidden:
+                # Include "_" fields but show only str() for them
+                obj_dict = {}
+                for f in dataclasses.fields(obj):
+                    value = getattr(obj, f.name)
+                    if f.name.startswith("_"):
+                        # Show str() representation for "_" fields
+                        obj_dict[f.name] = str(value) if "__str__" in type(value).__dict__ else repr(value)
+                    else:
+                        # Recurse normally for non-"_" fields
+                        obj_dict[f.name] = simplify(value, terminal, terminal_hidden)
+            else:
+                # Normal mode: skip "_" fields entirely
+                obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+                obj_dict = simplify(obj_dict, terminal, terminal_hidden)
+
             obj_key = repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
-            return {obj_key: simplify(obj_dict, terminal)}
+            return {obj_key: obj_dict}
 
         # Tree-sitter objects
         case src.sql.Tree():
-            return [simplify(obj.root_node, terminal)]
+            return [simplify(obj.root_node, terminal, terminal_hidden)]
         case src.sql.Node():
             return src.sql.to_struc(obj)
 
         # Built-in types
         case dict():
-            return {str(simplify(key, terminal)): simplify(value, terminal) for key, value in obj.items()}
+            return {
+                str(simplify(key, terminal, terminal_hidden)): simplify(value, terminal, terminal_hidden)
+                for key, value in obj.items()
+            }
         case list() | set() | frozenset():
-            return sorted([simplify(item, terminal) for item in obj], key=str)
+            return sorted([simplify(item, terminal, terminal_hidden) for item in obj], key=str)
         case tuple():
-            return tuple(simplify(item, terminal) for item in obj)
+            return tuple(simplify(item, terminal, terminal_hidden) for item in obj)
         case Path():
-            return simplify(str(obj), terminal)
+            return simplify(str(obj), terminal, terminal_hidden)
         case bytes():
             return obj.decode("utf-8")
         case float():
@@ -102,9 +125,7 @@ def patch_pipeline():
     )
     src.model.build = capture(
         src.model.build,
-        lambda r: simplify(
-            r, terminal=(src.sql.Node, src.sql.Tree, src.code.Tree, src.code.Column, src.code.Expression, src.code.Table, src.code.Query, src.code.Location, src.code.Range)
-        ),
+        lambda r: simplify(r, terminal_hidden=True),
     )
     src.variations.build = capture(
         src.variations.build,

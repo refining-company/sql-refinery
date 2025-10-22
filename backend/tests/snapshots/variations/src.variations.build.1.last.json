@@ -6,7 +6,7 @@
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.90)": {
               "group": {
                 "Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0))))))": {
-                  "code": [ "code.Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = code.Expression(SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END))" ],
+                  "locations": [ "./tests/inputs/codebase/0-accounts.sql:38:8-38:86" ],
                   "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
                   "reliability": 1,
                   "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
@@ -18,7 +18,7 @@
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.90)": {
               "group": {
                 "Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0))))))": {
-                  "code": [ "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))" ],
+                  "locations": [ "./tests/inputs/codebase/0-accounts.sql:37:8-37:105" ],
                   "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
                   "reliability": 1,
                   "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",

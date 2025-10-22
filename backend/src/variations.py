@@ -41,7 +41,7 @@ def build(semantics: model.Semantics, threshold: float = 0.7) -> dict[Path, list
     """Compute variations using semantic model, organized by file with code expressions"""
     result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
 
-    for code_expr, semantic_expr in semantics.code_to_expression.items():
+    for code_expr, semantic_expr in semantics.expr_code_to_model.items():
         variations = [
             ExpressionVariation(other_semantic, sim)
             for other_semantic in semantics.expressions

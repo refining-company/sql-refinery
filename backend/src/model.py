@@ -14,7 +14,7 @@ import src
 
 @dataclass(frozen=True)
 class Column:
-    code: list[src.code.Column]
+    _code: list[src.code.Column]
     dataset: str | None
     table: str | None
     column: str | None
@@ -28,7 +28,8 @@ class Column:
 
 @dataclass(frozen=True)
 class Expression:
-    code: list[src.code.Expression]
+    _code: list[src.code.Expression]
+    locations: list[src.code.Location]
     columns: frozenset[Column]
     reliability: int
     canonical: str
@@ -42,7 +43,7 @@ class Expression:
 class Semantics:
     columns: list[Column]
     expressions: list[Expression]
-    code_to_expression: dict[src.code.Expression, Expression]
+    expr_code_to_model: dict[src.code.Expression, Expression]
 
 
 def _resolve_columns(tree: src.code.Tree) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
@@ -80,11 +81,8 @@ def _group_columns(
         key = resolved[code_col]
         columns_dict[key].append(code_col)
 
-    model_columns = [
-        Column(code=code_cols, dataset=d, table=t, column=c) for (d, t, c), code_cols in columns_dict.items()
-    ]
-
-    code_to_model = {code_col: model_col for model_col in model_columns for code_col in model_col.code}
+    model_columns = [Column(_code=code, dataset=d, table=t, column=c) for (d, t, c), code in columns_dict.items()]
+    code_to_model = {code_col: model_col for model_col in model_columns for code_col in model_col._code}
 
     return model_columns, code_to_model
 
@@ -127,9 +125,15 @@ def _group_expressions(tree: src.code.Tree, code_to_model_column: dict[src.code.
         first_expr = code_exprs[0]
         model_cols = frozenset(code_to_model_column[code_col] for code_col in first_expr.columns)
         reliability = len(code_exprs)
+        locations = [expr.location for expr in code_exprs]
         model_expressions.append(
             Expression(
-                canonical=canonical, reliability=reliability, code=code_exprs, columns=model_cols, sql=first_expr.sql
+                _code=code_exprs,
+                locations=locations,
+                columns=model_cols,
+                reliability=reliability,
+                canonical=canonical,
+                sql=first_expr.sql,
             )
         )
 
@@ -142,6 +146,6 @@ def build(tree: src.code.Tree) -> Semantics:
     model_columns, code_to_model = _group_columns(tree, resolved)
     model_expressions = _group_expressions(tree, code_to_model)
 
-    code_to_expression = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr.code}
+    expr_code_to_model = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
 
-    return Semantics(columns=model_columns, expressions=model_expressions, code_to_expression=code_to_expression)
+    return Semantics(columns=model_columns, expressions=model_expressions, expr_code_to_model=expr_code_to_model)
