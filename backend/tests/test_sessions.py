@@ -103,7 +103,7 @@ def patch_pipeline():
     src.model.build = capture(
         src.model.build,
         lambda r: simplify(
-            r, terminal=(src.sql.Node, src.sql.Tree, src.code.Tree, src.code.Column, src.code.Expression, src.code.Table, src.code.Query, src.code.Location, src.code.Range, src.model.Expression)
+            r, terminal=(src.sql.Node, src.sql.Tree, src.code.Tree, src.code.Column, src.code.Expression, src.code.Table, src.code.Query, src.code.Location, src.code.Range)
         ),
     )
     src.variations.build = capture(
