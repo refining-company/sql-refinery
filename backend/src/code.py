@@ -47,6 +47,9 @@ class Column:
     location: Location
 
     def __repr__(self) -> str:
+        return f"code.Column({self.location})"
+
+    def __str__(self) -> str:
         return "code.Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
 
     def __hash__(self) -> int:

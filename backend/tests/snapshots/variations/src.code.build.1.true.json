@@ -8,39 +8,39 @@
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
-                        "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:37:22-37:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:37:86-37:93) = code.Column(?.o.value)" ],
                         "alias": "revenue_core",
                         "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
                         "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = code.Expression(SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END))": {
-                        "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:38:22-38:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:38:67-38:74) = code.Column(?.o.value)" ],
                         "alias": "revenue_aux",
                         "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
                         "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = code.Expression(julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1)": {
-                        "columns": [ "code.Column(?.d.contract_end_date)", "code.Column(?.d.contract_start_date)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:36:18-36:37) = code.Column(?.d.contract_end_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:36:51-36:72) = code.Column(?.d.contract_start_date)" ],
                         "alias": "contract_duration_days",
                         "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
                         "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = code.Expression(SUM(o.value))": {
-                        "columns": [ "code.Column(?.o.value)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:39:12-39:19) = code.Column(?.o.value)" ],
                         "alias": "revenue",
                         "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
                         "sql": "SUM(o.value)" } } ],
                   "location": "./tests/inputs/codebase/0-accounts.sql:31:4-43:80" } } ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = code.Expression(revenue / contract_duration_days)": {
-                  "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:27:14-27:36) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:27:4-27:11) = code.Column(?.?.revenue)" ],
                   "alias": "revenue_day",
                   "location": "./tests/inputs/codebase/0-accounts.sql:27:4-27:36",
                   "sql": "revenue / contract_duration_days" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:28:4-28:41) = code.Expression(revenue_core / contract_duration_days)": {
-                  "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue_core)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:28:19-28:41) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:28:4-28:16) = code.Column(?.?.revenue_core)" ],
                   "alias": "revenue_core_day",
                   "location": "./tests/inputs/codebase/0-accounts.sql:28:4-28:41",
                   "sql": "revenue_core / contract_duration_days" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:29:4-29:40) = code.Expression(revenue_aux / contract_duration_days)": {
-                  "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue_aux)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:29:18-29:40) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:29:4-29:15) = code.Column(?.?.revenue_aux)" ],
                   "alias": "revenue_aux_day",
                   "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
                   "sql": "revenue_aux / contract_duration_days" } } ],
@@ -51,54 +51,54 @@
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
-                        "columns": [ "code.Column(?.?.date_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:60:13-60:21) = code.Column(?.?.date_day)" ],
                         "alias": "date_month",
                         "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
                         "sql": "DATE(date_day, 'start of month')" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = code.Expression(COUNT(ds.deal_id))": {
-                        "columns": [ "code.Column(?.ds.deal_id)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:62:14-62:24) = code.Column(?.ds.deal_id)" ],
                         "alias": "deals",
                         "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
                         "sql": "COUNT(ds.deal_id)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = code.Expression(SUM(ds.revenue_core_day))": {
-                        "columns": [ "code.Column(?.ds.revenue_core_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:63:12-63:31) = code.Column(?.ds.revenue_core_day)" ],
                         "alias": "revenue_core",
                         "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
                         "sql": "SUM(ds.revenue_core_day)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = code.Expression(SUM(ds.revenue_aux_day))": {
-                        "columns": [ "code.Column(?.ds.revenue_aux_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:64:12-64:30) = code.Column(?.ds.revenue_aux_day)" ],
                         "alias": "revenue_aux",
                         "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
                         "sql": "SUM(ds.revenue_aux_day)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = code.Expression(SUM(ds.revenue_day))": {
-                        "columns": [ "code.Column(?.ds.revenue_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:65:12-65:26) = code.Column(?.ds.revenue_day)" ],
                         "alias": "revenue",
                         "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
                         "sql": "SUM(ds.revenue_day)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = code.Expression(dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date))": {
-                        "columns": [ "code.Column(?.dr.date_day)", "code.Column(?.dr.date_day)", "code.Column(?.ds.contract_end_date)", "code.Column(?.ds.contract_start_date)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:68:16-68:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:68:36-68:58) = code.Column(?.ds.contract_start_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:16-69:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:36-69:56) = code.Column(?.ds.contract_end_date)" ],
                         "alias": null,
                         "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
                         "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
                   "location": "./tests/inputs/codebase/0-accounts.sql:58:4-70:39" } } ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:53:4-53:16) = code.Expression(AVG(t.deals))": {
-                  "columns": [ "code.Column(?.t.deals)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:53:8-53:15) = code.Column(?.t.deals)" ],
                   "alias": "deals",
                   "location": "./tests/inputs/codebase/0-accounts.sql:53:4-53:16",
                   "sql": "AVG(t.deals)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:54:4-54:23) = code.Expression(SUM(t.revenue_core))": {
-                  "columns": [ "code.Column(?.t.revenue_core)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:54:8-54:22) = code.Column(?.t.revenue_core)" ],
                   "alias": "revenue_core",
                   "location": "./tests/inputs/codebase/0-accounts.sql:54:4-54:23",
                   "sql": "SUM(t.revenue_core)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:55:4-55:22) = code.Expression(SUM(t.revenue_aux))": {
-                  "columns": [ "code.Column(?.t.revenue_aux)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:55:8-55:21) = code.Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux",
                   "location": "./tests/inputs/codebase/0-accounts.sql:55:4-55:22",
                   "sql": "SUM(t.revenue_aux)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:56:4-56:18) = code.Expression(SUM(t.revenue))": {
-                  "columns": [ "code.Column(?.t.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:56:8-56:17) = code.Column(?.t.revenue)" ],
                   "alias": "revenue",
                   "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
                   "sql": "SUM(t.revenue)" } } ],
@@ -109,19 +109,19 @@
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
-                        "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:98:17-98:25) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/0-accounts.sql:99:17-99:25) = code.Column(?.c.region)" ],
                         "alias": "region_cluster",
                         "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
                         "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = code.Expression(SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        ))": {
-                        "columns": [ "code.Column(?.?.account_id)", "code.Column(?.?.date_month)", "code.Column(?.?.revenue)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:103:12-103:19) = code.Column(?.?.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:104:25-104:35) = code.Column(?.?.account_id)", "code.Column(./tests/inputs/codebase/0-accounts.sql:105:21-105:31) = code.Column(?.?.date_month)" ],
                         "alias": "revenue_12m",
                         "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
                         "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
                   "location": "./tests/inputs/codebase/0-accounts.sql:87:4-110:45" } } ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:80:4-85:7) = code.Expression(CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:81:13-81:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:13-82:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:37-82:50) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:83:13-83:26) = code.Column(?.t.revenue_12m)" ],
                   "alias": "account_size",
                   "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
@@ -131,22 +131,22 @@
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:46:5-46:13)", "code.Table(./tests/inputs/codebase/1-revenue.sql:47:14-47:30)", "code.Table(./tests/inputs/codebase/1-revenue.sql:48:14-48:23)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:33:13-33:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:34:13-34:21) = code.Column(?.c.region)" ],
                   "alias": "cluster",
                   "location": "./tests/inputs/codebase/1-revenue.sql:32:4-36:7",
                   "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = code.Expression(IIF(accounts.industry = 'Information Technology', 'Tech', 'Other'))": {
-                  "columns": [ "code.Column(?.accounts.industry)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:38:8-38:25) = code.Column(?.accounts.industry)" ],
                   "alias": "industry_tech",
                   "location": "./tests/inputs/codebase/1-revenue.sql:38:4-38:70",
                   "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:39:4-44:7) = code.Expression(CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:40:17-40:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:17-41:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:57-41:81) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:42:17-42:41) = code.Column(?.accounts_revenue.revenue)" ],
                   "alias": "account_size",
                   "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
                   "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:45:4-45:33) = code.Expression(SUM(accounts_revenue.revenue))": {
-                  "columns": [ "code.Column(?.accounts_revenue.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:45:8-45:32) = code.Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue_12m",
                   "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
                   "sql": "SUM(accounts_revenue.revenue)" } } ],
@@ -155,32 +155,32 @@
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:20:5-20:21)", "code.Table(./tests/inputs/codebase/1-revenue.sql:21:14-21:22)", "code.Table(./tests/inputs/codebase/1-revenue.sql:22:14-22:23)", "code.Table(./tests/inputs/codebase/1-revenue.sql:23:14-23:26)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = code.Expression(CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END)": {
-                  "columns": [ "code.Column(?.a.industry)", "code.Column(?.a.industry)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:12:13-12:23) = code.Column(?.a.industry)", "code.Column(./tests/inputs/codebase/1-revenue.sql:13:13-13:23) = code.Column(?.a.industry)" ],
                   "alias": "industry_cluster",
                   "location": "./tests/inputs/codebase/1-revenue.sql:11:4-15:7",
                   "sql": "CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = code.Expression(date(date_month, 'start of year'))": {
-                  "columns": [ "code.Column(?.?.date_month)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:5:9-5:19) = code.Column(?.?.date_month)" ],
                   "alias": "date_year",
                   "location": "./tests/inputs/codebase/1-revenue.sql:5:4-5:37",
                   "sql": "date(date_month, 'start of year')" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:7:13-7:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:8:13-8:21) = code.Column(?.c.region)" ],
                   "alias": "region_cluster",
                   "location": "./tests/inputs/codebase/1-revenue.sql:6:4-10:7",
                   "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:17:4-17:19) = code.Expression(SUM(ar.revenue))": {
-                  "columns": [ "code.Column(?.ar.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:17:8-17:18) = code.Column(?.ar.revenue)" ],
                   "alias": "revenue",
                   "location": "./tests/inputs/codebase/1-revenue.sql:17:4-17:19",
                   "sql": "SUM(ar.revenue)" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:18:4-18:33) = code.Expression(COUNT(DISTINCT ar.account_id))": {
-                  "columns": [ "code.Column(?.ar.account_id)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:18:19-18:32) = code.Column(?.ar.account_id)" ],
                   "alias": "accounts",
                   "location": "./tests/inputs/codebase/1-revenue.sql:18:4-18:33",
                   "sql": "COUNT(DISTINCT ar.account_id)" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:19:4-19:51) = code.Expression(SUM(ar.revenue) / COUNT(DISTINCT ar.account_id))": {
-                  "columns": [ "code.Column(?.ar.account_id)", "code.Column(?.ar.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:19:37-19:50) = code.Column(?.ar.account_id)", "code.Column(./tests/inputs/codebase/1-revenue.sql:19:8-19:18) = code.Column(?.ar.revenue)" ],
                   "alias": "revenue_per_account",
                   "location": "./tests/inputs/codebase/1-revenue.sql:19:4-19:51",
                   "sql": "SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)" } } ],
@@ -193,39 +193,39 @@
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
-                        "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:37:22-37:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:37:86-37:93) = code.Column(?.o.value)" ],
                         "alias": "revenue_core",
                         "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
                         "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = code.Expression(SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END))": {
-                        "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:38:22-38:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:38:67-38:74) = code.Column(?.o.value)" ],
                         "alias": "revenue_aux",
                         "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
                         "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = code.Expression(julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1)": {
-                        "columns": [ "code.Column(?.d.contract_end_date)", "code.Column(?.d.contract_start_date)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:36:18-36:37) = code.Column(?.d.contract_end_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:36:51-36:72) = code.Column(?.d.contract_start_date)" ],
                         "alias": "contract_duration_days",
                         "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
                         "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = code.Expression(SUM(o.value))": {
-                        "columns": [ "code.Column(?.o.value)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:39:12-39:19) = code.Column(?.o.value)" ],
                         "alias": "revenue",
                         "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
                         "sql": "SUM(o.value)" } } ],
                   "location": "./tests/inputs/codebase/0-accounts.sql:31:4-43:80" } } ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = code.Expression(revenue / contract_duration_days)": {
-                  "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:27:14-27:36) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:27:4-27:11) = code.Column(?.?.revenue)" ],
                   "alias": "revenue_day",
                   "location": "./tests/inputs/codebase/0-accounts.sql:27:4-27:36",
                   "sql": "revenue / contract_duration_days" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:28:4-28:41) = code.Expression(revenue_core / contract_duration_days)": {
-                  "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue_core)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:28:19-28:41) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:28:4-28:16) = code.Column(?.?.revenue_core)" ],
                   "alias": "revenue_core_day",
                   "location": "./tests/inputs/codebase/0-accounts.sql:28:4-28:41",
                   "sql": "revenue_core / contract_duration_days" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:29:4-29:40) = code.Expression(revenue_aux / contract_duration_days)": {
-                  "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue_aux)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:29:18-29:40) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:29:4-29:15) = code.Column(?.?.revenue_aux)" ],
                   "alias": "revenue_aux_day",
                   "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
                   "sql": "revenue_aux / contract_duration_days" } } ],
@@ -234,22 +234,22 @@
             "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
-                  "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:37:22-37:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:37:86-37:93) = code.Column(?.o.value)" ],
                   "alias": "revenue_core",
                   "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
                   "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = code.Expression(SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END))": {
-                  "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:38:22-38:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:38:67-38:74) = code.Column(?.o.value)" ],
                   "alias": "revenue_aux",
                   "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
                   "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = code.Expression(julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1)": {
-                  "columns": [ "code.Column(?.d.contract_end_date)", "code.Column(?.d.contract_start_date)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:36:18-36:37) = code.Column(?.d.contract_end_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:36:51-36:72) = code.Column(?.d.contract_start_date)" ],
                   "alias": "contract_duration_days",
                   "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
                   "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = code.Expression(SUM(o.value))": {
-                  "columns": [ "code.Column(?.o.value)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:39:12-39:19) = code.Column(?.o.value)" ],
                   "alias": "revenue",
                   "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
                   "sql": "SUM(o.value)" } } ],
@@ -260,54 +260,54 @@
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
-                        "columns": [ "code.Column(?.?.date_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:60:13-60:21) = code.Column(?.?.date_day)" ],
                         "alias": "date_month",
                         "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
                         "sql": "DATE(date_day, 'start of month')" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = code.Expression(COUNT(ds.deal_id))": {
-                        "columns": [ "code.Column(?.ds.deal_id)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:62:14-62:24) = code.Column(?.ds.deal_id)" ],
                         "alias": "deals",
                         "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
                         "sql": "COUNT(ds.deal_id)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = code.Expression(SUM(ds.revenue_core_day))": {
-                        "columns": [ "code.Column(?.ds.revenue_core_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:63:12-63:31) = code.Column(?.ds.revenue_core_day)" ],
                         "alias": "revenue_core",
                         "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
                         "sql": "SUM(ds.revenue_core_day)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = code.Expression(SUM(ds.revenue_aux_day))": {
-                        "columns": [ "code.Column(?.ds.revenue_aux_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:64:12-64:30) = code.Column(?.ds.revenue_aux_day)" ],
                         "alias": "revenue_aux",
                         "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
                         "sql": "SUM(ds.revenue_aux_day)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = code.Expression(SUM(ds.revenue_day))": {
-                        "columns": [ "code.Column(?.ds.revenue_day)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:65:12-65:26) = code.Column(?.ds.revenue_day)" ],
                         "alias": "revenue",
                         "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
                         "sql": "SUM(ds.revenue_day)" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = code.Expression(dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date))": {
-                        "columns": [ "code.Column(?.dr.date_day)", "code.Column(?.dr.date_day)", "code.Column(?.ds.contract_end_date)", "code.Column(?.ds.contract_start_date)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:68:16-68:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:68:36-68:58) = code.Column(?.ds.contract_start_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:16-69:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:36-69:56) = code.Column(?.ds.contract_end_date)" ],
                         "alias": null,
                         "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
                         "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
                   "location": "./tests/inputs/codebase/0-accounts.sql:58:4-70:39" } } ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:53:4-53:16) = code.Expression(AVG(t.deals))": {
-                  "columns": [ "code.Column(?.t.deals)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:53:8-53:15) = code.Column(?.t.deals)" ],
                   "alias": "deals",
                   "location": "./tests/inputs/codebase/0-accounts.sql:53:4-53:16",
                   "sql": "AVG(t.deals)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:54:4-54:23) = code.Expression(SUM(t.revenue_core))": {
-                  "columns": [ "code.Column(?.t.revenue_core)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:54:8-54:22) = code.Column(?.t.revenue_core)" ],
                   "alias": "revenue_core",
                   "location": "./tests/inputs/codebase/0-accounts.sql:54:4-54:23",
                   "sql": "SUM(t.revenue_core)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:55:4-55:22) = code.Expression(SUM(t.revenue_aux))": {
-                  "columns": [ "code.Column(?.t.revenue_aux)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:55:8-55:21) = code.Column(?.t.revenue_aux)" ],
                   "alias": "revenue_aux",
                   "location": "./tests/inputs/codebase/0-accounts.sql:55:4-55:22",
                   "sql": "SUM(t.revenue_aux)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:56:4-56:18) = code.Expression(SUM(t.revenue))": {
-                  "columns": [ "code.Column(?.t.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:56:8-56:17) = code.Column(?.t.revenue)" ],
                   "alias": "revenue",
                   "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
                   "sql": "SUM(t.revenue)" } } ],
@@ -316,32 +316,32 @@
             "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
-                  "columns": [ "code.Column(?.?.date_day)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:60:13-60:21) = code.Column(?.?.date_day)" ],
                   "alias": "date_month",
                   "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
                   "sql": "DATE(date_day, 'start of month')" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = code.Expression(COUNT(ds.deal_id))": {
-                  "columns": [ "code.Column(?.ds.deal_id)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:62:14-62:24) = code.Column(?.ds.deal_id)" ],
                   "alias": "deals",
                   "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
                   "sql": "COUNT(ds.deal_id)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = code.Expression(SUM(ds.revenue_core_day))": {
-                  "columns": [ "code.Column(?.ds.revenue_core_day)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:63:12-63:31) = code.Column(?.ds.revenue_core_day)" ],
                   "alias": "revenue_core",
                   "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
                   "sql": "SUM(ds.revenue_core_day)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = code.Expression(SUM(ds.revenue_aux_day))": {
-                  "columns": [ "code.Column(?.ds.revenue_aux_day)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:64:12-64:30) = code.Column(?.ds.revenue_aux_day)" ],
                   "alias": "revenue_aux",
                   "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
                   "sql": "SUM(ds.revenue_aux_day)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = code.Expression(SUM(ds.revenue_day))": {
-                  "columns": [ "code.Column(?.ds.revenue_day)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:65:12-65:26) = code.Column(?.ds.revenue_day)" ],
                   "alias": "revenue",
                   "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
                   "sql": "SUM(ds.revenue_day)" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = code.Expression(dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date))": {
-                  "columns": [ "code.Column(?.dr.date_day)", "code.Column(?.dr.date_day)", "code.Column(?.ds.contract_end_date)", "code.Column(?.ds.contract_start_date)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:68:16-68:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:68:36-68:58) = code.Column(?.ds.contract_start_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:16-69:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:36-69:56) = code.Column(?.ds.contract_end_date)" ],
                   "alias": null,
                   "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
                   "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
@@ -352,19 +352,19 @@
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
-                        "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:98:17-98:25) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/0-accounts.sql:99:17-99:25) = code.Column(?.c.region)" ],
                         "alias": "region_cluster",
                         "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
                         "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = code.Expression(SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        ))": {
-                        "columns": [ "code.Column(?.?.account_id)", "code.Column(?.?.date_month)", "code.Column(?.?.revenue)" ],
+                        "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:103:12-103:19) = code.Column(?.?.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:104:25-104:35) = code.Column(?.?.account_id)", "code.Column(./tests/inputs/codebase/0-accounts.sql:105:21-105:31) = code.Column(?.?.date_month)" ],
                         "alias": "revenue_12m",
                         "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
                         "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
                   "location": "./tests/inputs/codebase/0-accounts.sql:87:4-110:45" } } ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:80:4-85:7) = code.Expression(CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:81:13-81:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:13-82:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:37-82:50) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:83:13-83:26) = code.Column(?.t.revenue_12m)" ],
                   "alias": "account_size",
                   "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
@@ -373,12 +373,12 @@
             "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
-                  "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:98:17-98:25) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/0-accounts.sql:99:17-99:25) = code.Column(?.c.region)" ],
                   "alias": "region_cluster",
                   "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
                   "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = code.Expression(SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        ))": {
-                  "columns": [ "code.Column(?.?.account_id)", "code.Column(?.?.date_month)", "code.Column(?.?.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:103:12-103:19) = code.Column(?.?.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:104:25-104:35) = code.Column(?.?.account_id)", "code.Column(./tests/inputs/codebase/0-accounts.sql:105:21-105:31) = code.Column(?.?.date_month)" ],
                   "alias": "revenue_12m",
                   "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
                   "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
@@ -387,22 +387,22 @@
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:46:5-46:13)", "code.Table(./tests/inputs/codebase/1-revenue.sql:47:14-47:30)", "code.Table(./tests/inputs/codebase/1-revenue.sql:48:14-48:23)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:33:13-33:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:34:13-34:21) = code.Column(?.c.region)" ],
                   "alias": "cluster",
                   "location": "./tests/inputs/codebase/1-revenue.sql:32:4-36:7",
                   "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = code.Expression(IIF(accounts.industry = 'Information Technology', 'Tech', 'Other'))": {
-                  "columns": [ "code.Column(?.accounts.industry)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:38:8-38:25) = code.Column(?.accounts.industry)" ],
                   "alias": "industry_tech",
                   "location": "./tests/inputs/codebase/1-revenue.sql:38:4-38:70",
                   "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:39:4-44:7) = code.Expression(CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:40:17-40:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:17-41:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:57-41:81) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:42:17-42:41) = code.Column(?.accounts_revenue.revenue)" ],
                   "alias": "account_size",
                   "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
                   "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:45:4-45:33) = code.Expression(SUM(accounts_revenue.revenue))": {
-                  "columns": [ "code.Column(?.accounts_revenue.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:45:8-45:32) = code.Column(?.accounts_revenue.revenue)" ],
                   "alias": "revenue_12m",
                   "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
                   "sql": "SUM(accounts_revenue.revenue)" } } ],
@@ -411,186 +411,186 @@
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:20:5-20:21)", "code.Table(./tests/inputs/codebase/1-revenue.sql:21:14-21:22)", "code.Table(./tests/inputs/codebase/1-revenue.sql:22:14-22:23)", "code.Table(./tests/inputs/codebase/1-revenue.sql:23:14-23:26)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = code.Expression(CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END)": {
-                  "columns": [ "code.Column(?.a.industry)", "code.Column(?.a.industry)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:12:13-12:23) = code.Column(?.a.industry)", "code.Column(./tests/inputs/codebase/1-revenue.sql:13:13-13:23) = code.Column(?.a.industry)" ],
                   "alias": "industry_cluster",
                   "location": "./tests/inputs/codebase/1-revenue.sql:11:4-15:7",
                   "sql": "CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = code.Expression(date(date_month, 'start of year'))": {
-                  "columns": [ "code.Column(?.?.date_month)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:5:9-5:19) = code.Column(?.?.date_month)" ],
                   "alias": "date_year",
                   "location": "./tests/inputs/codebase/1-revenue.sql:5:4-5:37",
                   "sql": "date(date_month, 'start of year')" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
-                  "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:7:13-7:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:8:13-8:21) = code.Column(?.c.region)" ],
                   "alias": "region_cluster",
                   "location": "./tests/inputs/codebase/1-revenue.sql:6:4-10:7",
                   "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:17:4-17:19) = code.Expression(SUM(ar.revenue))": {
-                  "columns": [ "code.Column(?.ar.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:17:8-17:18) = code.Column(?.ar.revenue)" ],
                   "alias": "revenue",
                   "location": "./tests/inputs/codebase/1-revenue.sql:17:4-17:19",
                   "sql": "SUM(ar.revenue)" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:18:4-18:33) = code.Expression(COUNT(DISTINCT ar.account_id))": {
-                  "columns": [ "code.Column(?.ar.account_id)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:18:19-18:32) = code.Column(?.ar.account_id)" ],
                   "alias": "accounts",
                   "location": "./tests/inputs/codebase/1-revenue.sql:18:4-18:33",
                   "sql": "COUNT(DISTINCT ar.account_id)" } },
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:19:4-19:51) = code.Expression(SUM(ar.revenue) / COUNT(DISTINCT ar.account_id))": {
-                  "columns": [ "code.Column(?.ar.account_id)", "code.Column(?.ar.revenue)" ],
+                  "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:19:37-19:50) = code.Column(?.ar.account_id)", "code.Column(./tests/inputs/codebase/1-revenue.sql:19:8-19:18) = code.Column(?.ar.revenue)" ],
                   "alias": "revenue_per_account",
                   "location": "./tests/inputs/codebase/1-revenue.sql:19:4-19:51",
                   "sql": "SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)" } } ],
             "location": "./tests/inputs/codebase/1-revenue.sql:4:0-25:52" } } ],
       "<Expression>": [
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
-            "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:37:22-37:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:37:86-37:93) = code.Column(?.o.value)" ],
             "alias": "revenue_core",
             "location": "./tests/inputs/codebase/0-accounts.sql:37:8-37:105",
             "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = code.Expression(SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END))": {
-            "columns": [ "code.Column(?.o.product)", "code.Column(?.o.value)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:38:22-38:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:38:67-38:74) = code.Column(?.o.value)" ],
             "alias": "revenue_aux",
             "location": "./tests/inputs/codebase/0-accounts.sql:38:8-38:86",
             "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
-            "columns": [ "code.Column(?.?.date_day)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:60:13-60:21) = code.Column(?.?.date_day)" ],
             "alias": "date_month",
             "location": "./tests/inputs/codebase/0-accounts.sql:60:8-60:40",
             "sql": "DATE(date_day, 'start of month')" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:80:4-85:7) = code.Expression(CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END)": {
-            "columns": [ "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:81:13-81:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:13-82:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:37-82:50) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:83:13-83:26) = code.Column(?.t.revenue_12m)" ],
             "alias": "account_size",
             "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
             "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
-            "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:98:17-98:25) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/0-accounts.sql:99:17-99:25) = code.Column(?.c.region)" ],
             "alias": "region_cluster",
             "location": "./tests/inputs/codebase/0-accounts.sql:97:8-101:11",
             "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = code.Expression(CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END)": {
-            "columns": [ "code.Column(?.a.industry)", "code.Column(?.a.industry)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:12:13-12:23) = code.Column(?.a.industry)", "code.Column(./tests/inputs/codebase/1-revenue.sql:13:13-13:23) = code.Column(?.a.industry)" ],
             "alias": "industry_cluster",
             "location": "./tests/inputs/codebase/1-revenue.sql:11:4-15:7",
             "sql": "CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
-            "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:33:13-33:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:34:13-34:21) = code.Column(?.c.region)" ],
             "alias": "cluster",
             "location": "./tests/inputs/codebase/1-revenue.sql:32:4-36:7",
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = code.Expression(IIF(accounts.industry = 'Information Technology', 'Tech', 'Other'))": {
-            "columns": [ "code.Column(?.accounts.industry)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:38:8-38:25) = code.Column(?.accounts.industry)" ],
             "alias": "industry_tech",
             "location": "./tests/inputs/codebase/1-revenue.sql:38:4-38:70",
             "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:39:4-44:7) = code.Expression(CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END)": {
-            "columns": [ "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:40:17-40:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:17-41:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:57-41:81) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:42:17-42:41) = code.Column(?.accounts_revenue.revenue)" ],
             "alias": "account_size",
             "location": "./tests/inputs/codebase/1-revenue.sql:39:4-44:7",
             "sql": "CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:5:4-5:37) = code.Expression(date(date_month, 'start of year'))": {
-            "columns": [ "code.Column(?.?.date_month)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:5:9-5:19) = code.Column(?.?.date_month)" ],
             "alias": "date_year",
             "location": "./tests/inputs/codebase/1-revenue.sql:5:4-5:37",
             "sql": "date(date_month, 'start of year')" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
-            "columns": [ "code.Column(?.c.region)", "code.Column(?.c.region)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:7:13-7:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:8:13-8:21) = code.Column(?.c.region)" ],
             "alias": "region_cluster",
             "location": "./tests/inputs/codebase/1-revenue.sql:6:4-10:7",
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:103:8-107:9) = code.Expression(SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        ))": {
-            "columns": [ "code.Column(?.?.account_id)", "code.Column(?.?.date_month)", "code.Column(?.?.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:103:12-103:19) = code.Column(?.?.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:104:25-104:35) = code.Column(?.?.account_id)", "code.Column(./tests/inputs/codebase/0-accounts.sql:105:21-105:31) = code.Column(?.?.date_month)" ],
             "alias": "revenue_12m",
             "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
             "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:27:4-27:36) = code.Expression(revenue / contract_duration_days)": {
-            "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:27:14-27:36) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:27:4-27:11) = code.Column(?.?.revenue)" ],
             "alias": "revenue_day",
             "location": "./tests/inputs/codebase/0-accounts.sql:27:4-27:36",
             "sql": "revenue / contract_duration_days" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:28:4-28:41) = code.Expression(revenue_core / contract_duration_days)": {
-            "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue_core)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:28:19-28:41) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:28:4-28:16) = code.Column(?.?.revenue_core)" ],
             "alias": "revenue_core_day",
             "location": "./tests/inputs/codebase/0-accounts.sql:28:4-28:41",
             "sql": "revenue_core / contract_duration_days" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:29:4-29:40) = code.Expression(revenue_aux / contract_duration_days)": {
-            "columns": [ "code.Column(?.?.contract_duration_days)", "code.Column(?.?.revenue_aux)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:29:18-29:40) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:29:4-29:15) = code.Column(?.?.revenue_aux)" ],
             "alias": "revenue_aux_day",
             "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
             "sql": "revenue_aux / contract_duration_days" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:36:8-36:77) = code.Expression(julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1)": {
-            "columns": [ "code.Column(?.d.contract_end_date)", "code.Column(?.d.contract_start_date)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:36:18-36:37) = code.Column(?.d.contract_end_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:36:51-36:72) = code.Column(?.d.contract_start_date)" ],
             "alias": "contract_duration_days",
             "location": "./tests/inputs/codebase/0-accounts.sql:36:8-36:77",
             "sql": "julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:39:8-39:20) = code.Expression(SUM(o.value))": {
-            "columns": [ "code.Column(?.o.value)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:39:12-39:19) = code.Column(?.o.value)" ],
             "alias": "revenue",
             "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
             "sql": "SUM(o.value)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:53:4-53:16) = code.Expression(AVG(t.deals))": {
-            "columns": [ "code.Column(?.t.deals)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:53:8-53:15) = code.Column(?.t.deals)" ],
             "alias": "deals",
             "location": "./tests/inputs/codebase/0-accounts.sql:53:4-53:16",
             "sql": "AVG(t.deals)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:54:4-54:23) = code.Expression(SUM(t.revenue_core))": {
-            "columns": [ "code.Column(?.t.revenue_core)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:54:8-54:22) = code.Column(?.t.revenue_core)" ],
             "alias": "revenue_core",
             "location": "./tests/inputs/codebase/0-accounts.sql:54:4-54:23",
             "sql": "SUM(t.revenue_core)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:55:4-55:22) = code.Expression(SUM(t.revenue_aux))": {
-            "columns": [ "code.Column(?.t.revenue_aux)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:55:8-55:21) = code.Column(?.t.revenue_aux)" ],
             "alias": "revenue_aux",
             "location": "./tests/inputs/codebase/0-accounts.sql:55:4-55:22",
             "sql": "SUM(t.revenue_aux)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:56:4-56:18) = code.Expression(SUM(t.revenue))": {
-            "columns": [ "code.Column(?.t.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:56:8-56:17) = code.Column(?.t.revenue)" ],
             "alias": "revenue",
             "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
             "sql": "SUM(t.revenue)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:62:8-62:25) = code.Expression(COUNT(ds.deal_id))": {
-            "columns": [ "code.Column(?.ds.deal_id)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:62:14-62:24) = code.Column(?.ds.deal_id)" ],
             "alias": "deals",
             "location": "./tests/inputs/codebase/0-accounts.sql:62:8-62:25",
             "sql": "COUNT(ds.deal_id)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:63:8-63:32) = code.Expression(SUM(ds.revenue_core_day))": {
-            "columns": [ "code.Column(?.ds.revenue_core_day)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:63:12-63:31) = code.Column(?.ds.revenue_core_day)" ],
             "alias": "revenue_core",
             "location": "./tests/inputs/codebase/0-accounts.sql:63:8-63:32",
             "sql": "SUM(ds.revenue_core_day)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:64:8-64:31) = code.Expression(SUM(ds.revenue_aux_day))": {
-            "columns": [ "code.Column(?.ds.revenue_aux_day)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:64:12-64:30) = code.Column(?.ds.revenue_aux_day)" ],
             "alias": "revenue_aux",
             "location": "./tests/inputs/codebase/0-accounts.sql:64:8-64:31",
             "sql": "SUM(ds.revenue_aux_day)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:65:8-65:27) = code.Expression(SUM(ds.revenue_day))": {
-            "columns": [ "code.Column(?.ds.revenue_day)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:65:12-65:26) = code.Column(?.ds.revenue_day)" ],
             "alias": "revenue",
             "location": "./tests/inputs/codebase/0-accounts.sql:65:8-65:27",
             "sql": "SUM(ds.revenue_day)" } },
         { "code.Expression(./tests/inputs/codebase/0-accounts.sql:68:16-69:57) = code.Expression(dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date))": {
-            "columns": [ "code.Column(?.dr.date_day)", "code.Column(?.dr.date_day)", "code.Column(?.ds.contract_end_date)", "code.Column(?.ds.contract_start_date)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:68:16-68:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:68:36-68:58) = code.Column(?.ds.contract_start_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:16-69:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:36-69:56) = code.Column(?.ds.contract_end_date)" ],
             "alias": null,
             "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
             "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:17:4-17:19) = code.Expression(SUM(ar.revenue))": {
-            "columns": [ "code.Column(?.ar.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:17:8-17:18) = code.Column(?.ar.revenue)" ],
             "alias": "revenue",
             "location": "./tests/inputs/codebase/1-revenue.sql:17:4-17:19",
             "sql": "SUM(ar.revenue)" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:18:4-18:33) = code.Expression(COUNT(DISTINCT ar.account_id))": {
-            "columns": [ "code.Column(?.ar.account_id)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:18:19-18:32) = code.Column(?.ar.account_id)" ],
             "alias": "accounts",
             "location": "./tests/inputs/codebase/1-revenue.sql:18:4-18:33",
             "sql": "COUNT(DISTINCT ar.account_id)" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:19:4-19:51) = code.Expression(SUM(ar.revenue) / COUNT(DISTINCT ar.account_id))": {
-            "columns": [ "code.Column(?.ar.account_id)", "code.Column(?.ar.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:19:37-19:50) = code.Column(?.ar.account_id)", "code.Column(./tests/inputs/codebase/1-revenue.sql:19:8-19:18) = code.Column(?.ar.revenue)" ],
             "alias": "revenue_per_account",
             "location": "./tests/inputs/codebase/1-revenue.sql:19:4-19:51",
             "sql": "SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)" } },
         { "code.Expression(./tests/inputs/codebase/1-revenue.sql:45:4-45:33) = code.Expression(SUM(accounts_revenue.revenue))": {
-            "columns": [ "code.Column(?.accounts_revenue.revenue)" ],
+            "columns": [ "code.Column(./tests/inputs/codebase/1-revenue.sql:45:8-45:32) = code.Column(?.accounts_revenue.revenue)" ],
             "alias": "revenue_12m",
             "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
             "sql": "SUM(accounts_revenue.revenue)" } } ],
-      "<Column>": [ "code.Column(?.?.account_id)", "code.Column(?.?.contract_duration_days)", "code.Column(?.?.contract_duration_days)", "code.Column(?.?.contract_duration_days)", "code.Column(?.?.date_day)", "code.Column(?.?.date_month)", "code.Column(?.?.date_month)", "code.Column(?.?.revenue)", "code.Column(?.?.revenue)", "code.Column(?.?.revenue_aux)", "code.Column(?.?.revenue_core)", "code.Column(?.a.industry)", "code.Column(?.a.industry)", "code.Column(?.accounts.industry)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.accounts_revenue.revenue)", "code.Column(?.ar.account_id)", "code.Column(?.ar.account_id)", "code.Column(?.ar.revenue)", "code.Column(?.ar.revenue)", "code.Column(?.c.region)", "code.Column(?.c.region)", "code.Column(?.c.region)", "code.Column(?.c.region)", "code.Column(?.c.region)", "code.Column(?.c.region)", "code.Column(?.d.contract_end_date)", "code.Column(?.d.contract_start_date)", "code.Column(?.dr.date_day)", "code.Column(?.dr.date_day)", "code.Column(?.ds.contract_end_date)", "code.Column(?.ds.contract_start_date)", "code.Column(?.ds.deal_id)", "code.Column(?.ds.revenue_aux_day)", "code.Column(?.ds.revenue_core_day)", "code.Column(?.ds.revenue_day)", "code.Column(?.o.product)", "code.Column(?.o.product)", "code.Column(?.o.value)", "code.Column(?.o.value)", "code.Column(?.o.value)", "code.Column(?.t.deals)", "code.Column(?.t.revenue)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_12m)", "code.Column(?.t.revenue_aux)", "code.Column(?.t.revenue_core)" ],
+      "<Column>": [ "code.Column(./tests/inputs/codebase/0-accounts.sql:103:12-103:19) = code.Column(?.?.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:104:25-104:35) = code.Column(?.?.account_id)", "code.Column(./tests/inputs/codebase/0-accounts.sql:105:21-105:31) = code.Column(?.?.date_month)", "code.Column(./tests/inputs/codebase/0-accounts.sql:27:14-27:36) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:27:4-27:11) = code.Column(?.?.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:28:19-28:41) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:28:4-28:16) = code.Column(?.?.revenue_core)", "code.Column(./tests/inputs/codebase/0-accounts.sql:29:18-29:40) = code.Column(?.?.contract_duration_days)", "code.Column(./tests/inputs/codebase/0-accounts.sql:29:4-29:15) = code.Column(?.?.revenue_aux)", "code.Column(./tests/inputs/codebase/0-accounts.sql:36:18-36:37) = code.Column(?.d.contract_end_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:36:51-36:72) = code.Column(?.d.contract_start_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:37:22-37:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:37:86-37:93) = code.Column(?.o.value)", "code.Column(./tests/inputs/codebase/0-accounts.sql:38:22-38:31) = code.Column(?.o.product)", "code.Column(./tests/inputs/codebase/0-accounts.sql:38:67-38:74) = code.Column(?.o.value)", "code.Column(./tests/inputs/codebase/0-accounts.sql:39:12-39:19) = code.Column(?.o.value)", "code.Column(./tests/inputs/codebase/0-accounts.sql:53:8-53:15) = code.Column(?.t.deals)", "code.Column(./tests/inputs/codebase/0-accounts.sql:54:8-54:22) = code.Column(?.t.revenue_core)", "code.Column(./tests/inputs/codebase/0-accounts.sql:55:8-55:21) = code.Column(?.t.revenue_aux)", "code.Column(./tests/inputs/codebase/0-accounts.sql:56:8-56:17) = code.Column(?.t.revenue)", "code.Column(./tests/inputs/codebase/0-accounts.sql:60:13-60:21) = code.Column(?.?.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:62:14-62:24) = code.Column(?.ds.deal_id)", "code.Column(./tests/inputs/codebase/0-accounts.sql:63:12-63:31) = code.Column(?.ds.revenue_core_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:64:12-64:30) = code.Column(?.ds.revenue_aux_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:65:12-65:26) = code.Column(?.ds.revenue_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:68:16-68:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:68:36-68:58) = code.Column(?.ds.contract_start_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:16-69:27) = code.Column(?.dr.date_day)", "code.Column(./tests/inputs/codebase/0-accounts.sql:69:36-69:56) = code.Column(?.ds.contract_end_date)", "code.Column(./tests/inputs/codebase/0-accounts.sql:81:13-81:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:13-82:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:82:37-82:50) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:83:13-83:26) = code.Column(?.t.revenue_12m)", "code.Column(./tests/inputs/codebase/0-accounts.sql:98:17-98:25) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/0-accounts.sql:99:17-99:25) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:12:13-12:23) = code.Column(?.a.industry)", "code.Column(./tests/inputs/codebase/1-revenue.sql:13:13-13:23) = code.Column(?.a.industry)", "code.Column(./tests/inputs/codebase/1-revenue.sql:17:8-17:18) = code.Column(?.ar.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:18:19-18:32) = code.Column(?.ar.account_id)", "code.Column(./tests/inputs/codebase/1-revenue.sql:19:37-19:50) = code.Column(?.ar.account_id)", "code.Column(./tests/inputs/codebase/1-revenue.sql:19:8-19:18) = code.Column(?.ar.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:33:13-33:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:34:13-34:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:38:8-38:25) = code.Column(?.accounts.industry)", "code.Column(./tests/inputs/codebase/1-revenue.sql:40:17-40:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:17-41:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:41:57-41:81) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:42:17-42:41) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:45:8-45:32) = code.Column(?.accounts_revenue.revenue)", "code.Column(./tests/inputs/codebase/1-revenue.sql:5:9-5:19) = code.Column(?.?.date_month)", "code.Column(./tests/inputs/codebase/1-revenue.sql:7:13-7:21) = code.Column(?.c.region)", "code.Column(./tests/inputs/codebase/1-revenue.sql:8:13-8:21) = code.Column(?.c.region)" ],
       "<Table>": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27)", "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18)", "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30)", "code.Table(./tests/inputs/codebase/1-revenue.sql:20:5-20:21)", "code.Table(./tests/inputs/codebase/1-revenue.sql:21:14-21:22)", "code.Table(./tests/inputs/codebase/1-revenue.sql:22:14-22:23)", "code.Table(./tests/inputs/codebase/1-revenue.sql:23:14-23:26)", "code.Table(./tests/inputs/codebase/1-revenue.sql:46:5-46:13)", "code.Table(./tests/inputs/codebase/1-revenue.sql:47:14-47:30)", "code.Table(./tests/inputs/codebase/1-revenue.sql:48:14-48:23)" ] } } }
