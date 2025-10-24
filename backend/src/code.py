@@ -10,7 +10,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from src import sql
+import src
 
 
 @dataclass(frozen=True)
@@ -30,8 +30,7 @@ class Location:
     range: Range
 
     def __repr__(self) -> str:
-        filename = str(self.file).replace(str(Path.cwd()), ".")
-        return f"{filename}:{self.range}"
+        return f"{src.utils.trunk_path(self.file)}:{self.range}"
 
     def __hash__(self) -> int:
         return hash((self.file, self.range))
@@ -39,7 +38,7 @@ class Location:
 
 @dataclass(frozen=True)
 class Column:
-    _node: sql.Node
+    _node: src.sql.Node
 
     dataset: str | None
     table: str | None
@@ -58,7 +57,7 @@ class Column:
 
 @dataclass(frozen=True)
 class Expression:
-    _node: sql.Node
+    _node: src.sql.Node
 
     columns: list[Column]
     alias: str | None
@@ -77,7 +76,7 @@ class Expression:
 
 @dataclass(frozen=True)
 class Table:
-    _node: sql.Node
+    _node: src.sql.Node
 
     dataset: str | None
     table: str | None
@@ -96,7 +95,7 @@ class Table:
 
 @dataclass(frozen=True)
 class Query:
-    _node: sql.Node
+    _node: src.sql.Node
 
     sources: list[Table | Query]
     expressions: list[Expression]
@@ -121,7 +120,7 @@ class Tree:
         return f"code.Tree({", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)})"
 
 
-def parse_range(node: sql.Node) -> Range:
+def parse_range(node: src.sql.Node) -> Range:
     return Range(
         start_line=node.start_point.row,
         start_char=node.start_point.column,
@@ -130,32 +129,32 @@ def parse_range(node: sql.Node) -> Range:
     )
 
 
-def _parse_tables(query_node: sql.Node, file: Path) -> list[Table]:
+def _parse_tables(query_node: src.sql.Node, file: Path) -> list[Table]:
     tables = []
-    for node in sql.find_desc(query_node, "@table", local=True):
-        location = Location(file=file, range=parse_range(node))
-        tables.append(Table(_node=node, location=location, **sql.decode_table(node), alias=sql.find_alias(node)))
+    for node in src.sql.find_desc(query_node, "@table", local=True):
+        loc = Location(file=file, range=parse_range(node))
+        tables.append(Table(_node=node, location=loc, **src.sql.decode_table(node), alias=src.sql.find_alias(node)))
     return tables
 
 
-def _parse_columns(query_node: sql.Node, file: Path) -> list[Column]:
+def _parse_columns(query_node: src.sql.Node, file: Path) -> list[Column]:
     columns = []
-    for node in sql.find_desc(query_node, "@column", local=True):
-        col_dict = sql.decode_column(node)
+    for node in src.sql.find_desc(query_node, "@column", local=True):
+        col_dict = src.sql.decode_column(node)
         location = Location(file=file, range=parse_range(node))
         columns.append(Column(_node=node, location=location, **col_dict))
     return columns
 
 
-def _parse_expressions(query_node: sql.Node, file: Path) -> list[Expression]:
+def _parse_expressions(query_node: src.sql.Node, file: Path) -> list[Expression]:
     expressions = []
-    for expr_node in sql.find_desc(query_node, "@expression", local=True):
+    for expr_node in src.sql.find_desc(query_node, "@expression", local=True):
         expr_cols = _parse_columns(expr_node.parent, file)  # type: ignore
         expressions.append(
             Expression(
                 _node=expr_node,
                 columns=expr_cols,
-                alias=sql.find_alias(expr_node),
+                alias=src.sql.find_alias(expr_node),
                 location=Location(file=file, range=parse_range(expr_node)),
                 sql=expr_node.text.decode("utf-8") if expr_node.text else "",
             )
@@ -163,10 +162,10 @@ def _parse_expressions(query_node: sql.Node, file: Path) -> list[Expression]:
     return expressions
 
 
-def _parse_query(query_node: sql.Node, file: Path) -> Query:
+def _parse_query(query_node: src.sql.Node, file: Path) -> Query:
     tables = _parse_tables(query_node, file)
     expressions = _parse_expressions(query_node, file)
-    subquery_nodes = sql.find_desc(query_node, "@query", local=True)
+    subquery_nodes = src.sql.find_desc(query_node, "@query", local=True)
     subqueries = [_parse_query(sub_node, file) for sub_node in subquery_nodes]
     return Query(
         _node=query_node,
@@ -176,8 +175,8 @@ def _parse_query(query_node: sql.Node, file: Path) -> Query:
     )
 
 
-def _parse_tree(parse_tree: sql.Tree, file: Path) -> list[Query]:
-    root_query_nodes = sql.find_desc(parse_tree.root_node, "@query", local=True)
+def _parse_tree(parse_tree: src.sql.Tree, file: Path) -> list[Query]:
+    root_query_nodes = src.sql.find_desc(parse_tree.root_node, "@query", local=True)
     return [_parse_query(node, file) for node in root_query_nodes]
 
 
@@ -204,7 +203,7 @@ def _build_index(files: dict[Path, list[Query]]) -> dict[type, list[Query | Expr
     return dict(index)
 
 
-def build(parse_trees: dict[Path, sql.Tree]) -> Tree:
+def build(parse_trees: dict[Path, src.sql.Tree]) -> Tree:
     files = {file: _parse_tree(parse_tree, file) for file, parse_tree in parse_trees.items()}
     index = _build_index(files)
     return Tree(files=files, index=index)

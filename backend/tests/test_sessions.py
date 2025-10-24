@@ -84,7 +84,7 @@ def simplify(obj, terminal=(), terminal_hidden=False) -> dict | list | tuple | s
         case float():
             return round(obj, 2)
         case str():
-            return obj.replace(str(Path.cwd()), ".")
+            return src.utils.trunk_path(obj)
         case int() | bool() | None:
             return obj
         case type():

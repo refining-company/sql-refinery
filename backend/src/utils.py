@@ -5,6 +5,11 @@ import urllib.parse
 from pathlib import Path
 
 
+def trunk_path(path: str | Path) -> str:
+    """Replace current working directory with '.' for relative display"""
+    return str(path).replace(str(Path.cwd()), ".")
+
+
 def uri_to_path(uri: str) -> Path:
     path = urllib.parse.urlparse(uri).path
     path = urllib.parse.unquote(path)

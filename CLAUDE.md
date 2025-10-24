@@ -104,9 +104,10 @@ where experience shows it's actually needed.
   comments
 - **Prefer Editing**: Always prefer editing existing files over creating new ones
 - **Use Built-ins**: Always check for built-in functions/methods before implementing custom solutions
-- **Import Style**: Use `from package import module` pattern, not `import package` - clearer module origin without
-  excessive verbosity. Example: `from src import code, logger` then use `code.Tree`, `logger.get()`. Avoid aliasing
-  imports except for standard cases like `import tests.utils as utils`
+- **Import Style**:
+  - For src modules: Use absolute imports `import src` and reference with full path like `src.code.Tree`, `src.utils.trunk_path()`
+  - For other packages: Use `from package import module` pattern. Example: `from pathlib import Path`
+  - Avoid aliasing imports except for standard cases like `import tests.utils as utils`
 
 ### Naming Framework
 
@@ -130,19 +131,20 @@ where experience shows it's actually needed.
 - Private: `_prefix` (e.g., `_parse()`, `_TreeBuilder`)
 
 **Import Discipline (STRICT):**
-- Always: `from src import code, model` (import modules, not classes)
-- Use qualified: `code.Column`, `model.Column`
+- Always: `import src` (absolute import for src package)
+- Use fully qualified names: `src.code.Column`, `src.model.Column`, `src.utils.trunk_path()`
+- NEVER: `from src import code, model` (use absolute import instead)
 - NEVER: `from src.code import *`
 - NEVER: `from src.code import Column` (ambiguous across modules)
 
 **Type Hints (REQUIRED):**
 - All function signatures must specify module-qualified types
-- Example: `def resolve(ref: code.Column, registry: model.SchemaRegistry) -> model.Column | None`
+- Example: `def resolve(ref: src.code.Column, registry: src.model.SchemaRegistry) -> src.model.Column | None`
 
 **Rationale**: Same names across layers (Column, Expression, Query) represent different abstractions:
-- `code.Column` = syntactic reference in SQL text (may not exist)
-- `model.Column` = semantic definition in schema (exists, has type)
-- Module context + type hints prevent confusion
+- `src.code.Column` = syntactic reference in SQL text (may not exist)
+- `src.model.Column` = semantic definition in schema (exists, has type)
+- Fully qualified names + type hints prevent confusion
 
 ### Testing Approach
 
