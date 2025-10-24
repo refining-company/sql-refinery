@@ -105,6 +105,9 @@ class Query:
     def __repr__(self) -> str:
         return f"code.Query({self.location})"
 
+    def __str__(self) -> str:
+        return f"code.Query({len(self.expressions)} expressions, sources=[{', '.join(str(s) for s in self.sources)}])"
+
     def __hash__(self) -> int:
         return hash((type(self), self.location))
 

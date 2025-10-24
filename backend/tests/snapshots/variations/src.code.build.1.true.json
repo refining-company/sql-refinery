@@ -2,9 +2,9 @@
   "code.Tree(./tests/inputs/codebase/0-accounts.sql, ./tests/inputs/codebase/1-revenue.sql)": {
     "files": {
       "./tests/inputs/codebase/0-accounts.sql": [
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6) = code.Query(3 expressions, sources=[code.Query(4 expressions, sources=[code.Table(?.orders), code.Table(?.deals)])])": {
             "sources": [
-              { "code.Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
+              { "code.Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80) = code.Query(4 expressions, sources=[code.Table(?.orders), code.Table(?.deals)])": {
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15) = code.Table(?.orders)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18) = code.Table(?.deals)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
@@ -45,9 +45,9 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
                   "sql": "revenue_aux / contract_duration_days" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:25:0-44:6" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:50:0-71:31)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:50:0-71:31) = code.Query(4 expressions, sources=[code.Query(6 expressions, sources=[code.Table(?.date_ranges), code.Table(?.deals_signed)])])": {
             "sources": [
-              { "code.Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39)": {
+              { "code.Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39) = code.Query(6 expressions, sources=[code.Table(?.date_ranges), code.Table(?.deals_signed)])": {
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20) = code.Table(?.date_ranges)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30) = code.Table(?.deals_signed)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
@@ -103,9 +103,9 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
                   "sql": "SUM(t.revenue)" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:50:0-71:31" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:78:0-111:6)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:78:0-111:6) = code.Query(1 expressions, sources=[code.Query(2 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries)])])": {
             "sources": [
-              { "code.Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45)": {
+              { "code.Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45) = code.Query(2 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries)])": {
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27) = code.Table(?.countries)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
@@ -127,7 +127,7 @@
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } } ],
       "./tests/inputs/codebase/1-revenue.sql": [
-        { "code.Query(./tests/inputs/codebase/1-revenue.sql:29:0-50:49)": {
+        { "code.Query(./tests/inputs/codebase/1-revenue.sql:29:0-50:49) = code.Query(4 expressions, sources=[code.Table(?.accounts), code.Table(?.accounts_revenue), code.Table(?.countries)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:46:5-46:13) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/1-revenue.sql:47:14-47:30) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/1-revenue.sql:48:14-48:23) = code.Table(?.countries)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
@@ -151,7 +151,7 @@
                   "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
                   "sql": "SUM(accounts_revenue.revenue)" } } ],
             "location": "./tests/inputs/codebase/1-revenue.sql:29:0-50:49" } },
-        { "code.Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
+        { "code.Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52) = code.Query(6 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries), code.Table(?.accounts_360)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:20:5-20:21) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/1-revenue.sql:21:14-21:22) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/1-revenue.sql:22:14-22:23) = code.Table(?.countries)", "code.Table(./tests/inputs/codebase/1-revenue.sql:23:14-23:26) = code.Table(?.accounts_360)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = code.Expression(CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END)": {
@@ -187,9 +187,9 @@
             "location": "./tests/inputs/codebase/1-revenue.sql:4:0-25:52" } } ] },
     "index": {
       "<Query>": [
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:25:0-44:6) = code.Query(3 expressions, sources=[code.Query(4 expressions, sources=[code.Table(?.orders), code.Table(?.deals)])])": {
             "sources": [
-              { "code.Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
+              { "code.Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80) = code.Query(4 expressions, sources=[code.Table(?.orders), code.Table(?.deals)])": {
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15) = code.Table(?.orders)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18) = code.Table(?.deals)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
@@ -230,7 +230,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:29:4-29:40",
                   "sql": "revenue_aux / contract_duration_days" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:25:0-44:6" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:31:4-43:80) = code.Query(4 expressions, sources=[code.Table(?.orders), code.Table(?.deals)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:40:9-40:15) = code.Table(?.orders)", "code.Table(./tests/inputs/codebase/0-accounts.sql:41:13-41:18) = code.Table(?.deals)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))": {
@@ -254,9 +254,9 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:39:8-39:20",
                   "sql": "SUM(o.value)" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:31:4-43:80" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:50:0-71:31)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:50:0-71:31) = code.Query(4 expressions, sources=[code.Query(6 expressions, sources=[code.Table(?.date_ranges), code.Table(?.deals_signed)])])": {
             "sources": [
-              { "code.Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39)": {
+              { "code.Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39) = code.Query(6 expressions, sources=[code.Table(?.date_ranges), code.Table(?.deals_signed)])": {
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20) = code.Table(?.date_ranges)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30) = code.Table(?.deals_signed)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
@@ -312,7 +312,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:56:4-56:18",
                   "sql": "SUM(t.revenue)" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:50:0-71:31" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:58:4-70:39) = code.Query(6 expressions, sources=[code.Table(?.date_ranges), code.Table(?.deals_signed)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:66:9-66:20) = code.Table(?.date_ranges)", "code.Table(./tests/inputs/codebase/0-accounts.sql:67:18-67:30) = code.Table(?.deals_signed)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:60:8-60:40) = code.Expression(DATE(date_day, 'start of month'))": {
@@ -346,9 +346,9 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:68:16-69:57",
                   "sql": "dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:58:4-70:39" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:78:0-111:6)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:78:0-111:6) = code.Query(1 expressions, sources=[code.Query(2 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries)])])": {
             "sources": [
-              { "code.Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45)": {
+              { "code.Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45) = code.Query(2 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries)])": {
                   "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27) = code.Table(?.countries)" ],
                   "expressions": [
                     { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
@@ -369,7 +369,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:80:4-85:7",
                   "sql": "CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:78:0-111:6" } },
-        { "code.Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45)": {
+        { "code.Query(./tests/inputs/codebase/0-accounts.sql:87:4-110:45) = code.Query(2 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/0-accounts.sql:108:9-108:25) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/0-accounts.sql:109:13-109:21) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/0-accounts.sql:110:18-110:27) = code.Table(?.countries)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)": {
@@ -383,7 +383,7 @@
                   "location": "./tests/inputs/codebase/0-accounts.sql:103:8-107:9",
                   "sql": "SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )" } } ],
             "location": "./tests/inputs/codebase/0-accounts.sql:87:4-110:45" } },
-        { "code.Query(./tests/inputs/codebase/1-revenue.sql:29:0-50:49)": {
+        { "code.Query(./tests/inputs/codebase/1-revenue.sql:29:0-50:49) = code.Query(4 expressions, sources=[code.Table(?.accounts), code.Table(?.accounts_revenue), code.Table(?.countries)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:46:5-46:13) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/1-revenue.sql:47:14-47:30) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/1-revenue.sql:48:14-48:23) = code.Table(?.countries)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)": {
@@ -407,7 +407,7 @@
                   "location": "./tests/inputs/codebase/1-revenue.sql:45:4-45:33",
                   "sql": "SUM(accounts_revenue.revenue)" } } ],
             "location": "./tests/inputs/codebase/1-revenue.sql:29:0-50:49" } },
-        { "code.Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52)": {
+        { "code.Query(./tests/inputs/codebase/1-revenue.sql:4:0-25:52) = code.Query(6 expressions, sources=[code.Table(?.accounts_revenue), code.Table(?.accounts), code.Table(?.countries), code.Table(?.accounts_360)])": {
             "sources": [ "code.Table(./tests/inputs/codebase/1-revenue.sql:20:5-20:21) = code.Table(?.accounts_revenue)", "code.Table(./tests/inputs/codebase/1-revenue.sql:21:14-21:22) = code.Table(?.accounts)", "code.Table(./tests/inputs/codebase/1-revenue.sql:22:14-22:23) = code.Table(?.countries)", "code.Table(./tests/inputs/codebase/1-revenue.sql:23:14-23:26) = code.Table(?.accounts_360)" ],
             "expressions": [
               { "code.Expression(./tests/inputs/codebase/1-revenue.sql:11:4-15:7) = code.Expression(CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END)": {
