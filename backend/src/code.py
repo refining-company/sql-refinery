@@ -50,7 +50,7 @@ class Column:
         return f"code.Column({self.location})"
 
     def __str__(self) -> str:
-        return "code.Column({}.{}.{})".format(self.dataset or "?", self.table or "?", self.column or "?")
+        return f"code.Column({self.dataset or "?"}.{self.table or "?"}.{self.column or "?"})"
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -87,6 +87,9 @@ class Table:
     def __repr__(self) -> str:
         return f"code.Table({self.location})"
 
+    def __str__(self) -> str:
+        return f"code.Table({self.dataset or "?"}.{self.table or "?"})"
+
     def __hash__(self) -> int:
         return hash((type(self), self.location))
 
@@ -112,8 +115,7 @@ class Tree:
     index: dict[type, list[Query | Expression | Column | Table]]
 
     def __repr__(self) -> str:
-        files_str = ", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)
-        return f"code.Tree({files_str})"
+        return f"code.Tree({", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)})"
 
 
 def parse_range(node: sql.Node) -> Range:
