@@ -3,28 +3,31 @@
     "files": {
       "0-accounts.sql": [
         { "code.Query(0-accounts.sql:25:0-44:6)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:27:4-27:36) = revenue / contract_duration_days",
+              "code.Expression(0-accounts.sql:28:4-28:41) = revenue_core / contract_duration_days",
+              "code.Expression(0-accounts.sql:29:4-29:40) = revenue_aux / contract_duration_days" ],
+            "location": "code.Location = 0-accounts.sql:25:0-44:6",
             "sources": [
               { "code.Query(0-accounts.sql:31:4-43:80)": {
-                  "sources": [
-                    "code.Table(0-accounts.sql:40:9-40:15) = ?.orders",
-                    "code.Table(0-accounts.sql:41:13-41:18) = ?.deals" ],
                   "expressions": [
                     "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
                     "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
                     "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
                     "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)" ],
-                  "location": "code.Location = 0-accounts.sql:31:4-43:80" } } ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:27:4-27:36) = revenue / contract_duration_days",
-              "code.Expression(0-accounts.sql:28:4-28:41) = revenue_core / contract_duration_days",
-              "code.Expression(0-accounts.sql:29:4-29:40) = revenue_aux / contract_duration_days" ],
-            "location": "code.Location = 0-accounts.sql:25:0-44:6" } },
+                  "location": "code.Location = 0-accounts.sql:31:4-43:80",
+                  "sources": [
+                    "code.Table(0-accounts.sql:40:9-40:15) = ?.orders",
+                    "code.Table(0-accounts.sql:41:13-41:18) = ?.deals" ] } } ] } },
         { "code.Query(0-accounts.sql:50:0-71:31)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:53:4-53:16) = AVG(t.deals)",
+              "code.Expression(0-accounts.sql:54:4-54:23) = SUM(t.revenue_core)",
+              "code.Expression(0-accounts.sql:55:4-55:22) = SUM(t.revenue_aux)",
+              "code.Expression(0-accounts.sql:56:4-56:18) = SUM(t.revenue)" ],
+            "location": "code.Location = 0-accounts.sql:50:0-71:31",
             "sources": [
               { "code.Query(0-accounts.sql:58:4-70:39)": {
-                  "sources": [
-                    "code.Table(0-accounts.sql:66:9-66:20) = ?.date_ranges",
-                    "code.Table(0-accounts.sql:67:18-67:30) = ?.deals_signed" ],
                   "expressions": [
                     "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
                     "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
@@ -32,45 +35,37 @@
                     "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
                     "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
                     "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" ],
-                  "location": "code.Location = 0-accounts.sql:58:4-70:39" } } ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:53:4-53:16) = AVG(t.deals)",
-              "code.Expression(0-accounts.sql:54:4-54:23) = SUM(t.revenue_core)",
-              "code.Expression(0-accounts.sql:55:4-55:22) = SUM(t.revenue_aux)",
-              "code.Expression(0-accounts.sql:56:4-56:18) = SUM(t.revenue)" ],
-            "location": "code.Location = 0-accounts.sql:50:0-71:31" } },
+                  "location": "code.Location = 0-accounts.sql:58:4-70:39",
+                  "sources": [
+                    "code.Table(0-accounts.sql:66:9-66:20) = ?.date_ranges",
+                    "code.Table(0-accounts.sql:67:18-67:30) = ?.deals_signed" ] } } ] } },
         { "code.Query(0-accounts.sql:78:0-111:6)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:80:4-85:7) = CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" ],
+            "location": "code.Location = 0-accounts.sql:78:0-111:6",
             "sources": [
               { "code.Query(0-accounts.sql:87:4-110:45)": {
-                  "sources": [
-                    "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
-                    "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",
-                    "code.Table(0-accounts.sql:110:18-110:27) = ?.countries" ],
                   "expressions": [
                     "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
                     "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" ],
-                  "location": "code.Location = 0-accounts.sql:87:4-110:45" } } ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:80:4-85:7) = CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" ],
-            "location": "code.Location = 0-accounts.sql:78:0-111:6" } } ],
+                  "location": "code.Location = 0-accounts.sql:87:4-110:45",
+                  "sources": [
+                    "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
+                    "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",
+                    "code.Table(0-accounts.sql:110:18-110:27) = ?.countries" ] } } ] } } ],
       "1-revenue.sql": [
         { "code.Query(1-revenue.sql:29:0-50:49)": {
-            "sources": [
-              "code.Table(1-revenue.sql:46:5-46:13) = ?.accounts",
-              "code.Table(1-revenue.sql:47:14-47:30) = ?.accounts_revenue",
-              "code.Table(1-revenue.sql:48:14-48:23) = ?.countries" ],
             "expressions": [
               "code.Expression(1-revenue.sql:32:4-36:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
               "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')",
               "code.Expression(1-revenue.sql:39:4-44:7) = CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END",
               "code.Expression(1-revenue.sql:45:4-45:33) = SUM(accounts_revenue.revenue)" ],
-            "location": "code.Location = 1-revenue.sql:29:0-50:49" } },
-        { "code.Query(1-revenue.sql:4:0-25:52)": {
+            "location": "code.Location = 1-revenue.sql:29:0-50:49",
             "sources": [
-              "code.Table(1-revenue.sql:20:5-20:21) = ?.accounts_revenue",
-              "code.Table(1-revenue.sql:21:14-21:22) = ?.accounts",
-              "code.Table(1-revenue.sql:22:14-22:23) = ?.countries",
-              "code.Table(1-revenue.sql:23:14-23:26) = ?.accounts_360" ],
+              "code.Table(1-revenue.sql:46:5-46:13) = ?.accounts",
+              "code.Table(1-revenue.sql:47:14-47:30) = ?.accounts_revenue",
+              "code.Table(1-revenue.sql:48:14-48:23) = ?.countries" ] } },
+        { "code.Query(1-revenue.sql:4:0-25:52)": {
             "expressions": [
               "code.Expression(1-revenue.sql:11:4-15:7) = CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END",
               "code.Expression(1-revenue.sql:17:4-17:19) = SUM(ar.revenue)",
@@ -78,13 +73,14 @@
               "code.Expression(1-revenue.sql:19:4-19:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
               "code.Expression(1-revenue.sql:5:4-5:37) = date(date_month, 'start of year')",
               "code.Expression(1-revenue.sql:6:4-10:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" ],
-            "location": "code.Location = 1-revenue.sql:4:0-25:52" } } ],
+            "location": "code.Location = 1-revenue.sql:4:0-25:52",
+            "sources": [
+              "code.Table(1-revenue.sql:20:5-20:21) = ?.accounts_revenue",
+              "code.Table(1-revenue.sql:21:14-21:22) = ?.accounts",
+              "code.Table(1-revenue.sql:22:14-22:23) = ?.countries",
+              "code.Table(1-revenue.sql:23:14-23:26) = ?.accounts_360" ] } } ],
       "editor.sql": [
         { "code.Query(editor.sql:2:0-24:45)": {
-            "sources": [
-              "code.Table(editor.sql:16:5-16:21) = ?.accounts_revenue",
-              "code.Table(editor.sql:17:14-17:22) = ?.accounts",
-              "code.Table(editor.sql:18:14-18:23) = ?.countries" ],
             "expressions": [
               "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
               "code.Expression(editor.sql:13:4-13:19) = SUM(ar.revenue)",
@@ -92,166 +88,12 @@
               "code.Expression(editor.sql:15:4-15:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
               "code.Expression(editor.sql:3:4-3:37) = date(date_month, 'start of year')",
               "code.Expression(editor.sql:5:4-10:7) = CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" ],
-            "location": "code.Location = editor.sql:2:0-24:45" } } ] },
+            "location": "code.Location = editor.sql:2:0-24:45",
+            "sources": [
+              "code.Table(editor.sql:16:5-16:21) = ?.accounts_revenue",
+              "code.Table(editor.sql:17:14-17:22) = ?.accounts",
+              "code.Table(editor.sql:18:14-18:23) = ?.countries" ] } } ] },
     "index": {
-      "<Query>": [
-        { "code.Query(0-accounts.sql:25:0-44:6)": {
-            "sources": [
-              { "code.Query(0-accounts.sql:31:4-43:80)": {
-                  "sources": [
-                    "code.Table(0-accounts.sql:40:9-40:15) = ?.orders",
-                    "code.Table(0-accounts.sql:41:13-41:18) = ?.deals" ],
-                  "expressions": [
-                    "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
-                    "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
-                    "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
-                    "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)" ],
-                  "location": "code.Location = 0-accounts.sql:31:4-43:80" } } ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:27:4-27:36) = revenue / contract_duration_days",
-              "code.Expression(0-accounts.sql:28:4-28:41) = revenue_core / contract_duration_days",
-              "code.Expression(0-accounts.sql:29:4-29:40) = revenue_aux / contract_duration_days" ],
-            "location": "code.Location = 0-accounts.sql:25:0-44:6" } },
-        { "code.Query(0-accounts.sql:31:4-43:80)": {
-            "sources": [
-              "code.Table(0-accounts.sql:40:9-40:15) = ?.orders",
-              "code.Table(0-accounts.sql:41:13-41:18) = ?.deals" ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
-              "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
-              "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
-              "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)" ],
-            "location": "code.Location = 0-accounts.sql:31:4-43:80" } },
-        { "code.Query(0-accounts.sql:50:0-71:31)": {
-            "sources": [
-              { "code.Query(0-accounts.sql:58:4-70:39)": {
-                  "sources": [
-                    "code.Table(0-accounts.sql:66:9-66:20) = ?.date_ranges",
-                    "code.Table(0-accounts.sql:67:18-67:30) = ?.deals_signed" ],
-                  "expressions": [
-                    "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
-                    "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
-                    "code.Expression(0-accounts.sql:63:8-63:32) = SUM(ds.revenue_core_day)",
-                    "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
-                    "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
-                    "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" ],
-                  "location": "code.Location = 0-accounts.sql:58:4-70:39" } } ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:53:4-53:16) = AVG(t.deals)",
-              "code.Expression(0-accounts.sql:54:4-54:23) = SUM(t.revenue_core)",
-              "code.Expression(0-accounts.sql:55:4-55:22) = SUM(t.revenue_aux)",
-              "code.Expression(0-accounts.sql:56:4-56:18) = SUM(t.revenue)" ],
-            "location": "code.Location = 0-accounts.sql:50:0-71:31" } },
-        { "code.Query(0-accounts.sql:58:4-70:39)": {
-            "sources": [
-              "code.Table(0-accounts.sql:66:9-66:20) = ?.date_ranges",
-              "code.Table(0-accounts.sql:67:18-67:30) = ?.deals_signed" ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
-              "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
-              "code.Expression(0-accounts.sql:63:8-63:32) = SUM(ds.revenue_core_day)",
-              "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
-              "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
-              "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" ],
-            "location": "code.Location = 0-accounts.sql:58:4-70:39" } },
-        { "code.Query(0-accounts.sql:78:0-111:6)": {
-            "sources": [
-              { "code.Query(0-accounts.sql:87:4-110:45)": {
-                  "sources": [
-                    "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
-                    "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",
-                    "code.Table(0-accounts.sql:110:18-110:27) = ?.countries" ],
-                  "expressions": [
-                    "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
-                    "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" ],
-                  "location": "code.Location = 0-accounts.sql:87:4-110:45" } } ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:80:4-85:7) = CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" ],
-            "location": "code.Location = 0-accounts.sql:78:0-111:6" } },
-        { "code.Query(0-accounts.sql:87:4-110:45)": {
-            "sources": [
-              "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
-              "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",
-              "code.Table(0-accounts.sql:110:18-110:27) = ?.countries" ],
-            "expressions": [
-              "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
-              "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" ],
-            "location": "code.Location = 0-accounts.sql:87:4-110:45" } },
-        { "code.Query(1-revenue.sql:29:0-50:49)": {
-            "sources": [
-              "code.Table(1-revenue.sql:46:5-46:13) = ?.accounts",
-              "code.Table(1-revenue.sql:47:14-47:30) = ?.accounts_revenue",
-              "code.Table(1-revenue.sql:48:14-48:23) = ?.countries" ],
-            "expressions": [
-              "code.Expression(1-revenue.sql:32:4-36:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
-              "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')",
-              "code.Expression(1-revenue.sql:39:4-44:7) = CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END",
-              "code.Expression(1-revenue.sql:45:4-45:33) = SUM(accounts_revenue.revenue)" ],
-            "location": "code.Location = 1-revenue.sql:29:0-50:49" } },
-        { "code.Query(1-revenue.sql:4:0-25:52)": {
-            "sources": [
-              "code.Table(1-revenue.sql:20:5-20:21) = ?.accounts_revenue",
-              "code.Table(1-revenue.sql:21:14-21:22) = ?.accounts",
-              "code.Table(1-revenue.sql:22:14-22:23) = ?.countries",
-              "code.Table(1-revenue.sql:23:14-23:26) = ?.accounts_360" ],
-            "expressions": [
-              "code.Expression(1-revenue.sql:11:4-15:7) = CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END",
-              "code.Expression(1-revenue.sql:17:4-17:19) = SUM(ar.revenue)",
-              "code.Expression(1-revenue.sql:18:4-18:33) = COUNT(DISTINCT ar.account_id)",
-              "code.Expression(1-revenue.sql:19:4-19:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
-              "code.Expression(1-revenue.sql:5:4-5:37) = date(date_month, 'start of year')",
-              "code.Expression(1-revenue.sql:6:4-10:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" ],
-            "location": "code.Location = 1-revenue.sql:4:0-25:52" } },
-        { "code.Query(editor.sql:2:0-24:45)": {
-            "sources": [
-              "code.Table(editor.sql:16:5-16:21) = ?.accounts_revenue",
-              "code.Table(editor.sql:17:14-17:22) = ?.accounts",
-              "code.Table(editor.sql:18:14-18:23) = ?.countries" ],
-            "expressions": [
-              "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
-              "code.Expression(editor.sql:13:4-13:19) = SUM(ar.revenue)",
-              "code.Expression(editor.sql:14:4-14:33) = COUNT(DISTINCT ar.account_id)",
-              "code.Expression(editor.sql:15:4-15:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
-              "code.Expression(editor.sql:3:4-3:37) = date(date_month, 'start of year')",
-              "code.Expression(editor.sql:5:4-10:7) = CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" ],
-            "location": "code.Location = editor.sql:2:0-24:45" } } ],
-      "<Expression>": [
-        "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
-        "code.Expression(0-accounts.sql:27:4-27:36) = revenue / contract_duration_days",
-        "code.Expression(0-accounts.sql:28:4-28:41) = revenue_core / contract_duration_days",
-        "code.Expression(0-accounts.sql:29:4-29:40) = revenue_aux / contract_duration_days",
-        "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
-        "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
-        "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
-        "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)",
-        "code.Expression(0-accounts.sql:53:4-53:16) = AVG(t.deals)",
-        "code.Expression(0-accounts.sql:54:4-54:23) = SUM(t.revenue_core)",
-        "code.Expression(0-accounts.sql:55:4-55:22) = SUM(t.revenue_aux)",
-        "code.Expression(0-accounts.sql:56:4-56:18) = SUM(t.revenue)",
-        "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
-        "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
-        "code.Expression(0-accounts.sql:63:8-63:32) = SUM(ds.revenue_core_day)",
-        "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
-        "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
-        "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)",
-        "code.Expression(0-accounts.sql:80:4-85:7) = CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END",
-        "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END",
-        "code.Expression(1-revenue.sql:11:4-15:7) = CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END",
-        "code.Expression(1-revenue.sql:17:4-17:19) = SUM(ar.revenue)",
-        "code.Expression(1-revenue.sql:18:4-18:33) = COUNT(DISTINCT ar.account_id)",
-        "code.Expression(1-revenue.sql:19:4-19:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
-        "code.Expression(1-revenue.sql:32:4-36:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
-        "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')",
-        "code.Expression(1-revenue.sql:39:4-44:7) = CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END",
-        "code.Expression(1-revenue.sql:45:4-45:33) = SUM(accounts_revenue.revenue)",
-        "code.Expression(1-revenue.sql:5:4-5:37) = date(date_month, 'start of year')",
-        "code.Expression(1-revenue.sql:6:4-10:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
-        "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
-        "code.Expression(editor.sql:13:4-13:19) = SUM(ar.revenue)",
-        "code.Expression(editor.sql:14:4-14:33) = COUNT(DISTINCT ar.account_id)",
-        "code.Expression(editor.sql:15:4-15:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
-        "code.Expression(editor.sql:3:4-3:37) = date(date_month, 'start of year')",
-        "code.Expression(editor.sql:5:4-10:7) = CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" ],
       "<Column>": [
         "code.Column(0-accounts.sql:103:12-103:19) = ?.?.revenue",
         "code.Column(0-accounts.sql:104:25-104:35) = ?.?.account_id",
@@ -314,6 +156,164 @@
         "code.Column(editor.sql:6:13-6:21) = ?.c.region",
         "code.Column(editor.sql:7:13-7:21) = ?.c.region",
         "code.Column(editor.sql:8:13-8:21) = ?.c.region" ],
+      "<Expression>": [
+        "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
+        "code.Expression(0-accounts.sql:27:4-27:36) = revenue / contract_duration_days",
+        "code.Expression(0-accounts.sql:28:4-28:41) = revenue_core / contract_duration_days",
+        "code.Expression(0-accounts.sql:29:4-29:40) = revenue_aux / contract_duration_days",
+        "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
+        "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
+        "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
+        "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)",
+        "code.Expression(0-accounts.sql:53:4-53:16) = AVG(t.deals)",
+        "code.Expression(0-accounts.sql:54:4-54:23) = SUM(t.revenue_core)",
+        "code.Expression(0-accounts.sql:55:4-55:22) = SUM(t.revenue_aux)",
+        "code.Expression(0-accounts.sql:56:4-56:18) = SUM(t.revenue)",
+        "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
+        "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
+        "code.Expression(0-accounts.sql:63:8-63:32) = SUM(ds.revenue_core_day)",
+        "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
+        "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
+        "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)",
+        "code.Expression(0-accounts.sql:80:4-85:7) = CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END",
+        "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END",
+        "code.Expression(1-revenue.sql:11:4-15:7) = CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END",
+        "code.Expression(1-revenue.sql:17:4-17:19) = SUM(ar.revenue)",
+        "code.Expression(1-revenue.sql:18:4-18:33) = COUNT(DISTINCT ar.account_id)",
+        "code.Expression(1-revenue.sql:19:4-19:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
+        "code.Expression(1-revenue.sql:32:4-36:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
+        "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')",
+        "code.Expression(1-revenue.sql:39:4-44:7) = CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END",
+        "code.Expression(1-revenue.sql:45:4-45:33) = SUM(accounts_revenue.revenue)",
+        "code.Expression(1-revenue.sql:5:4-5:37) = date(date_month, 'start of year')",
+        "code.Expression(1-revenue.sql:6:4-10:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
+        "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
+        "code.Expression(editor.sql:13:4-13:19) = SUM(ar.revenue)",
+        "code.Expression(editor.sql:14:4-14:33) = COUNT(DISTINCT ar.account_id)",
+        "code.Expression(editor.sql:15:4-15:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
+        "code.Expression(editor.sql:3:4-3:37) = date(date_month, 'start of year')",
+        "code.Expression(editor.sql:5:4-10:7) = CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" ],
+      "<Query>": [
+        { "code.Query(0-accounts.sql:25:0-44:6)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:27:4-27:36) = revenue / contract_duration_days",
+              "code.Expression(0-accounts.sql:28:4-28:41) = revenue_core / contract_duration_days",
+              "code.Expression(0-accounts.sql:29:4-29:40) = revenue_aux / contract_duration_days" ],
+            "location": "code.Location = 0-accounts.sql:25:0-44:6",
+            "sources": [
+              { "code.Query(0-accounts.sql:31:4-43:80)": {
+                  "expressions": [
+                    "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
+                    "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
+                    "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
+                    "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)" ],
+                  "location": "code.Location = 0-accounts.sql:31:4-43:80",
+                  "sources": [
+                    "code.Table(0-accounts.sql:40:9-40:15) = ?.orders",
+                    "code.Table(0-accounts.sql:41:13-41:18) = ?.deals" ] } } ] } },
+        { "code.Query(0-accounts.sql:31:4-43:80)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:36:8-36:77) = julianday(d.contract_end_date) - julianday(d.contract_start_date) + 1",
+              "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)",
+              "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)",
+              "code.Expression(0-accounts.sql:39:8-39:20) = SUM(o.value)" ],
+            "location": "code.Location = 0-accounts.sql:31:4-43:80",
+            "sources": [
+              "code.Table(0-accounts.sql:40:9-40:15) = ?.orders",
+              "code.Table(0-accounts.sql:41:13-41:18) = ?.deals" ] } },
+        { "code.Query(0-accounts.sql:50:0-71:31)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:53:4-53:16) = AVG(t.deals)",
+              "code.Expression(0-accounts.sql:54:4-54:23) = SUM(t.revenue_core)",
+              "code.Expression(0-accounts.sql:55:4-55:22) = SUM(t.revenue_aux)",
+              "code.Expression(0-accounts.sql:56:4-56:18) = SUM(t.revenue)" ],
+            "location": "code.Location = 0-accounts.sql:50:0-71:31",
+            "sources": [
+              { "code.Query(0-accounts.sql:58:4-70:39)": {
+                  "expressions": [
+                    "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
+                    "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
+                    "code.Expression(0-accounts.sql:63:8-63:32) = SUM(ds.revenue_core_day)",
+                    "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
+                    "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
+                    "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" ],
+                  "location": "code.Location = 0-accounts.sql:58:4-70:39",
+                  "sources": [
+                    "code.Table(0-accounts.sql:66:9-66:20) = ?.date_ranges",
+                    "code.Table(0-accounts.sql:67:18-67:30) = ?.deals_signed" ] } } ] } },
+        { "code.Query(0-accounts.sql:58:4-70:39)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:60:8-60:40) = DATE(date_day, 'start of month')",
+              "code.Expression(0-accounts.sql:62:8-62:25) = COUNT(ds.deal_id)",
+              "code.Expression(0-accounts.sql:63:8-63:32) = SUM(ds.revenue_core_day)",
+              "code.Expression(0-accounts.sql:64:8-64:31) = SUM(ds.revenue_aux_day)",
+              "code.Expression(0-accounts.sql:65:8-65:27) = SUM(ds.revenue_day)",
+              "code.Expression(0-accounts.sql:68:16-69:57) = dr.date_day >= date(ds.contract_start_date)\n            AND dr.date_day <= date(ds.contract_end_date)" ],
+            "location": "code.Location = 0-accounts.sql:58:4-70:39",
+            "sources": [
+              "code.Table(0-accounts.sql:66:9-66:20) = ?.date_ranges",
+              "code.Table(0-accounts.sql:67:18-67:30) = ?.deals_signed" ] } },
+        { "code.Query(0-accounts.sql:78:0-111:6)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:80:4-85:7) = CASE \n        WHEN t.revenue_12m <= 300 THEN 'Small'\n        WHEN t.revenue_12m > 300 AND t.revenue_12m <= 600 THEN 'Medium'\n        WHEN t.revenue_12m > 600 THEN 'Large'\n        ELSE NULL\n    END" ],
+            "location": "code.Location = 0-accounts.sql:78:0-111:6",
+            "sources": [
+              { "code.Query(0-accounts.sql:87:4-110:45)": {
+                  "expressions": [
+                    "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
+                    "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" ],
+                  "location": "code.Location = 0-accounts.sql:87:4-110:45",
+                  "sources": [
+                    "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
+                    "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",
+                    "code.Table(0-accounts.sql:110:18-110:27) = ?.countries" ] } } ] } },
+        { "code.Query(0-accounts.sql:87:4-110:45)": {
+            "expressions": [
+              "code.Expression(0-accounts.sql:103:8-107:9) = SUM(revenue) OVER (\n            PARTITION BY account_id \n            ORDER BY date_month \n            ROWS BETWEEN 11 PRECEDING AND CURRENT ROW\n        )",
+              "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" ],
+            "location": "code.Location = 0-accounts.sql:87:4-110:45",
+            "sources": [
+              "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
+              "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",
+              "code.Table(0-accounts.sql:110:18-110:27) = ?.countries" ] } },
+        { "code.Query(1-revenue.sql:29:0-50:49)": {
+            "expressions": [
+              "code.Expression(1-revenue.sql:32:4-36:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END",
+              "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')",
+              "code.Expression(1-revenue.sql:39:4-44:7) = CASE \n        WHEN SUM(accounts_revenue.revenue) <= 300 THEN 'Small'\n        WHEN SUM(accounts_revenue.revenue) > 300 AND SUM(accounts_revenue.revenue) <= 600 THEN 'Medium'\n        WHEN SUM(accounts_revenue.revenue) > 600 THEN 'Large'\n        ELSE NULL\n    END",
+              "code.Expression(1-revenue.sql:45:4-45:33) = SUM(accounts_revenue.revenue)" ],
+            "location": "code.Location = 1-revenue.sql:29:0-50:49",
+            "sources": [
+              "code.Table(1-revenue.sql:46:5-46:13) = ?.accounts",
+              "code.Table(1-revenue.sql:47:14-47:30) = ?.accounts_revenue",
+              "code.Table(1-revenue.sql:48:14-48:23) = ?.countries" ] } },
+        { "code.Query(1-revenue.sql:4:0-25:52)": {
+            "expressions": [
+              "code.Expression(1-revenue.sql:11:4-15:7) = CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END",
+              "code.Expression(1-revenue.sql:17:4-17:19) = SUM(ar.revenue)",
+              "code.Expression(1-revenue.sql:18:4-18:33) = COUNT(DISTINCT ar.account_id)",
+              "code.Expression(1-revenue.sql:19:4-19:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
+              "code.Expression(1-revenue.sql:5:4-5:37) = date(date_month, 'start of year')",
+              "code.Expression(1-revenue.sql:6:4-10:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" ],
+            "location": "code.Location = 1-revenue.sql:4:0-25:52",
+            "sources": [
+              "code.Table(1-revenue.sql:20:5-20:21) = ?.accounts_revenue",
+              "code.Table(1-revenue.sql:21:14-21:22) = ?.accounts",
+              "code.Table(1-revenue.sql:22:14-22:23) = ?.countries",
+              "code.Table(1-revenue.sql:23:14-23:26) = ?.accounts_360" ] } },
+        { "code.Query(editor.sql:2:0-24:45)": {
+            "expressions": [
+              "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
+              "code.Expression(editor.sql:13:4-13:19) = SUM(ar.revenue)",
+              "code.Expression(editor.sql:14:4-14:33) = COUNT(DISTINCT ar.account_id)",
+              "code.Expression(editor.sql:15:4-15:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
+              "code.Expression(editor.sql:3:4-3:37) = date(date_month, 'start of year')",
+              "code.Expression(editor.sql:5:4-10:7) = CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" ],
+            "location": "code.Location = editor.sql:2:0-24:45",
+            "sources": [
+              "code.Table(editor.sql:16:5-16:21) = ?.accounts_revenue",
+              "code.Table(editor.sql:17:14-17:22) = ?.accounts",
+              "code.Table(editor.sql:18:14-18:23) = ?.countries" ] } } ],
       "<Table>": [
         "code.Table(0-accounts.sql:108:9-108:25) = ?.accounts_revenue",
         "code.Table(0-accounts.sql:109:13-109:21) = ?.accounts",

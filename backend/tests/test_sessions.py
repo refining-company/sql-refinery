@@ -54,7 +54,9 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
 
         # Built-in types
         case dict():
-            return {str(simplify(key, terminal)): simplify(value, terminal) for key, value in obj.items()}
+            return {
+                str(simplify(key, terminal)): simplify(value, terminal) for key, value in sorted(obj.items(), key=str)
+            }
         case list() | set() | frozenset():
             return sorted([simplify(item, terminal) for item in obj], key=str)
         case tuple():
