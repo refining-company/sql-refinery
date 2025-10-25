@@ -183,8 +183,8 @@ def to_struc(node: tree_sitter.Node) -> dict | list:
         node_repr = "{} ({} at {}:{}) = {}".format(
             node_type,
             node.grammar_name,
-            node.start_point.row + 1,
-            node.start_point.column + 1,
+            node.start_point.row,
+            node.start_point.column,
             re.sub(r"\s+", " ", node_text)[:20],  # type: ignore[arg-type]
         )
 

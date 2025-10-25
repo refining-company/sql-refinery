@@ -1,99 +1,488 @@
 {
-  "./tests/inputs/codebase/0-accounts.sql": [
+  "0-accounts.sql": [
     { "ExpressionVariations(0-accounts.sql:38:9, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/codebase/0-accounts.sql:37:8-37:105) = code.Expression(SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END))",
+        "this": {
+          "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)": {
+            "columns": [
+              { "code.Column(0-accounts.sql:37:22-37:31) = ?.o.product": {
+                  "dataset": null,
+                  "table": "o",
+                  "column": "product",
+                  "location": {
+                    "code.Location = 0-accounts.sql:37:22-37:31": {
+                      "file": "0-accounts.sql",
+                      "range": {
+                        "code.Range = 37:22-37:31": {
+                          "start_line": 37,
+                          "start_char": 22,
+                          "end_line": 37,
+                          "end_char": 31 } } } } } },
+              { "code.Column(0-accounts.sql:37:86-37:93) = ?.o.value": {
+                  "dataset": null,
+                  "table": "o",
+                  "column": "value",
+                  "location": {
+                    "code.Location = 0-accounts.sql:37:86-37:93": {
+                      "file": "0-accounts.sql",
+                      "range": {
+                        "code.Range = 37:86-37:93": {
+                          "start_line": 37,
+                          "start_char": 86,
+                          "end_line": 37,
+                          "end_char": 93 } } } } } } ],
+            "alias": "revenue_core",
+            "location": {
+              "code.Location = 0-accounts.sql:37:8-37:105": {
+                "file": "0-accounts.sql",
+                "range": {
+                  "code.Range = 37:8-37:105": {
+                    "start_line": 37,
+                    "start_char": 8,
+                    "end_line": 37,
+                    "end_char": 105 } } } },
+            "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.90)": {
               "group": {
                 "Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0))))))": {
-                  "locations": [ "./tests/inputs/codebase/0-accounts.sql:38:8-38:86" ],
-                  "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                  "locations": [
+                    { "code.Location = 0-accounts.sql:38:8-38:86": {
+                        "file": "0-accounts.sql",
+                        "range": {
+                          "code.Range = 38:8-38:86": {
+                            "start_line": 38,
+                            "start_char": 8,
+                            "end_line": 38,
+                            "end_char": 86 } } } } ],
+                  "columns": [
+                    "Column(?.orders.product)",
+                    "Column(?.orders.value)" ],
                   "reliability": 1,
                   "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
                   "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
               "similarity": 0.9 } } ] } },
     { "ExpressionVariations(0-accounts.sql:39:9, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/codebase/0-accounts.sql:38:8-38:86) = code.Expression(SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END))",
+        "this": {
+          "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)": {
+            "columns": [
+              { "code.Column(0-accounts.sql:38:22-38:31) = ?.o.product": {
+                  "dataset": null,
+                  "table": "o",
+                  "column": "product",
+                  "location": {
+                    "code.Location = 0-accounts.sql:38:22-38:31": {
+                      "file": "0-accounts.sql",
+                      "range": {
+                        "code.Range = 38:22-38:31": {
+                          "start_line": 38,
+                          "start_char": 22,
+                          "end_line": 38,
+                          "end_char": 31 } } } } } },
+              { "code.Column(0-accounts.sql:38:67-38:74) = ?.o.value": {
+                  "dataset": null,
+                  "table": "o",
+                  "column": "value",
+                  "location": {
+                    "code.Location = 0-accounts.sql:38:67-38:74": {
+                      "file": "0-accounts.sql",
+                      "range": {
+                        "code.Range = 38:67-38:74": {
+                          "start_line": 38,
+                          "start_char": 67,
+                          "end_line": 38,
+                          "end_char": 74 } } } } } } ],
+            "alias": "revenue_aux",
+            "location": {
+              "code.Location = 0-accounts.sql:38:8-38:86": {
+                "file": "0-accounts.sql",
+                "range": {
+                  "code.Range = 38:8-38:86": {
+                    "start_line": 38,
+                    "start_char": 8,
+                    "end_line": 38,
+                    "end_char": 86 } } } },
+            "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.90)": {
               "group": {
                 "Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0))))))": {
-                  "locations": [ "./tests/inputs/codebase/0-accounts.sql:37:8-37:105" ],
-                  "columns": [ "Column(?.orders.product)", "Column(?.orders.value)" ],
+                  "locations": [
+                    { "code.Location = 0-accounts.sql:37:8-37:105": {
+                        "file": "0-accounts.sql",
+                        "range": {
+                          "code.Range = 37:8-37:105": {
+                            "start_line": 37,
+                            "start_char": 8,
+                            "end_line": 37,
+                            "end_char": 105 } } } } ],
+                  "columns": [
+                    "Column(?.orders.product)",
+                    "Column(?.orders.value)" ],
                   "reliability": 1,
                   "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",
                   "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
               "similarity": 0.9 } } ] } },
     { "ExpressionVariations(0-accounts.sql:98:9, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/codebase/0-accounts.sql:97:8-101:11) = code.Expression(CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END)",
+        "this": {
+          "code.Expression(0-accounts.sql:97:8-101:11) = CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END": {
+            "columns": [
+              { "code.Column(0-accounts.sql:98:17-98:25) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = 0-accounts.sql:98:17-98:25": {
+                      "file": "0-accounts.sql",
+                      "range": {
+                        "code.Range = 98:17-98:25": {
+                          "start_line": 98,
+                          "start_char": 17,
+                          "end_line": 98,
+                          "end_char": 25 } } } } } },
+              { "code.Column(0-accounts.sql:99:17-99:25) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = 0-accounts.sql:99:17-99:25": {
+                      "file": "0-accounts.sql",
+                      "range": {
+                        "code.Range = 99:17-99:25": {
+                          "start_line": 99,
+                          "start_char": 17,
+                          "end_line": 99,
+                          "end_char": 25 } } } } } } ],
+            "alias": "region_cluster",
+            "location": {
+              "code.Location = 0-accounts.sql:97:8-101:11": {
+                "file": "0-accounts.sql",
+                "range": {
+                  "code.Range = 97:8-101:11": {
+                    "start_line": 97,
+                    "start_char": 8,
+                    "end_line": 101,
+                    "end_char": 11 } } } },
+            "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))), similarity=0.78)": {
               "group": {
                 "Expression(reliability=1, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null()))))": {
-                  "locations": [ "./tests/inputs/editor.sql:5:4-10:7" ],
-                  "columns": [ "Column(?.countries.region)" ],
+                  "locations": [
+                    { "code.Location = editor.sql:5:4-10:7": {
+                        "file": "editor.sql",
+                        "range": {
+                          "code.Range = 5:4-10:7": {
+                            "start_line": 5,
+                            "start_char": 4,
+                            "end_line": 10,
+                            "end_char": 7 } } } } ],
+                  "columns": [
+                    "Column(?.countries.region)" ],
                   "reliability": 1,
                   "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
                   "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } },
               "similarity": 0.78 } } ] } } ],
-  "./tests/inputs/codebase/1-revenue.sql": [
+  "1-revenue.sql": [
     { "ExpressionVariations(1-revenue.sql:33:5, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/codebase/1-revenue.sql:32:4-36:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)",
+        "this": {
+          "code.Expression(1-revenue.sql:32:4-36:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END": {
+            "columns": [
+              { "code.Column(1-revenue.sql:33:13-33:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = 1-revenue.sql:33:13-33:21": {
+                      "file": "1-revenue.sql",
+                      "range": {
+                        "code.Range = 33:13-33:21": {
+                          "start_line": 33,
+                          "start_char": 13,
+                          "end_line": 33,
+                          "end_char": 21 } } } } } },
+              { "code.Column(1-revenue.sql:34:13-34:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = 1-revenue.sql:34:13-34:21": {
+                      "file": "1-revenue.sql",
+                      "range": {
+                        "code.Range = 34:13-34:21": {
+                          "start_line": 34,
+                          "start_char": 13,
+                          "end_line": 34,
+                          "end_char": 21 } } } } } } ],
+            "alias": "cluster",
+            "location": {
+              "code.Location = 1-revenue.sql:32:4-36:7": {
+                "file": "1-revenue.sql",
+                "range": {
+                  "code.Range = 32:4-36:7": {
+                    "start_line": 32,
+                    "start_char": 4,
+                    "end_line": 36,
+                    "end_char": 7 } } } },
+            "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))), similarity=0.78)": {
               "group": {
                 "Expression(reliability=1, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null()))))": {
-                  "locations": [ "./tests/inputs/editor.sql:5:4-10:7" ],
-                  "columns": [ "Column(?.countries.region)" ],
+                  "locations": [
+                    { "code.Location = editor.sql:5:4-10:7": {
+                        "file": "editor.sql",
+                        "range": {
+                          "code.Range = 5:4-10:7": {
+                            "start_line": 5,
+                            "start_char": 4,
+                            "end_line": 10,
+                            "end_char": 7 } } } } ],
+                  "columns": [
+                    "Column(?.countries.region)" ],
                   "reliability": 1,
                   "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
                   "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } },
               "similarity": 0.78 } } ] } },
     { "ExpressionVariations(1-revenue.sql:39:5, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/codebase/1-revenue.sql:38:4-38:70) = code.Expression(IIF(accounts.industry = 'Information Technology', 'Tech', 'Other'))",
+        "this": {
+          "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')": {
+            "columns": [
+              { "code.Column(1-revenue.sql:38:8-38:25) = ?.accounts.industry": {
+                  "dataset": null,
+                  "table": "accounts",
+                  "column": "industry",
+                  "location": {
+                    "code.Location = 1-revenue.sql:38:8-38:25": {
+                      "file": "1-revenue.sql",
+                      "range": {
+                        "code.Range = 38:8-38:25": {
+                          "start_line": 38,
+                          "start_char": 8,
+                          "end_line": 38,
+                          "end_char": 25 } } } } } } ],
+            "alias": "industry_tech",
+            "location": {
+              "code.Location = 1-revenue.sql:38:4-38:70": {
+                "file": "1-revenue.sql",
+                "range": {
+                  "code.Range = 38:4-38:70": {
+                    "start_line": 38,
+                    "start_char": 4,
+                    "end_line": 38,
+                    "end_char": 70 } } } },
+            "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))), similarity=0.95)": {
               "group": {
                 "Expression(reliability=1, Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT'))))": {
-                  "locations": [ "./tests/inputs/editor.sql:12:4-12:62" ],
-                  "columns": [ "Column(?.accounts.industry)" ],
+                  "locations": [
+                    { "code.Location = editor.sql:12:4-12:62": {
+                        "file": "editor.sql",
+                        "range": {
+                          "code.Range = 12:4-12:62": {
+                            "start_line": 12,
+                            "start_char": 4,
+                            "end_line": 12,
+                            "end_char": 62 } } } } ],
+                  "columns": [
+                    "Column(?.accounts.industry)" ],
                   "reliability": 1,
                   "canonical": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
                   "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" } },
               "similarity": 0.95 } } ] } },
     { "ExpressionVariations(1-revenue.sql:7:5, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/codebase/1-revenue.sql:6:4-10:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END)",
+        "this": {
+          "code.Expression(1-revenue.sql:6:4-10:7) = CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END": {
+            "columns": [
+              { "code.Column(1-revenue.sql:7:13-7:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = 1-revenue.sql:7:13-7:21": {
+                      "file": "1-revenue.sql",
+                      "range": {
+                        "code.Range = 7:13-7:21": {
+                          "start_line": 7,
+                          "start_char": 13,
+                          "end_line": 7,
+                          "end_char": 21 } } } } } },
+              { "code.Column(1-revenue.sql:8:13-8:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = 1-revenue.sql:8:13-8:21": {
+                      "file": "1-revenue.sql",
+                      "range": {
+                        "code.Range = 8:13-8:21": {
+                          "start_line": 8,
+                          "start_char": 13,
+                          "end_line": 8,
+                          "end_char": 21 } } } } } } ],
+            "alias": "region_cluster",
+            "location": {
+              "code.Location = 1-revenue.sql:6:4-10:7": {
+                "file": "1-revenue.sql",
+                "range": {
+                  "code.Range = 6:4-10:7": {
+                    "start_line": 6,
+                    "start_char": 4,
+                    "end_line": 10,
+                    "end_char": 7 } } } },
+            "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))), similarity=0.78)": {
               "group": {
                 "Expression(reliability=1, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null()))))": {
-                  "locations": [ "./tests/inputs/editor.sql:5:4-10:7" ],
-                  "columns": [ "Column(?.countries.region)" ],
+                  "locations": [
+                    { "code.Location = editor.sql:5:4-10:7": {
+                        "file": "editor.sql",
+                        "range": {
+                          "code.Range = 5:4-10:7": {
+                            "start_line": 5,
+                            "start_char": 4,
+                            "end_line": 10,
+                            "end_char": 7 } } } } ],
+                  "columns": [
+                    "Column(?.countries.region)" ],
                   "reliability": 1,
                   "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
                   "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } },
               "similarity": 0.78 } } ] } } ],
-  "./tests/inputs/editor.sql": [
+  "editor.sql": [
     { "ExpressionVariations(editor.sql:13:5, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/editor.sql:12:4-12:62) = code.Expression(IIF(a.industry = 'Information Technology', 'IT', 'Non-IT'))",
+        "this": {
+          "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')": {
+            "columns": [
+              { "code.Column(editor.sql:12:8-12:18) = ?.a.industry": {
+                  "dataset": null,
+                  "table": "a",
+                  "column": "industry",
+                  "location": {
+                    "code.Location = editor.sql:12:8-12:18": {
+                      "file": "editor.sql",
+                      "range": {
+                        "code.Range = 12:8-12:18": {
+                          "start_line": 12,
+                          "start_char": 8,
+                          "end_line": 12,
+                          "end_char": 18 } } } } } } ],
+            "alias": "industry_it",
+            "location": {
+              "code.Location = editor.sql:12:4-12:62": {
+                "file": "editor.sql",
+                "range": {
+                  "code.Range = 12:4-12:62": {
+                    "start_line": 12,
+                    "start_char": 4,
+                    "end_line": 12,
+                    "end_char": 62 } } } },
+            "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))), similarity=0.95)": {
               "group": {
                 "Expression(reliability=1, Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other'))))": {
-                  "locations": [ "./tests/inputs/codebase/1-revenue.sql:38:4-38:70" ],
-                  "columns": [ "Column(?.accounts.industry)" ],
+                  "locations": [
+                    { "code.Location = 1-revenue.sql:38:4-38:70": {
+                        "file": "1-revenue.sql",
+                        "range": {
+                          "code.Range = 38:4-38:70": {
+                            "start_line": 38,
+                            "start_char": 4,
+                            "end_line": 38,
+                            "end_char": 70 } } } } ],
+                  "columns": [
+                    "Column(?.accounts.industry)" ],
                   "reliability": 1,
                   "canonical": "Expression(Function_call(Identifier, Argument(=(Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))",
                   "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
               "similarity": 0.95 } } ] } },
     { "ExpressionVariations(editor.sql:6:5, 1 variations)": {
-        "this": "code.Expression(./tests/inputs/editor.sql:5:4-10:7) = code.Expression(CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END)",
+        "this": {
+          "code.Expression(editor.sql:5:4-10:7) = CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END": {
+            "columns": [
+              { "code.Column(editor.sql:6:13-6:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = editor.sql:6:13-6:21": {
+                      "file": "editor.sql",
+                      "range": {
+                        "code.Range = 6:13-6:21": {
+                          "start_line": 6,
+                          "start_char": 13,
+                          "end_line": 6,
+                          "end_char": 21 } } } } } },
+              { "code.Column(editor.sql:7:13-7:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = editor.sql:7:13-7:21": {
+                      "file": "editor.sql",
+                      "range": {
+                        "code.Range = 7:13-7:21": {
+                          "start_line": 7,
+                          "start_char": 13,
+                          "end_line": 7,
+                          "end_char": 21 } } } } } },
+              { "code.Column(editor.sql:8:13-8:21) = ?.c.region": {
+                  "dataset": null,
+                  "table": "c",
+                  "column": "region",
+                  "location": {
+                    "code.Location = editor.sql:8:13-8:21": {
+                      "file": "editor.sql",
+                      "range": {
+                        "code.Range = 8:13-8:21": {
+                          "start_line": 8,
+                          "start_char": 13,
+                          "end_line": 8,
+                          "end_char": 21 } } } } } } ],
+            "alias": "macro_region",
+            "location": {
+              "code.Location = editor.sql:5:4-10:7": {
+                "file": "editor.sql",
+                "range": {
+                  "code.Range = 5:4-10:7": {
+                    "start_line": 5,
+                    "start_char": 4,
+                    "end_line": 10,
+                    "end_char": 7 } } } },
+            "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } },
         "others": [
           { "ExpressionVariation(group=Expression(reliability=3, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))), similarity=0.78)": {
               "group": {
                 "Expression(reliability=3, Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null()))))": {
-                  "locations": [ "./tests/inputs/codebase/0-accounts.sql:97:8-101:11", "./tests/inputs/codebase/1-revenue.sql:32:4-36:7", "./tests/inputs/codebase/1-revenue.sql:6:4-10:7" ],
-                  "columns": [ "Column(?.countries.region)" ],
+                  "locations": [
+                    { "code.Location = 0-accounts.sql:97:8-101:11": {
+                        "file": "0-accounts.sql",
+                        "range": {
+                          "code.Range = 97:8-101:11": {
+                            "start_line": 97,
+                            "start_char": 8,
+                            "end_line": 101,
+                            "end_char": 11 } } } },
+                    { "code.Location = 1-revenue.sql:32:4-36:7": {
+                        "file": "1-revenue.sql",
+                        "range": {
+                          "code.Range = 32:4-36:7": {
+                            "start_line": 32,
+                            "start_char": 4,
+                            "end_line": 36,
+                            "end_char": 7 } } } },
+                    { "code.Location = 1-revenue.sql:6:4-10:7": {
+                        "file": "1-revenue.sql",
+                        "range": {
+                          "code.Range = 6:4-10:7": {
+                            "start_line": 6,
+                            "start_char": 4,
+                            "end_line": 10,
+                            "end_char": 7 } } } } ],
+                  "columns": [
+                    "Column(?.countries.region)" ],
                   "reliability": 3,
                   "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))",
                   "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
