@@ -100,16 +100,19 @@ def patch_pipeline():
     # Patch with capturing wrappers
     src.sql.build = capture(src.sql.build, simplify)
     src.code.build = capture(
-        src.code.build, lambda r: simplify(r, terminal=(src.code.Column, src.code.Table, src.code.Location))
+        src.code.build,
+        lambda r: simplify(
+            r,
+            terminal=(
+                src.code.Expression,
+                src.code.Column,
+                src.code.Table,
+                src.code.Location,
+            ),
+        ),
     )
-    src.model.build = capture(
-        src.model.build,
-        lambda r: simplify(r, terminal=(src.model.Column, src.model.Expression)),
-    )
-    src.variations.build = capture(
-        src.variations.build,
-        lambda r: simplify(r, terminal=(src.model.Column)),
-    )
+    src.model.build = capture(src.model.build, lambda r: simplify(r, terminal=(src.model.Column, src.model.Expression)))
+    src.variations.build = capture(src.variations.build, lambda r: simplify(r, terminal=(src.model.Column)))
 
     try:
         yield pipeline
