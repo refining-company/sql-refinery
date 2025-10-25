@@ -8,7 +8,7 @@ LSP sessions through direct handler calls (no threads/IO).
 import dataclasses
 from collections import defaultdict
 from contextlib import contextmanager
-from functools import wraps
+from functools import partial, wraps
 from pathlib import Path
 
 import pytest
@@ -22,47 +22,39 @@ SNAPSHOTS_DIR = TEST_DIR / "snapshots"
 
 
 def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
-    """Simplify complex objects for snapshot comparison
-
-    Args:
-        terminal: Classes to stop recursion and show repr() + str()
-        terminal_hidden: If True, show str() for "_" fields instead of recursing
-    """
-    # Terminal class handling - stop recursion here (ignored if terminal_hidden=True)
-    if isinstance(obj, terminal):
-        match obj:
-            case src.sql.Node():
-                return simplify(obj.text, terminal)
-            case _ if dataclasses.is_dataclass(obj):
-                return repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
-            case _:
-                return f"<{obj.__class__.__name__}>"
-
-    # Non-terminal class handling - recurse into structure
+    """Simplify complex objects for snapshot comparison"""
     match obj:
         # Dataclasses
         case _ if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
-            obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
             obj_key = repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
-            return {obj_key: simplify(obj_dict, terminal)}
+            if isinstance(obj, terminal):
+                return obj_key
+            else:
+                obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
+                return {obj_key: simplify(obj_dict, terminal)}
 
         # Tree-sitter objects
         case src.sql.Tree():
-            return [simplify(obj.root_node, terminal)]
-        case src.sql.Node():
-            return src.sql.to_struc(obj)
+            if isinstance(obj, terminal):
+                return "sql.Tree()"
+            else:
+                return [simplify(obj.root_node, terminal)]
 
-        # Built-in types
+        case src.sql.Node():
+            if isinstance(obj, terminal):
+                return simplify(obj.text, terminal)
+            else:
+                return src.sql.to_struc(obj)
+
+        # Built-in nested types
         case dict():
-            return {
-                str(simplify(key, terminal)): simplify(value, terminal) for key, value in sorted(obj.items(), key=str)
-            }
+            return {simplify(k, (type(k))): simplify(v, terminal) for k, v in sorted(obj.items(), key=str)}
         case list() | set() | frozenset():
             return sorted([simplify(item, terminal) for item in obj], key=str)
         case tuple():
             return tuple(simplify(item, terminal) for item in obj)
         case Path():
-            return str(src.utils.trunk_path(obj))
+            return simplify(str(obj), terminal)
         case bytes():
             return obj.decode("utf-8")
         case float():
@@ -100,21 +92,22 @@ def patch_pipeline():
     orig_variations_build = src.variations.build
 
     # Patch with capturing wrappers
-    src.sql.build = capture(src.sql.build, simplify)
+    src.sql.build = capture(
+        src.sql.build,
+        simplify,
+    )
     src.code.build = capture(
         src.code.build,
-        lambda r: simplify(
-            r,
-            terminal=(
-                src.code.Expression,
-                src.code.Column,
-                src.code.Table,
-                src.code.Location,
-            ),
-        ),
+        partial(simplify, terminal=(src.code.Expression, src.code.Column, src.code.Table, src.code.Location)),
     )
-    src.model.build = capture(src.model.build, lambda r: simplify(r, terminal=(src.model.Column, src.model.Expression)))
-    src.variations.build = capture(src.variations.build, lambda r: simplify(r, terminal=(src.model.Column)))
+    src.model.build = capture(
+        src.model.build,
+        partial(simplify, terminal=(src.model.Column, src.model.Expression)),
+    )
+    src.variations.build = capture(
+        src.variations.build,
+        partial(simplify, terminal=(src.code.Expression, src.model.Column, src.model.Expression)),
+    )
 
     try:
         yield pipeline

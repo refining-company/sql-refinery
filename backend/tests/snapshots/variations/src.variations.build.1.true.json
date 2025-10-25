@@ -2,123 +2,13 @@
   "0-accounts.sql": [
     { "ExpressionVariations(0-accounts.sql:38:9, 1 variations)": {
         "others": [
-          { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.90)": {
-              "group": {
-                "Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0))))))": {
-                  "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Training', 'Consulting')), Column(?.orders.value)), Caseelse_clause(0)))))",
-                  "columns": [
-                    "Column(?.orders.product)",
-                    "Column(?.orders.value)" ],
-                  "locations": [
-                    { "code.Location = 0-accounts.sql:38:8-38:86": {
-                        "file": "0-accounts.sql",
-                        "range": {
-                          "code.Range = 38:8-38:86": {
-                            "end_char": 86,
-                            "end_line": 38,
-                            "start_char": 8,
-                            "start_line": 38 } } } } ],
-                  "reliability": 1,
-                  "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
-              "similarity": 0.9 } } ],
-        "this": {
-          "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)": {
-            "alias": "revenue_core",
-            "columns": [
-              { "code.Column(0-accounts.sql:37:22-37:31) = ?.o.product": {
-                  "column": "product",
-                  "dataset": null,
-                  "location": {
-                    "code.Location = 0-accounts.sql:37:22-37:31": {
-                      "file": "0-accounts.sql",
-                      "range": {
-                        "code.Range = 37:22-37:31": {
-                          "end_char": 31,
-                          "end_line": 37,
-                          "start_char": 22,
-                          "start_line": 37 } } } },
-                  "table": "o" } },
-              { "code.Column(0-accounts.sql:37:86-37:93) = ?.o.value": {
-                  "column": "value",
-                  "dataset": null,
-                  "location": {
-                    "code.Location = 0-accounts.sql:37:86-37:93": {
-                      "file": "0-accounts.sql",
-                      "range": {
-                        "code.Range = 37:86-37:93": {
-                          "end_char": 93,
-                          "end_line": 37,
-                          "start_char": 86,
-                          "start_line": 37 } } } },
-                  "table": "o" } } ],
-            "location": {
-              "code.Location = 0-accounts.sql:37:8-37:105": {
-                "file": "0-accounts.sql",
-                "range": {
-                  "code.Range = 37:8-37:105": {
-                    "end_char": 105,
-                    "end_line": 37,
-                    "start_char": 8,
-                    "start_line": 37 } } } },
-            "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } } } },
+          { "ExpressionVariation(group=model.Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(model.Column(?.orders.product), Struct('Training', 'Consulting')), model.Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.91)": {
+              "group": "model.Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(model.Column(?.orders.product), Struct('Training', 'Consulting')), model.Column(?.orders.value)), Caseelse_clause(0))))))",
+              "similarity": 0.91 } } ],
+        "this": "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
     { "ExpressionVariations(0-accounts.sql:39:9, 1 variations)": {
         "others": [
-          { "ExpressionVariation(group=Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.90)": {
-              "group": {
-                "Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0))))))": {
-                  "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), Column(?.orders.value)), Caseelse_clause(0)))))",
-                  "columns": [
-                    "Column(?.orders.product)",
-                    "Column(?.orders.value)" ],
-                  "locations": [
-                    { "code.Location = 0-accounts.sql:37:8-37:105": {
-                        "file": "0-accounts.sql",
-                        "range": {
-                          "code.Range = 37:8-37:105": {
-                            "end_char": 105,
-                            "end_line": 37,
-                            "start_char": 8,
-                            "start_line": 37 } } } } ],
-                  "reliability": 1,
-                  "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } },
-              "similarity": 0.9 } } ],
-        "this": {
-          "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)": {
-            "alias": "revenue_aux",
-            "columns": [
-              { "code.Column(0-accounts.sql:38:22-38:31) = ?.o.product": {
-                  "column": "product",
-                  "dataset": null,
-                  "location": {
-                    "code.Location = 0-accounts.sql:38:22-38:31": {
-                      "file": "0-accounts.sql",
-                      "range": {
-                        "code.Range = 38:22-38:31": {
-                          "end_char": 31,
-                          "end_line": 38,
-                          "start_char": 22,
-                          "start_line": 38 } } } },
-                  "table": "o" } },
-              { "code.Column(0-accounts.sql:38:67-38:74) = ?.o.value": {
-                  "column": "value",
-                  "dataset": null,
-                  "location": {
-                    "code.Location = 0-accounts.sql:38:67-38:74": {
-                      "file": "0-accounts.sql",
-                      "range": {
-                        "code.Range = 38:67-38:74": {
-                          "end_char": 74,
-                          "end_line": 38,
-                          "start_char": 67,
-                          "start_line": 38 } } } },
-                  "table": "o" } } ],
-            "location": {
-              "code.Location = 0-accounts.sql:38:8-38:86": {
-                "file": "0-accounts.sql",
-                "range": {
-                  "code.Range = 38:8-38:86": {
-                    "end_char": 86,
-                    "end_line": 38,
-                    "start_char": 8,
-                    "start_line": 38 } } } },
-            "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } } } } ] }
+          { "ExpressionVariation(group=model.Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(model.Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), model.Column(?.orders.value)), Caseelse_clause(0)))))), similarity=0.91)": {
+              "group": "model.Expression(reliability=1, Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(model.Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), model.Column(?.orders.value)), Caseelse_clause(0))))))",
+              "similarity": 0.91 } } ],
+        "this": "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } } ] }

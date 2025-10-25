@@ -20,7 +20,7 @@ class Column:
     column: str | None
 
     def __repr__(self) -> str:
-        return f"Column({self.dataset or '?'}.{self.table or '?'}.{self.column or '?'})"
+        return f"model.Column({self.dataset or '?'}.{self.table or '?'}.{self.column or '?'})"
 
     def __hash__(self) -> int:
         return hash((self.dataset, self.table, self.column))
@@ -36,7 +36,7 @@ class Expression:
     sql: str
 
     def __repr__(self) -> str:
-        return f"Expression(reliability={self.reliability}, {self.canonical})"
+        return f"model.Expression(reliability={self.reliability}, {self.canonical})"
 
 
 @dataclass(frozen=True)
