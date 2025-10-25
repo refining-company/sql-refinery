@@ -35,7 +35,7 @@ interface SemanticColumn {
 interface ExpressionGroup {
   locations: Location[];
   columns: SemanticColumn[];
-  reliability: number;
+  frequency: number;
   canonical: string;
   sql: string;
 }
@@ -105,7 +105,7 @@ function deserializeVariations(data: any[]): ExpressionVariations[] {
           range: new vscode.Range(loc.range.start_line, loc.range.start_char, loc.range.end_line, loc.range.end_char),
         })),
         columns: other.group.columns,
-        reliability: other.group.reliability,
+        frequency: other.group.frequency,
         canonical: other.group.canonical,
         sql: other.group.sql,
       },
@@ -335,12 +335,12 @@ class VariationsExplorerFeature {
       // Text
       const locationCount = exprVar.group.locations.length;
       const similarityPercent = Math.round(exprVar.similarity * 100);
-      const reliability = exprVar.group.reliability;
+      const frequency = exprVar.group.frequency;
 
       lines.push(
         `-- Variation ${varIndex + 1}:` +
           ` ${similarityPercent}% similarity,` +
-          ` reliability ${reliability},` +
+          ` frequency ${frequency},` +
           ` ${locationCount} location${locationCount !== 1 ? 's' : ''}`,
       );
       const rangeLenses = new vscode.Range(lines.length, 0, lines.length, 0);

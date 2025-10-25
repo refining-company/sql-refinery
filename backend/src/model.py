@@ -19,8 +19,15 @@ class Column:
     table: str | None
     column: str | None
 
+    @property
+    def frequency(self) -> int:
+        return len(self._code)
+
     def __repr__(self) -> str:
-        return f"model.Column({self.dataset or '?'}.{self.table or '?'}.{self.column or '?'})"
+        return f"model.Column(frequency={self.frequency})"
+
+    def __str__(self) -> str:
+        return f"{self.dataset or '?'}.{self.table or '?'}.{self.column or '?'}"
 
     def __hash__(self) -> int:
         return hash((self.dataset, self.table, self.column))
@@ -31,12 +38,15 @@ class Expression:
     _code: list[src.code.Expression]
     locations: list[src.code.Location]
     columns: frozenset[Column]
-    reliability: int
+    frequency: int
     canonical: str
     sql: str
 
     def __repr__(self) -> str:
-        return f"model.Expression(reliability={self.reliability}, {self.canonical})"
+        return f"model.Expression(frequency={self.frequency})"
+
+    def __str__(self) -> str:
+        return self.canonical
 
 
 @dataclass(frozen=True)
@@ -124,14 +134,12 @@ def _group_expressions(tree: src.code.Tree, code_to_model_column: dict[src.code.
     for canonical, code_exprs in expr_dict.items():
         first_expr = code_exprs[0]
         model_cols = frozenset(code_to_model_column[code_col] for code_col in first_expr.columns)
-        reliability = len(code_exprs)
-        locations = [expr.location for expr in code_exprs]
         model_expressions.append(
             Expression(
                 _code=code_exprs,
-                locations=locations,
+                locations=[expr.location for expr in code_exprs],
                 columns=model_cols,
-                reliability=reliability,
+                frequency=len(code_exprs),
                 canonical=canonical,
                 sql=first_expr.sql,
             )

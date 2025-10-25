@@ -329,11 +329,12 @@
       "variations": [
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(model.Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(model.Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(model.Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
                     "table": "countries" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "editor.sql",
                     "range": {
@@ -341,7 +342,6 @@
                       "end_line": 10,
                       "start_char": 4,
                       "start_line": 5 } } ],
-                "reliability": 1,
                 "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
               "similarity": 0.78 } ],
           "this": {
@@ -377,7 +377,7 @@
             "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(model.Column(?.orders.product), Struct('Subscription Base', 'Subscription Premium')), model.Column(?.orders.value)), Caseelse_clause(0)))))",
+                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Subscription Base', 'Subscription Premium')), ?.orders.value), Caseelse_clause(0)))))",
                 "columns": [
                   { "column": "product",
                     "dataset": null,
@@ -385,6 +385,7 @@
                   { "column": "value",
                     "dataset": null,
                     "table": "orders" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "0-accounts.sql",
                     "range": {
@@ -392,9 +393,8 @@
                       "end_line": 37,
                       "start_char": 8,
                       "start_line": 37 } } ],
-                "reliability": 1,
                 "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" },
-              "similarity": 0.91 } ],
+              "similarity": 0.9 } ],
           "this": {
             "alias": "revenue_aux",
             "columns": [
@@ -428,7 +428,7 @@
             "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(model.Column(?.orders.product), Struct('Training', 'Consulting')), model.Column(?.orders.value)), Caseelse_clause(0)))))",
+                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Training', 'Consulting')), ?.orders.value), Caseelse_clause(0)))))",
                 "columns": [
                   { "column": "product",
                     "dataset": null,
@@ -436,6 +436,7 @@
                   { "column": "value",
                     "dataset": null,
                     "table": "orders" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "0-accounts.sql",
                     "range": {
@@ -443,9 +444,8 @@
                       "end_line": 38,
                       "start_char": 8,
                       "start_line": 38 } } ],
-                "reliability": 1,
                 "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" },
-              "similarity": 0.91 } ],
+              "similarity": 0.9 } ],
           "this": {
             "alias": "revenue_core",
             "columns": [
@@ -485,11 +485,12 @@
       "variations": [
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(model.Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(model.Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(model.Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
                     "table": "countries" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "editor.sql",
                     "range": {
@@ -497,7 +498,6 @@
                       "end_line": 10,
                       "start_char": 4,
                       "start_line": 5 } } ],
-                "reliability": 1,
                 "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
               "similarity": 0.78 } ],
           "this": {
@@ -533,11 +533,12 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(model.Column(?.countries.region), 'Americas'), 'AMER'), Casewhen_clause(In(model.Column(?.countries.region), Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(model.Column(?.countries.region), 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
                     "table": "countries" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "editor.sql",
                     "range": {
@@ -545,7 +546,6 @@
                       "end_line": 10,
                       "start_char": 4,
                       "start_line": 5 } } ],
-                "reliability": 1,
                 "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
               "similarity": 0.78 } ],
           "this": {
@@ -581,11 +581,12 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(=(model.Column(?.accounts.industry), 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
+                "canonical": "Expression(Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
                 "columns": [
                   { "column": "industry",
                     "dataset": null,
                     "table": "accounts" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "editor.sql",
                     "range": {
@@ -593,9 +594,8 @@
                       "end_line": 12,
                       "start_char": 4,
                       "start_line": 12 } } ],
-                "reliability": 1,
                 "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" },
-              "similarity": 0.95 } ],
+              "similarity": 0.94 } ],
           "this": {
             "alias": "industry_tech",
             "columns": [
@@ -625,11 +625,12 @@
       "variations": [
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(model.Column(?.countries.region), Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(model.Column(?.countries.region), Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))",
+                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(?.countries.region, Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
                     "table": "countries" } ],
+                "frequency": 3,
                 "locations": [
                   { "file": "0-accounts.sql",
                     "range": {
@@ -649,7 +650,6 @@
                       "end_line": 36,
                       "start_char": 4,
                       "start_line": 32 } } ],
-                "reliability": 3,
                 "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" },
               "similarity": 0.78 } ],
           "this": {
@@ -695,11 +695,12 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(=(model.Column(?.accounts.industry), 'Information Technology')), Argument('Tech'), Argument('Other')))",
+                "canonical": "Expression(Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('Tech'), Argument('Other')))",
                 "columns": [
                   { "column": "industry",
                     "dataset": null,
                     "table": "accounts" } ],
+                "frequency": 1,
                 "locations": [
                   { "file": "1-revenue.sql",
                     "range": {
@@ -707,9 +708,8 @@
                       "end_line": 38,
                       "start_char": 4,
                       "start_line": 38 } } ],
-                "reliability": 1,
                 "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" },
-              "similarity": 0.95 } ],
+              "similarity": 0.94 } ],
           "this": {
             "alias": "industry_it",
             "columns": [
