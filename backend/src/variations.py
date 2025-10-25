@@ -57,9 +57,7 @@ def build(semantics: model.Semantics, threshold: float = 0.7) -> dict[Path, list
 
 def get_similarity(v1: model.Expression, v2: model.Expression) -> float:
     """Get similarity between two expressions (0.0 = completely different, 1.0 = identical)"""
-    # TODO: Levenshtein should treat column names as atomic tokens instead of character sequences.
-    # Currently "ar.revenue" vs "accounts_revenue.revenue" gets high text similarity due to
-    # character-level comparison, even though they reference different columns syntactically.
+    # TODO: replace with MinHash after sql normalisation by tree-sitter combined with column resolution
     text_sim = Levenshtein.ratio(v1.canonical, v2.canonical)
     cols_sim = len(v1.columns & v2.columns) / len(v1.columns | v2.columns) if v1.columns | v2.columns else 1.0
     return text_sim * cols_sim
