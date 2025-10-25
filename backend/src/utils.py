@@ -6,8 +6,14 @@ from pathlib import Path
 
 
 def trunk_path(path: str | Path) -> str:
-    """Replace current working directory with '.' for relative display"""
-    return str(path).replace(str(Path.cwd()), ".")
+    """Return just the filename from the path"""
+    match path:
+        case Path():
+            return path.name
+        case str() if str(Path.cwd()) in path:
+            return path.split("/")[-1]
+        case _:
+            return path
 
 
 def uri_to_path(uri: str) -> Path:
@@ -46,7 +52,9 @@ def json_compact(string: str) -> str:
     # Collapse arrays of integers
     string = re.sub(r"\[\s*\d+\s*(?:,\s*\d+\s*)*\]", lambda m: re.sub(r"\s+", " ", m.group()), string)
     # Collapse arrays of strings
-    string = re.sub(r'\[\s*"[^"]*"\s*(?:,\s*"[^"]*"\s*)*\]', lambda m: re.sub(r"\s+", " ", m.group()), string)
+    string = re.sub(
+        r'\[\s*"[^"]{0,15}"\s*(?:,\s*"[^"]{0,15}"\s*){0,4}\]', lambda m: re.sub(r"\s+", " ", m.group()), string
+    )
 
     return string
 

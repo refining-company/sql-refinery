@@ -21,6 +21,9 @@ class Range:
     end_char: int
 
     def __repr__(self) -> str:
+        return "code.Range"
+
+    def __str__(self) -> str:
         return f"{self.start_line}:{self.start_char}-{self.end_line}:{self.end_char}"
 
 
@@ -30,6 +33,9 @@ class Location:
     range: Range
 
     def __repr__(self) -> str:
+        return "code.Location"
+
+    def __str__(self) -> str:
         return f"{src.utils.trunk_path(self.file)}:{self.range}"
 
     def __hash__(self) -> int:
@@ -46,10 +52,10 @@ class Column:
     location: Location
 
     def __repr__(self) -> str:
-        return f"code.Column({self.location})"
+        return f"code.Column({self.location!s})"
 
     def __str__(self) -> str:
-        return f"code.Column({self.dataset or "?"}.{self.table or "?"}.{self.column or "?"})"
+        return f"{self.dataset or "?"}.{self.table or "?"}.{self.column or "?"}"
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -65,10 +71,10 @@ class Expression:
     sql: str
 
     def __repr__(self) -> str:
-        return f"code.Expression({self.location})"
+        return f"code.Expression({self.location!s})"
 
     def __str__(self) -> str:
-        return f"code.Expression({self.sql})"
+        return f"{self.sql}"
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -84,10 +90,10 @@ class Table:
     location: Location
 
     def __repr__(self) -> str:
-        return f"code.Table({self.location})"
+        return f"code.Table({self.location!s})"
 
     def __str__(self) -> str:
-        return f"code.Table({self.dataset or "?"}.{self.table or "?"})"
+        return f"{self.dataset or "?"}.{self.table or "?"}"
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -102,10 +108,7 @@ class Query:
     location: Location
 
     def __repr__(self) -> str:
-        return f"code.Query({self.location})"
-
-    def __str__(self) -> str:
-        return f"code.Query({len(self.expressions)} expressions, sources=[{', '.join(str(s) for s in self.sources)}])"
+        return f"code.Query({self.location!s})"
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -117,7 +120,7 @@ class Tree:
     index: dict[type, list[Query | Expression | Column | Table]]
 
     def __repr__(self) -> str:
-        return f"code.Tree({", ".join(str(f).replace(str(Path.cwd()), ".") for f in self.files)})"
+        return f"code.Tree(files={len(self.files)})"
 
 
 def parse_range(node: src.sql.Node) -> Range:
