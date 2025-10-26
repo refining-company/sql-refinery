@@ -29,6 +29,9 @@ class Workspace:
     layer_model: src.model.Semantics | None
     layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
+    # Indexes (type-based lookups)
+    index_code: dict[type, list[src.code.Query | src.code.Expression | src.code.Column | src.code.Table]]
+
     # Maps (cross-layer relationships)
     map_code_col_to_model_col: dict[src.code.Column, src.model.Column]
     map_code_expr_to_model_expr: dict[src.code.Expression, src.model.Expression]
@@ -40,6 +43,7 @@ class Workspace:
         self.layer_code = None
         self.layer_model = None
         self.layer_variations = {}
+        self.index_code = {}
         self.map_code_col_to_model_col = {}
         self.map_code_expr_to_model_expr = {}
 

@@ -73,11 +73,11 @@ class Semantics:
     expressions: list[Expression]
 
 
-def _resolve_columns(tree: src.code.Tree) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
+def _resolve_columns(workspace: src.workspace.Workspace) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
     """Resolve column references using query-scoped alias lookup"""
     resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]] = {}
 
-    for query in tree.index[src.code.Query]:
+    for query in workspace.index_code[src.code.Query]:
         assert isinstance(query, src.code.Query)
         alias_to_table = {
             source.alias: source for source in query.sources if isinstance(source, src.code.Table) and source.alias
@@ -97,11 +97,11 @@ def _resolve_columns(tree: src.code.Tree) -> dict[src.code.Column, tuple[str | N
 
 
 def _group_columns(
-    tree: src.code.Tree, resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]]
+    workspace: src.workspace.Workspace, resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]]
 ) -> tuple[list[Column], dict[src.code.Column, Column]]:
     """Group code.Column by (dataset, table, column) → model.Column"""
     columns_dict: defaultdict[tuple[str | None, str | None, str | None], list[src.code.Column]] = defaultdict(list)
-    for code_col in tree.index[src.code.Column]:
+    for code_col in workspace.index_code[src.code.Column]:
         assert isinstance(code_col, src.code.Column)
         key = resolved[code_col]
         columns_dict[key].append(code_col)
@@ -137,10 +137,10 @@ def _resolve_expression(code_expr: src.code.Expression, code_to_model: dict[src.
     return f"{node_to_str(code_expr._node)}"
 
 
-def _group_tables(tree: src.code.Tree) -> list[Table]:
+def _group_tables(workspace: src.workspace.Workspace) -> list[Table]:
     """Group code.Table by (dataset, table) → model.Table"""
     tables_dict: defaultdict[tuple[str | None, str | None], list[src.code.Table]] = defaultdict(list)
-    for code_table in tree.index[src.code.Table]:
+    for code_table in workspace.index_code[src.code.Table]:
         assert isinstance(code_table, src.code.Table)
         key = (code_table.dataset, code_table.table)
         tables_dict[key].append(code_table)
@@ -148,10 +148,10 @@ def _group_tables(tree: src.code.Tree) -> list[Table]:
     return [Table(_code=code, dataset=d, table=t, frequency=len(code)) for (d, t), code in tables_dict.items()]
 
 
-def _group_expressions(tree: src.code.Tree, column_code_to_model: dict[src.code.Column, Column]) -> list[Expression]:
+def _group_expressions(workspace: src.workspace.Workspace, column_code_to_model: dict[src.code.Column, Column]) -> list[Expression]:
     """Group code.Expression by canonical representation → model.Expression"""
     expr_dict: defaultdict[str, list[src.code.Expression]] = defaultdict(list)
-    for code_expr in tree.index[src.code.Expression]:
+    for code_expr in workspace.index_code[src.code.Expression]:
         assert isinstance(code_expr, src.code.Expression)
         canonical = _resolve_expression(code_expr, column_code_to_model)
         expr_dict[canonical].append(code_expr)
@@ -177,12 +177,11 @@ def _group_expressions(tree: src.code.Tree, column_code_to_model: dict[src.code.
 def build(workspace: src.workspace.Workspace) -> Semantics:
     """Build semantic model: resolve columns → group columns/tables → group expressions"""
     assert workspace.layer_code is not None
-    tree = workspace.layer_code
 
-    columns_resolved = _resolve_columns(tree)
-    model_columns, code_to_model = _group_columns(tree, columns_resolved)
-    model_tables = _group_tables(tree)
-    model_expressions = _group_expressions(tree, code_to_model)
+    columns_resolved = _resolve_columns(workspace)
+    model_columns, code_to_model = _group_columns(workspace, columns_resolved)
+    model_tables = _group_tables(workspace)
+    model_expressions = _group_expressions(workspace, code_to_model)
     expr_code_to_model = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
 
     # Populate workspace maps

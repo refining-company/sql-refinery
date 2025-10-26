@@ -117,7 +117,6 @@ class Query:
 @dataclass(frozen=True)
 class Tree:
     files: dict[Path, list[Query]]
-    index: dict[type, list[Query | Expression | Column | Table]]
 
     def __repr__(self) -> str:
         return f"code.Tree(files={len(self.files)})"
@@ -210,4 +209,8 @@ def build(workspace: src.workspace.Workspace) -> Tree:
     assert workspace.layer_sql is not None
     files = {file: _parse_tree(parse_tree, file) for file, parse_tree in workspace.layer_sql.items()}
     index = _build_index(files)
-    return Tree(files=files, index=index)
+
+    # Populate workspace index
+    workspace.index_code = index
+
+    return Tree(files=files)
