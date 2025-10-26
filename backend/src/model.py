@@ -128,12 +128,8 @@ def _group_columns(ws: src.workspace.Workspace) -> list[Column]:
 
 def _resolve_expression(ws: src.workspace.Workspace, code_expr: src.code.Expression) -> str:
     """Compute resolved representation of expression using model columns"""
-    # Build mapping from sql nodes to resolved model columns
-    col_map = ws.map(src.code.Column, Column)
-    nodes_to_col: dict[src.sql.Node, Column] = {}
-    for code_col in code_expr.columns:
-        if code_col in col_map:
-            nodes_to_col[code_col._node] = col_map[code_col]
+    # Build mapping: sql.Node → model.Column (multi-hop via _node then _code)
+    nodes_to_col = ws.map(src.sql.Node, Column, by=("_node", "_code"))
 
     def node_to_str(node: src.sql.Node) -> str:
         if node in nodes_to_col:
@@ -161,7 +157,7 @@ def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
         expr_dict[canonical].append(code_expr)
 
     model_expressions = []
-    col_map = ws.map(src.code.Column, Column)
+    col_map = ws.map(src.code.Column, Column, by="_code")
     for canonical, code_exprs in expr_dict.items():
         first_expr = code_exprs[0]
         model_cols = frozenset(col_map[code_col] for code_col in first_expr.columns)

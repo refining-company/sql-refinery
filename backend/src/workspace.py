@@ -31,6 +31,7 @@ class Workspace:
 
     # Indexes (type-based lookups) - unified index for all layers
     index: dict[type, list]
+    _map_cache: dict[tuple, dict]
 
     def __init__(self):
         self.layer_folder = None
@@ -46,6 +47,18 @@ class Workspace:
         self.index = {}
         self._map_cache = {}
 
+    def _rebuild(self) -> None:
+        log.info(f"Rebuilding workspace with {len(self.layer_files)} files")
+
+        self._reset()
+
+        self.layer_sql = src.sql.build(self)
+        self.layer_code = src.code.build(self)
+        self.layer_model = src.model.build(self)
+        self.layer_variations = src.variations.build(self)
+
+        log.info(f"Computed variations for {[p.stem for p in self.layer_variations.keys()]}")
+
     def new(self, obj):
         """Index an object and return it"""
         obj_type = type(obj)
@@ -58,20 +71,41 @@ class Workspace:
 
         return obj
 
-    def map(self, fro: type, to: type) -> dict:
-        """Get or build lazy map from fro → to via _code field"""
-        key = (fro, to)
+    def map(self, fro: type, to: type, by: str | tuple[str, ...]) -> dict:
+        """Build lazy map from fro → to via field path
 
-        if key not in self._map_cache:
-            mapping = {}
-            for to_obj in self.index[to]:
-                if hasattr(to_obj, "_code"):
-                    for fro_obj in to_obj._code:
-                        if isinstance(fro_obj, fro):
-                            mapping[fro_obj] = to_obj
-            self._map_cache[key] = mapping
+        Examples:
+            ws.map(sql.Node, model.Column, by=("_node", "_code"))
+        """
+        by = (by,) if isinstance(by, str) else by
+        key = (fro, to, by)
 
-        return self._map_cache[key]
+        if key in self._map_cache:
+            return self._map_cache[key]
+
+        # Track (current_obj, original_to_obj) pairs during traversal
+        # Start with all 'to' objects paired with themselves
+        current_pairs = [(obj, obj) for obj in self.index[to]]
+
+        # Traverse each field backwards (from 'to' toward 'fro')
+        for field in reversed(by):
+            next_pairs = []
+            for obj, original_to in current_pairs:
+                if hasattr(obj, field):
+                    val = getattr(obj, field)
+                    for item in val if isinstance(val, list | tuple) else [val]:
+                        next_pairs.append((item, original_to))
+            current_pairs = next_pairs
+
+        # Build final map
+        result: dict = {}
+        for obj, original_to in current_pairs:
+            if obj in result:
+                raise NotImplementedError(f"One-to-many mapping: {obj} → {result[obj]} and {original_to}")
+            result[obj] = original_to
+
+        self._map_cache[key] = result
+        return result
 
     def set_folder(self, folder: Path | None) -> None:
         self.layer_folder = folder
@@ -88,18 +122,6 @@ class Workspace:
         if self.layer_files.get(path) != content:
             self.layer_files[path] = content
             self._rebuild()
-
-    def _rebuild(self) -> None:
-        log.info(f"Rebuilding workspace with {len(self.layer_files)} files")
-
-        self._reset()
-
-        self.layer_sql = src.sql.build(self)
-        self.layer_code = src.code.build(self)
-        self.layer_model = src.model.build(self)
-        self.layer_variations = src.variations.build(self)
-
-        log.info(f"Computed variations for {[p.stem for p in self.layer_variations.keys()]}")
 
     def get_output(self, path: Path) -> dict:
         return {"variations": self.layer_variations.get(path, [])}

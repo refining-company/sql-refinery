@@ -134,7 +134,9 @@ def _parse_tables(ws: src.workspace.Workspace, query_node: src.sql.Node, file: P
     tables = []
     for node in src.sql.find_desc(query_node, "@table", local=True):
         loc = Location(file=file, range=parse_range(node))
-        tables.append(ws.new(Table(_node=node, location=loc, **src.sql.decode_table(node), alias=src.sql.find_alias(node))))
+        tables.append(
+            ws.new(Table(_node=node, location=loc, **src.sql.decode_table(node), alias=src.sql.find_alias(node)))
+        )
     return tables
 
 
@@ -152,13 +154,15 @@ def _parse_expressions(ws: src.workspace.Workspace, query_node: src.sql.Node, fi
     for expr_node in src.sql.find_desc(query_node, "@expression", local=True):
         expr_cols = _parse_columns(ws, expr_node.parent, file)  # type: ignore
         expressions.append(
-            ws.new(Expression(
-                _node=expr_node,
-                columns=expr_cols,
-                alias=src.sql.find_alias(expr_node),
-                location=Location(file=file, range=parse_range(expr_node)),
-                sql=expr_node.text.decode("utf-8") if expr_node.text else "",
-            ))
+            ws.new(
+                Expression(
+                    _node=expr_node,
+                    columns=expr_cols,
+                    alias=src.sql.find_alias(expr_node),
+                    location=Location(file=file, range=parse_range(expr_node)),
+                    sql=expr_node.text.decode("utf-8") if expr_node.text else "",
+                )
+            )
         )
     return expressions
 
@@ -168,12 +172,14 @@ def _parse_query(ws: src.workspace.Workspace, query_node: src.sql.Node, file: Pa
     expressions = _parse_expressions(ws, query_node, file)
     subquery_nodes = src.sql.find_desc(query_node, "@query", local=True)
     subqueries = [_parse_query(ws, sub_node, file) for sub_node in subquery_nodes]
-    return ws.new(Query(
-        _node=query_node,
-        sources=tables + subqueries,
-        expressions=expressions,
-        location=Location(file=file, range=parse_range(query_node)),
-    ))
+    return ws.new(
+        Query(
+            _node=query_node,
+            sources=tables + subqueries,
+            expressions=expressions,
+            location=Location(file=file, range=parse_range(query_node)),
+        )
+    )
 
 
 def _parse_tree(ws: src.workspace.Workspace, parse_tree: src.sql.Tree, file: Path) -> list[Query]:
