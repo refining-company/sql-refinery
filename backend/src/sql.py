@@ -189,7 +189,7 @@ def to_struc(node: tree_sitter.Node) -> dict | list:
             node.grammar_name,
             node.start_point.row,
             node.start_point.column,
-            re.sub(r"\s+", " ", node_text)[:20],  # type: ignore[arg-type]
+            re.sub(r"\s+", " ", node_text)[:20],
         )
 
         return {node_repr: children}
@@ -213,6 +213,4 @@ def build(ws: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:
                     _register(child)
         return obj
 
-    trees = {path: _register(parser.parse(content.encode())) for path, content in ws.layer_files.items()}
-
-    return trees
+    return {path: _register(parser.parse(content.encode())) for path, content in ws.layer_files.items()}
