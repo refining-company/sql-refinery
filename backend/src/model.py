@@ -73,38 +73,37 @@ class Semantics:
     expressions: list[Expression]
 
 
-def _resolve_columns(workspace: src.workspace.Workspace) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
-    """Resolve column references using query-scoped alias lookup"""
+def _resolve_columns(query: src.code.Query) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
+    """Resolve all column references in a query using query-scoped alias lookup"""
+    # Build alias lookup once for the query
+    alias_to_table = {
+        source.alias: source for source in query.sources if isinstance(source, src.code.Table) and source.alias
+    }
+
     resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]] = {}
+    for expr in query.expressions:
+        for code_col in expr.columns:
+            col_dataset, col_table, col_column = code_col.dataset, code_col.table, code_col.column
+            if col_table and col_table in alias_to_table:
+                resolved_table = alias_to_table[col_table]
+                col_table = resolved_table.table
+                col_dataset = resolved_table.dataset or col_dataset
 
-    for query in workspace.index_code[src.code.Query]:
-        assert isinstance(query, src.code.Query)
-        alias_to_table = {
-            source.alias: source for source in query.sources if isinstance(source, src.code.Table) and source.alias
-        }
-
-        for expr in query.expressions:
-            for code_col in expr.columns:
-                col_dataset, col_table, col_column = code_col.dataset, code_col.table, code_col.column
-                if col_table and col_table in alias_to_table:
-                    resolved_table = alias_to_table[col_table]
-                    col_table = resolved_table.table
-                    col_dataset = resolved_table.dataset or col_dataset
-
-                resolved[code_col] = (col_dataset, col_table, col_column)
+            resolved[code_col] = (col_dataset, col_table, col_column)
 
     return resolved
 
 
-def _group_columns(
-    workspace: src.workspace.Workspace, resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]]
-) -> list[Column]:
+def _group_columns(workspace: src.workspace.Workspace) -> list[Column]:
     """Group code.Column by (dataset, table, column) → model.Column"""
     columns_dict: defaultdict[tuple[str | None, str | None, str | None], list[src.code.Column]] = defaultdict(list)
-    for code_col in workspace.index_code[src.code.Column]:
-        assert isinstance(code_col, src.code.Column)
-        key = resolved[code_col]
-        columns_dict[key].append(code_col)
+
+    # Resolve columns per query, then group
+    for query in workspace.index_code[src.code.Query]:
+        assert isinstance(query, src.code.Query)
+        resolved = _resolve_columns(query)
+        for code_col, key in resolved.items():
+            columns_dict[key].append(code_col)
 
     model_columns = [Column(_code=code, dataset=d, table=t, column=c) for (d, t, c), code in columns_dict.items()]
 
@@ -183,8 +182,7 @@ def build(workspace: src.workspace.Workspace) -> Semantics:
     """Build semantic model: resolve columns → group columns/tables → group expressions"""
     assert workspace.layer_code is not None
 
-    columns_resolved = _resolve_columns(workspace)
-    model_columns = _group_columns(workspace, columns_resolved)  # Populates workspace.map_code_col_to_model_col
+    model_columns = _group_columns(workspace)  # Populates workspace.map_code_col_to_model_col
     model_tables = _group_tables(workspace)
     model_expressions = _group_expressions(workspace)  # Populates workspace.map_code_expr_to_model_expr
 
