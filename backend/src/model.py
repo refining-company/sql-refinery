@@ -108,7 +108,7 @@ def _group_columns(ws: src.workspace.Workspace) -> list[Column]:
         for code_col, key in resolved.items():
             columns_dict[key].append(code_col)
 
-    model_columns = [Column(_code=code, dataset=d, table=t, column=c) for (d, t, c), code in columns_dict.items()]
+    model_columns = [ws.new(Column(_code=code, dataset=d, table=t, column=c)) for (d, t, c), code in columns_dict.items()]
 
     # Populate workspace map
     ws.map_code_col_to_model_col = {code_col: model_col for model_col in model_columns for code_col in model_col._code}
@@ -149,7 +149,7 @@ def _group_tables(ws: src.workspace.Workspace) -> list[Table]:
         key = (code_table.dataset, code_table.table)
         tables_dict[key].append(code_table)
 
-    return [Table(_code=code, dataset=d, table=t, frequency=len(code)) for (d, t), code in tables_dict.items()]
+    return [ws.new(Table(_code=code, dataset=d, table=t, frequency=len(code))) for (d, t), code in tables_dict.items()]
 
 
 def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
@@ -165,14 +165,14 @@ def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
         first_expr = code_exprs[0]
         model_cols = frozenset(ws.map_code_col_to_model_col[code_col] for code_col in first_expr.columns)
         model_expressions.append(
-            Expression(
+            ws.new(Expression(
                 _code=code_exprs,
                 locations=[expr.location for expr in code_exprs],
                 columns=model_cols,
                 frequency=len(code_exprs),
                 canonical=canonical,
                 sql=first_expr.sql,
-            )
+            ))
         )
 
     # Populate workspace map
