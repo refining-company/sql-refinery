@@ -206,7 +206,8 @@ def _build_index(files: dict[Path, list[Query]]) -> dict[type, list[Query | Expr
     return dict(index)
 
 
-def build(parse_trees: dict[Path, src.sql.Tree]) -> Tree:
-    files = {file: _parse_tree(parse_tree, file) for file, parse_tree in parse_trees.items()}
+def build(workspace: src.workspace.Workspace) -> Tree:
+    assert workspace.layer_sql is not None
+    files = {file: _parse_tree(parse_tree, file) for file, parse_tree in workspace.layer_sql.items()}
     index = _build_index(files)
     return Tree(files=files, index=index)

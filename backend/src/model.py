@@ -175,8 +175,11 @@ def _group_expressions(tree: src.code.Tree, column_code_to_model: dict[src.code.
     return model_expressions
 
 
-def build(tree: src.code.Tree) -> Semantics:
+def build(workspace: src.workspace.Workspace) -> Semantics:
     """Build semantic model: resolve columns → group columns/tables → group expressions"""
+    assert workspace.layer_code is not None
+    tree = workspace.layer_code
+
     columns_resolved = _resolve_columns(tree)
     model_columns, code_to_model = _group_columns(tree, columns_resolved)
     model_tables = _group_tables(tree)

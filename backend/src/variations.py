@@ -12,14 +12,14 @@ from pathlib import Path
 
 import Levenshtein
 
-from src import code, model
+import src
 
 
 @dataclass(frozen=True)
 class ExpressionVariation:
     """A variation with its similarity score"""
 
-    group: model.Expression
+    group: src.model.Expression
     similarity: float
 
     def __repr__(self) -> str:
@@ -30,15 +30,18 @@ class ExpressionVariation:
 class ExpressionVariations:
     """All variations for a specific expression"""
 
-    this: code.Expression
+    this: src.code.Expression
     others: list[ExpressionVariation]
 
     def __repr__(self) -> str:
         return f"ExpressionVariations({self.this.location}, variations={len(self.others)})"
 
 
-def build(semantics: model.Semantics, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
+def build(workspace: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
     """Compute variations using semantic model, organized by file with code expressions"""
+    assert workspace.layer_model is not None
+    semantics = workspace.layer_model
+
     result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
 
     for code_expr, semantic_expr in semantics.expr_code_to_model.items():
@@ -55,7 +58,7 @@ def build(semantics: model.Semantics, threshold: float = 0.7) -> dict[Path, list
     return dict(result)
 
 
-def get_similarity(v1: model.Expression, v2: model.Expression) -> float:
+def get_similarity(v1: src.model.Expression, v2: src.model.Expression) -> float:
     """Get similarity between two expressions (0.0 = completely different, 1.0 = identical)"""
     # TODO: replace with MinHash after sql normalisation by tree-sitter combined with column resolution
     text_sim = Levenshtein.ratio(v1.canonical, v2.canonical)

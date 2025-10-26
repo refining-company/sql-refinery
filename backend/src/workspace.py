@@ -56,10 +56,10 @@ class Workspace:
     def _rebuild(self) -> None:
         log.info(f"Rebuilding workspace with {len(self.layer_files)} files")
 
-        self.layer_sql = src.sql.build(self.layer_files)
-        self.layer_code = src.code.build(self.layer_sql)
-        self.layer_model = src.model.build(self.layer_code)
-        self.layer_variations = src.variations.build(self.layer_model)
+        self.layer_sql = src.sql.build(self)
+        self.layer_code = src.code.build(self)
+        self.layer_model = src.model.build(self)
+        self.layer_variations = src.variations.build(self)
 
         log.info(f"Computed variations for {[p.stem for p in self.layer_variations.keys()]}")
 

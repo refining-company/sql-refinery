@@ -15,12 +15,16 @@ This module provides:
 - `parse()`, `find_desc()`, and related utilities to normalize dialect differences
 """
 
+from __future__ import annotations
+
 import re
 from pathlib import Path
 
 import tree_sitter
 import tree_sitter_sql_bigquery
 from tree_sitter import Node, Tree  # noqa: F401
+
+import src
 
 _language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
 # BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql
@@ -193,10 +197,10 @@ def to_struc(node: tree_sitter.Node) -> dict | list:
         return children
 
 
-def build(files: dict[Path, str]) -> dict[Path, tree_sitter.Tree]:
+def build(workspace: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:
     """Build tree_sitter.Tree for each SQL file"""
     parser = tree_sitter.Parser()
     parser.language = _language
-    result = {path: parser.parse(content.encode()) for path, content in files.items()}
+    result = {path: parser.parse(content.encode()) for path, content in workspace.layer_files.items()}
 
     return result
