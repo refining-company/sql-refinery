@@ -43,7 +43,7 @@ def build(ws: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, lis
 
     result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
 
-    for code_expr, semantic_expr in ws.map_code_expr_to_model_expr.items():
+    for code_expr, semantic_expr in ws.map(src.code.Expression, src.model.Expression).items():
         variations = [
             ws.new(ExpressionVariation(other_semantic, sim))
             for other_semantic in ws.layer_model.expressions

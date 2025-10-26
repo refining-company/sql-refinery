@@ -110,19 +110,17 @@ def _group_columns(ws: src.workspace.Workspace) -> list[Column]:
 
     model_columns = [ws.new(Column(_code=code, dataset=d, table=t, column=c)) for (d, t, c), code in columns_dict.items()]
 
-    # Populate workspace map
-    ws.map_code_col_to_model_col = {code_col: model_col for model_col in model_columns for code_col in model_col._code}
-
     return model_columns
 
 
 def _resolve_expression(ws: src.workspace.Workspace, code_expr: src.code.Expression) -> str:
     """Compute resolved representation of expression using model columns"""
     # Build mapping from sql nodes to resolved model columns
+    col_map = ws.map(src.code.Column, Column)
     nodes_to_col: dict[src.sql.Node, Column] = {}
     for code_col in code_expr.columns:
-        if code_col in ws.map_code_col_to_model_col:
-            nodes_to_col[code_col._node] = ws.map_code_col_to_model_col[code_col]
+        if code_col in col_map:
+            nodes_to_col[code_col._node] = col_map[code_col]
 
     def node_to_str(node: src.sql.Node) -> str:
         if node in nodes_to_col:
@@ -161,9 +159,10 @@ def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
         expr_dict[canonical].append(code_expr)
 
     model_expressions = []
+    col_map = ws.map(src.code.Column, Column)
     for canonical, code_exprs in expr_dict.items():
         first_expr = code_exprs[0]
-        model_cols = frozenset(ws.map_code_col_to_model_col[code_col] for code_col in first_expr.columns)
+        model_cols = frozenset(col_map[code_col] for code_col in first_expr.columns)
         model_expressions.append(
             ws.new(Expression(
                 _code=code_exprs,
@@ -175,9 +174,6 @@ def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
             ))
         )
 
-    # Populate workspace map
-    ws.map_code_expr_to_model_expr = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
-
     return model_expressions
 
 
@@ -185,9 +181,9 @@ def build(ws: src.workspace.Workspace) -> Semantics:
     """Build semantic model: resolve columns → group columns/tables → group expressions"""
     assert ws.layer_code is not None
 
-    model_columns = _group_columns(ws)  # Populates ws.map_code_col_to_model_col
+    model_columns = _group_columns(ws)
     model_tables = _group_tables(ws)
-    model_expressions = _group_expressions(ws)  # Populates ws.map_code_expr_to_model_expr
+    model_expressions = _group_expressions(ws)
 
     return Semantics(
         columns=model_columns,

@@ -32,10 +32,6 @@ class Workspace:
     # Indexes (type-based lookups) - unified index for all layers
     index: dict[type, list]
 
-    # Maps (cross-layer relationships)
-    map_code_col_to_model_col: dict[src.code.Column, src.model.Column]
-    map_code_expr_to_model_expr: dict[src.code.Expression, src.model.Expression]
-
     def __init__(self):
         self.layer_folder = None
         self.layer_files = {}
@@ -48,8 +44,7 @@ class Workspace:
         self.layer_model = None
         self.layer_variations = {}
         self.index = {}
-        self.map_code_col_to_model_col = {}
-        self.map_code_expr_to_model_expr = {}
+        self._map_cache = {}
 
     def new(self, obj):
         """Index an object and return it"""
@@ -62,6 +57,21 @@ class Workspace:
             self.index[obj_type].append(obj)
 
         return obj
+
+    def map(self, fro: type, to: type) -> dict:
+        """Get or build lazy map from fro → to via _code field"""
+        key = (fro, to)
+
+        if key not in self._map_cache:
+            mapping = {}
+            for to_obj in self.index[to]:
+                if hasattr(to_obj, "_code"):
+                    for fro_obj in to_obj._code:
+                        if isinstance(fro_obj, fro):
+                            mapping[fro_obj] = to_obj
+            self._map_cache[key] = mapping
+
+        return self._map_cache[key]
 
     def set_folder(self, folder: Path | None) -> None:
         self.layer_folder = folder
