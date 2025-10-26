@@ -12,6 +12,8 @@ This module provides:
 - Caches all computed results in `output` for server to send
 """
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import src
@@ -20,41 +22,46 @@ log = src.logger.get(__name__)
 
 
 class Workspace:
-    folder: Path | None
-    files: dict[Path, str]
-    output: dict[str, dict]
+    layer_folder: Path | None
+    layer_files: dict[Path, str]
+    layer_sql: dict[Path, src.sql.Tree]
+    layer_code: src.code.Tree | None
+    layer_model: src.model.Semantics | None
+    layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
     def __init__(self):
-        self.folder = None
-        self.files = {}
-        self.output = {"variations": {}}
+        self.layer_folder = None
+        self.layer_files = {}
+        self.layer_sql = {}
+        self.layer_code = None
+        self.layer_model = None
+        self.layer_variations = {}
 
     def set_folder(self, folder: Path | None) -> None:
-        self.folder = folder
-        self.files = {}
+        self.layer_folder = folder
+        self.layer_files = {}
 
-        if self.folder:
-            log.info(f"Workspace folder: {self.folder}")
-            for file_path in self.folder.glob("**/*.sql"):
-                self.files[file_path] = file_path.read_text()
+        if self.layer_folder:
+            log.info(f"Workspace folder: {self.layer_folder}")
+            for file_path in self.layer_folder.glob("**/*.sql"):
+                self.layer_files[file_path] = file_path.read_text()
 
         self._rebuild()
 
     def update_file(self, path: Path, content: str) -> None:
-        if self.files.get(path) != content:
-            self.files[path] = content
+        if self.layer_files.get(path) != content:
+            self.layer_files[path] = content
             self._rebuild()
 
     def _rebuild(self) -> None:
-        log.info(f"Rebuilding workspace with {len(self.files)} files")
+        log.info(f"Rebuilding workspace with {len(self.layer_files)} files")
 
-        # Build pipeline: files -> sql.Tree -> code.Tree -> model.Semantics -> variations
-        parse_trees = src.sql.build(self.files)
-        tree = src.code.build(parse_trees)
-        semantics = src.model.build(tree)
-        self.output["variations"] = src.variations.build(semantics)
+        self.layer_sql = src.sql.build(self.layer_files)
+        self.layer_code = src.code.build(self.layer_sql)
+        self.layer_model = src.model.build(self.layer_code)
+        self.layer_variations = src.variations.build(self.layer_model)
 
-        log.info(f"Computed variations for {[p.stem for p in self.output['variations'].keys()]}")
+        log.info(f"Computed variations for {[p.stem for p in self.layer_variations.keys()]}")
 
     def get_output(self, path: Path) -> dict:
-        return {"variations": self.output["variations"].get(path, [])}
+        return {"variations": self.layer_variations.get(path, [])}
