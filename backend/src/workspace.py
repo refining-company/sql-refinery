@@ -29,8 +29,8 @@ class Workspace:
     layer_model: src.model.Semantics | None
     layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
-    # Indexes (type-based lookups)
-    index_code: dict[type, list[src.code.Query | src.code.Expression | src.code.Column | src.code.Table]]
+    # Indexes (type-based lookups) - unified index for all layers
+    index: dict[type, list]
 
     # Maps (cross-layer relationships)
     map_code_col_to_model_col: dict[src.code.Column, src.model.Column]
@@ -39,13 +39,29 @@ class Workspace:
     def __init__(self):
         self.layer_folder = None
         self.layer_files = {}
+        self._reset()
+
+    def _reset(self):
+        """Reset all computed layers, indexes, and maps"""
         self.layer_sql = {}
         self.layer_code = None
         self.layer_model = None
         self.layer_variations = {}
-        self.index_code = {}
+        self.index = {}
         self.map_code_col_to_model_col = {}
         self.map_code_expr_to_model_expr = {}
+
+    def new(self, obj):
+        """Index an object and return it"""
+        obj_type = type(obj)
+        if obj_type not in self.index:
+            self.index[obj_type] = []
+
+        # Only add if not already in index (prevent duplicates)
+        if obj not in self.index[obj_type]:
+            self.index[obj_type].append(obj)
+
+        return obj
 
     def set_folder(self, folder: Path | None) -> None:
         self.layer_folder = folder
@@ -65,6 +81,8 @@ class Workspace:
 
     def _rebuild(self) -> None:
         log.info(f"Rebuilding workspace with {len(self.layer_files)} files")
+
+        self._reset()
 
         self.layer_sql = src.sql.build(self)
         self.layer_code = src.code.build(self)

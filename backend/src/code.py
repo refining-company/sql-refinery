@@ -6,7 +6,6 @@ Parse SQL files into syntactic tree (1:1 mapping with SQL AST).
 
 from __future__ import annotations
 
-from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -131,86 +130,58 @@ def parse_range(node: src.sql.Node) -> Range:
     )
 
 
-def _parse_tables(query_node: src.sql.Node, file: Path) -> list[Table]:
+def _parse_tables(ws: src.workspace.Workspace, query_node: src.sql.Node, file: Path) -> list[Table]:
     tables = []
     for node in src.sql.find_desc(query_node, "@table", local=True):
         loc = Location(file=file, range=parse_range(node))
-        tables.append(Table(_node=node, location=loc, **src.sql.decode_table(node), alias=src.sql.find_alias(node)))
+        tables.append(ws.new(Table(_node=node, location=loc, **src.sql.decode_table(node), alias=src.sql.find_alias(node))))
     return tables
 
 
-def _parse_columns(query_node: src.sql.Node, file: Path) -> list[Column]:
+def _parse_columns(ws: src.workspace.Workspace, query_node: src.sql.Node, file: Path) -> list[Column]:
     columns = []
     for node in src.sql.find_desc(query_node, "@column", local=True):
         col_dict = src.sql.decode_column(node)
         location = Location(file=file, range=parse_range(node))
-        columns.append(Column(_node=node, location=location, **col_dict))
+        columns.append(ws.new(Column(_node=node, location=location, **col_dict)))
     return columns
 
 
-def _parse_expressions(query_node: src.sql.Node, file: Path) -> list[Expression]:
+def _parse_expressions(ws: src.workspace.Workspace, query_node: src.sql.Node, file: Path) -> list[Expression]:
     expressions = []
     for expr_node in src.sql.find_desc(query_node, "@expression", local=True):
-        expr_cols = _parse_columns(expr_node.parent, file)  # type: ignore
+        expr_cols = _parse_columns(ws, expr_node.parent, file)  # type: ignore
         expressions.append(
-            Expression(
+            ws.new(Expression(
                 _node=expr_node,
                 columns=expr_cols,
                 alias=src.sql.find_alias(expr_node),
                 location=Location(file=file, range=parse_range(expr_node)),
                 sql=expr_node.text.decode("utf-8") if expr_node.text else "",
-            )
+            ))
         )
     return expressions
 
 
-def _parse_query(query_node: src.sql.Node, file: Path) -> Query:
-    tables = _parse_tables(query_node, file)
-    expressions = _parse_expressions(query_node, file)
+def _parse_query(ws: src.workspace.Workspace, query_node: src.sql.Node, file: Path) -> Query:
+    tables = _parse_tables(ws, query_node, file)
+    expressions = _parse_expressions(ws, query_node, file)
     subquery_nodes = src.sql.find_desc(query_node, "@query", local=True)
-    subqueries = [_parse_query(sub_node, file) for sub_node in subquery_nodes]
-    return Query(
+    subqueries = [_parse_query(ws, sub_node, file) for sub_node in subquery_nodes]
+    return ws.new(Query(
         _node=query_node,
         sources=tables + subqueries,
         expressions=expressions,
         location=Location(file=file, range=parse_range(query_node)),
-    )
+    ))
 
 
-def _parse_tree(parse_tree: src.sql.Tree, file: Path) -> list[Query]:
+def _parse_tree(ws: src.workspace.Workspace, parse_tree: src.sql.Tree, file: Path) -> list[Query]:
     root_query_nodes = src.sql.find_desc(parse_tree.root_node, "@query", local=True)
-    return [_parse_query(node, file) for node in root_query_nodes]
+    return [_parse_query(ws, node, file) for node in root_query_nodes]
 
 
-def _build_index(files: dict[Path, list[Query]]) -> dict[type, list[Query | Expression | Column | Table]]:
-    index: defaultdict[type, list[Query | Expression | Column | Table]] = defaultdict(list)
-
-    def traverse(query: Query):
-        index[Query].append(query)
-        for expr in query.expressions:
-            index[Expression].append(expr)
-            for col in expr.columns:
-                if col not in index[Column]:
-                    index[Column].append(col)
-        for source in query.sources:
-            if isinstance(source, Table):
-                index[Table].append(source)
-            elif isinstance(source, Query):
-                traverse(source)
-
-    for queries in files.values():
-        for query in queries:
-            traverse(query)
-
-    return dict(index)
-
-
-def build(workspace: src.workspace.Workspace) -> Tree:
-    assert workspace.layer_sql is not None
-    files = {file: _parse_tree(parse_tree, file) for file, parse_tree in workspace.layer_sql.items()}
-    index = _build_index(files)
-
-    # Populate workspace index
-    workspace.index_code = index
-
+def build(ws: src.workspace.Workspace) -> Tree:
+    assert ws.layer_sql is not None
+    files = {file: _parse_tree(ws, parse_tree, file) for file, parse_tree in ws.layer_sql.items()}
     return Tree(files=files)
