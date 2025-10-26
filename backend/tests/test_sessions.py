@@ -102,7 +102,7 @@ def patch_pipeline():
     )
     src.model.build = capture(
         src.model.build,
-        partial(simplify, terminal=(src.model.Column, src.model.Expression)),
+        partial(simplify, terminal=(src.model.Table, src.model.Column, src.model.Expression)),
     )
     src.variations.build = capture(
         src.variations.build,
