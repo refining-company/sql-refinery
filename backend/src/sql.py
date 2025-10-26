@@ -197,10 +197,22 @@ def to_struc(node: tree_sitter.Node) -> dict | list:
         return children
 
 
-def build(workspace: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:
+def build(ws: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:
     """Build tree_sitter.Tree for each SQL file"""
     parser = tree_sitter.Parser()
     parser.language = _language
-    result = {path: parser.parse(content.encode()) for path, content in workspace.layer_files.items()}
 
-    return result
+    def _register(obj):
+        """Recursively register tree-sitter Tree and Node objects"""
+        ws.new(obj)
+        match obj:
+            case tree_sitter.Tree():
+                _register(obj.root_node)
+            case tree_sitter.Node():
+                for child in obj.children:
+                    _register(child)
+        return obj
+
+    trees = {path: _register(parser.parse(content.encode())) for path, content in ws.layer_files.items()}
+
+    return trees
