@@ -173,6 +173,9 @@ def _group_expressions(workspace: src.workspace.Workspace) -> list[Expression]:
             )
         )
 
+    # Populate workspace map
+    workspace.map_code_expr_to_model_expr = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
+
     return model_expressions
 
 
@@ -183,10 +186,7 @@ def build(workspace: src.workspace.Workspace) -> Semantics:
     columns_resolved = _resolve_columns(workspace)
     model_columns = _group_columns(workspace, columns_resolved)  # Populates workspace.map_code_col_to_model_col
     model_tables = _group_tables(workspace)
-    model_expressions = _group_expressions(workspace)  # Uses workspace.map_code_col_to_model_col
-
-    # Populate workspace map for expressions
-    workspace.map_code_expr_to_model_expr = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
+    model_expressions = _group_expressions(workspace)  # Populates workspace.map_code_expr_to_model_expr
 
     return Semantics(
         columns=model_columns,
