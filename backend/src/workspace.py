@@ -1,16 +1,4 @@
-"""
-Pipeline — Workspace & Logic Analysis
-
-Architecture:
-- Pipeline: SQL parsing, Code AST abstraction, Workspace & Logic Analysis (this module)
-- Server: LSP server (server.py) - thin I/O wrapper
-- Frontend: VS Code extension (frontend-vscode)
-
-This module provides:
-- `Workspace` singleton as process manager and data hub
-- Rebuilds analysis from scratch on every file operation
-- Caches all computed results in `output` for server to send
-"""
+"""Pipeline orchestration and caching"""
 
 from __future__ import annotations
 
@@ -22,16 +10,21 @@ log = src.logger.get(__name__)
 
 
 class Workspace:
+    """Pipeline orchestrator managing files, layers, indexes, and maps"""
+
     layer_folder: Path | None
     layer_files: dict[Path, str]
     layer_sql: dict[Path, src.sql.Tree]
-    layer_code: src.code.Tree | None
-    layer_model: src.model.Semantics | None
+    layer_code: src.code.Code | None
+    layer_model: src.model.Model | None
     layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
-    # Indexes (type-based lookups) - unified index for all layers
     _index: dict[type, list]
     _map_cache: dict[tuple, dict]
+
+    # ============================================================================
+    # Pipeline Management
+    # ============================================================================
 
     def __init__(self):
         self.layer_folder = None
@@ -39,7 +32,6 @@ class Workspace:
         self._reset()
 
     def _reset(self):
-        """Reset all computed layers, indexes, and maps"""
         self.layer_sql = {}
         self.layer_code = None
         self.layer_model = None
@@ -59,26 +51,34 @@ class Workspace:
 
         log.info(f"Computed variations for {[p.stem for p in self.layer_variations.keys()]}")
 
+    # ============================================================================
+    # Index & Mapping
+    # ============================================================================
+
     def new[T](self, obj: T) -> T:
-        """Index an object and return it"""
+        """Register object in type index and return it"""
         obj_type = type(obj)
         if obj_type not in self._index:
             self._index[obj_type] = []
 
-        # Only add if not already in index (prevent duplicates)
         if obj not in self._index[obj_type]:
             self._index[obj_type].append(obj)
 
         return obj
 
     def get[T](self, type_: type[T]) -> list[T]:
-        """Get typed list of objects for a given type"""
+        """Get all indexed objects of given type"""
         return self._index[type_]
 
     def map[Fro, To](self, fro: type[Fro], to: type[To], by: str | tuple[str, ...]) -> dict[Fro, To]:
-        """Build lazy map from fro → to via field path
+        """Build lazy map from fro → to via field path (cached)
 
-        Examples:
+        Args:
+            fro: Source type
+            to: Target type
+            by: Field name or tuple of field names for multi-hop traversal
+
+        Example:
             ws.map(sql.Node, model.Column, by=("_node", "_code"))
         """
         by = (by,) if isinstance(by, str) else by
@@ -87,11 +87,8 @@ class Workspace:
         if key in self._map_cache:
             return self._map_cache[key]
 
-        # Track (current_obj, original_to_obj) pairs during traversal
-        # Start with all 'to' objects paired with themselves
         current_pairs = [(obj, obj) for obj in self.get(to)]
 
-        # Traverse each field backwards (from 'to' toward 'fro')
         for field in reversed(by):
             next_pairs = []
             for obj, original_to in current_pairs:
@@ -101,7 +98,6 @@ class Workspace:
                         next_pairs.append((item, original_to))
             current_pairs = next_pairs
 
-        # Build final map
         result: dict = {}
         for obj, original_to in current_pairs:
             if obj in result:
@@ -110,6 +106,10 @@ class Workspace:
 
         self._map_cache[key] = result
         return result
+
+    # ============================================================================
+    # External APIs
+    # ============================================================================
 
     def set_folder(self, folder: Path | None) -> None:
         self.layer_folder = folder

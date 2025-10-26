@@ -1,18 +1,4 @@
-"""
-Server — LSP Communication Layer
-
-Architecture:
-- Pipeline: SQL parsing, Code AST abstraction, Workspace & logic analysis
-- Server: LSP server (this module) - thin I/O wrapper
-- Frontend: VS Code extension (frontend-vscode) - owns all UI logic
-
-This module provides:
-- Workspace lifecycle management (single instance per server)
-- Collect all files (workspace folder + open documents)
-- Update workspace on file operations
-- Send computed results to frontend via custom notifications (sql-refinery/{key})
-- Serialization of Python dataclasses to JSON
-"""
+"""LSP server - thin I/O wrapper"""
 
 import argparse
 from pathlib import Path
@@ -30,6 +16,11 @@ workspace = src.workspace.Workspace()
 lspserver = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
 
 
+# ============================================================================
+# LSP Handlers
+# ============================================================================
+
+
 @lspserver.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
 def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
     path = src.utils.uri_to_path(params.text_document.uri)
@@ -39,9 +30,6 @@ def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
 
     output = workspace.get_output(path)
     for key, data in output.items():
-        # TODO: Filter data before sending to reduce payload size
-        # - Remove detailed syntactic column locations from model.Column.code arrays
-        # - Frontend only needs semantic column info and first syntactic occurrence
         lspserver.send_notification(
             f"sql-refinery/{key}", {"uri": params.text_document.uri, key: src.utils.serialise(data)}
         )
@@ -70,6 +58,11 @@ def initialize(params: lsp.InitializeParams) -> None:
         assert len(params.workspace_folders) == 1, "Only one workspace folder is supported"
         folder = src.utils.uri_to_path(params.workspace_folders[0].uri)
         workspace.set_folder(folder)
+
+
+# ============================================================================
+# Main Entry Point
+# ============================================================================
 
 
 if __name__ == "__main__":

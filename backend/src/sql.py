@@ -1,19 +1,4 @@
-"""
-Pipeline — SQL Parsing
-
-Architecture:
-- Pipeline: SQL parsing (this module)
-- Server: LSP server (server.py)
-- Frontend: VS Code extension (frontend-vscode)
-
-This module provides:
-- A thin abstraction over tree-sitter parsing
-- Meta-types and helper functions (@query, @table, @column, etc.)
-  `@...` - meta types used for further abstraction into query tree
-  `#...` - helper types
-  `...` - original tree_sitter types
-- `parse()`, `find_desc()`, and related utilities to normalize dialect differences
-"""
+"""SQL parsing with tree-sitter"""
 
 from __future__ import annotations
 
@@ -27,22 +12,21 @@ from tree_sitter import Node, Tree  # noqa: F401
 import src
 
 _language = tree_sitter.Language(tree_sitter_sql_bigquery.language())
-# BUG fix `WITH RECURSIVE date_ranges(date_day) ... ` in tree-sitter-bigquery-sql
+# BUG: `WITH RECURSIVE date_ranges(date_day) ...` fails in tree-sitter-bigquery-sql
+
+
+# ============================================================================
+# Tree Traversal
+# ============================================================================
 
 
 def find_desc(node: tree_sitter.Node, types: str | list[str], local: bool = True) -> list[tree_sitter.Node]:
     # TODO: migrate to Tree.walk() https://github.com/tree-sitter/py-tree-sitter/blob/master/examples/walk_tree.py
-    # TODO: maybe redo with queries like
-    #       (function_call function: (identifier) @ignore)
-    #       (as_alias alias_name: (identifier) @ignore)
-    #       (identifier) @column
-
     results = []
     for child in node.named_children:
         if is_type(child, types):
             results.append(child)
 
-        # go outside of local scope
         if not (local and is_type(child, types=["@scope", "@query"])):
             results += find_desc(child, types, local)
 
@@ -53,7 +37,6 @@ def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True)
     if node.parent is None:
         return None
 
-    # going outside of scope
     if local and is_type(node, types=["@scope", "@query"]):
         return None
 
@@ -63,8 +46,8 @@ def find_asc(node: tree_sitter.Node, types: str | list[str], local: bool = True)
     return find_asc(node.parent, types, local)
 
 
-# BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated (parent is the issue)
 def find_alias(node: tree_sitter.Node) -> str | None:
+    # BUG: `GROUP BY <expr>, <expr>` columns for expressions are duplicated
     if not is_type(node, ["@table", "@expression"]):
         return None
 
@@ -76,6 +59,11 @@ def find_alias(node: tree_sitter.Node) -> str | None:
     return None
 
 
+# ============================================================================
+# Type System
+# ============================================================================
+
+
 def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     types = [types] if isinstance(types, str) else types
     if get_type(node) in types or node.type in types:
@@ -84,7 +72,6 @@ def is_type(node: tree_sitter.Node, types: str | list[str]) -> bool:
     return False
 
 
-# find
 def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, original: bool = True) -> str | None:
     node_type = node.type.lower()
 
@@ -150,6 +137,11 @@ def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, ori
     return None
 
 
+# ============================================================================
+# Decoders
+# ============================================================================
+
+
 def decode_function(node: tree_sitter.Node) -> tuple[str, list[tree_sitter.Node]]:
     if node.type == "function_call":
         name = node.named_children[0].text.decode("utf-8").capitalize()  # type: ignore
@@ -175,6 +167,11 @@ def decode_table(node: tree_sitter.Node) -> dict[str, str | None]:
     return {"dataset": dataset, "table": table}
 
 
+# ============================================================================
+# Debug Utilities
+# ============================================================================
+
+
 def to_struc(node: tree_sitter.Node) -> dict | list:
     """Convert node to simplified structure"""
     node_type = get_type(node, meta=True, helper=False, original=False)
@@ -195,6 +192,11 @@ def to_struc(node: tree_sitter.Node) -> dict | list:
         return {node_repr: children}
     else:
         return children
+
+
+# ============================================================================
+# Builder
+# ============================================================================
 
 
 def build(ws: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:

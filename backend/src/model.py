@@ -1,8 +1,4 @@
-"""
-Pipeline — Semantic Model
-
-Semantic abstraction over syntactic code objects with deduplication and resolution.
-"""
+"""Semantic layer with deduplication and resolution"""
 
 from __future__ import annotations
 
@@ -10,6 +6,10 @@ from collections import defaultdict
 from dataclasses import dataclass
 
 import src
+
+# ============================================================================
+# Data Model
+# ============================================================================
 
 
 @dataclass(frozen=True)
@@ -67,28 +67,24 @@ class Expression:
 
 
 @dataclass(frozen=True)
-class Semantics:
+class Model:
     columns: list[Column]
     tables: list[Table]
     expressions: list[Expression]
 
     def __repr__(self) -> str:
-        return f"model.Semantics(columns={len(self.columns)}, tables={len(self.tables)}, expressions={len(self.expressions)})"
+        return (
+            f"model.Model(columns={len(self.columns)}, tables={len(self.tables)}, expressions={len(self.expressions)})"
+        )
 
 
-def _group_tables(ws: src.workspace.Workspace) -> list[Table]:
-    """Group code.Table by (dataset, table) → model.Table"""
-    tables_dict: defaultdict[tuple[str | None, str | None], list[src.code.Table]] = defaultdict(list)
-    for code_table in ws.get(src.code.Table):
-        key = (code_table.dataset, code_table.table)
-        tables_dict[key].append(code_table)
-
-    return [ws.new(Table(_code=code, dataset=d, table=t, frequency=len(code))) for (d, t), code in tables_dict.items()]
+# ============================================================================
+# Resolution Logic
+# ============================================================================
 
 
 def _resolve_columns(query: src.code.Query) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
-    """Resolve all column references in a query using query-scoped alias lookup"""
-    # Build alias lookup once for the query
+    """Resolve column references using query-scoped alias lookup"""
     alias_to_table = {
         source.alias: source for source in query.sources if isinstance(source, src.code.Table) and source.alias
     }
@@ -107,26 +103,8 @@ def _resolve_columns(query: src.code.Query) -> dict[src.code.Column, tuple[str |
     return resolved
 
 
-def _group_columns(ws: src.workspace.Workspace) -> list[Column]:
-    """Group code.Column by (dataset, table, column) → model.Column"""
-    columns_dict: defaultdict[tuple[str | None, str | None, str | None], list[src.code.Column]] = defaultdict(list)
-
-    # Resolve columns per query, then group
-    for query in ws.get(src.code.Query):
-        resolved = _resolve_columns(query)
-        for code_col, key in resolved.items():
-            columns_dict[key].append(code_col)
-
-    model_columns = [
-        ws.new(Column(_code=code, dataset=d, table=t, column=c)) for (d, t, c), code in columns_dict.items()
-    ]
-
-    return model_columns
-
-
 def _resolve_expression(ws: src.workspace.Workspace, code_expr: src.code.Expression) -> str:
-    """Compute resolved representation of expression using model columns"""
-    # Build mapping: sql.Node → model.Column (multi-hop via _node then _code)
+    """Compute canonical representation using model columns"""
     nodes_to_col = ws.map(src.sql.Node, Column, by=("_node", "_code"))
 
     def node_to_str(node: src.sql.Node) -> str:
@@ -146,15 +124,42 @@ def _resolve_expression(ws: src.workspace.Workspace, code_expr: src.code.Express
     return f"{node_to_str(code_expr._node)}"
 
 
+# ============================================================================
+# Grouping Logic
+# ============================================================================
+
+
+def _group_tables(ws: src.workspace.Workspace) -> list[Table]:
+    """Group code.Table by (dataset, table)"""
+    tables_dict: defaultdict[tuple[str | None, str | None], list[src.code.Table]] = defaultdict(list)
+    for code_table in ws.get(src.code.Table):
+        key = (code_table.dataset, code_table.table)
+        tables_dict[key].append(code_table)
+
+    return [ws.new(Table(_code=code, dataset=d, table=t, frequency=len(code))) for (d, t), code in tables_dict.items()]
+
+
+def _group_columns(ws: src.workspace.Workspace) -> list[Column]:
+    """Group code.Column by (dataset, table, column)"""
+    columns_dict: defaultdict[tuple[str | None, str | None, str | None], list[src.code.Column]] = defaultdict(list)
+
+    for query in ws.get(src.code.Query):
+        resolved = _resolve_columns(query)
+        for code_col, key in resolved.items():
+            columns_dict[key].append(code_col)
+
+    return [ws.new(Column(_code=code, dataset=d, table=t, column=c)) for (d, t, c), code in columns_dict.items()]
+
+
 def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
-    """Group code.Expression by canonical representation → model.Expression"""
+    """Group code.Expression by canonical representation"""
     expr_dict: defaultdict[str, list[src.code.Expression]] = defaultdict(list)
     for code_expr in ws.get(src.code.Expression):
         canonical = _resolve_expression(ws, code_expr)
         expr_dict[canonical].append(code_expr)
 
-    model_expressions = []
     col_map = ws.map(src.code.Column, Column, by="_code")
+    model_expressions = []
     for canonical, code_exprs in expr_dict.items():
         first_expr = code_exprs[0]
         model_cols = frozenset(col_map[code_col] for code_col in first_expr.columns)
@@ -174,12 +179,17 @@ def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
     return model_expressions
 
 
-def build(ws: src.workspace.Workspace) -> Semantics:
-    """Build semantic model: resolve columns → group columns/tables → group expressions"""
+# ============================================================================
+# Builder
+# ============================================================================
+
+
+def build(ws: src.workspace.Workspace) -> Model:
+    """Build semantic model from syntactic code layer"""
     assert ws.layer_code is not None
 
     model_columns = _group_columns(ws)
     model_tables = _group_tables(ws)
     model_expressions = _group_expressions(ws)
 
-    return Semantics(columns=model_columns, tables=model_tables, expressions=model_expressions)
+    return Model(columns=model_columns, tables=model_tables, expressions=model_expressions)

@@ -1,8 +1,4 @@
-"""
-SQL Refining — Variations Analysis
-
-Finds groups of similar SQL expressions across the codebase.
-"""
+"""Variations analysis - find similar SQL expressions"""
 
 from __future__ import annotations
 
@@ -14,11 +10,13 @@ import Levenshtein
 
 import src
 
+# ============================================================================
+# Data Model
+# ============================================================================
+
 
 @dataclass(frozen=True)
 class ExpressionVariation:
-    """A variation with its similarity score"""
-
     group: src.model.Expression
     similarity: float
 
@@ -28,8 +26,6 @@ class ExpressionVariation:
 
 @dataclass(frozen=True)
 class ExpressionVariations:
-    """All variations for a specific expression"""
-
     this: src.code.Expression
     others: list[ExpressionVariation]
 
@@ -37,8 +33,25 @@ class ExpressionVariations:
         return f"ExpressionVariations({self.this.location}, variations={len(self.others)})"
 
 
+# ============================================================================
+# Similarity Analysis
+# ============================================================================
+
+
+def get_similarity(v1: src.model.Expression, v2: src.model.Expression) -> float:
+    """Compute similarity score between expressions (0.0-1.0)"""
+    text_sim = Levenshtein.ratio(v1.canonical, v2.canonical)
+    cols_sim = len(v1.columns & v2.columns) / len(v1.columns | v2.columns) if v1.columns | v2.columns else 1.0
+    return text_sim * cols_sim
+
+
+# ============================================================================
+# Builder
+# ============================================================================
+
+
 def build(ws: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
-    """Compute variations using semantic model, organized by file with code expressions"""
+    """Find similar expressions organized by file"""
     assert ws.layer_model is not None
 
     result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
@@ -55,11 +68,3 @@ def build(ws: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, lis
             result[code_expr.location.file].append(ws.new(ExpressionVariations(code_expr, variations)))
 
     return dict(result)
-
-
-def get_similarity(v1: src.model.Expression, v2: src.model.Expression) -> float:
-    """Get similarity between two expressions (0.0 = completely different, 1.0 = identical)"""
-    # TODO: replace with MinHash after sql normalisation by tree-sitter combined with column resolution
-    text_sim = Levenshtein.ratio(v1.canonical, v2.canonical)
-    cols_sim = len(v1.columns & v2.columns) / len(v1.columns | v2.columns) if v1.columns | v2.columns else 1.0
-    return text_sim * cols_sim

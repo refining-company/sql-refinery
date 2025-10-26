@@ -1,5 +1,5 @@
 {
-  "model.Semantics(columns=27, tables=8, expressions=27)": {
+  "model.Model(columns=27, tables=8, expressions=27)": {
     "columns": [
       "model.Column(frequency=1) = ?.?.account_id",
       "model.Column(frequency=1) = ?.?.date_day",

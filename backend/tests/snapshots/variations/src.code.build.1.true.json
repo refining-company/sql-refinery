@@ -1,5 +1,5 @@
 {
-  "code.Tree(files=2)": {
+  "code.Code(files=2)": {
     "files": {
       "0-accounts.sql": [
         { "code.Query(0-accounts.sql:25:0-44:6)": {

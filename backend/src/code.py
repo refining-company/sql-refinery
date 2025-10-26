@@ -1,8 +1,4 @@
-"""
-SQL Refining — Syntactic Code Layer
-
-Parse SQL files into syntactic tree (1:1 mapping with SQL AST).
-"""
+"""Syntactic code layer (1:1 mapping with SQL AST)"""
 
 from __future__ import annotations
 
@@ -10,6 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import src
+
+# ============================================================================
+# Data Model
+# ============================================================================
 
 
 @dataclass(frozen=True)
@@ -114,11 +114,16 @@ class Query:
 
 
 @dataclass(frozen=True)
-class Tree:
+class Code:
     files: dict[Path, list[Query]]
 
     def __repr__(self) -> str:
-        return f"code.Tree(files={len(self.files)})"
+        return f"code.Code(files={len(self.files)})"
+
+
+# ============================================================================
+# Parsing Logic
+# ============================================================================
 
 
 def parse_range(node: src.sql.Node) -> Range:
@@ -187,7 +192,12 @@ def _parse_tree(ws: src.workspace.Workspace, parse_tree: src.sql.Tree, file: Pat
     return [_parse_query(ws, node, file) for node in root_query_nodes]
 
 
-def build(ws: src.workspace.Workspace) -> Tree:
+# ============================================================================
+# Builder
+# ============================================================================
+
+
+def build(ws: src.workspace.Workspace) -> Code:
     assert ws.layer_sql is not None
     files = {file: _parse_tree(ws, parse_tree, file) for file, parse_tree in ws.layer_sql.items()}
-    return Tree(files=files)
+    return Code(files=files)
