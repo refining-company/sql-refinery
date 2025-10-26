@@ -34,6 +34,23 @@ class Column:
 
 
 @dataclass(frozen=True)
+class Table:
+    _code: list[src.code.Table]
+    dataset: str | None
+    table: str | None
+    frequency: int
+
+    def __repr__(self) -> str:
+        return f"model.Table(frequency={self.frequency})"
+
+    def __str__(self) -> str:
+        return f"{self.dataset or '?'}.{self.table or '?'}"
+
+    def __hash__(self) -> int:
+        return hash((self.dataset, self.table))
+
+
+@dataclass(frozen=True)
 class Expression:
     _code: list[src.code.Expression]
     locations: list[src.code.Location]
@@ -52,31 +69,30 @@ class Expression:
 @dataclass(frozen=True)
 class Semantics:
     columns: list[Column]
+    tables: list[Table]
     expressions: list[Expression]
     expr_code_to_model: dict[src.code.Expression, Expression]
 
 
 def _resolve_columns(tree: src.code.Tree) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
-    """Resolve column references to tables (match aliases to actual table names)"""
-    alias_to_table: dict[str, src.code.Table] = {}
-    for table in tree.index[src.code.Table]:
-        assert isinstance(table, src.code.Table)
-        if table.alias:
-            alias_to_table[table.alias] = table
-
+    """Resolve column references using query-scoped alias lookup"""
     resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]] = {}
-    for code_col in tree.index[src.code.Column]:
-        assert isinstance(code_col, src.code.Column)
-        col_dataset = code_col.dataset
-        col_table = code_col.table
-        col_column = code_col.column
 
-        if col_table is not None and col_table in alias_to_table:
-            resolved_table = alias_to_table[col_table]
-            col_table = resolved_table.table
-            col_dataset = resolved_table.dataset or col_dataset
+    for query in tree.index[src.code.Query]:
+        assert isinstance(query, src.code.Query)
+        alias_to_table = {
+            source.alias: source for source in query.sources if isinstance(source, src.code.Table) and source.alias
+        }
 
-        resolved[code_col] = (col_dataset, col_table, col_column)
+        for expr in query.expressions:
+            for code_col in expr.columns:
+                col_dataset, col_table, col_column = code_col.dataset, code_col.table, code_col.column
+                if col_table and col_table in alias_to_table:
+                    resolved_table = alias_to_table[col_table]
+                    col_table = resolved_table.table
+                    col_dataset = resolved_table.dataset or col_dataset
+
+                resolved[code_col] = (col_dataset, col_table, col_column)
 
     return resolved
 
@@ -119,21 +135,32 @@ def _resolve_expression(code_expr: src.code.Expression, code_to_model: dict[src.
                 result += "({})".format(", ".join(map(node_to_str, node.named_children)))
         return result
 
-    return f"Expression({node_to_str(code_expr._node)})"
+    return f"{node_to_str(code_expr._node)}"
 
 
-def _group_expressions(tree: src.code.Tree, code_to_model_column: dict[src.code.Column, Column]) -> list[Expression]:
+def _group_tables(tree: src.code.Tree) -> list[Table]:
+    """Group code.Table by (dataset, table) → model.Table"""
+    tables_dict: defaultdict[tuple[str | None, str | None], list[src.code.Table]] = defaultdict(list)
+    for code_table in tree.index[src.code.Table]:
+        assert isinstance(code_table, src.code.Table)
+        key = (code_table.dataset, code_table.table)
+        tables_dict[key].append(code_table)
+
+    return [Table(_code=code, dataset=d, table=t, frequency=len(code)) for (d, t), code in tables_dict.items()]
+
+
+def _group_expressions(tree: src.code.Tree, column_code_to_model: dict[src.code.Column, Column]) -> list[Expression]:
     """Group code.Expression by canonical representation → model.Expression"""
     expr_dict: defaultdict[str, list[src.code.Expression]] = defaultdict(list)
     for code_expr in tree.index[src.code.Expression]:
         assert isinstance(code_expr, src.code.Expression)
-        canonical = _resolve_expression(code_expr, code_to_model_column)
+        canonical = _resolve_expression(code_expr, column_code_to_model)
         expr_dict[canonical].append(code_expr)
 
     model_expressions = []
     for canonical, code_exprs in expr_dict.items():
         first_expr = code_exprs[0]
-        model_cols = frozenset(code_to_model_column[code_col] for code_col in first_expr.columns)
+        model_cols = frozenset(column_code_to_model[code_col] for code_col in first_expr.columns)
         model_expressions.append(
             Expression(
                 _code=code_exprs,
@@ -149,11 +176,16 @@ def _group_expressions(tree: src.code.Tree, code_to_model_column: dict[src.code.
 
 
 def build(tree: src.code.Tree) -> Semantics:
-    """Build semantic model: resolve columns → group → group expressions"""
-    resolved = _resolve_columns(tree)
-    model_columns, code_to_model = _group_columns(tree, resolved)
+    """Build semantic model: resolve columns → group columns/tables → group expressions"""
+    columns_resolved = _resolve_columns(tree)
+    model_columns, code_to_model = _group_columns(tree, columns_resolved)
+    model_tables = _group_tables(tree)
     model_expressions = _group_expressions(tree, code_to_model)
-
     expr_code_to_model = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
 
-    return Semantics(columns=model_columns, expressions=model_expressions, expr_code_to_model=expr_code_to_model)
+    return Semantics(
+        columns=model_columns,
+        tables=model_tables,
+        expressions=model_expressions,
+        expr_code_to_model=expr_code_to_model,
+    )

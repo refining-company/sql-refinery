@@ -329,7 +329,7 @@
       "variations": [
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "canonical": "Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null()))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
@@ -343,7 +343,7 @@
                       "start_char": 4,
                       "start_line": 5 } } ],
                 "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
-              "similarity": 0.78 } ],
+              "similarity": 0.76 } ],
           "this": {
             "alias": "region_cluster",
             "columns": [
@@ -377,7 +377,7 @@
             "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Subscription Base', 'Subscription Premium')), ?.orders.value), Caseelse_clause(0)))))",
+                "canonical": "Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Subscription Base', 'Subscription Premium')), ?.orders.value), Caseelse_clause(0))))",
                 "columns": [
                   { "column": "product",
                     "dataset": null,
@@ -394,7 +394,7 @@
                       "start_char": 8,
                       "start_line": 37 } } ],
                 "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" },
-              "similarity": 0.9 } ],
+              "similarity": 0.89 } ],
           "this": {
             "alias": "revenue_aux",
             "columns": [
@@ -428,7 +428,7 @@
             "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Training', 'Consulting')), ?.orders.value), Caseelse_clause(0)))))",
+                "canonical": "Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Training', 'Consulting')), ?.orders.value), Caseelse_clause(0))))",
                 "columns": [
                   { "column": "product",
                     "dataset": null,
@@ -445,7 +445,7 @@
                       "start_char": 8,
                       "start_line": 38 } } ],
                 "sql": "SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" },
-              "similarity": 0.9 } ],
+              "similarity": 0.89 } ],
           "this": {
             "alias": "revenue_core",
             "columns": [
@@ -485,7 +485,7 @@
       "variations": [
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "canonical": "Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null()))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
@@ -499,7 +499,7 @@
                       "start_char": 4,
                       "start_line": 5 } } ],
                 "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
-              "similarity": 0.78 } ],
+              "similarity": 0.76 } ],
           "this": {
             "alias": "cluster",
             "columns": [
@@ -533,7 +533,7 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())))",
+                "canonical": "Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null()))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
@@ -547,7 +547,7 @@
                       "start_char": 4,
                       "start_line": 5 } } ],
                 "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" },
-              "similarity": 0.78 } ],
+              "similarity": 0.76 } ],
           "this": {
             "alias": "region_cluster",
             "columns": [
@@ -581,7 +581,7 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('IT'), Argument('Non-IT')))",
+                "canonical": "Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('IT'), Argument('Non-IT'))",
                 "columns": [
                   { "column": "industry",
                     "dataset": null,
@@ -625,7 +625,7 @@
       "variations": [
         { "others": [
             { "group": {
-                "canonical": "Expression(Casewhen_expression(Casewhen_clause(In(?.countries.region, Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(?.countries.region, Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())))",
+                "canonical": "Casewhen_expression(Casewhen_clause(In(?.countries.region, Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(?.countries.region, Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null()))",
                 "columns": [
                   { "column": "region",
                     "dataset": null,
@@ -651,7 +651,7 @@
                       "start_char": 4,
                       "start_line": 32 } } ],
                 "sql": "CASE\n            WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n            WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n            ELSE NULL\n        END" },
-              "similarity": 0.78 } ],
+              "similarity": 0.76 } ],
           "this": {
             "alias": "macro_region",
             "columns": [
@@ -695,7 +695,7 @@
             "sql": "CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END" } },
         { "others": [
             { "group": {
-                "canonical": "Expression(Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('Tech'), Argument('Other')))",
+                "canonical": "Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('Tech'), Argument('Other'))",
                 "columns": [
                   { "column": "industry",
                     "dataset": null,
