@@ -98,7 +98,7 @@ def _resolve_columns(workspace: src.workspace.Workspace) -> dict[src.code.Column
 
 def _group_columns(
     workspace: src.workspace.Workspace, resolved: dict[src.code.Column, tuple[str | None, str | None, str | None]]
-) -> tuple[list[Column], dict[src.code.Column, Column]]:
+) -> list[Column]:
     """Group code.Column by (dataset, table, column) → model.Column"""
     columns_dict: defaultdict[tuple[str | None, str | None, str | None], list[src.code.Column]] = defaultdict(list)
     for code_col in workspace.index_code[src.code.Column]:
@@ -107,18 +107,20 @@ def _group_columns(
         columns_dict[key].append(code_col)
 
     model_columns = [Column(_code=code, dataset=d, table=t, column=c) for (d, t, c), code in columns_dict.items()]
-    code_to_model = {code_col: model_col for model_col in model_columns for code_col in model_col._code}
 
-    return model_columns, code_to_model
+    # Populate workspace map
+    workspace.map_code_col_to_model_col = {code_col: model_col for model_col in model_columns for code_col in model_col._code}
+
+    return model_columns
 
 
-def _resolve_expression(code_expr: src.code.Expression, code_to_model: dict[src.code.Column, Column]) -> str:
+def _resolve_expression(workspace: src.workspace.Workspace, code_expr: src.code.Expression) -> str:
     """Compute resolved representation of expression using model columns"""
     # Build mapping from sql nodes to resolved model columns
     nodes_to_col: dict[src.sql.Node, Column] = {}
     for code_col in code_expr.columns:
-        if code_col in code_to_model:
-            nodes_to_col[code_col._node] = code_to_model[code_col]
+        if code_col in workspace.map_code_col_to_model_col:
+            nodes_to_col[code_col._node] = workspace.map_code_col_to_model_col[code_col]
 
     def node_to_str(node: src.sql.Node) -> str:
         if node in nodes_to_col:
@@ -148,18 +150,18 @@ def _group_tables(workspace: src.workspace.Workspace) -> list[Table]:
     return [Table(_code=code, dataset=d, table=t, frequency=len(code)) for (d, t), code in tables_dict.items()]
 
 
-def _group_expressions(workspace: src.workspace.Workspace, column_code_to_model: dict[src.code.Column, Column]) -> list[Expression]:
+def _group_expressions(workspace: src.workspace.Workspace) -> list[Expression]:
     """Group code.Expression by canonical representation → model.Expression"""
     expr_dict: defaultdict[str, list[src.code.Expression]] = defaultdict(list)
     for code_expr in workspace.index_code[src.code.Expression]:
         assert isinstance(code_expr, src.code.Expression)
-        canonical = _resolve_expression(code_expr, column_code_to_model)
+        canonical = _resolve_expression(workspace, code_expr)
         expr_dict[canonical].append(code_expr)
 
     model_expressions = []
     for canonical, code_exprs in expr_dict.items():
         first_expr = code_exprs[0]
-        model_cols = frozenset(column_code_to_model[code_col] for code_col in first_expr.columns)
+        model_cols = frozenset(workspace.map_code_col_to_model_col[code_col] for code_col in first_expr.columns)
         model_expressions.append(
             Expression(
                 _code=code_exprs,
@@ -179,14 +181,12 @@ def build(workspace: src.workspace.Workspace) -> Semantics:
     assert workspace.layer_code is not None
 
     columns_resolved = _resolve_columns(workspace)
-    model_columns, code_to_model = _group_columns(workspace, columns_resolved)
+    model_columns = _group_columns(workspace, columns_resolved)  # Populates workspace.map_code_col_to_model_col
     model_tables = _group_tables(workspace)
-    model_expressions = _group_expressions(workspace, code_to_model)
-    expr_code_to_model = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
+    model_expressions = _group_expressions(workspace)  # Uses workspace.map_code_col_to_model_col
 
-    # Populate workspace maps
-    workspace.map_code_col_to_model_col = code_to_model
-    workspace.map_code_expr_to_model_expr = expr_code_to_model
+    # Populate workspace map for expressions
+    workspace.map_code_expr_to_model_expr = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
 
     return Semantics(
         columns=model_columns,
