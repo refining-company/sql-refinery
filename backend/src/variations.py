@@ -34,7 +34,7 @@ class ExpressionVariations:
     others: list[ExpressionVariation]
 
     def __repr__(self) -> str:
-        return f"ExpressionVariations({self.this.location.file.name}:{self.this._node.start_point.row + 1}:{self.this._node.start_point.column + 1}, {len(self.others)} variations)"
+        return f"ExpressionVariations({self.this.location}, variations={len(self.others)})"
 
 
 def build(semantics: model.Semantics, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
