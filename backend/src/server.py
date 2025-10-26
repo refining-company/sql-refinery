@@ -96,7 +96,7 @@ if __name__ == "__main__":
         import src._recorder
 
         session_data = src.utils.load_ndjson(Path(args.replay))
-        with src._recorder.mock_client() as (exchange, replay_func):
+        with src._recorder.mock_client() as (exchange, replay_func):  # type: ignore[has-type]
             for msg in session_data:
                 if msg["direction"] == "client->server":
                     replay_func(msg)

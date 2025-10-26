@@ -30,7 +30,7 @@ class Workspace:
     layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
     # Indexes (type-based lookups) - unified index for all layers
-    index: dict[type, list]
+    _index: dict[type, list]
     _map_cache: dict[tuple, dict]
 
     def __init__(self):
@@ -44,7 +44,7 @@ class Workspace:
         self.layer_code = None
         self.layer_model = None
         self.layer_variations = {}
-        self.index = {}
+        self._index = {}
         self._map_cache = {}
 
     def _rebuild(self) -> None:
@@ -59,19 +59,23 @@ class Workspace:
 
         log.info(f"Computed variations for {[p.stem for p in self.layer_variations.keys()]}")
 
-    def new(self, obj):
+    def new[T](self, obj: T) -> T:
         """Index an object and return it"""
         obj_type = type(obj)
-        if obj_type not in self.index:
-            self.index[obj_type] = []
+        if obj_type not in self._index:
+            self._index[obj_type] = []
 
         # Only add if not already in index (prevent duplicates)
-        if obj not in self.index[obj_type]:
-            self.index[obj_type].append(obj)
+        if obj not in self._index[obj_type]:
+            self._index[obj_type].append(obj)
 
         return obj
 
-    def map(self, fro: type, to: type, by: str | tuple[str, ...]) -> dict:
+    def get[T](self, type_: type[T]) -> list[T]:
+        """Get typed list of objects for a given type"""
+        return self._index[type_]
+
+    def map[Fro, To](self, fro: type[Fro], to: type[To], by: str | tuple[str, ...]) -> dict[Fro, To]:
         """Build lazy map from fro → to via field path
 
         Examples:
@@ -85,7 +89,7 @@ class Workspace:
 
         # Track (current_obj, original_to_obj) pairs during traversal
         # Start with all 'to' objects paired with themselves
-        current_pairs = [(obj, obj) for obj in self.index[to]]
+        current_pairs = [(obj, obj) for obj in self.get(to)]
 
         # Traverse each field backwards (from 'to' toward 'fro')
         for field in reversed(by):

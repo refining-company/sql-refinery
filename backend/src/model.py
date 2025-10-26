@@ -79,8 +79,7 @@ class Semantics:
 def _group_tables(ws: src.workspace.Workspace) -> list[Table]:
     """Group code.Table by (dataset, table) → model.Table"""
     tables_dict: defaultdict[tuple[str | None, str | None], list[src.code.Table]] = defaultdict(list)
-    for code_table in ws.index[src.code.Table]:
-        assert isinstance(code_table, src.code.Table)
+    for code_table in ws.get(src.code.Table):
         key = (code_table.dataset, code_table.table)
         tables_dict[key].append(code_table)
 
@@ -113,8 +112,7 @@ def _group_columns(ws: src.workspace.Workspace) -> list[Column]:
     columns_dict: defaultdict[tuple[str | None, str | None, str | None], list[src.code.Column]] = defaultdict(list)
 
     # Resolve columns per query, then group
-    for query in ws.index[src.code.Query]:
-        assert isinstance(query, src.code.Query)
+    for query in ws.get(src.code.Query):
         resolved = _resolve_columns(query)
         for code_col, key in resolved.items():
             columns_dict[key].append(code_col)
@@ -151,8 +149,7 @@ def _resolve_expression(ws: src.workspace.Workspace, code_expr: src.code.Express
 def _group_expressions(ws: src.workspace.Workspace) -> list[Expression]:
     """Group code.Expression by canonical representation → model.Expression"""
     expr_dict: defaultdict[str, list[src.code.Expression]] = defaultdict(list)
-    for code_expr in ws.index[src.code.Expression]:
-        assert isinstance(code_expr, src.code.Expression)
+    for code_expr in ws.get(src.code.Expression):
         canonical = _resolve_expression(ws, code_expr)
         expr_dict[canonical].append(code_expr)
 
