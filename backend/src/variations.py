@@ -40,14 +40,13 @@ class ExpressionVariations:
 def build(workspace: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
     """Compute variations using semantic model, organized by file with code expressions"""
     assert workspace.layer_model is not None
-    semantics = workspace.layer_model
 
     result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
 
-    for code_expr, semantic_expr in semantics.expr_code_to_model.items():
+    for code_expr, semantic_expr in workspace.map_code_expr_to_model_expr.items():
         variations = [
             ExpressionVariation(other_semantic, sim)
-            for other_semantic in semantics.expressions
+            for other_semantic in workspace.layer_model.expressions
             if other_semantic != semantic_expr
             and threshold <= (sim := get_similarity(semantic_expr, other_semantic)) < 1.0
         ]

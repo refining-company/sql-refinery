@@ -29,6 +29,10 @@ class Workspace:
     layer_model: src.model.Semantics | None
     layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
+    # Maps (cross-layer relationships)
+    map_code_col_to_model_col: dict[src.code.Column, src.model.Column]
+    map_code_expr_to_model_expr: dict[src.code.Expression, src.model.Expression]
+
     def __init__(self):
         self.layer_folder = None
         self.layer_files = {}
@@ -36,6 +40,8 @@ class Workspace:
         self.layer_code = None
         self.layer_model = None
         self.layer_variations = {}
+        self.map_code_col_to_model_col = {}
+        self.map_code_expr_to_model_expr = {}
 
     def set_folder(self, folder: Path | None) -> None:
         self.layer_folder = folder

@@ -71,7 +71,6 @@ class Semantics:
     columns: list[Column]
     tables: list[Table]
     expressions: list[Expression]
-    expr_code_to_model: dict[src.code.Expression, Expression]
 
 
 def _resolve_columns(tree: src.code.Tree) -> dict[src.code.Column, tuple[str | None, str | None, str | None]]:
@@ -186,9 +185,12 @@ def build(workspace: src.workspace.Workspace) -> Semantics:
     model_expressions = _group_expressions(tree, code_to_model)
     expr_code_to_model = {code_expr: model_expr for model_expr in model_expressions for code_expr in model_expr._code}
 
+    # Populate workspace maps
+    workspace.map_code_col_to_model_col = code_to_model
+    workspace.map_code_expr_to_model_expr = expr_code_to_model
+
     return Semantics(
         columns=model_columns,
         tables=model_tables,
         expressions=model_expressions,
-        expr_code_to_model=expr_code_to_model,
     )
