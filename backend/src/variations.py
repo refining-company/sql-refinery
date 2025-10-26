@@ -37,22 +37,22 @@ class ExpressionVariations:
         return f"ExpressionVariations({self.this.location}, variations={len(self.others)})"
 
 
-def build(workspace: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
+def build(ws: src.workspace.Workspace, threshold: float = 0.7) -> dict[Path, list[ExpressionVariations]]:
     """Compute variations using semantic model, organized by file with code expressions"""
-    assert workspace.layer_model is not None
+    assert ws.layer_model is not None
 
     result: defaultdict[Path, list[ExpressionVariations]] = defaultdict(list)
 
-    for code_expr, semantic_expr in workspace.map_code_expr_to_model_expr.items():
+    for code_expr, semantic_expr in ws.map_code_expr_to_model_expr.items():
         variations = [
-            ExpressionVariation(other_semantic, sim)
-            for other_semantic in workspace.layer_model.expressions
+            ws.new(ExpressionVariation(other_semantic, sim))
+            for other_semantic in ws.layer_model.expressions
             if other_semantic != semantic_expr
             and threshold <= (sim := get_similarity(semantic_expr, other_semantic)) < 1.0
         ]
 
         if variations:
-            result[code_expr.location.file].append(ExpressionVariations(code_expr, variations))
+            result[code_expr.location.file].append(ws.new(ExpressionVariations(code_expr, variations)))
 
     return dict(result)
 
