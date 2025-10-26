@@ -50,6 +50,7 @@
 
   "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
   "python.analysis.typeCheckingMode": "off",
+  "python.analysis.diagnosticMode": "openFilesOnly",
   "python.analysis.exclude": [
     "**/.venv",
     "**/.pyenv",
@@ -72,9 +73,12 @@
     "${workspaceFolder}/backend/pyproject.toml"
   ],
   "ruff.configuration": "${workspaceFolder}/backend/pyproject.toml",
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.cwd": "${workspaceFolder}/backend",
+  "mypy-type-checker.reportingScope": "workspace",
   "mypy-type-checker.args": [
     "--config-file",
-    "${workspaceFolder}/backend/pyproject.toml"
+    "pyproject.toml"
   ],
 
   // ============================================================================

@@ -179,20 +179,17 @@ abstractions work correctly while documenting system capabilities.
 
 ```bash
 # Full monorepo
-make check         # Run all quality checks (format, lint, typecheck, test)
-make format        # Format all code
+make check         # Format, lint, and typecheck all code
 make test          # Run all tests
 make test-update   # Update all test snapshots
 
 # Backend only
-make backend-check         # Check backend (Black, Ruff, MyPy, pytest)
-make backend-format        # Format backend code
+make backend-check         # Format, lint, and typecheck backend (Black, Ruff, MyPy)
 make backend-test          # Run backend tests
 make backend-test-update   # Update backend snapshots
 
 # Frontend only
-make frontend-check        # Check frontend (TypeScript, ESLint, Prettier)
-make frontend-format       # Format frontend code
+make frontend-check        # Format, lint, and typecheck frontend (Prettier, ESLint, TypeScript)
 make frontend-test         # Run frontend tests
 make frontend-test-update  # Update frontend snapshots
 
