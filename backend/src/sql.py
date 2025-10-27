@@ -230,8 +230,8 @@ def format(sql: str) -> str:
     return parsed.sql(
         dialect="bigquery",
         pretty=True,
-        indent=2,
-        pad=2,
+        indent=4,
+        pad=4,
         max_text_width=120,
         normalize_functions="upper",
         leading_comma=False,

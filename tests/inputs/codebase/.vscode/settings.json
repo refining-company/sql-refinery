@@ -1,0 +1,6 @@
+{
+  "[sql]": {
+    "editor.defaultFormatter": "refining-company.sql-refinery",
+    "editor.formatOnSave": true
+  }
+}

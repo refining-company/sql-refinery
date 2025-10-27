@@ -34,6 +34,10 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
                 obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
                 return {obj_key: simplify(obj_dict, terminal)}
 
+        # LSP types (attrs-based, convert to dict and recurse)
+        case _ if attr.has(type(obj)):
+            return simplify(attr.asdict(obj, recurse=False), terminal)
+
         # Tree-sitter objects
         case src.sql.Tree():
             if isinstance(obj, terminal):
@@ -46,10 +50,6 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
                 return simplify(obj.text, terminal)
             else:
                 return src.sql.to_struc(obj)
-
-        # LSP types (attrs-based, convert to dict and recurse)
-        case _ if attr.has(type(obj)):
-            return simplify(attr.asdict(obj, recurse=False), terminal)
 
         # Built-in nested types
         case dict():
