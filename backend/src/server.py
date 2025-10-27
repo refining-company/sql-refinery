@@ -50,6 +50,24 @@ def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
         )
 
 
+@lspserver.feature(lsp.TEXT_DOCUMENT_FORMATTING)
+def format_document(params: lsp.DocumentFormattingParams) -> list[lsp.TextEdit]:
+    path = src.utils.uri_to_path(params.text_document.uri)
+    log.info(f"Formatting document: {path}")
+
+    content = workspace.layer_files[path]
+    formatted = src.sql.format(content)
+    return [
+        lsp.TextEdit(
+            range=lsp.Range(
+                start=lsp.Position(line=0, character=0),
+                end=lsp.Position(line=len(content.splitlines()), character=0),
+            ),
+            new_text=formatted,
+        )
+    ]
+
+
 @lspserver.feature(lsp.INITIALIZE)
 def initialize(params: lsp.InitializeParams) -> None:
     log.info("Initializing LSP server")

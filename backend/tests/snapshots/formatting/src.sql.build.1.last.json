@@ -1,0 +1,44 @@
+{
+  "unformatted.sql": [
+    { "@root (source_file at 0:0) = -- CASE: Different g": [
+        { "@query (query_expr at 1:0) = SELECT date(date_mon": [
+            { "@columns (select_list at 1:7) = date(date_month, 'st": [
+                { "@expression (function_call at 1:7) = date(date_month, 'st": [
+                    { "@column (identifier at 1:12) = date_month": [] } ] },
+                { "@alias (identifier at 1:44) = date_year": [] },
+                { "@expression (casewhen_expression at 1:55) = CASE WHEN c.region I": [
+                    { "@column (identifier at 1:65) = c.region": [] },
+                    { "@column (identifier at 1:107) = c.region": [] },
+                    { "@column (identifier at 1:157) = c.region": [] } ] },
+                { "@alias (identifier at 1:204) = macro_region": [] },
+                { "@expression (function_call at 1:218) = IIF(a.industry = 'In": [
+                    { "@column (identifier at 1:222) = a.industry": [] } ] },
+                { "@alias (identifier at 1:280) = industry_it": [] },
+                { "@expression (function_call at 1:293) = SUM(ar.revenue)": [
+                    { "@column (identifier at 1:297) = ar.revenue": [] } ] },
+                { "@alias (identifier at 1:312) = revenue": [] },
+                { "@expression (function_call at 1:321) = COUNT(DISTINCT ar.ac": [
+                    { "@column (identifier at 1:336) = ar.account_id": [] } ] },
+                { "@alias (identifier at 1:354) = accounts": [] },
+                { "@expression (binary_expression at 1:364) = SUM(ar.revenue) / CO": [
+                    { "@column (identifier at 1:368) = ar.revenue": [] },
+                    { "@column (identifier at 1:397) = ar.account_id": [] } ] },
+                { "@alias (identifier at 1:415) = revenue_per_account": [] } ] },
+            { "@sources (from_clause at 1:435) = FROM accounts_revenu": [
+                { "@table (identifier at 1:440) = accounts_revenue": [] },
+                { "@alias (identifier at 1:457) = ar": [] },
+                { "@table (identifier at 1:470) = accounts": [] },
+                { "@alias (identifier at 1:479) = a": [] },
+                { "@join (join_condition at 1:481) = USING (account_id)": [
+                    { "@column (identifier at 1:488) = account_id": [] } ] },
+                { "@table (identifier at 1:510) = countries": [] },
+                { "@alias (identifier at 1:520) = c": [] },
+                { "@join (join_condition at 1:522) = USING (country)": [
+                    { "@column (identifier at 1:529) = country": [] } ] } ] },
+            { "@filter (where_clause at 1:538) = WHERE a.industry IN ": [
+                { "@column (identifier at 1:544) = a.industry": [] },
+                { "@column (identifier at 1:619) = date_month": [] } ] },
+            { "@grouping (group_by_clause at 1:680) = GROUP BY date_year, ": [
+                { "@column (identifier at 1:689) = date_year": [] },
+                { "@column (identifier at 1:700) = macro_region": [] },
+                { "@column (identifier at 1:714) = industry_it": [] } ] } ] } ] } ] }

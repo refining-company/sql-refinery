@@ -1,17 +1,14 @@
 # Test: variations
 
 ## Step: 1. File opened with diagnostics and code lenses
-
 ### Open Editors (1):
-
 0. editor.sql (column 1) (active)
 
 ### Active Editor: editor.sql
-
 ```sql
 -- CASE: Different groupings or thresholds applied to columns
 
-SELECT
+SELECT 
     date(date_month, 'start of year') AS date_year,
     -- This should cause an error
     CASE
@@ -39,36 +36,32 @@ GROUP BY date_year, macro_region, industry_it
 #### Diagnostics (2):
 
 ##### 0. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 0
 - **Range**: 5:4-10:7
-- **Snippet**:
-  `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+- **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+
 
 ##### 1. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 12:4-12:62
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
 
+
 #### Code Lenses (4):
 
 0. **→ Show 1 variation**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
 
 1. **× Ignore**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
 
@@ -76,27 +69,26 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
 
 3. **× Ignore**
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
+
+
+
 
 ## Step: 2. Showed variations for first inconsistency (CASE statement)
-
 ### Open Editors (1):
-
 0. editor.sql (column 1) (active)
 
 ### Active Editor: editor.sql
-
 ```sql
 -- CASE: Different groupings or thresholds applied to columns
 
-SELECT
+SELECT 
     date(date_month, 'start of year') AS date_year,
     -- This should cause an error
     CASE
@@ -124,36 +116,32 @@ GROUP BY date_year, macro_region, industry_it
 #### Diagnostics (2):
 
 ##### 0. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 0
 - **Range**: 5:4-10:7
-- **Snippet**:
-  `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+- **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+
 
 ##### 1. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 12:4-12:62
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
 
+
 #### Code Lenses (4):
 
 0. **→ Show 1 variation**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
 
 1. **× Ignore**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
 
@@ -161,27 +149,26 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
 
 3. **× Ignore**
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
+
+
+
 
 ## Step: 3. Peek locations opened for first variation
-
 ### Open Editors (1):
-
 0. editor.sql (column 1) (active)
 
 ### Active Editor: editor.sql
-
 ```sql
 -- CASE: Different groupings or thresholds applied to columns
 
-SELECT
+SELECT 
     date(date_month, 'start of year') AS date_year,
     -- This should cause an error
     CASE
@@ -209,36 +196,32 @@ GROUP BY date_year, macro_region, industry_it
 #### Diagnostics (2):
 
 ##### 0. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 0
 - **Range**: 5:4-10:7
-- **Snippet**:
-  `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+- **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+
 
 ##### 1. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 12:4-12:62
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
 
+
 #### Code Lenses (4):
 
 0. **→ Show 1 variation**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
 
 1. **× Ignore**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
 
@@ -246,27 +229,26 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
 
 3. **× Ignore**
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
+
+
+
 
 ## Step: 4. Applied first variation (CASE statement replaced)
-
 ### Open Editors (1):
-
 0. editor.sql (column 1) (active)
 
 ### Active Editor: editor.sql
-
 ```sql
 -- CASE: Different groupings or thresholds applied to columns
 
-SELECT
+SELECT 
     date(date_month, 'start of year') AS date_year,
     -- This should cause an error
     CASE
@@ -294,36 +276,32 @@ GROUP BY date_year, macro_region, industry_it
 #### Diagnostics (2):
 
 ##### 0. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 0
 - **Range**: 5:4-10:7
-- **Snippet**:
-  `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+- **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+
 
 ##### 1. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 12:4-12:62
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
 
+
 #### Code Lenses (4):
 
 0. **→ Show 1 variation**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
 
 1. **× Ignore**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
 
@@ -331,27 +309,26 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
 
 3. **× Ignore**
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
+
+
+
 
 ## Step: 5. Showed variations for second inconsistency (IIF statement)
-
 ### Open Editors (1):
-
 0. editor.sql (column 1) (active)
 
 ### Active Editor: editor.sql
-
 ```sql
 -- CASE: Different groupings or thresholds applied to columns
 
-SELECT
+SELECT 
     date(date_month, 'start of year') AS date_year,
     -- This should cause an error
     CASE
@@ -379,36 +356,32 @@ GROUP BY date_year, macro_region, industry_it
 #### Diagnostics (2):
 
 ##### 0. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 0
 - **Range**: 5:4-10:7
-- **Snippet**:
-  `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+- **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+
 
 ##### 1. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 12:4-12:62
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
 
+
 #### Code Lenses (4):
 
 0. **→ Show 1 variation**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
 
 1. **× Ignore**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
 
@@ -416,27 +389,26 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
 
 3. **× Ignore**
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
+
+
+
 
 ## Step: 6. Final state - workflow completed
-
 ### Open Editors (1):
-
 0. editor.sql (column 1) (active)
 
 ### Active Editor: editor.sql
-
 ```sql
 -- CASE: Different groupings or thresholds applied to columns
 
-SELECT
+SELECT 
     date(date_month, 'start of year') AS date_year,
     -- This should cause an error
     CASE
@@ -464,36 +436,32 @@ GROUP BY date_year, macro_region, industry_it
 #### Diagnostics (2):
 
 ##### 0. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 0
 - **Range**: 5:4-10:7
-- **Snippet**:
-  `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+- **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+
 
 ##### 1. 1 variation found
-
 - **Source**: sql-refinery
 - **Severity**: Information
 - **Code**: 1
 - **Range**: 12:4-12:62
 - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
 
+
 #### Code Lenses (4):
 
 0. **→ Show 1 variation**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},0]
 
 1. **× Ignore**
    - **Range**: 5:4-10:7
-   - **Snippet**:
-     `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
+   - **Snippet**: `CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
 
@@ -501,11 +469,13 @@ GROUP BY date_year, macro_region, industry_it
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.show`
-   - **Arguments**:
-     [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
+   - **Arguments**: [{"$mid":1,"fsPath":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","external":"file:///Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","path":"/Users/ilyakochik/Developer/refining-company/sql-refinery/frontend-vscode/src/test/inputs/editor.sql","scheme":"file"},1]
 
 3. **× Ignore**
    - **Range**: 12:4-12:62
    - **Snippet**: `IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')`
    - **Command**: `sql-refinery.variations.ignore`
    - **Arguments**: undefined
+
+
+

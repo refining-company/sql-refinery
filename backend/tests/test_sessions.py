@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from functools import partial, wraps
 from pathlib import Path
 
+import attr
 import pytest
 
 import src
@@ -45,6 +46,10 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
                 return simplify(obj.text, terminal)
             else:
                 return src.sql.to_struc(obj)
+
+        # LSP types (attrs-based, convert to dict and recurse)
+        case _ if attr.has(type(obj)):
+            return simplify(attr.asdict(obj, recurse=False), terminal)
 
         # Built-in nested types
         case dict():
@@ -139,7 +144,9 @@ def test_session(snapshot, session_name):
         for i, value in enumerate(values):
             (session_dir / f"{stage_name}.{i + 1}.last.json").write_text(src.utils.pformat(value))
 
-    (session_dir / "exchange.last.json").write_text(src.utils.pformat(simplify(exchange)))
+    # Convert exchange list to dict with sequence numbers to preserve order
+    exchange_snapshot = simplify(dict(enumerate(exchange)))
+    (session_dir / "exchange.last.json").write_text(src.utils.pformat(exchange_snapshot))
 
     # Compare .last against .true using assert_match
     for last_file in sorted(session_dir.glob("*.last.json")):

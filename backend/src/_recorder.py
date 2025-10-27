@@ -86,6 +86,8 @@ def mock_client() -> Generator[tuple[list, Callable]]:
                 response = src.server.initialize(converter.structure(params, lsp.InitializeParams))
             case "textDocument/didOpen":
                 src.server.did_open(converter.structure(params, lsp.DidOpenTextDocumentParams))
+            case "textDocument/formatting":
+                response = src.server.format_document(converter.structure(params, lsp.DocumentFormattingParams))
 
         if response is not None:
             exchange.append({"direction": "server->client", "type": "response", "method": method, "data": response})
