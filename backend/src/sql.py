@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import sqlglot
 import tree_sitter
 import tree_sitter_sql_bigquery
 from tree_sitter import Node, Tree  # noqa: F401
@@ -216,3 +217,23 @@ def build(ws: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:
         return obj
 
     return {path: _register(parser.parse(content.encode())) for path, content in ws.layer_files.items()}
+
+
+# ============================================================================
+# Formatter
+# ============================================================================
+
+
+def format(sql: str) -> str:
+    """Format SQL code using sqlglot"""
+    parsed = sqlglot.parse_one(sql, dialect="bigquery")
+    return parsed.sql(
+        dialect="bigquery",
+        pretty=True,
+        indent=2,
+        pad=2,
+        max_text_width=120,
+        normalize_functions="upper",
+        leading_comma=False,
+        comments=True,
+    )

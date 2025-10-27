@@ -1,0 +1,19 @@
+{
+  "model.Model(columns=5, tables=3, expressions=6)": {
+    "columns": [
+      "model.Column(frequency=1) = ?.?.date_month",
+      "model.Column(frequency=1) = ?.accounts.industry",
+      "model.Column(frequency=2) = ?.accounts_revenue.account_id",
+      "model.Column(frequency=2) = ?.accounts_revenue.revenue",
+      "model.Column(frequency=3) = ?.countries.region" ],
+    "expressions": [
+      "model.Expression(frequency=1) = Binary_expression(Sum(?.accounts_revenue.revenue), Count(?.accounts_revenue.account_id))",
+      "model.Expression(frequency=1) = Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null()))",
+      "model.Expression(frequency=1) = Function_call(Identifier(), Argument(?.?.date_month), Argument('start of year'))",
+      "model.Expression(frequency=1) = Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('IT'), Argument('Non-IT'))",
+      "model.Expression(frequency=1) = Function_call(Identifier, Argument(?.accounts_revenue.revenue))",
+      "model.Expression(frequency=1) = Function_call(Identifier, Distinct(), Argument(?.accounts_revenue.account_id))" ],
+    "tables": [
+      "model.Table(frequency=1) = ?.accounts",
+      "model.Table(frequency=1) = ?.accounts_revenue",
+      "model.Table(frequency=1) = ?.countries" ] } }

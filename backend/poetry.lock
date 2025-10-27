@@ -610,6 +610,22 @@ files = [
 ]
 
 [[package]]
+name = "sqlglot"
+version = "27.28.1"
+description = "An easily customizable SQL parser and transpiler"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "sqlglot-27.28.1-py3-none-any.whl", hash = "sha256:035e8a905a52a4bdbf0d7c590d8ea98fa4d4195b509b35e20c33dd462ec17b82"},
+    {file = "sqlglot-27.28.1.tar.gz", hash = "sha256:01c03da1aa0c7773002cfb4a58bd4b0656196e0164aee1d83104b3d3cc1475f3"},
+]
+
+[package.extras]
+dev = ["duckdb (>=0.6)", "maturin (>=1.4,<2.0)", "mypy", "pandas", "pandas-stubs", "pdoc", "pre-commit", "pyperf", "python-dateutil", "pytz", "ruff (==0.7.2)", "types-python-dateutil", "types-pytz", "typing_extensions"]
+rs = ["sqlglotrs (==0.7.3)"]
+
+[[package]]
 name = "tree-sitter"
 version = "0.23.2"
 description = "Python bindings to the Tree-sitter parsing library"
@@ -698,4 +714,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "9e82d005100efefae17bea36436e3f10475e28a77deb7355c22368a78e252a7e"
+content-hash = "7a6e4a2f03d3610707e280226759de1537f79d68b59936215fe1c890588dc450"
