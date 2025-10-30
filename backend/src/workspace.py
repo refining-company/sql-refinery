@@ -71,15 +71,8 @@ class Workspace:
         return self._index[type_]
 
     def map[Fro, To](self, fro: type[Fro], to: type[To], by: str | tuple[str, ...]) -> dict[Fro, To]:
-        """Build lazy map from fro → to via field path (cached)
-
-        Args:
-            fro: Source type
-            to: Target type
-            by: Field name or tuple of field names for multi-hop traversal
-
-        Example:
-            ws.map(sql.Node, model.Column, by=("_node", "_code"))
+        """Build lazy map from fro → to via field path
+        Example: ws.map(sql.Node, model.Column, by=("_node", "_code"))
         """
         by = (by,) if isinstance(by, str) else by
         key = (fro, to, by)
