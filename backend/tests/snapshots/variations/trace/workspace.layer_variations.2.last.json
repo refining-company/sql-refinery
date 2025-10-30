@@ -1,0 +1,36 @@
+{
+  "0-accounts.sql": [
+    { "ExpressionVariations(0-accounts.sql:37:8-37:105, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Training', 'Consulting')), ?.orders.value), Caseelse_clause(0)))), similarity=0.89)" ],
+        "this": "code.Expression(0-accounts.sql:37:8-37:105) = SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN..." } },
+    { "ExpressionVariations(0-accounts.sql:38:8-38:86, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Function_call(Identifier, Argument(Casewhen_expression(Casewhen_clause(In(?.orders.product, Struct('Subscription Base', 'Subscription Premium')), ?.orders.value), Caseelse_clause(0)))), similarity=0.89)" ],
+        "this": "code.Expression(0-accounts.sql:38:8-38:86) = SUM(CASE WHEN o.product IN ('Training', 'Consulting') THEN o.value ELSE 0 END)" } },
+    { "ExpressionVariations(0-accounts.sql:97:8-101:11, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())), similarity=0.76)" ],
+        "this": "code.Expression(0-accounts.sql:97:8-101:11) = CASE WHEN c.region IN ('Americas', 'Europe') THEN 'North-West' WHEN c.region ..." } } ],
+  "1-revenue.sql": [
+    { "ExpressionVariations(1-revenue.sql:32:4-36:7, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())), similarity=0.76)" ],
+        "this": "code.Expression(1-revenue.sql:32:4-36:7) = CASE WHEN c.region IN ('Americas', 'Europe') THEN 'North-West' WHEN c.region ..." } },
+    { "ExpressionVariations(1-revenue.sql:38:4-38:70, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('IT'), Argument('Non-IT')), similarity=0.94)" ],
+        "this": "code.Expression(1-revenue.sql:38:4-38:70) = IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } },
+    { "ExpressionVariations(1-revenue.sql:6:4-10:7, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Casewhen_expression(Casewhen_clause(In(?.countries.region, 'Americas'), 'AMER'), Casewhen_clause(In(?.countries.region, Struct('Europe', 'Africa')), 'EMEA'), Casewhen_clause(=(?.countries.region, 'Asia'), 'APAC'), Caseelse_clause(Null())), similarity=0.76)" ],
+        "this": "code.Expression(1-revenue.sql:6:4-10:7) = CASE WHEN c.region IN ('Americas', 'Europe') THEN 'North-West' WHEN c.region ..." } } ],
+  "editor.sql": [
+    { "ExpressionVariations(editor.sql:12:4-12:62, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Function_call(Identifier, Argument(=(?.accounts.industry, 'Information Technology')), Argument('Tech'), Argument('Other')), similarity=0.94)" ],
+        "this": "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" } },
+    { "ExpressionVariations(editor.sql:5:4-10:7, variations=1)": {
+        "others": [
+          "ExpressionVariation(group=Casewhen_expression(Casewhen_clause(In(?.countries.region, Struct('Americas', 'Europe')), 'North-West'), Casewhen_clause(In(?.countries.region, Struct('Africa', 'Asia')), 'South-East'), Caseelse_clause(Null())), similarity=0.76)" ],
+        "this": "code.Expression(editor.sql:5:4-10:7) = CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'A..." } } ] }

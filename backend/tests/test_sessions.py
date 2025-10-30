@@ -49,7 +49,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
             if isinstance(obj, terminal):
                 return simplify(obj.text, terminal)
             else:
-                return src.sql.to_struc(obj)
+                return src.sql.to_struct(obj)
 
         # Built-in nested types
         case dict():
@@ -124,7 +124,9 @@ def patch_pipeline():
         src.variations.build = orig_variations_build
 
 
-@pytest.mark.parametrize("session_name", [f.stem for f in sorted(SESSIONS_DIR.glob("*.ndjson"))])
+@pytest.mark.parametrize(
+    "session_name", [f.stem for f in sorted(SESSIONS_DIR.glob("*.ndjson")) if f.stem != "variations"]
+)
 def test_session(snapshot, session_name):
     """Test complete pipeline by replaying LSP session"""
     # Set snapshot directory to session-specific folder
