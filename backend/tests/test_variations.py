@@ -137,7 +137,12 @@ def capture_workspace():
         "workspace._index": src.utils.pformat(
             simplify(
                 src.server.workspace._index,
-                terminal=(*always, src.code.Query, src.variations.ExpressionVariation, src.variations.ExpressionVariations),
+                terminal=(
+                    *always,
+                    src.code.Query,
+                    src.variations.ExpressionVariation,
+                    src.variations.ExpressionVariations,
+                ),
             )
         ),
         "workspace._map": src.utils.pformat(
@@ -173,21 +178,28 @@ def capture_variations():
     return {"output": str(md)}
 
 
-def write_snapshots(snapshots: list[dict[str, str]], target_dir: Path, ext: str):
-    """Write list of snapshot dicts to {prefix}.{i}.last.{ext} files"""
+def write_snapshots(snapshots: list[dict[str, str]], target_dir: Path, ext: str) -> dict[str, Path]:
+    """Write list of snapshot dicts to {prefix}.{i}.{ext} files"""
+    files = {}
     for i, snapshot_dict in enumerate(snapshots):
         for prefix, content in snapshot_dict.items():
-            (target_dir / f"{prefix}.{i}.last.{ext}").write_text(content)
+            file = target_dir / f"{prefix}.{i}.{ext}"
+            file.write_text(content)
+            files[f"{prefix}.{i}"] = file
+    return files
 
 
 @pytest.mark.parametrize("session_name", [f.stem for f in sorted(SESSIONS_DIR.glob("variations*.ndjson"))])
 def test_variations(snapshot, session_name):
     """Test variations with workspace snapshots and markdown output"""
 
+    # Setup snapshot directory
+    session_dir = SNAPSHOTS_DIR / session_name
+    trace_dir = session_dir / "trace"
+    snapshot.snapshot_dir = session_dir
+
     # Load session data
     session_data = src.utils.load_ndjson(SESSIONS_DIR / f"{session_name}.ndjson")
-
-    # Patch class methods with both callbacks
     with (
         patch_workspace(capture_workspace) as workspace_snapshots,
         patch_workspace(capture_variations) as variations_snapshots,
@@ -195,25 +207,17 @@ def test_variations(snapshot, session_name):
         # TODO: make a patcher for run_sessions as well to follow patch_workspace logic
         server_client = run_session(session_data)
 
-    # Setup snapshot directory
-    # TODO: figure out if dir setup should be bundled somehow.
-    session_dir = SNAPSHOTS_DIR / session_name
-    session_dir.mkdir(exist_ok=True)
-    snapshot.snapshot_dir = session_dir
-
     # Write server-client exchange
     server_client_simplified = {f"{i:03d}": simplify(item) for i, item in enumerate(server_client)}
-    (session_dir / "server_client.last.json").write_text(src.utils.pformat(server_client_simplified))
+    (trace_dir / "server_client.last.json").write_text(src.utils.pformat(server_client_simplified))
 
     # Write workspace trace
-    trace_dir = session_dir / "trace"
-    trace_dir.mkdir(exist_ok=True)
-    write_snapshots(workspace_snapshots, trace_dir, "json")
+    write_snapshots(workspace_snapshots, trace_dir, "last.json")
 
     # Write .last variations markdown snapshots
-    write_snapshots(variations_snapshots, session_dir, "md")
+    # TODO: do we need all intermediate snapshots?
+    variation_files = write_snapshots(variations_snapshots, session_dir, "last.md")
 
     # Compare .last against .true using assert_match
-    for last_file in sorted(session_dir.glob("*.last.md")):
-        true_filename = last_file.name.replace(".last.", ".true.")
-        snapshot.assert_match(last_file.read_text(), true_filename)
+    for prefix, last_file in variation_files.items():
+        snapshot.assert_match(last_file.read_text(), session_dir / f"{prefix}.true.md")
