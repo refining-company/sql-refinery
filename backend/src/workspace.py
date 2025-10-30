@@ -20,7 +20,7 @@ class Workspace:
     layer_variations: dict[Path, list[src.variations.ExpressionVariations]]
 
     _index: dict[type, list]
-    _map_cache: dict[tuple, dict]
+    _map: dict[tuple, dict]
 
     # ============================================================================
     # Pipeline Management
@@ -37,7 +37,7 @@ class Workspace:
         self.layer_model = None
         self.layer_variations = {}
         self._index = {}
-        self._map_cache = {}
+        self._map = {}
 
     def _rebuild(self) -> None:
         log.info(f"Rebuilding workspace with {len(self.layer_files)} files")
@@ -84,8 +84,8 @@ class Workspace:
         by = (by,) if isinstance(by, str) else by
         key = (fro, to, by)
 
-        if key in self._map_cache:
-            return self._map_cache[key]
+        if key in self._map:
+            return self._map[key]
 
         current_pairs = [(obj, obj) for obj in self.get(to)]
 
@@ -104,7 +104,7 @@ class Workspace:
                 raise NotImplementedError(f"One-to-many mapping: {obj} → {result[obj]} and {original_to}")
             result[obj] = original_to
 
-        self._map_cache[key] = result
+        self._map[key] = result
         return result
 
     # ============================================================================
