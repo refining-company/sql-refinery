@@ -73,7 +73,7 @@ class Expression:
         return f"code.Expression({self.location!s})"
 
     def __str__(self) -> str:
-        return f"{self.sql}"
+        return src.utils.compact_str(self.sql, max_len=80)
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -106,8 +106,13 @@ class Query:
     expressions: list[Expression]
     location: Location
 
+    sql: str
+
     def __repr__(self) -> str:
         return f"code.Query({self.location!s})"
+
+    def __str__(self) -> str:
+        return src.utils.compact_str(self.sql, max_len=80)
 
     def __hash__(self) -> int:
         return hash((type(self), self.location))
@@ -183,6 +188,7 @@ def _parse_query(ws: src.workspace.Workspace, query_node: src.sql.Node, file: Pa
             sources=tables + subqueries,
             expressions=expressions,
             location=Location(file=file, range=parse_range(query_node)),
+            sql=query_node.text.decode("utf-8") if query_node.text else "",
         )
     )
 

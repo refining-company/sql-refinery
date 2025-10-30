@@ -2,7 +2,28 @@ import dataclasses
 import json
 import re
 import urllib.parse
+from functools import wraps
 from pathlib import Path
+
+
+def patch(target, callback):
+    """Wrap function to call callback after execution"""
+
+    @wraps(target)
+    def wrapper(*args, **kwargs):
+        result = target(*args, **kwargs)
+        callback()
+        return result
+
+    return wrapper
+
+
+def compact_str(text: str, max_len: int | None = None) -> str:
+    """Remove extra whitespace (tabs, newlines, indentation) except inside quotes"""
+    result = re.sub(r"\s+(?=(?:[^'\"]*['\"][^'\"]*['\"])*[^'\"]*$)", " ", text).strip()
+    if max_len is not None and len(result) > max_len:
+        return result[: max_len - 3] + "..."
+    return result
 
 
 def trunk_path(path: str | Path) -> str:
