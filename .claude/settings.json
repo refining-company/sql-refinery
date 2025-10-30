@@ -12,6 +12,9 @@
       "Bash(cd frontend:*)"
     ],
     "deny": [
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
       "Bash(poetry run python -m pytest:*)",
       "Bash(poetry run pytest:*)",
       "Bash(git commit:*)",

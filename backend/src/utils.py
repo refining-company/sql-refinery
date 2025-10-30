@@ -104,8 +104,16 @@ class Markdown:
     def h4(self, text):
         self.lines.append(f"#### {text}\n")
 
-    def code(self, obj, lang="json"):
-        self.lines.append(f"```{lang}\n{pformat(obj)}\n```\n")
+    def text(self, text):
+        self.lines.append(f"{text}\n")
+
+    def il(self, list):
+        for text in list:
+            self.lines.append(f"- {text}")
+        self.lines.append("")
+
+    def code(self, text, lang):
+        self.lines.append(f"```{lang}\n{text}\n```\n")
 
     def __str__(self):
         return "\n".join(self.lines)

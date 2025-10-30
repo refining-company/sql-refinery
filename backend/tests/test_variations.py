@@ -34,7 +34,7 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
             case _:
                 return str(obj)
 
-    match obj:
+    match obj:  # TODO: split match obj into nested and non-nested objects (terminal is relevant for nested only)
         # Dataclasses
         case _ if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
             obj_key = repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
@@ -100,61 +100,84 @@ def run_session(session_data: list[dict]) -> list:
 
 
 def capture_workspace():
+    always = (
+        src.sql.Tree,
+        src.sql.Node,
+        src.code.Range,
+        src.code.Location,
+        src.code.Column,
+        src.code.Table,
+        src.code.Expression,
+        src.model.Column,
+        src.model.Expression,
+        src.model.Table,
+    )
     return {
-        "layer_folder": simplify(src.server.workspace.layer_folder),
-        "layer_files": simplify(src.server.workspace.layer_files),
-        "layer_sql": simplify(src.server.workspace.layer_sql),
-        "layer_code": simplify(
-            src.server.workspace.layer_code,
-            terminal=(src.code.Location, src.code.Range, src.code.Column, src.code.Table, src.code.Expression),
+        "workspace.layer_folder": src.utils.pformat(simplify(src.server.workspace.layer_folder)),
+        "workspace.layer_files": src.utils.pformat(simplify(src.server.workspace.layer_files)),
+        "workspace.layer_sql": src.utils.pformat(simplify(src.server.workspace.layer_sql)),
+        "workspace.layer_code": src.utils.pformat(
+            simplify(
+                src.server.workspace.layer_code,
+                terminal=always,
+            )
         ),
-        "layer_model": simplify(
-            src.server.workspace.layer_model,
-            terminal=(src.model.Column, src.model.Table, src.model.Expression),
+        "workspace.layer_model": src.utils.pformat(
+            simplify(
+                src.server.workspace.layer_model,
+                terminal=always,
+            )
         ),
-        "layer_variations": simplify(
-            src.server.workspace.layer_variations,
-            terminal=(
-                src.code.Expression,
-                src.model.Column,
-                src.model.Expression,
-                src.variations.ExpressionVariation,
-            ),
+        "workspace.layer_variations": src.utils.pformat(
+            simplify(
+                src.server.workspace.layer_variations,
+                terminal=(*always, src.variations.ExpressionVariation),
+            )
         ),
-        "_index": simplify(
-            src.server.workspace._index,
-            terminal=(
-                src.code.Location,
-                src.code.Range,
-                src.code.Column,
-                src.code.Table,
-                src.code.Expression,
-                src.code.Query,
-                src.model.Column,
-                src.model.Table,
-                src.model.Expression,
-                src.variations.ExpressionVariation,
-                src.variations.ExpressionVariations,
-                src.sql.Tree,
-                src.sql.Node,
-            ),
+        "workspace._index": src.utils.pformat(
+            simplify(
+                src.server.workspace._index,
+                terminal=(*always, src.code.Query, src.variations.ExpressionVariation, src.variations.ExpressionVariations),
+            )
         ),
-        "_map": simplify(
-            src.server.workspace._map,
-            terminal=(
-                src.code.Column,
-                src.code.Table,
-                src.code.Expression,
-                src.model.Column,
-                src.model.Table,
-                src.model.Expression,
-            ),
+        "workspace._map": src.utils.pformat(
+            simplify(
+                src.server.workspace._map,
+                terminal=always,
+            )
         ),
     }
 
 
 def capture_variations():
-    return src.server.workspace.layer_variations.copy()
+    """Capture variations as formatted markdown"""
+    md = src.utils.Markdown()
+    for file_path, file_variations in sorted(src.server.workspace.layer_variations.items(), key=str):
+        md.h1(src.utils.trunk_path(str(file_path)))
+
+        for expr_variations in file_variations:
+            this = expr_variations.this
+            this_sql = src.utils.compact_str(this.sql)
+            md.h2(f"Expression at {this.location}: {len(expr_variations.others)} variations")
+            md.text(f"`{this_sql}`")
+
+            for i, variation in enumerate(expr_variations.others):
+                md.text(
+                    f"Variation {i+1}: similarity {variation.similarity:.2f}, "
+                    + f"frequency {variation.group.frequency} "
+                    + f"({", ".join(map(str, sorted(variation.group.locations, key=str)))})"
+                    + "\n"
+                    + f"`{src.utils.compact_str(variation.group.sql)}`"
+                )
+
+    return {"output": str(md)}
+
+
+def write_snapshots(snapshots: list[dict[str, str]], target_dir: Path, ext: str):
+    """Write list of snapshot dicts to {prefix}.{i}.last.{ext} files"""
+    for i, snapshot_dict in enumerate(snapshots):
+        for prefix, content in snapshot_dict.items():
+            (target_dir / f"{prefix}.{i}.last.{ext}").write_text(content)
 
 
 @pytest.mark.parametrize("session_name", [f.stem for f in sorted(SESSIONS_DIR.glob("variations*.ndjson"))])
@@ -173,6 +196,7 @@ def test_variations(snapshot, session_name):
         server_client = run_session(session_data)
 
     # Setup snapshot directory
+    # TODO: figure out if dir setup should be bundled somehow.
     session_dir = SNAPSHOTS_DIR / session_name
     session_dir.mkdir(exist_ok=True)
     snapshot.snapshot_dir = session_dir
@@ -184,11 +208,12 @@ def test_variations(snapshot, session_name):
     # Write workspace trace
     trace_dir = session_dir / "trace"
     trace_dir.mkdir(exist_ok=True)
+    write_snapshots(workspace_snapshots, trace_dir, "json")
 
-    for i, ws_snapshot in enumerate(workspace_snapshots):
-        for layer_name, layer_data in ws_snapshot.items():
-            filename = f"workspace.{layer_name}.{i + 1}.last.json"
-            (trace_dir / filename).write_text(src.utils.pformat(layer_data))
+    # Write .last variations markdown snapshots
+    write_snapshots(variations_snapshots, session_dir, "md")
 
-    # TODO: Format variations_snapshots as markdown
-    # TODO: Write output.last.md and compare with output.true.md
+    # Compare .last against .true using assert_match
+    for last_file in sorted(session_dir.glob("*.last.md")):
+        true_filename = last_file.name.replace(".last.", ".true.")
+        snapshot.assert_match(last_file.read_text(), true_filename)

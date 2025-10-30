@@ -1,5 +1,5 @@
 {
-  "code.Code(files=2)": {
+  "code.Code(files=3)": {
     "files": {
       "0-accounts.sql": [
         { "code.Query(0-accounts.sql:78:0-111:6) = SELECT t.*, CASE WHEN t.revenue_12m <= 300 THEN 'Small' WHEN t.revenue_12m > ...": {
@@ -86,4 +86,19 @@
               "code.Table(1-revenue.sql:21:14-21:22) = ?.accounts",
               "code.Table(1-revenue.sql:22:14-22:23) = ?.countries",
               "code.Table(1-revenue.sql:23:14-23:26) = ?.accounts_360" ],
-            "sql": "SELECT \n    date(date_month, 'start of year') AS date_year,\n    CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END AS region_cluster,\n    CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END AS industry_cluster,\n    a360.account_size,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue ar\n    LEFT JOIN accounts a USING (account_id)\n    LEFT JOIN countries c USING (country)\n    LEFT JOIN accounts_360 a360 USING (account_id, date_month)\nGROUP BY date_year, region_cluster, industry_cluster, a360.account_size\nORDER BY date_year, region_cluster, industry_cluster" } } ] } } }
+            "sql": "SELECT \n    date(date_month, 'start of year') AS date_year,\n    CASE\n        WHEN c.region IN ('Americas', 'Europe') THEN 'North-West'\n        WHEN c.region IN ('Africa', 'Asia') THEN 'South-East'\n        ELSE NULL\n    END AS region_cluster,\n    CASE \n        WHEN a.industry = 'Information Technology' THEN 'Tech'\n        WHEN a.industry IS NULL THEN NULL\n        ELSE 'Other'\n    END AS industry_cluster,\n    a360.account_size,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue ar\n    LEFT JOIN accounts a USING (account_id)\n    LEFT JOIN countries c USING (country)\n    LEFT JOIN accounts_360 a360 USING (account_id, date_month)\nGROUP BY date_year, region_cluster, industry_cluster, a360.account_size\nORDER BY date_year, region_cluster, industry_cluster" } } ],
+      "editor.sql": [
+        { "code.Query(editor.sql:2:0-24:45) = SELECT date(date_month, 'start of year') AS date_year, -- This should cause a...": {
+            "expressions": [
+              "code.Expression(editor.sql:12:4-12:62) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
+              "code.Expression(editor.sql:13:4-13:19) = SUM(ar.revenue)",
+              "code.Expression(editor.sql:14:4-14:33) = COUNT(DISTINCT ar.account_id)",
+              "code.Expression(editor.sql:15:4-15:51) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
+              "code.Expression(editor.sql:3:4-3:37) = date(date_month, 'start of year')",
+              "code.Expression(editor.sql:5:4-10:7) = CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'A..." ],
+            "location": "code.Location = editor.sql:2:0-24:45",
+            "sources": [
+              "code.Table(editor.sql:16:5-16:21) = ?.accounts_revenue",
+              "code.Table(editor.sql:17:14-17:22) = ?.accounts",
+              "code.Table(editor.sql:18:14-18:23) = ?.countries" ],
+            "sql": "SELECT \n    date(date_month, 'start of year') AS date_year,\n    -- This should cause an error\n    CASE\n        WHEN c.region IN ('Americas') THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA'\n        WHEN c.region = 'Asia' THEN 'APAC'\n        ELSE NULL\n    END AS macro_region,\n    -- This should case an error\n    IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue ar\n    LEFT JOIN accounts a USING (account_id)\n    LEFT JOIN countries c USING (country)\nWHERE\n    -- This is appropriate, user can do ad-hoc filters for any subsets\n    a.industry IN ('Information Technology', 'Telecommunication Services')\n    -- This is appropriate, user can take any period\n    AND date_month BETWEEN DATE('now', '-24 months') AND DATE('now')\nGROUP BY date_year, macro_region, industry_it" } } ] } } }
