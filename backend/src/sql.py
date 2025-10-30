@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 import sqlglot
@@ -128,6 +127,7 @@ def get_type(node: tree_sitter.Node, meta: bool = True, helper: bool = True, ori
     elif node_type in {"number", "string"}:
         node_type = "#constant"
 
+    # TODO: rewrite to return node_type.startswith("@") or None and drop "original"
     if node_type.startswith("@") and meta:
         return node_type
     elif node_type.startswith("#") and helper:
@@ -173,24 +173,42 @@ def decode_table(node: tree_sitter.Node) -> dict[str, str | None]:
 # ============================================================================
 
 
-def to_struc(node: tree_sitter.Node) -> dict | list:
+def to_str(obj: tree_sitter.Tree | tree_sitter.Node) -> str:
+    """Get grammar name and compacted text content"""
+    match obj:
+        case tree_sitter.Tree():
+            node = obj.root_node
+        case tree_sitter.Node():
+            node = obj
+
+    text = node.text.decode("utf-8") if node.text else ""
+    return f"{node.grammar_name}: {src.utils.compact_str(text, max_len=80)}"
+
+
+def to_repr(obj: tree_sitter.Tree | tree_sitter.Node) -> str:
+    """Get formatted representation of node"""
+    match obj:
+        case tree_sitter.Tree():
+            node = obj.root_node
+            return f"sql.Tree({node.start_point.row}:{node.start_point.column}-{node.end_point.row}:{node.end_point.column})"
+        case tree_sitter.Node():
+            node_type = get_type(obj, meta=True, helper=False, original=False)
+            if not node_type:
+                return ""
+            return (
+                f"sql.Node({obj.start_point.row}:{obj.start_point.column}-{obj.end_point.row}:{obj.end_point.column})"
+            )
+
+
+def to_struct(node: tree_sitter.Node) -> dict | list:
     """Convert node to simplified structure"""
-    node_type = get_type(node, meta=True, helper=False, original=False)
-    children = [to_struc(child) for child in node.children]
+    children = [to_struct(child) for child in node.children]
     children = [child for child in children if child]
     children = sum([child if isinstance(child, list) else [child] for child in children], [])
 
-    if node_type:
-        node_text = node.text.decode("utf-8") if node.text else ""
-        node_repr = "{} ({} at {}:{}) = {}".format(
-            node_type,
-            node.grammar_name,
-            node.start_point.row,
-            node.start_point.column,
-            re.sub(r"\s+", " ", node_text)[:20],
-        )
-
-        return {node_repr: children}
+    node_repr = to_repr(node)
+    if node_repr:
+        return {f"{node_repr} = {to_str(node)}": children}
     else:
         return children
 
@@ -207,11 +225,13 @@ def build(ws: src.workspace.Workspace) -> dict[Path, tree_sitter.Tree]:
 
     def _register(obj):
         """Recursively register tree-sitter Tree and Node objects"""
-        ws.new(obj)
         match obj:
             case tree_sitter.Tree():
+                ws.new(obj)
                 _register(obj.root_node)
             case tree_sitter.Node():
+                if get_type(obj, meta=True, helper=False, original=False):
+                    ws.new(obj)
                 for child in obj.children:
                     _register(child)
         return obj
