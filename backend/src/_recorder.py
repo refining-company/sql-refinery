@@ -7,7 +7,6 @@ from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from pathlib import Path
 
-import lsprotocol.types as lsp
 import pygls.protocol
 import pygls.workspace
 from lsprotocol import converters
@@ -15,6 +14,7 @@ from lsprotocol import converters
 import src
 
 log = src.logger.get(__name__)
+
 
 recording_path: Path | None = None
 original_methods = {}
@@ -59,40 +59,34 @@ def start(output_path: Path = Path(__file__).parent.parent.parent / "logs" / "se
     pygls.protocol.LanguageServerProtocol._procedure_handler = patched_procedure_handler  # type: ignore
 
 
+def mock_client_send(client_message: dict):
+    """Send client message to server through protocol handler"""
+    message = src.server.lspserver.lsp._deserialize_message(client_message["message"])
+    src.server.lspserver.lsp._procedure_handler(message)
+
+
 @contextmanager
-def mock_client() -> Generator[tuple[list, Callable]]:
-    exchange: list = []
+def mock_client() -> Generator[Callable]:
+    """Setup mock client environment"""
+    orig_workspace = src.server.workspace
+    orig_lsp_workspace = src.server.lspserver.lsp._workspace
 
     src.server.workspace = src.workspace.Workspace()
     src.server.lspserver.lsp._workspace = pygls.workspace.Workspace(None)  # type: ignore
 
-    orig_send_notification = src.server.lspserver.send_notification
-    src.server.lspserver.send_notification = lambda method, params: exchange.append(  # type: ignore
-        {"direction": "server->client", "type": "notification", "method": method, "params": params}
-    )
-
-    def replay(client_message: dict) -> None:
-        converter = src.server.lspserver.lsp._converter
-
-        msg = client_message["message"]
-        method = msg.get("method")
-        params = msg.get("params", {})
-
-        exchange.append({"direction": "client->server", "method": method, "data": msg})
-
-        response = None
-        match method:
-            case "initialize":
-                response = src.server.initialize(converter.structure(params, lsp.InitializeParams))
-            case "textDocument/didOpen":
-                src.server.did_open(converter.structure(params, lsp.DidOpenTextDocumentParams))
-            case "textDocument/formatting":
-                response = src.server.format_document(converter.structure(params, lsp.DocumentFormattingParams))
-
-        if response is not None:
-            exchange.append({"direction": "server->client", "type": "response", "method": method, "data": response})
-
     try:
-        yield exchange, replay
+        yield mock_client_send
     finally:
-        src.server.lspserver.send_notification = orig_send_notification  # type: ignore
+        src.server.workspace = orig_workspace
+        src.server.lspserver.lsp._workspace = orig_lsp_workspace
+
+
+def replay_session(session_data: list[dict]):
+    """Replay LSP session using mock client"""
+    with mock_client() as send:
+        for record in session_data:
+            if record["direction"] == "client->server":
+                try:
+                    send(record)
+                except SystemExit:
+                    pass

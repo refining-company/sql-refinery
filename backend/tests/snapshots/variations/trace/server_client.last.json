@@ -6,6 +6,8 @@
       "method": "initialize",
       "params": {
         "capabilities": {},
+        "processId": null,
+        "rootPath": null,
         "rootUri": "codebase",
         "workspaceFolders": [
           { "name": "codebase",
@@ -14,12 +16,35 @@
     "method": "initialize" },
   "001": {
     "data": {
+      "id": 0,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "documentFormattingProvider": true,
+          "executeCommandProvider": { "commands": [] },
+          "positionEncoding": "utf-16",
+          "textDocumentSync": {
+            "change": 2,
+            "openClose": true,
+            "save": false },
+          "workspace": {
+            "fileOperations": {},
+            "workspaceFolders": {
+              "changeNotifications": true,
+              "supported": true } } },
+        "serverInfo": {
+          "name": "sql-refinery-server",
+          "version": "0.1-dev" } } },
+    "direction": "server->client",
+    "method": null },
+  "002": {
+    "data": {
       "jsonrpc": "2.0",
       "method": "initialized",
       "params": {} },
     "direction": "client->server",
     "method": "initialized" },
-  "002": {
+  "003": {
     "data": {
       "jsonrpc": "2.0",
       "method": "textDocument/didOpen",
@@ -31,7 +56,7 @@
           "version": 1 } } },
     "direction": "client->server",
     "method": "textDocument/didOpen" },
-  "003": {
+  "004": {
     "direction": "server->client",
     "method": "sql-refinery/variations",
     "params": {
@@ -146,7 +171,7 @@
                 "start_line": 12 } },
             "sql": "IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')" } } ] },
     "type": "notification" },
-  "004": {
+  "005": {
     "data": {
       "jsonrpc": "2.0",
       "method": "textDocument/didOpen",
@@ -158,7 +183,7 @@
           "version": 1 } } },
     "direction": "client->server",
     "method": "textDocument/didOpen" },
-  "005": {
+  "006": {
     "direction": "server->client",
     "method": "sql-refinery/variations",
     "params": {
@@ -299,7 +324,7 @@
                 "start_line": 38 } },
             "sql": "IIF(accounts.industry = 'Information Technology', 'Tech', 'Other')" } } ] },
     "type": "notification" },
-  "006": {
+  "007": {
     "data": {
       "jsonrpc": "2.0",
       "method": "textDocument/didOpen",
@@ -311,7 +336,7 @@
           "version": 1 } } },
     "direction": "client->server",
     "method": "textDocument/didOpen" },
-  "007": {
+  "008": {
     "direction": "server->client",
     "method": "sql-refinery/variations",
     "params": {
@@ -468,7 +493,7 @@
                 "start_line": 37 } },
             "sql": "SUM(CASE WHEN o.product IN ('Subscription Base', 'Subscription Premium') THEN o.value ELSE 0 END)" } } ] },
     "type": "notification" },
-  "008": {
+  "009": {
     "data": {
       "jsonrpc": "2.0",
       "method": "textDocument/didClose",
@@ -476,7 +501,7 @@
         "textDocument": { "uri": "0-accounts.sql" } } },
     "direction": "client->server",
     "method": "textDocument/didClose" },
-  "009": {
+  "010": {
     "data": {
       "jsonrpc": "2.0",
       "method": "textDocument/didClose",
@@ -484,7 +509,7 @@
         "textDocument": { "uri": "editor.sql" } } },
     "direction": "client->server",
     "method": "textDocument/didClose" },
-  "010": {
+  "011": {
     "data": {
       "jsonrpc": "2.0",
       "method": "textDocument/didClose",
@@ -492,16 +517,18 @@
         "textDocument": { "uri": "1-revenue.sql" } } },
     "direction": "client->server",
     "method": "textDocument/didClose" },
-  "011": {
+  "012": {
     "data": {
       "id": 5,
       "jsonrpc": "2.0",
       "method": "shutdown" },
     "direction": "client->server",
     "method": "shutdown" },
-  "012": {
+  "013": {
     "data": {
+      "id": 5,
       "jsonrpc": "2.0",
-      "method": "exit" },
-    "direction": "client->server",
-    "method": "exit" } }
+      "result": null },
+    "direction": "server->client",
+    "method": null },
+  "014": null }

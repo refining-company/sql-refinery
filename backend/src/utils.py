@@ -6,13 +6,16 @@ from functools import wraps
 from pathlib import Path
 
 
-def patch(target, callback):
-    """Wrap function to call callback after execution"""
+def listen(target, callback, accumulator):
+    """Wrap function `target` to call callback with inputs and outputs,
+    and store `callback` results in `accumulator` preserving call order"""
 
     @wraps(target)
     def wrapper(*args, **kwargs):
+        index = len(accumulator)
+        accumulator.append(None)
         result = target(*args, **kwargs)
-        callback()
+        accumulator[index] = callback(args, kwargs, result)
         return result
 
     return wrapper
