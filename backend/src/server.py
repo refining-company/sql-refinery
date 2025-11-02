@@ -7,80 +7,107 @@ import lsprotocol.types as lsp
 import pygls.server
 
 import src.logger
+import src.sql
 import src.utils
 import src.workspace
 
 log = src.logger.get(__name__)
 
-workspace = src.workspace.Workspace()
-lspserver = pygls.server.LanguageServer(name="sql-refinery-server", version="0.1-dev")
+
+class Server(pygls.server.LanguageServer):
+    """SQL Refinery Language Server with encapsulated state"""
+
+    NAME = "sql-refinery-server"
+    VERSION = "0.1-dev"
+
+    def __init__(self):
+        super().__init__(self.NAME, self.VERSION)
+        self.sql_workspace = src.workspace.Workspace()
+        self._register_features()
+
+    def _register_features(self):
+        """Register all LSP feature handlers"""
+
+        @self.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
+        def _(params: lsp.DidOpenTextDocumentParams):
+            return self.did_open(params)
+
+        @self.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
+        def _(params: lsp.DidChangeTextDocumentParams):
+            return self.did_change(params)
+
+        @self.feature(lsp.TEXT_DOCUMENT_FORMATTING)
+        def _(params: lsp.DocumentFormattingParams):
+            return self.format_document(params)
+
+        @self.feature(lsp.INITIALIZE)
+        def _(params: lsp.InitializeParams):
+            return self.initialize(params)
+
+    # ============================================================================
+    # LSP Handler Methods
+    # ============================================================================
+
+    def did_open(self, params: lsp.DidOpenTextDocumentParams) -> None:
+        """Handle textDocument/didOpen"""
+        path = src.utils.uri_to_path(params.text_document.uri)
+        log.info(f"File opened: {path}")
+
+        self.sql_workspace.update_file(path, params.text_document.text)
+
+        output = self.sql_workspace.get_output(path)
+        for key, data in output.items():
+            self.send_notification(
+                f"sql-refinery/{key}", {"uri": params.text_document.uri, key: src.utils.serialise(data)}
+            )
+
+    def did_change(self, params: lsp.DidChangeTextDocumentParams) -> None:
+        """Handle textDocument/didChange"""
+        path = src.utils.uri_to_path(params.text_document.uri)
+        log.info(f"File changed: {path}")
+
+        content = self.sql_workspace.get_text_document(params.text_document.uri).source
+        self.sql_workspace.update_file(path, content)
+
+        output = self.sql_workspace.get_output(path)
+        for key, data in output.items():
+            self.send_notification(
+                f"sql-refinery/{key}", {"uri": params.text_document.uri, key: src.utils.serialise(data)}
+            )
+
+    def format_document(self, params: lsp.DocumentFormattingParams) -> list[lsp.TextEdit]:
+        """Handle textDocument/formatting"""
+        path = src.utils.uri_to_path(params.text_document.uri)
+        log.info(f"Formatting document: {path}")
+
+        content = self.sql_workspace.layer_files[path]
+        formatted = src.sql.format(content)
+        return [
+            lsp.TextEdit(
+                range=lsp.Range(
+                    start=lsp.Position(line=0, character=0),
+                    end=lsp.Position(line=len(content.splitlines()), character=0),
+                ),
+                new_text=formatted,
+            )
+        ]
+
+    def initialize(self, params: lsp.InitializeParams) -> None:
+        """Handle initialize"""
+        log.info("Initializing LSP server")
+
+        if params.workspace_folders:
+            assert len(params.workspace_folders) == 1, "Only one workspace folder is supported"
+            folder = src.utils.uri_to_path(params.workspace_folders[0].uri)
+            self.sql_workspace.set_folder(folder)
 
 
 # ============================================================================
-# LSP Handlers
+# CLI Entry Point
 # ============================================================================
 
-
-@lspserver.feature(lsp.TEXT_DOCUMENT_DID_OPEN)
-def did_open(params: lsp.DidOpenTextDocumentParams) -> None:
-    path = src.utils.uri_to_path(params.text_document.uri)
-    log.info(f"File opened: {path}")
-
-    workspace.update_file(path, params.text_document.text)
-
-    output = workspace.get_output(path)
-    for key, data in output.items():
-        lspserver.send_notification(
-            f"sql-refinery/{key}", {"uri": params.text_document.uri, key: src.utils.serialise(data)}
-        )
-
-
-@lspserver.feature(lsp.TEXT_DOCUMENT_DID_CHANGE)
-def did_change(params: lsp.DidChangeTextDocumentParams) -> None:
-    path = src.utils.uri_to_path(params.text_document.uri)
-    log.info(f"File changed: {path}")
-
-    content = lspserver.workspace.get_text_document(params.text_document.uri).source
-    workspace.update_file(path, content)
-
-    output = workspace.get_output(path)
-    for key, data in output.items():
-        lspserver.send_notification(
-            f"sql-refinery/{key}", {"uri": params.text_document.uri, key: src.utils.serialise(data)}
-        )
-
-
-@lspserver.feature(lsp.TEXT_DOCUMENT_FORMATTING)
-def format_document(params: lsp.DocumentFormattingParams) -> list[lsp.TextEdit]:
-    path = src.utils.uri_to_path(params.text_document.uri)
-    log.info(f"Formatting document: {path}")
-
-    content = workspace.layer_files[path]
-    formatted = src.sql.format(content)
-    return [
-        lsp.TextEdit(
-            range=lsp.Range(
-                start=lsp.Position(line=0, character=0),
-                end=lsp.Position(line=len(content.splitlines()), character=0),
-            ),
-            new_text=formatted,
-        )
-    ]
-
-
-@lspserver.feature(lsp.INITIALIZE)
-def initialize(params: lsp.InitializeParams) -> None:
-    log.info("Initializing LSP server")
-
-    if params.workspace_folders:
-        assert len(params.workspace_folders) == 1, "Only one workspace folder is supported"
-        folder = src.utils.uri_to_path(params.workspace_folders[0].uri)
-        workspace.set_folder(folder)
-
-
-# ============================================================================
-# Main Entry Point
-# ============================================================================
+# Module-level instance for CLI and imports
+lspserver = Server()
 
 
 if __name__ == "__main__":

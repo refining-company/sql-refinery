@@ -8,7 +8,6 @@ from contextlib import contextmanager
 from pathlib import Path
 
 import pygls.protocol
-import pygls.workspace
 from lsprotocol import converters
 
 import src
@@ -70,17 +69,13 @@ def mock_client_send(client_message: dict):
 @contextmanager
 def mock_client() -> Generator[Callable]:
     """Setup mock client environment"""
-    orig_workspace = src.server.workspace
-    orig_lsp_workspace = src.server.lspserver.lsp._workspace
-
-    src.server.workspace = src.workspace.Workspace()
-    src.server.lspserver.lsp._workspace = pygls.workspace.Workspace(None)  # type: ignore
+    orig_lspserver = src.server.lspserver
+    src.server.lspserver = src.server.Server()
 
     try:
         yield mock_client_send
     finally:
-        src.server.workspace = orig_workspace
-        src.server.lspserver.lsp._workspace = orig_lsp_workspace
+        src.server.lspserver = orig_lspserver
 
 
 def replay_session(session_data: list[dict]):

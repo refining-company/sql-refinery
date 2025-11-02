@@ -1,0 +1,44 @@
+{
+  "unformatted.sql": [
+    { "sql.Node(0:0-1:725) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat...": [
+        { "sql.Node(1:0-1:725) = query_expr: SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ...": [
+            { "sql.Node(1:7-1:434) = select_list: date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ('Ameri...": [
+                { "sql.Node(1:7-1:40) = function_call: date(date_month, 'start of year')": [
+                    { "sql.Node(1:12-1:22) = identifier: date_month": [] } ] },
+                { "sql.Node(1:44-1:53) = identifier: date_year": [] },
+                { "sql.Node(1:55-1:200) = casewhen_expression: CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'A...": [
+                    { "sql.Node(1:65-1:73) = identifier: c.region": [] },
+                    { "sql.Node(1:107-1:115) = identifier: c.region": [] },
+                    { "sql.Node(1:157-1:165) = identifier: c.region": [] } ] },
+                { "sql.Node(1:204-1:216) = identifier: macro_region": [] },
+                { "sql.Node(1:218-1:276) = function_call: IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')": [
+                    { "sql.Node(1:222-1:232) = identifier: a.industry": [] } ] },
+                { "sql.Node(1:280-1:291) = identifier: industry_it": [] },
+                { "sql.Node(1:293-1:308) = function_call: SUM(ar.revenue)": [
+                    { "sql.Node(1:297-1:307) = identifier: ar.revenue": [] } ] },
+                { "sql.Node(1:312-1:319) = identifier: revenue": [] },
+                { "sql.Node(1:321-1:350) = function_call: COUNT(DISTINCT ar.account_id)": [
+                    { "sql.Node(1:336-1:349) = identifier: ar.account_id": [] } ] },
+                { "sql.Node(1:354-1:362) = identifier: accounts": [] },
+                { "sql.Node(1:364-1:411) = binary_expression: SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)": [
+                    { "sql.Node(1:368-1:378) = identifier: ar.revenue": [] },
+                    { "sql.Node(1:397-1:410) = identifier: ar.account_id": [] } ] },
+                { "sql.Node(1:415-1:434) = identifier: revenue_per_account": [] } ] },
+            { "sql.Node(1:435-1:537) = from_clause: FROM accounts_revenue ar LEFT JOIN accounts a USING (account_id) LEFT JOIN co...": [
+                { "sql.Node(1:440-1:456) = identifier: accounts_revenue": [] },
+                { "sql.Node(1:457-1:459) = identifier: ar": [] },
+                { "sql.Node(1:470-1:478) = identifier: accounts": [] },
+                { "sql.Node(1:479-1:480) = identifier: a": [] },
+                { "sql.Node(1:481-1:499) = join_condition: USING (account_id)": [
+                    { "sql.Node(1:488-1:498) = identifier: account_id": [] } ] },
+                { "sql.Node(1:510-1:519) = identifier: countries": [] },
+                { "sql.Node(1:520-1:521) = identifier: c": [] },
+                { "sql.Node(1:522-1:537) = join_condition: USING (country)": [
+                    { "sql.Node(1:529-1:536) = identifier: country": [] } ] } ] },
+            { "sql.Node(1:538-1:679) = where_clause: WHERE a.industry IN ('Information Technology', 'Telecommunication Services') ...": [
+                { "sql.Node(1:544-1:554) = identifier: a.industry": [] },
+                { "sql.Node(1:619-1:629) = identifier: date_month": [] } ] },
+            { "sql.Node(1:680-1:725) = group_by_clause: GROUP BY date_year, macro_region, industry_it": [
+                { "sql.Node(1:689-1:698) = identifier: date_year": [] },
+                { "sql.Node(1:700-1:712) = identifier: macro_region": [] },
+                { "sql.Node(1:714-1:725) = identifier: industry_it": [] } ] } ] } ] } ] }
