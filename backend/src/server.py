@@ -106,7 +106,6 @@ class Server(pygls.server.LanguageServer):
 # CLI Entry Point
 # ============================================================================
 
-# Module-level instance for CLI and imports
 lspserver = Server()
 
 
@@ -127,6 +126,7 @@ if __name__ == "__main__":
         log.info("Recording LSP session")
         import src._recorder
 
+        # TODO: replace with context managers from tests:listen_server + capturer (modified record_message) to write into file
         src._recorder.start()
 
     if args.replay:
