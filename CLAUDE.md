@@ -142,3 +142,4 @@ make install
 
 - Test and commit all changes
 - Commit prefixes: `setup:`, `feature:`, `fix:`, `refactor:`, `test:`
+- **Check-in protocol**: When making multiple edits to existing code, pause and check in with the user to ensure you're not overengineering

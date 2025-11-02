@@ -47,6 +47,10 @@ clean: backend-clean frontend-clean
 
 install: backend-install frontend-install
 	@echo "✓ All dependencies installed"
+	@echo ""
+	@echo "→ Installing git hooks..."
+	@ln -sf ../../.hooks/pre-commit .git/hooks/pre-commit
+	@echo "✓ Git hooks installed"
 
 # ============================================================================
 # Backend Commands (Python + Poetry)
