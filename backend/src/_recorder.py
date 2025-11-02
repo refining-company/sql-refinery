@@ -25,7 +25,7 @@ def record_message(direction: str, message: dict):
     if recording_path is None:
         return
 
-    # TODO: should replace absolute paths with ${workspaceFolder} when recording
+    # TODO: should replace absolute paths with ${cwd} when recording
     record = {"direction": direction, "message": converters.get_converter().unstructure(message)}
 
     with recording_path.open("a") as f:
@@ -35,6 +35,8 @@ def record_message(direction: str, message: dict):
 
 def start(output_path: Path = Path(__file__).parent.parent.parent / "logs" / "session.last.ndjson"):
     """Start recording LSP messages."""
+    # TODO: should use patch_server from ./tests/
+
     global recording_path, original_methods
 
     recording_path = output_path
