@@ -134,12 +134,8 @@ if __name__ == "__main__":
         import src._recorder
 
         session_data = src.utils.load_ndjson(Path(args.replay))
-        # TODO: should use _recorder:replay_session()
-        with src._recorder.mock_client() as (exchange, replay_func):  # type: ignore[has-type]
-            for msg in session_data:
-                if msg["direction"] == "client->server":
-                    replay_func(msg)
-        log.info(f"Replayed {len(exchange)} messages")
+        src._recorder.replay_session(session_data)
+        log.info(f"Replayed {len(session_data)} messages")
     else:
         log.info("Starting LSP server")
         lspserver.start_io()
