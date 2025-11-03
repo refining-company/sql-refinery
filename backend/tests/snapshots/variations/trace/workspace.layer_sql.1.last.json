@@ -1,5 +1,5 @@
 {
-  "0-accounts.sql": [
+  "{cwd}/tests/inputs/codebase/0-accounts.sql": [
     { "sql.Node(0:0-111:7) = source_file: -- FOUNDATIONAL TABLES -- Calendar scaffolding: one day per row DROP TABLE IF...": [
         { "sql.Node(6:0-19:17) = query_expr: WITH RECURSIVE date_ranges(date_day) AS ( SELECT date(MIN(CASE WHEN d.stage_d...": [
             { "sql.Node(7:4-14:145) = query_expr: SELECT date(MIN(CASE WHEN d.stage_date < d.contract_start_date THEN d.stage_d...": [
@@ -187,7 +187,7 @@
                         { "sql.Node(110:30-110:45) = join_condition: USING (country)": [
                             { "sql.Node(110:37-110:44) = identifier: country": [] } ] } ] } ] },
                 { "sql.Node(111:5-111:6) = identifier: t": [] } ] } ] } ] } ],
-  "1-revenue.sql": [
+  "{cwd}/tests/inputs/codebase/1-revenue.sql": [
     { "sql.Node(0:0-50:50) = source_file: -- REVENUE REPORTS -- Revenue by region, cluster, account size SELECT date(da...": [
         { "sql.Node(4:0-25:52) = query_expr: SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ...": [
             { "sql.Node(5:4-19:74) = select_list: date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ('Ameri...": [
@@ -275,7 +275,7 @@
                 { "sql.Node(50:9-50:22) = identifier: accounts.name": [] },
                 { "sql.Node(50:24-50:30) = identifier: region": [] },
                 { "sql.Node(50:32-50:49) = identifier: accounts.industry": [] } ] } ] } ] } ],
-  "editor.sql": [
+  "{cwd}/tests/inputs/editor.sql": [
     { "sql.Node(0:0-24:45) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat...": [
         { "sql.Node(2:0-24:45) = query_expr: SELECT date(date_month, 'start of year') AS date_year, -- This should cause a...": [
             { "sql.Node(3:4-15:74) = select_list: date(date_month, 'start of year') AS date_year, -- This should cause an error...": [

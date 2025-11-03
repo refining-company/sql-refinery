@@ -19,13 +19,47 @@ recording_path: Path | None = None
 original_methods = {}
 
 
+def simplify_server(obj):
+    """Simplify LSP message by replacing paths with {cwd} and file contents with {contents}"""
+    match obj:
+        case dict():
+            result = {k: simplify_server(v) for k, v in obj.items()}
+            if result.get("params", {}).get("textDocument", {}).get("text"):
+                result["params"]["textDocument"]["text"] = "{contents}"
+            return result
+        case list():
+            return [simplify_server(item) for item in obj]
+        case str():
+            return src.utils.trunk_path(obj)
+        case _:
+            return obj
+
+
+def restore_server(obj):
+    """Restore LSP message by replacing {cwd} with paths and {contents} with file contents"""
+    match obj:
+        case dict():
+            result = {k: restore_server(v) for k, v in obj.items()}
+            text_doc = result.get("params", {}).get("textDocument", {})
+            if text_doc.get("text") == "{contents}" and "uri" in text_doc:
+                text_doc["text"] = src.utils.uri_to_path(src.utils.restore_path(text_doc["uri"])).read_text()
+            return result
+        case list():
+            return [restore_server(item) for item in obj]
+        case str():
+            return src.utils.restore_path(obj)
+        case _:
+            return obj
+
+
 def record_message(direction: str, message: dict):
     """Record a single LSP message."""
     if recording_path is None:
         return
 
-    # TODO: should replace absolute paths with ${cwd} when recording
-    record = {"direction": direction, "message": converters.get_converter().unstructure(message)}
+    unstructured = converters.get_converter().unstructure(message)
+    simplified = simplify_server(unstructured)
+    record = {"direction": direction, "message": simplified}
 
     with recording_path.open("a") as f:
         f.write(json.dumps(record) + "\n")
@@ -60,20 +94,19 @@ def start(output_path: Path = Path(__file__).parent.parent.parent / "logs" / "se
     pygls.protocol.LanguageServerProtocol._procedure_handler = patched_procedure_handler  # type: ignore
 
 
-def mock_client_send(client_message: dict):
-    """Send client message to server through protocol handler"""
-    message = src.server.lspserver.lsp._deserialize_message(client_message["message"])
-    src.server.lspserver.lsp._procedure_handler(message)
-
-
 @contextmanager
 def mock_client() -> Generator[Callable]:
     """Setup mock client environment"""
     orig_lspserver = src.server.lspserver
     src.server.lspserver = src.server.Server()
 
+    def send(message: dict):
+        """Send client message to server through protocol handler"""
+        deserialized = src.server.lspserver.lsp._deserialize_message(message)
+        src.server.lspserver.lsp._procedure_handler(deserialized)
+
     try:
-        yield mock_client_send
+        yield send
     finally:
         src.server.lspserver = orig_lspserver
 
@@ -84,6 +117,6 @@ def replay_session(session_data: list[dict]):
         for record in session_data:
             if record["direction"] == "client->server":
                 try:
-                    send(record)
+                    send(restore_server(record["message"]))
                 except SystemExit:
                     pass

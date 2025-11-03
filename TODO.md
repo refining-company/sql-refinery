@@ -1,11 +1,10 @@
 # Features
 
-1. Frontend: Make replacement comply with formatting
-2. Frontend: Make replacement comply with local column names
-3. Testing: Configurable snapshots (e.g. `variations.config.json`) for assertions vs captured output
-4. Clean up session test files, make them proper jsons for readability
-5. Server `client_mock` in sessions to `read files` from drive (as opposed to passing text) e.g. when "text" is not
-   specified and use short paths (with `cwd` stripped out)
+1. Frontend: Make replacement comply with local column names
+2. `tests/sessions` to upload file text from the drive (e.g. on `didOpen` and other messages). for this uri on save/
+   open should have most of path replaced with `{cwd}` using `utils:trunk_path()` that should be updated on
+   `_recorder:record_message()` and a reverse function `utils:restore_path()` that uses `.format(cwd=X)` on
+   `utils:replay_session()`. for now sessions `formatting.ndjson` and `variations.mdjson` should be updated manually
 
 # Future Architecture
 

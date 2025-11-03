@@ -30,14 +30,13 @@ def compact_str(text: str, max_len: int | None = None) -> str:
 
 
 def trunk_path(path: str | Path) -> str:
-    """Return just the filename from the path"""
-    match path:
-        case Path():
-            return path.name
-        case str() if str(Path.cwd()) in path:
-            return path.split("/")[-1]
-        case _:
-            return path
+    """Replace current working directory with {cwd} placeholder"""
+    return str(path).replace(str(Path.cwd()), "{cwd}")
+
+
+def restore_path(path: str) -> str:
+    """Replace {cwd} placeholder with current working directory"""
+    return path.format(cwd=str(Path.cwd())) if "{cwd}" in path else path
 
 
 def uri_to_path(uri: str) -> Path:

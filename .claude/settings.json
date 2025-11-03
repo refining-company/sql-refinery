@@ -4,12 +4,15 @@
       "Edit(**)",
       "Read(**)",
       "Write(**)",
-      "WebFetch(**)",
+      "WebFetch(domain:*)",
+      "WebSearch(**)",
       "Bash(make :*)",
+      "Bash(make check:*)",
+      "Bash(make backend-test:*)",
+      "Bash(jq:*)",
+      "Bash(cat:*)",
       "Bash(npm run:*)",
-      "Bash(poetry run python -c:*)",
-      "Bash(cd backend && poetry run python -c:*)",
-      "Bash(cd frontend:*)"
+      "Bash(poetry run python -c:*)"
     ],
     "deny": [
       "Bash(rm:*)",
@@ -21,8 +24,7 @@
       "Bash(git push:*)",
       "Bash(make test-update)",
       "Bash(make backend-test-update)",
-      "Bash(make frontend-test-update)",
-      "Bash(make :*update:*)"
+      "Bash(make frontend-test-update)"
     ],
     "defaultMode": "acceptEdits"
   }
