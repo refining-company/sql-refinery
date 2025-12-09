@@ -1,6 +1,6 @@
 {
-  "unformatted.sql": [
-    { "sql.Node(0:0-1:725) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat...": [
+  "{cwd}/tests/inputs/unformatted.sql": [
+    { "sql.Node(0:0-2:0) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat...": [
         { "sql.Node(1:0-1:725) = query_expr: SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ...": [
             { "sql.Node(1:7-1:434) = select_list: date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ('Ameri...": [
                 { "sql.Node(1:7-1:40) = function_call: date(date_month, 'start of year')": [

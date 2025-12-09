@@ -10,7 +10,7 @@
             "formatting": { "dynamicRegistration": true } } },
         "processId": 1,
         "rootPath": null,
-        "rootUri": "inputs",
+        "rootUri": "file://{cwd}/tests/inputs",
         "workspaceFolders": [] } },
     "direction": "client->server" },
   "001": {
@@ -21,7 +21,7 @@
         "capabilities": {
           "documentFormattingProvider": true,
           "executeCommandProvider": { "commands": [] },
-          "positionEncoding": "utf-16",
+          "positionEncoding": "PositionEncodingKind.Utf16",
           "textDocumentSync": {
             "change": 2,
             "openClose": true,
@@ -48,8 +48,8 @@
       "params": {
         "textDocument": {
           "languageId": "sql",
-          "text": "-- CASE: Different groupings or thresholds applied to columns\nSELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'Africa') THEN 'EMEA' WHEN c.region = 'Asia' THEN 'APAC' ELSE NULL END AS macro_region, IIF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it, SUM(ar.revenue) AS revenue, COUNT(DISTINCT ar.account_id) AS accounts, SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account FROM accounts_revenue ar LEFT JOIN accounts a USING (account_id) LEFT JOIN countries c USING (country) WHERE a.industry IN ('Information Technology', 'Telecommunication Services') AND date_month BETWEEN DATE('now', '-24 months') AND DATE('now') GROUP BY date_year, macro_region, industry_it",
-          "uri": "unformatted.sql",
+          "text": "{contents}",
+          "uri": "file://{cwd}/tests/inputs/unformatted.sql",
           "version": 1 } } },
     "direction": "client->server" },
   "004": {
@@ -57,7 +57,7 @@
       "jsonrpc": "2.0",
       "method": "sql-refinery/variations",
       "params": {
-        "uri": "unformatted.sql",
+        "uri": "file://{cwd}/tests/inputs/unformatted.sql",
         "variations": [] } },
     "direction": "server->client" },
   "005": {
@@ -69,7 +69,7 @@
         "options": {
           "insertSpaces": true,
           "tabSize": 4 },
-        "textDocument": { "uri": "unformatted.sql" } } },
+        "textDocument": { "uri": "file://{cwd}/tests/inputs/unformatted.sql" } } },
     "direction": "client->server" },
   "006": {
     "data": {
@@ -90,7 +90,7 @@
       "jsonrpc": "2.0",
       "method": "textDocument/didClose",
       "params": {
-        "textDocument": { "uri": "unformatted.sql" } } },
+        "textDocument": { "uri": "file://{cwd}/tests/inputs/unformatted.sql" } } },
     "direction": "client->server" },
   "008": {
     "data": {

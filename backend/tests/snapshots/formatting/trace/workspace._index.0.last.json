@@ -1,27 +1,27 @@
 {
   "<class 'src.code.Column'>": [
-    "code.Column(unformatted.sql:1:107-1:115) = ?.c.region",
-    "code.Column(unformatted.sql:1:12-1:22) = ?.?.date_month",
-    "code.Column(unformatted.sql:1:157-1:165) = ?.c.region",
-    "code.Column(unformatted.sql:1:222-1:232) = ?.a.industry",
-    "code.Column(unformatted.sql:1:297-1:307) = ?.ar.revenue",
-    "code.Column(unformatted.sql:1:336-1:349) = ?.ar.account_id",
-    "code.Column(unformatted.sql:1:368-1:378) = ?.ar.revenue",
-    "code.Column(unformatted.sql:1:397-1:410) = ?.ar.account_id",
-    "code.Column(unformatted.sql:1:65-1:73) = ?.c.region" ],
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:107-1:115) = ?.c.region",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:12-1:22) = ?.?.date_month",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:157-1:165) = ?.c.region",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:222-1:232) = ?.a.industry",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:297-1:307) = ?.ar.revenue",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:336-1:349) = ?.ar.account_id",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:368-1:378) = ?.ar.revenue",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:397-1:410) = ?.ar.account_id",
+    "code.Column({cwd}/tests/inputs/unformatted.sql:1:65-1:73) = ?.c.region" ],
   "<class 'src.code.Expression'>": [
-    "code.Expression(unformatted.sql:1:218-1:276) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
-    "code.Expression(unformatted.sql:1:293-1:308) = SUM(ar.revenue)",
-    "code.Expression(unformatted.sql:1:321-1:350) = COUNT(DISTINCT ar.account_id)",
-    "code.Expression(unformatted.sql:1:364-1:411) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
-    "code.Expression(unformatted.sql:1:55-1:200) = CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'A...",
-    "code.Expression(unformatted.sql:1:7-1:40) = date(date_month, 'start of year')" ],
+    "code.Expression({cwd}/tests/inputs/unformatted.sql:1:218-1:276) = IIF(a.industry = 'Information Technology', 'IT', 'Non-IT')",
+    "code.Expression({cwd}/tests/inputs/unformatted.sql:1:293-1:308) = SUM(ar.revenue)",
+    "code.Expression({cwd}/tests/inputs/unformatted.sql:1:321-1:350) = COUNT(DISTINCT ar.account_id)",
+    "code.Expression({cwd}/tests/inputs/unformatted.sql:1:364-1:411) = SUM(ar.revenue) / COUNT(DISTINCT ar.account_id)",
+    "code.Expression({cwd}/tests/inputs/unformatted.sql:1:55-1:200) = CASE WHEN c.region IN ('Americas') THEN 'AMER' WHEN c.region IN ('Europe', 'A...",
+    "code.Expression({cwd}/tests/inputs/unformatted.sql:1:7-1:40) = date(date_month, 'start of year')" ],
   "<class 'src.code.Query'>": [
-    "code.Query(unformatted.sql:1:0-1:725) = SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ..." ],
+    "code.Query({cwd}/tests/inputs/unformatted.sql:1:0-1:725) = SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ..." ],
   "<class 'src.code.Table'>": [
-    "code.Table(unformatted.sql:1:440-1:456) = ?.accounts_revenue",
-    "code.Table(unformatted.sql:1:470-1:478) = ?.accounts",
-    "code.Table(unformatted.sql:1:510-1:519) = ?.countries" ],
+    "code.Table({cwd}/tests/inputs/unformatted.sql:1:440-1:456) = ?.accounts_revenue",
+    "code.Table({cwd}/tests/inputs/unformatted.sql:1:470-1:478) = ?.accounts",
+    "code.Table({cwd}/tests/inputs/unformatted.sql:1:510-1:519) = ?.countries" ],
   "<class 'src.model.Column'>": [
     "model.Column(frequency=1) = ?.?.date_month",
     "model.Column(frequency=1) = ?.accounts.industry",
@@ -40,7 +40,7 @@
     "model.Table(frequency=1) = ?.accounts_revenue",
     "model.Table(frequency=1) = ?.countries" ],
   "<class 'tree_sitter.Node'>": [
-    "sql.Node(0:0-1:725) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat...",
+    "sql.Node(0:0-2:0) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat...",
     "sql.Node(1:0-1:725) = query_expr: SELECT date(date_month, 'start of year') AS date_year, CASE WHEN c.region IN ...",
     "sql.Node(1:107-1:115) = identifier: c.region",
     "sql.Node(1:12-1:22) = identifier: date_month",
@@ -83,4 +83,4 @@
     "sql.Node(1:700-1:712) = identifier: macro_region",
     "sql.Node(1:714-1:725) = identifier: industry_it" ],
   "<class 'tree_sitter.Tree'>": [
-    "sql.Tree(0:0-1:725) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat..." ] }
+    "sql.Tree(0:0-2:0) = source_file: -- CASE: Different groupings or thresholds applied to columns SELECT date(dat..." ] }

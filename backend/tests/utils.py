@@ -5,19 +5,16 @@ Common functions for LSP session testing and snapshot management.
 """
 
 import dataclasses
-from collections.abc import Callable, Generator
-from contextlib import contextmanager
 from pathlib import Path
 
 import attr
-import pygls.protocol
 from lsprotocol import converters
 
 import src
 
 
-def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
-    """Simplify complex objects for snapshot comparison"""
+def simplify_workspace(obj, terminal=()) -> dict | list | tuple | str | int | float | bool | None:
+    """Simplify complex objects for workspace snapshot comparison"""
     # Check terminal first for dataclasses, LSP types, and tree-sitter
     if isinstance(obj, terminal):
         match obj:
@@ -35,29 +32,32 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
         case _ if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
             obj_key = repr(obj) + (f" = {str(obj)}" if "__str__" in type(obj).__dict__ else "")
             obj_dict = {f.name: getattr(obj, f.name) for f in dataclasses.fields(obj) if not f.name.startswith("_")}
-            return {obj_key: simplify(obj_dict, terminal)}
+            return {obj_key: simplify_workspace(obj_dict, terminal)}
 
         # LSP types (attrs-based, convert to dict and recurse)
         case _ if attr.has(type(obj)):
-            return simplify(attr.asdict(obj, recurse=False), terminal)
+            return simplify_workspace(attr.asdict(obj, recurse=False), terminal)
 
         # Tree-sitter objects
         case src.sql.Tree():
-            return [simplify(obj.root_node, terminal)]
+            return [simplify_workspace(obj.root_node, terminal)]
 
         case src.sql.Node():
             return src.sql.to_struct(obj)
 
         # Built-in nested types
         case dict():
-            return {simplify(k, (type(k))): simplify(v, terminal) for k, v in sorted(obj.items(), key=str)}
+            return {
+                simplify_workspace(k, (type(k))): simplify_workspace(v, terminal)
+                for k, v in sorted(obj.items(), key=str)
+            }
         case list() | set() | frozenset():
-            items = [simplify(item, terminal) for item in obj]
+            items = [simplify_workspace(item, terminal) for item in obj]
             return sorted([item for item in items if item != []], key=str)
         case tuple():
-            return tuple(simplify(item, terminal) for item in obj)
+            return tuple(simplify_workspace(item, terminal) for item in obj)
         case Path():
-            return simplify(str(obj), terminal)
+            return simplify_workspace(str(obj), terminal)
         case bytes():
             return obj.decode("utf-8")
         case float():
@@ -70,59 +70,6 @@ def simplify(obj, terminal=()) -> dict | list | tuple | str | int | float | bool
             return f"<{obj.__name__}>"
         case _:
             return str(obj)
-
-
-@contextmanager
-def listen_server(callback: Callable) -> Generator[list]:
-    """Listen to protocol to intercept all client-server communication
-
-    Creates a fresh server instance for test isolation, then patches the protocol
-    class methods to intercept LSP messages.
-    """
-    captures: list = []
-
-    # Patch
-    orig_lspserver = src.server.lspserver
-    orig_send_data = pygls.protocol.LanguageServerProtocol._send_data
-    orig_procedure_handler = pygls.protocol.LanguageServerProtocol._procedure_handler
-
-    src.server.lspserver = src.server.Server()
-    pygls.protocol.LanguageServerProtocol._send_data = src.utils.listen(  # type: ignore
-        orig_send_data,
-        lambda args, *_: callback(args[1], "server->client"),
-        captures,
-    )
-    pygls.protocol.LanguageServerProtocol._procedure_handler = src.utils.listen(  # type: ignore
-        orig_procedure_handler,
-        lambda args, *_: callback(args[1], "client->server"),
-        captures,
-    )
-
-    try:
-        yield captures
-    finally:
-        # Restore
-        src.server.lspserver = orig_lspserver  # type: ignore
-        pygls.protocol.LanguageServerProtocol._send_data = orig_send_data  # type: ignore
-        pygls.protocol.LanguageServerProtocol._procedure_handler = orig_procedure_handler  # type: ignore
-
-
-@contextmanager
-def listen_workspace(callback: Callable) -> Generator[list]:
-    """Listen to Workspace._rebuild, capture callback return values"""
-    captures: list = []
-
-    # Patch
-    original_rebuild = src.workspace.Workspace._rebuild
-    src.workspace.Workspace._rebuild = src.utils.listen(  # type: ignore
-        original_rebuild, lambda args, *_: callback(args[0]), captures
-    )
-
-    try:
-        yield captures
-    finally:
-        # Restore
-        src.workspace.Workspace._rebuild = original_rebuild  # type: ignore
 
 
 def capture_server(data, direction: str) -> dict:
@@ -145,16 +92,16 @@ def capture_workspace(ws: src.workspace.Workspace) -> dict[str, str]:
         src.model.Table,
     )
     return {
-        "workspace.layer_folder": src.utils.pformat(simplify(ws.layer_folder)),
-        "workspace.layer_files": src.utils.pformat(simplify(ws.layer_files)),
-        "workspace.layer_sql": src.utils.pformat(simplify(ws.layer_sql)),
-        "workspace.layer_code": src.utils.pformat(simplify(ws.layer_code, terminal=always)),
-        "workspace.layer_model": src.utils.pformat(simplify(ws.layer_model, terminal=always)),
+        "workspace.layer_folder": src.utils.pformat(simplify_workspace(ws.layer_folder)),
+        "workspace.layer_files": src.utils.pformat(simplify_workspace(ws.layer_files)),
+        "workspace.layer_sql": src.utils.pformat(simplify_workspace(ws.layer_sql)),
+        "workspace.layer_code": src.utils.pformat(simplify_workspace(ws.layer_code, terminal=always)),
+        "workspace.layer_model": src.utils.pformat(simplify_workspace(ws.layer_model, terminal=always)),
         "workspace.layer_variations": src.utils.pformat(
-            simplify(ws.layer_variations, terminal=(*always, src.variations.ExpressionVariation))
+            simplify_workspace(ws.layer_variations, terminal=(*always, src.variations.ExpressionVariation))
         ),
         "workspace._index": src.utils.pformat(
-            simplify(
+            simplify_workspace(
                 ws._index,
                 terminal=(
                     *always,
@@ -164,7 +111,7 @@ def capture_workspace(ws: src.workspace.Workspace) -> dict[str, str]:
                 ),
             )
         ),
-        "workspace._map": src.utils.pformat(simplify(ws._map, terminal=always)),
+        "workspace._map": src.utils.pformat(simplify_workspace(ws._map, terminal=always)),
     }
 
 
@@ -175,7 +122,7 @@ def format_workspace(captures: list[dict[str, str]]) -> dict[str, str]:
 
 def format_server(captures: list[dict[str, str]]) -> dict[str, str]:
     """Level 2: Aggregate all exchange captures into single JSON file"""
-    formatted = {f"{i:03d}": simplify(item) for i, item in enumerate(captures)}
+    formatted = {f"{i:03d}": src._recorder.simplify_server(item) for i, item in enumerate(captures)}
     return {"server": src.utils.pformat(formatted)}
 
 
