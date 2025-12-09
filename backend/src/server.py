@@ -118,21 +118,15 @@ if __name__ == "__main__":
 
     if args.debug:
         log.info("Starting debugger")
-        import src._debugger
-
         src._debugger.start()
 
     if args.record:
         log.info("Recording LSP session")
-        import src._recorder
-
-        # TODO: replace with context managers from tests:listen_server + capturer (modified record_message) to write into file
-        src._recorder.start()
+        # TODO: Add consistent logging
+        src._recorder.record_session()
 
     if args.replay:
         log.info(f"Replaying session: {args.replay}")
-        import src._recorder
-
         session_data = src.utils.load_ndjson(Path(args.replay))
         src._recorder.replay_session(session_data)
         log.info(f"Replayed {len(session_data)} messages")

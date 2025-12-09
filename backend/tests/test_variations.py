@@ -4,17 +4,13 @@ Variations Testing
 Tests variations feature by replaying LSP sessions and capturing workspace snapshots.
 """
 
-from pathlib import Path
-
 import pytest
 
 import src
-import src._recorder
 import tests.utils as utils
 
-TEST_DIR = Path(__file__).parent
-SESSIONS_DIR = TEST_DIR / "sessions"
-SNAPSHOTS_DIR = TEST_DIR / "snapshots"
+SESSIONS_DIR = src.ROOT_DIR / "backend" / "tests" / "sessions"
+SNAPSHOTS_DIR = src.ROOT_DIR / "backend" / "tests" / "snapshots"
 
 
 def capture_variations(ws: src.workspace.Workspace) -> dict[str, str]:
@@ -56,11 +52,12 @@ def test_variations(snapshot, session_name):
     snapshot.snapshot_dir = session_dir
 
     # Replay session
+    src.server.lspserver = src.server.Server()
     session_data = src.utils.load_ndjson(SESSIONS_DIR / f"{session_name}.ndjson")
     with (
-        utils.listen_server(utils.capture_server) as exchange_snapshots,
-        utils.listen_workspace(utils.capture_workspace) as workspace_snapshots,
-        utils.listen_workspace(capture_variations) as variations_snapshots,
+        src._recorder.listen_server(utils.capture_server) as exchange_snapshots,
+        src._recorder.listen_workspace(utils.capture_workspace) as workspace_snapshots,
+        src._recorder.listen_workspace(capture_variations) as variations_snapshots,
     ):
         src._recorder.replay_session(session_data)
 
