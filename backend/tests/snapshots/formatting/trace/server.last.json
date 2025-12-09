@@ -1,8 +1,9 @@
 {
   "000": {
-    "direction": "client->server",
     "data": {
       "id": 0,
+      "jsonrpc": "2.0",
+      "method": "initialize",
       "params": {
         "capabilities": {
           "textDocument": {
@@ -10,98 +11,97 @@
         "processId": 1,
         "rootPath": null,
         "rootUri": "file://{cwd}/tests/inputs",
-        "workspaceFolders": [] },
-      "method": "initialize",
-      "jsonrpc": "2.0" } },
+        "workspaceFolders": [] } },
+    "direction": "client->server" },
   "001": {
-    "direction": "server->client",
     "data": {
       "id": 0,
       "jsonrpc": "2.0",
       "result": {
         "capabilities": {
-          "positionEncoding": "PositionEncodingKind.Utf16",
-          "textDocumentSync": {
-            "openClose": true,
-            "change": 2,
-            "save": false },
           "documentFormattingProvider": true,
           "executeCommandProvider": { "commands": [] },
+          "positionEncoding": "PositionEncodingKind.Utf16",
+          "textDocumentSync": {
+            "change": 2,
+            "openClose": true,
+            "save": false },
           "workspace": {
+            "fileOperations": {},
             "workspaceFolders": {
-              "supported": true,
-              "changeNotifications": true },
-            "fileOperations": {} } },
+              "changeNotifications": true,
+              "supported": true } } },
         "serverInfo": {
           "name": "sql-refinery-server",
-          "version": "0.1-dev" } } } },
+          "version": "0.1-dev" } } },
+    "direction": "server->client" },
   "002": {
-    "direction": "client->server",
     "data": {
-      "params": {},
+      "jsonrpc": "2.0",
       "method": "initialized",
-      "jsonrpc": "2.0" } },
+      "params": {} },
+    "direction": "client->server" },
   "003": {
-    "direction": "client->server",
     "data": {
+      "jsonrpc": "2.0",
+      "method": "textDocument/didOpen",
       "params": {
         "textDocument": {
-          "uri": "file://{cwd}/tests/inputs/unformatted.sql",
           "languageId": "sql",
-          "version": 1,
-          "text": "{contents}" } },
-      "method": "textDocument/didOpen",
-      "jsonrpc": "2.0" } },
+          "text": "{contents}",
+          "uri": "file://{cwd}/tests/inputs/unformatted.sql",
+          "version": 1 } } },
+    "direction": "client->server" },
   "004": {
-    "direction": "server->client",
     "data": {
-      "method": "sql-refinery/variations",
       "jsonrpc": "2.0",
+      "method": "sql-refinery/variations",
       "params": {
         "uri": "file://{cwd}/tests/inputs/unformatted.sql",
-        "variations": [] } } },
+        "variations": [] } },
+    "direction": "server->client" },
   "005": {
-    "direction": "client->server",
     "data": {
       "id": 1,
-      "params": {
-        "textDocument": { "uri": "file://{cwd}/tests/inputs/unformatted.sql" },
-        "options": {
-          "tabSize": 4,
-          "insertSpaces": true } },
+      "jsonrpc": "2.0",
       "method": "textDocument/formatting",
-      "jsonrpc": "2.0" } },
+      "params": {
+        "options": {
+          "insertSpaces": true,
+          "tabSize": 4 },
+        "textDocument": { "uri": "file://{cwd}/tests/inputs/unformatted.sql" } } },
+    "direction": "client->server" },
   "006": {
-    "direction": "server->client",
     "data": {
       "id": 1,
       "jsonrpc": "2.0",
       "result": [
-        { "range": {
-            "start": {
-              "line": 0,
-              "character": 0 },
+        { "newText": "/* CASE: Different groupings or thresholds applied to columns */\nSELECT\n    DATE(date_month, 'start of year') AS date_year,\n    CASE\n        WHEN c.region IN ('Americas')\n        THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa')\n        THEN 'EMEA'\n        WHEN c.region = 'Asia'\n        THEN 'APAC'\n        ELSE NULL\n    END AS macro_region,\n    IF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue AS ar\nLEFT JOIN accounts AS a\n    USING (account_id)\nLEFT JOIN countries AS c\n    USING (country)\nWHERE\n    a.industry IN ('Information Technology', 'Telecommunication Services')\n    AND date_month BETWEEN DATE('now', '-24 months') AND DATE('now')\nGROUP BY\n    date_year,\n    macro_region,\n    industry_it",
+          "range": {
             "end": {
-              "line": 2,
-              "character": 0 } },
-          "newText": "/* CASE: Different groupings or thresholds applied to columns */\nSELECT\n    DATE(date_month, 'start of year') AS date_year,\n    CASE\n        WHEN c.region IN ('Americas')\n        THEN 'AMER'\n        WHEN c.region IN ('Europe', 'Africa')\n        THEN 'EMEA'\n        WHEN c.region = 'Asia'\n        THEN 'APAC'\n        ELSE NULL\n    END AS macro_region,\n    IF(a.industry = 'Information Technology', 'IT', 'Non-IT') AS industry_it,\n    SUM(ar.revenue) AS revenue,\n    COUNT(DISTINCT ar.account_id) AS accounts,\n    SUM(ar.revenue) / COUNT(DISTINCT ar.account_id) AS revenue_per_account\nFROM accounts_revenue AS ar\nLEFT JOIN accounts AS a\n    USING (account_id)\nLEFT JOIN countries AS c\n    USING (country)\nWHERE\n    a.industry IN ('Information Technology', 'Telecommunication Services')\n    AND date_month BETWEEN DATE('now', '-24 months') AND DATE('now')\nGROUP BY\n    date_year,\n    macro_region,\n    industry_it" } ] } },
+              "character": 0,
+              "line": 2 },
+            "start": {
+              "character": 0,
+              "line": 0 } } } ] },
+    "direction": "server->client" },
   "007": {
-    "direction": "client->server",
     "data": {
-      "params": {
-        "textDocument": { "uri": "file://{cwd}/tests/inputs/unformatted.sql" } },
+      "jsonrpc": "2.0",
       "method": "textDocument/didClose",
-      "jsonrpc": "2.0" } },
+      "params": {
+        "textDocument": { "uri": "file://{cwd}/tests/inputs/unformatted.sql" } } },
+    "direction": "client->server" },
   "008": {
-    "direction": "client->server",
-    "data": {
-      "id": 2,
-      "method": "shutdown",
-      "jsonrpc": "2.0" } },
-  "009": {
-    "direction": "server->client",
     "data": {
       "id": 2,
       "jsonrpc": "2.0",
-      "result": null } },
+      "method": "shutdown" },
+    "direction": "client->server" },
+  "009": {
+    "data": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": null },
+    "direction": "server->client" },
   "010": null }

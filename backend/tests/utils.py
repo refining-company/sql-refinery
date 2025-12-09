@@ -5,12 +5,9 @@ Common functions for LSP session testing and snapshot management.
 """
 
 import dataclasses
-from collections.abc import Callable, Generator
-from contextlib import contextmanager
 from pathlib import Path
 
 import attr
-import pygls.protocol
 from lsprotocol import converters
 
 import src
@@ -73,59 +70,6 @@ def simplify_workspace(obj, terminal=()) -> dict | list | tuple | str | int | fl
             return f"<{obj.__name__}>"
         case _:
             return str(obj)
-
-
-@contextmanager
-def listen_server(callback: Callable) -> Generator[list]:
-    """Listen to protocol to intercept all client-server communication
-
-    Creates a fresh server instance for test isolation, then patches the protocol
-    class methods to intercept LSP messages.
-    """
-    captures: list = []
-
-    # Patch
-    orig_lspserver = src.server.lspserver
-    orig_send_data = pygls.protocol.LanguageServerProtocol._send_data
-    orig_procedure_handler = pygls.protocol.LanguageServerProtocol._procedure_handler
-
-    src.server.lspserver = src.server.Server()
-    pygls.protocol.LanguageServerProtocol._send_data = src.utils.listen(  # type: ignore
-        orig_send_data,
-        lambda args, *_: callback(args[1], "server->client"),
-        captures,
-    )
-    pygls.protocol.LanguageServerProtocol._procedure_handler = src.utils.listen(  # type: ignore
-        orig_procedure_handler,
-        lambda args, *_: callback(args[1], "client->server"),
-        captures,
-    )
-
-    try:
-        yield captures
-    finally:
-        # Restore
-        src.server.lspserver = orig_lspserver  # type: ignore
-        pygls.protocol.LanguageServerProtocol._send_data = orig_send_data  # type: ignore
-        pygls.protocol.LanguageServerProtocol._procedure_handler = orig_procedure_handler  # type: ignore
-
-
-@contextmanager
-def listen_workspace(callback: Callable) -> Generator[list]:
-    """Listen to Workspace._rebuild, capture callback return values"""
-    captures: list = []
-
-    # Patch
-    original_rebuild = src.workspace.Workspace._rebuild
-    src.workspace.Workspace._rebuild = src.utils.listen(  # type: ignore
-        original_rebuild, lambda args, *_: callback(args[0]), captures
-    )
-
-    try:
-        yield captures
-    finally:
-        # Restore
-        src.workspace.Workspace._rebuild = original_rebuild  # type: ignore
 
 
 def capture_server(data, direction: str) -> dict:

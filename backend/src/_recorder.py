@@ -15,15 +15,59 @@ import src
 log = src.logger.get(__name__)
 
 
-recording_path: Path | None = None
-original_methods = {}
+@contextmanager
+def listen_server(callback: Callable) -> Generator[list]:
+    """Listen to protocol to intercept all client-server communication"""
+    captures: list = []
+
+    # Patch
+    orig_send_data = pygls.protocol.LanguageServerProtocol._send_data
+    orig_procedure_handler = pygls.protocol.LanguageServerProtocol._procedure_handler
+
+    pygls.protocol.LanguageServerProtocol._send_data = src.utils.listen(  # type: ignore
+        orig_send_data,
+        lambda args, *_: callback(args[1], "server->client"),
+        captures,
+    )
+    pygls.protocol.LanguageServerProtocol._procedure_handler = src.utils.listen(  # type: ignore
+        orig_procedure_handler,
+        lambda args, *_: callback(args[1], "client->server"),
+        captures,
+    )
+
+    try:
+        yield captures
+    finally:
+        # Restore
+        pygls.protocol.LanguageServerProtocol._send_data = orig_send_data  # type: ignore
+        pygls.protocol.LanguageServerProtocol._procedure_handler = orig_procedure_handler  # type: ignore
+
+
+@contextmanager
+def listen_workspace(callback: Callable) -> Generator[list]:
+    """Listen to Workspace._rebuild, capture callback return values"""
+    captures: list = []
+
+    # Patch
+    original_rebuild = src.workspace.Workspace._rebuild
+    src.workspace.Workspace._rebuild = src.utils.listen(  # type: ignore
+        original_rebuild,
+        lambda args, *_: callback(args[0]),
+        captures,
+    )
+
+    try:
+        yield captures
+    finally:
+        # Restore
+        src.workspace.Workspace._rebuild = original_rebuild  # type: ignore
 
 
 def simplify_server(obj):
     """Simplify LSP message by replacing paths with {cwd} and file contents with {contents}"""
     match obj:
         case dict():
-            result = {k: simplify_server(v) for k, v in obj.items()}
+            result = {k: simplify_server(v) for k, v in sorted(obj.items(), key=str)}
             if result.get("params", {}).get("textDocument", {}).get("text"):
                 result["params"]["textDocument"]["text"] = "{contents}"
             return result
@@ -52,46 +96,20 @@ def restore_server(obj):
             return obj
 
 
-def record_message(direction: str, message: dict):
-    """Record a single LSP message."""
-    if recording_path is None:
-        return
+def record_session(output_path: Path = src.ROOT_DIR / "logs" / "session.last.ndjson"):
+    """Intercept and record client-server communications to logs/session.last.ndjson"""
+    output_path.write_text("")
 
-    unstructured = converters.get_converter().unstructure(message)
-    simplified = simplify_server(unstructured)
-    record = {"direction": direction, "message": simplified}
+    def capture_to_file(data, direction: str):
+        unstructured = converters.get_converter().unstructure(data)
+        simplified = simplify_server(unstructured)
+        record = {"direction": direction, "message": simplified}
+        output_path.open("a").write(json.dumps(record) + "\n")
+        return None
 
-    with recording_path.open("a") as f:
-        f.write(json.dumps(record) + "\n")
-        f.flush()
-
-
-def start(output_path: Path = Path(__file__).parent.parent.parent / "logs" / "session.last.ndjson"):
-    """Start recording LSP messages."""
-    # TODO: should use patch_server from ./tests/
-
-    global recording_path, original_methods
-
-    recording_path = output_path
-    recording_path.write_text("")
-
-    log.info(f"Recording LSP session to {recording_path}")
-
-    original_methods = {
-        "_send_data": pygls.protocol.LanguageServerProtocol._send_data,
-        "_procedure_handler": pygls.protocol.LanguageServerProtocol._procedure_handler,
-    }
-
-    def patched_send_data(self, data):
-        record_message("server->client", data)
-        return original_methods["_send_data"](self, data)
-
-    def patched_procedure_handler(self, message):
-        record_message("client->server", message)
-        return original_methods["_procedure_handler"](self, message)
-
-    pygls.protocol.LanguageServerProtocol._send_data = patched_send_data  # type: ignore
-    pygls.protocol.LanguageServerProtocol._procedure_handler = patched_procedure_handler  # type: ignore
+    listener = listen_server(capture_to_file)
+    listener.__enter__()
+    # Intentionally not calling __exit__() - patches remain active for server's lifetime
 
 
 @contextmanager
