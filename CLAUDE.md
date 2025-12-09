@@ -113,6 +113,15 @@ Optimize for developer velocity. Build fast, iterate quickly, add robustness onl
 - Backend: `logs/session.last.ndjson` (LSP client-server communication)
 - Frontend: `logs/frontend-vscode.sh` (VSCode output panel)
 
+### Prerequisites
+
+```bash
+brew install pyenv
+pyenv install 3.13.7
+pip install poetry
+make install
+```
+
 ### Commands
 
 **IMPORTANT: Always use `make` commands. Never use `poetry` or `npm` directly.**
