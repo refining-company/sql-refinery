@@ -53,36 +53,36 @@ install: backend-install frontend-install
 	@echo "✓ Git hooks installed"
 
 # ============================================================================
-# Backend Commands (Python + Poetry)
+# Backend Commands (Python + uv)
 # ============================================================================
 
 backend-check:
 	@echo "→ Backend: Formatting code (Black)..."
-	@cd backend && poetry run black src/ tests/
+	@cd backend && uv run black src/ tests/
 	@echo ""
 	@echo "→ Backend: Auto-fixing lint issues (Ruff)..."
-	@cd backend && poetry run ruff check src/ tests/ --fix
+	@cd backend && uv run ruff check src/ tests/ --fix
 	@echo ""
 	@echo "→ Backend: Linting (Ruff)..."
-	@cd backend && poetry run ruff check src/ tests/
+	@cd backend && uv run ruff check src/ tests/
 	@echo ""
 	@echo "→ Backend: Type checking (MyPy)..."
-	@cd backend && poetry run mypy src/ tests/
+	@cd backend && uv run mypy src/ tests/
 
 
 backend-test:
-	@cd backend && poetry run pytest
+	@cd backend && uv run pytest
 
 backend-test-update:
-	@cd backend && poetry run pytest --snapshot-update
+	@cd backend && uv run pytest --snapshot-update
 
 backend-clean:
-	@cd backend && rm -rf .pytest_cache .mypy_cache .ruff_cache __pycache__
+	@cd backend && rm -rf .pytest_cache .mypy_cache .ruff_cache __pycache__ .venv
 	@cd backend && find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@cd backend && find . -type f -name "*.pyc" -delete
 
 backend-install:
-	@cd backend && poetry install
+	@cd backend && uv sync
 
 # ============================================================================
 # Frontend Commands (TypeScript + npm)

@@ -116,15 +116,13 @@ Optimize for developer velocity. Build fast, iterate quickly, add robustness onl
 ### Prerequisites
 
 ```bash
-brew install pyenv
-pyenv install 3.13.7
-pip install poetry
+brew install uv
 make install
 ```
 
 ### Commands
 
-**IMPORTANT: Always use `make` commands. Never use `poetry` or `npm` directly.**
+**IMPORTANT: Always use `make` commands. Never use `uv` or `npm` directly.**
 
 ```bash
 # Development workflow (run from repo root)
