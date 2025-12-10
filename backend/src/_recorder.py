@@ -72,7 +72,7 @@ def simplify_server(obj):
                 result["params"]["textDocument"]["text"] = "{contents}"
             return result
         case list():
-            return [simplify_server(item) for item in obj]
+            return sorted([simplify_server(item) for item in obj], key=str)
         case str():
             return src.utils.trunk_path(obj)
         case _:

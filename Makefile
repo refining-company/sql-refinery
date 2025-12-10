@@ -1,7 +1,7 @@
 # Makefile for SQL Refinery monorepo
 # Provides unified quality check interface for both backend (Python) and frontend (TypeScript)
 
-.PHONY: help check test test-update clean install
+.PHONY: help check test test-update clean install format
 .PHONY: backend-check backend-test backend-test-update backend-clean backend-install
 .PHONY: frontend-check frontend-test frontend-test-update frontend-clean frontend-install
 
@@ -10,6 +10,7 @@ help:
 	@echo "SQL Refinery - Monorepo Commands"
 	@echo ""
 	@echo "Full Repository:"
+	@echo "  make format       Format all code (Black, Prettier)"
 	@echo "  make check        Format, lint, and typecheck all code"
 	@echo "  make test         Run all tests"
 	@echo "  make test-update  Update all test snapshots"
@@ -17,12 +18,12 @@ help:
 	@echo "  make install      Install all dependencies"
 	@echo ""
 	@echo "Backend Only:"
-	@echo "  make backend-check        Format, lint, and typecheck backend (Black, Ruff, MyPy)"
+	@echo "  make backend-check        Lint and typecheck backend (Ruff, MyPy)"
 	@echo "  make backend-test         Run backend tests"
 	@echo "  make backend-test-update  Update backend test snapshots"
 	@echo ""
 	@echo "Frontend Only:"
-	@echo "  make frontend-check        Format, lint, and typecheck frontend (Prettier, ESLint, TypeScript)"
+	@echo "  make frontend-check        Lint and typecheck frontend (ESLint, TypeScript)"
 	@echo "  make frontend-test         Run frontend tests"
 	@echo "  make frontend-test-update  Update frontend test snapshots"
 
@@ -30,7 +31,7 @@ help:
 # Full Repository Commands
 # ============================================================================
 
-check: backend-check frontend-check
+check: format backend-check frontend-check
 	@echo ""
 	@echo "✓ All checks passed!"
 
@@ -45,11 +46,19 @@ test-update: backend-test-update frontend-test-update
 clean: backend-clean frontend-clean
 	@echo "✓ Cleaned all cache and build files"
 
+format:
+	@echo "→ Formatting Python (Black)..."
+	@uv run --directory backend black .
+	@echo ""
+	@echo "→ Formatting TypeScript/Markdown (Prettier)..."
+	@./frontend-vscode/node_modules/.bin/prettier --write .
+
 install: backend-install frontend-install
 	@echo "✓ All dependencies installed"
 	@echo ""
 	@echo "→ Installing git hooks..."
-	@ln -sf ../../.hooks/pre-commit .git/hooks/pre-commit
+	@rm -f .git/hooks/*
+	@ln -s ../../.hooks/pre-commit .git/hooks/pre-commit
 	@echo "✓ Git hooks installed"
 
 # ============================================================================
@@ -57,9 +66,6 @@ install: backend-install frontend-install
 # ============================================================================
 
 backend-check:
-	@echo "→ Backend: Formatting code (Black)..."
-	@cd backend && uv run black src/ tests/
-	@echo ""
 	@echo "→ Backend: Auto-fixing lint issues (Ruff)..."
 	@cd backend && uv run ruff check src/ tests/ --fix
 	@echo ""
@@ -89,9 +95,6 @@ backend-install:
 # ============================================================================
 
 frontend-check:
-	@echo "→ Frontend: Formatting code (Prettier)..."
-	@cd frontend-vscode && npm run format
-	@echo ""
 	@echo "→ Frontend: Linting (ESLint)..."
 	@cd frontend-vscode && npm run lint
 	@echo ""

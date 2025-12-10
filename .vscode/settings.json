@@ -63,23 +63,14 @@
   "python.testing.unittestEnabled": false,
   "python.testing.cwd": "${workspaceFolder}/backend",
   "python.testing.pytestPath": "pytest",
-  "python.testing.pytestArgs": [
-    "-c",
-    "${workspaceFolder}/backend/pyproject.toml"
-  ],
+  "python.testing.pytestArgs": ["-c", "${workspaceFolder}/backend/pyproject.toml"],
 
-  "black-formatter.args": [
-    "--config",
-    "${workspaceFolder}/backend/pyproject.toml"
-  ],
+  "black-formatter.args": ["--config", "${workspaceFolder}/backend/pyproject.toml"],
   "ruff.configuration": "${workspaceFolder}/backend/pyproject.toml",
   "mypy-type-checker.importStrategy": "fromEnvironment",
   "mypy-type-checker.cwd": "${workspaceFolder}/backend",
   "mypy-type-checker.reportingScope": "workspace",
-  "mypy-type-checker.args": [
-    "--config-file",
-    "pyproject.toml"
-  ],
+  "mypy-type-checker.args": ["--config-file", "pyproject.toml"],
 
   // ============================================================================
   // TypeScript/JavaScript Settings

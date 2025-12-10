@@ -2,7 +2,10 @@
 
 set -e
 
-echo "Running pre-commit checks..."
-make frontend-check
+echo "Running pre-commit formatting..."
+make format
 
-echo "Pre-commit checks passed!"
+# Stage any formatting changes
+git add -u
+
+echo "Pre-commit formatting complete!"

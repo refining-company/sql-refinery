@@ -26,21 +26,25 @@ Analysts who build SQL data pipelines to dashboards and analytics.
 ### Architecture
 
 **4-Layer Pipeline:**
+
 1. **SQL** (`sql.py`): Tree-sitter parsing → `tree_sitter.Tree`
 2. **Code** (`code.py`): Syntactic AST → `code.Code` (1:1 with SQL, location-based, preserves duplicates)
 3. **Model** (`model.py`): Semantic layer → `model.Model` (resolved references, identity-based, deduplicated)
 4. **Features** (`variations.py`): Similarity analysis → `ExpressionVariations` (Levenshtein + column overlap)
 
 **Orchestration:**
+
 - `workspace.py`: Pipeline manager with index (`ws.new()`, `ws.get()`) and map system (`ws.map(fro, to, by=...)`)
 - `server.py`: LSP server (thin I/O wrapper)
 
 **Data Flow:**
+
 ```
 SQL files → sql.build() → code.build() → model.build() → variations.build() → LSP → VSCode
 ```
 
 **Stack:**
+
 - Backend: Python 3.13.7
 - Frontend: Node 20.18.0 (VSCode extension)
 
@@ -51,6 +55,7 @@ SQL files → sql.build() → code.build() → model.build() → variations.buil
 Optimize for developer velocity. Build fast, iterate quickly, add robustness only when needed.
 
 **Core Principles:**
+
 - Simplicity: minimal code, pythonic, refactor when needed
 - Trust happy path: build for common cases first
 - Minimal error checking: add validation when problems occur; use assertions for invariants
@@ -75,25 +80,30 @@ Optimize for developer velocity. Build fast, iterate quickly, add robustness onl
 **Core Principle**: Name what something IS, not what it DOES
 
 **Modules:** Nouns (substance), not verbs
+
 - Good: `code`, `model`, `variations`, `workspace`
 - Bad: ~~`parser`~~, ~~`analyzer`~~, ~~`builder`~~
 
 **Classes:** Simple nouns, no suffixes
+
 - Master classes match module: `code.Code`, `model.Model`
 - Disambiguate via module: `code.Column` vs `model.Column`
 - Bad: ~~`ColumnRef`~~, ~~`ParsedTree`~~, ~~`Tree`~~, ~~`Semantics`~~
 
 **Functions:**
+
 - Builders: `build()` (uniform across all modules)
 - Analyzers: `find_*()`, `get_*()`, `is_*()`
 - Private: `_prefix`
 
 **Import Discipline:**
+
 - Always `import src` + fully qualified names
 - NEVER `from src import code` or `from src.code import Column`
 - Rationale: `src.code.Column` vs `src.model.Column` are different abstractions
 
 **Type Hints:**
+
 - Required on all function signatures
 - Module-qualified types: `src.code.Column`, `src.model.Model`
 - Inline generics: `def new[T](self, obj: T) -> T:`
@@ -101,15 +111,18 @@ Optimize for developer velocity. Build fast, iterate quickly, add robustness onl
 ### Testing
 
 **Snapshot Testing:**
+
 - Each pipeline layer has snapshots (validate abstractions, not implementations)
 - Refactoring should only break snapshots at changed layer
 - `.true.md` files = golden standard, `.last.md` = debug output
 
 **Test Data:**
+
 - Recorded LSP sessions in `backend/tests/sessions/`
 - Sample SQL codebases in `backend/tests/inputs/codebase/`
 
 **Logs:**
+
 - Backend: `logs/session.last.ndjson` (LSP client-server communication)
 - Frontend: `logs/frontend-vscode.sh` (VSCode output panel)
 
@@ -149,4 +162,5 @@ make install
 
 - Test and commit all changes
 - Commit prefixes: `setup:`, `feature:`, `fix:`, `refactor:`, `test:`
-- **Check-in protocol**: When making multiple edits to existing code, pause and check in with the user to ensure you're not overengineering
+- **Check-in protocol**: When making multiple edits to existing code, pause and check in with the user to ensure you're
+  not overengineering
